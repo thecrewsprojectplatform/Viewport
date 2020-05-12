@@ -1,0 +1,199 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Convolutional Neural Networks</title>
+    <style>
+      :root {
+        --thumbSize: 0px;
+        --kernelThumbSize: 0px;
+        --kernelThumbFont: 0px;
+      }
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .thumbnail {
+        width: var(--thumbSize);
+        border: 3px solid transparent;
+        opacity: 0.5;
+        cursor: pointer;
+      }
+      caption {
+        font-size: var(--kernelThumbSize);
+      }
+      .kernelThumbCell {
+        width: var(--kernelThumbSize);
+        height: var(--kernelThumbSize);
+        font-size: var(--kernelThumbFont);
+      }
+      .selected {
+        border: 3px solid red;
+        opacity: 1 !important;
+      }
+      .kselected {
+        border: 3px solid red;
+        opacity: 1 !important;
+      }
+      .kernel {
+        cursor: pointer;
+        opacity: 0.5;
+        dominant-baseline: middle;
+        border-collapse: collapse;
+        border: 1px solid black;
+        display: inline-table;
+        background-color: white;
+        margin-left: 1em;
+      }
+      .textContentWrapper {
+        text-align: center;
+      }
+      .textContentTitle {
+        text-align: left;
+        display: inline-block;
+        font-size: var(--textContentTitleFontSize);
+        width: 60%;
+        font-weight: bold;
+        margin-bottom: 0em;
+      }
+      .textContent {
+        text-align: left;
+        display: inline-block;
+        font-size: var(--textContentFontSize);
+        width: 60%;
+        margin-top: 0.5em;
+      }
+      .title {
+        text-align: left;
+        display: inline-block;
+        font-size: var(--titleFontSize);
+        margin-bottom: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="./alex/rgbIndex.html">More on RGB images<a>
+
+    <canvas hidden id="input-image" width="32px" height="32px"></canvas>
+
+    <div class="textContentWrapper">
+      <div style="display:flex">
+        <p style="width:20%"></p>
+        <p class="title" style="width:70%">
+          Convolutional<br>
+          <span style="color: white;">C</span>Neural<br>
+          <span style="color: white;">CN</span>Networks
+        </p>
+      </div>
+      <p class="textContent">
+        The ability to recognize and categorize objects in our everyday life come very naturally to humans.
+        When you walk down the street, you probably can distinguish what the various objects that you encounter
+        are. You can find people walking their dogs, various cars driving down the road and airplanes flying
+        across the sky. What if we wanted machines to recognize these objects? If we had a lot of images we
+        needed to analyze and categorize, we could use machines to automate this task. Let's take a look into
+        how image recognition is carried out! 
+      </p>
+      <p class="textContentTitle">
+        How are we representing an image?
+      </p>
+      <p class="textContent">
+        Your eyes register colors as a combination of red, green and blue light. Computers also display colors
+        using red, green and blue. Every pixel on the screen you are seeing right now can be represented by just
+        three values. For example the color of this fuchsia <span style="color:fuchsia">██</span> has red's
+        brightness set to 255, green's brightness set to 0 and blue's brightness set to 255. We would say that
+        the RGB values for this color is (255, 0, 255). To display the fuchsia, your computer would then use an 
+        <a href="https://en.wikipedia.org/wiki/Additive_color" target="_blank">additive process</a> to blend these
+        values together. Experiment with the puppy below to see how it works!
+      </p>
+    </div>
+
+    <div id="animateRGBSection" style="text-align: center;"></div>
+
+    <div class="textContentWrapper">
+      <p class="textContentTitle">
+        Now, what is a convolution?
+      </p>
+      <p class="textContent">
+        In the context of image processing, convolutions are the process of combining the pixels of an image
+        with its local neighbors, weighted by something called a
+        "<a href="https://en.wikipedia.org/wiki/Kernel_(image_processing)" target="_blank">Kernel</a>".
+        Experiment with the visual below to see how these convolutions are calculated. The left matrix
+        represents a portion of an image and the right matrix represents the values in our kernel.
+      </p>
+    </div>
+
+    <div id="animateMathSection" style="text-align: center;"></div>
+    
+    <div class="textContentWrapper">
+      <p class="textContentTitle">
+        The bigger picture
+      </p>
+      <p class="textContent">
+        Kernels can have different values depending on the features we want to extract.
+        There are kernels that are designed to sharpen images and even detect edges!
+        How does an image look after we run some simple convs? Experiment with the
+        visualization below to see how a convolution is calculated. An image is represented
+        on the left and the resulting convolved image is on the left.
+      </p>
+    </div>
+
+    <div id="convIntroSection" style="text-align: center;"></div>
+
+    <div class="textContentWrapper">
+      <p class="textContentTitle">
+        Layering convolutions
+      </p>
+      <p class="textContent">
+        We can also construct a "network" of convolutions that feed into each other;
+        i.e. convolving an image that's already been convolved once.
+        Some of these convolutions give great analysis of the images as-is, why not string multiple together?
+        We might be able to detect even more specific features with this method. Experiment with the
+        visualization below to see how this could be helpful.
+      </p>
+    </div>
+
+    <div id="multiConvSection" style="text-align: center;"></div>
+
+    <div class="textContentWrapper">
+      <p class="textContentTitle">
+        Putting it together
+      </p>
+      <p class="textContent">
+        Below is a simple neural network for classifying a picture as one of ten categories: Plane, Car, Bird, Cat, Deer, Dog, Frog, Horse, Ship and Truck. Hover over the pixels
+        in any layer to see the path of a pixel through the network. Both the relevant pixel and the kernel are highlighted in alternating colors at each layer.
+      </p>
+      <p class="textContent">
+        On the right the top 3 predicted probabilities of each class are displayed. Right now the network predicts the class of the image horribly wrong.
+        Use the slider to adjust the weights of the network so that the network predicts the image to be a dog with 100% probability and everything else with 0% probability.
+        As you adjust the slider, watch the networks prediction and note how the output of the first convolution becomes more and more similar the convolved images we saw earlier. This means the network is learning
+        useful kernels.
+      </p>
+      <p class="textContent">
+        Once you are done, try selecting some of the other images above!
+      </p>
+    </div>
+
+    <div id="userTrainSection" style="text-align: center;"></div>
+
+    <div class="textContentWrapper">
+      <p class="textContentTitle">
+        Final destination
+      </p>
+      <p class="textContent">
+        In reality, we don't tune the networks manually like this. Usually, the computer will adjust these values automatically, using a process called "<a href="https://en.wikipedia.org/wiki/Backpropagation" target="_blank">Backpropogation</a>".
+        The process is similar to what you did above! The computer makes some predictions, then adjusts the values in the direction that seems to make better predictions.
+        Through this process, the network is able to automatically learn complex kernels that extract useful information from images.
+      </p>
+    </div>
+
+    <div class="textContentWrapper">
+      <p class="textContent">
+        Below you'll find a fully trained network, similar to <a href="https://towardsdatascience.com/vgg-neural-networks-the-next-step-after-alexnet-3f91fa9ffe2c" target="_blank">VGG</a>.
+        There are 32 images from each of the 10 classes that the network has never seen before. Click on any image to select it and have the network predict what the image is.
+        Try to find some images that the network classifies correctly and some that it misclassifies!
+      </p>
+    </div>
+      
+    <div id="realCnnSection" style="text-align: center;"></div>
+
+    <script src="./index.js"></script>
+  </body>
+</html>
