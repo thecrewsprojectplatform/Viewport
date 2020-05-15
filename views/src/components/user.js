@@ -2,9 +2,9 @@ import React from 'react';
 
 function User(props) {
     return (
-        <div className="user">
-            <span>{props.name}</span>
+        <div className="User">
             <button onClick={props.onClick}>{"Remove"}</button>
+            <span>{props.name}</span>
         </div>
     );
 }

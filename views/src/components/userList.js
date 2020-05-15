@@ -5,25 +5,54 @@ class UserList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: props.users.map((u) => <User key={u.id} name={u.name} onClick={() => this.handleClick(u.id)}/>),
-            help: 22
+            users: props.users,
+            openId: props.users.length
         };
+        
+        // Allows for the button events passed to the users to affect the list
+        this.handleClick = this.handleClick.bind(this);
+        this.addUser = this.addUser.bind(this);
     }
 
     handleClick(id) {
-        const idx = this.state.users.indexOf();
-        console.log(idx);
-        if (idx > -1) {
+        this.setState(prevState => ({
+            users: prevState.users.filter(user => user.id !== id)
+        }));
+        
+    }
+
+    addUser(event) {
+        const name = document.getElementById("Add-user").value;
+
+        if(event.keyCode === 13 && name !== "") {
+            event.preventDefault();
+            
+            // Placeholder id 
+            const id = this.state.openId;
+
             this.setState(prevState => ({
-                users: prevState.users.splice(idx, 1)
+                users: prevState.users.concat({id: id, name: name}),
+                openId: prevState.openId++
             }));
+
+            document.getElementById("Add-user").value = "";
         }
     }
 
     render() {
+        const userList = this.state.users.map((user) => 
+            <User key={user.id} 
+                  name={user.name} 
+                  onClick={() => this.handleClick(user.id)} />
+        );
+
         return (
-            <div>
-                {this.state.users}
+            <div className="User-list">
+                <input type="text" 
+                       placeholder="Enter username..." 
+                       id="Add-user" 
+                       onKeyDown={(event) => this.addUser(event)}/>
+                {userList}
             </div>
         );
     }

@@ -1,11 +1,11 @@
 import React from 'react';
 import UserList from './userList';
 
-let users = [
-  {id: 1, name: "Michael"},
+let init_users = [
+  {id: 0, name: "Michael"},
+  {id: 1, name: "Eric"},
   {id: 2, name: "Sung"},
-  {id: 3, name: "Andrew"},
-  {id: 4, name: "Eric"}
+  {id: 3, name: "Andrew"}
 ];
 
 class App extends React.Component {
@@ -18,7 +18,7 @@ class App extends React.Component {
           </h1>
         </header>
 
-        <UserList users={users}/>
+        <UserList users={init_users}/>
       </div>
     );
   }
