@@ -1,6 +1,11 @@
 import React from 'react';
 import UserList from './userList';
 
+/**
+ * PLACEHOLDER
+ * 
+ * Initial set of users for now.
+ */
 let init_users = [
   {id: 0, name: "Michael"},
   {id: 1, name: "Eric"},
@@ -8,7 +13,16 @@ let init_users = [
   {id: 3, name: "Andrew"}
 ];
 
+/**
+ * @constructor App representing the current front end for our application.
+ */
 class App extends React.Component {
+  
+  /**
+   * Renders the application with React.
+   * 
+   * @returns {JSX.Element} The current layout of our application.
+   */
   render() {
     return (
       <div className="App">

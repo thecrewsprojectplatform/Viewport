@@ -1,7 +1,16 @@
 import React from 'react';
 import User from './user';
 
+/**
+ * @class UserList representing a list of users currently watching a video together
+ */
 class UserList extends React.Component {
+    /**
+     * Creates an instance of a UserList.
+     * 
+     * @constructor
+     * @param {Object} props The properties of a UserList.
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -14,6 +23,11 @@ class UserList extends React.Component {
         this.addUser = this.addUser.bind(this);
     }
 
+    /**
+     * Removes a User with the given id from the UserList.
+     * 
+     * @param {number} id The id of the User to be deleted.
+     */
     handleClick(id) {
         this.setState(prevState => ({
             users: prevState.users.filter(user => user.id !== id)
@@ -21,6 +35,12 @@ class UserList extends React.Component {
         
     }
 
+    /**
+     * Adds a User to the UserList once text has been written in the textbar
+     * and the user has pressed the enter key.
+     * 
+     * @param {keydown} event The event we are listening for on the keyboard.
+     */
     addUser(event) {
         const name = document.getElementById("Add-user").value;
 
@@ -39,6 +59,11 @@ class UserList extends React.Component {
         }
     }
 
+    /**
+     * Renders the UserList using React.
+     * 
+     * @returns {JSX.Element} The current layout of our UserList.
+     */
     render() {
         const userList = this.state.users.map((user) => 
             <User key={user.id} 
