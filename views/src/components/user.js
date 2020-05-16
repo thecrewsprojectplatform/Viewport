@@ -9,8 +9,8 @@ import React from 'react';
 function User(props) {
     return (
         <div className="User">
-            <button onClick={props.onClick}>{"Remove"}</button>
-            <span>{props.name}</span>
+            <span className="User-name">{props.name}</span>
+            <button className="Remove-button" onClick={props.onClick}>{"Remove"}</button>
         </div>
     );
 }

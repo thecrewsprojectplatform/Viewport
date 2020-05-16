@@ -27,12 +27,14 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>
+          <h2>
             Multimedia Platform
-          </h1>
+          </h2>
         </header>
-
-        <UserList users={init_users}/>
+          <div className="row">
+            <span className="Video-section">YouTube videos go here</span>
+            <UserList users={init_users}/>
+          </div>
       </div>
     );
   }

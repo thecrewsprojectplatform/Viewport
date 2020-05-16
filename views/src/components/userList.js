@@ -73,9 +73,11 @@ class UserList extends React.Component {
 
         return (
             <div className="User-list">
-                <input type="text" 
+                <input className="User-input"
+                       type="text" 
                        placeholder="Enter username..." 
                        id="Add-user" 
+                       autoComplete="off"
                        onKeyDown={(event) => this.addUser(event)}/>
                 {userList}
             </div>
