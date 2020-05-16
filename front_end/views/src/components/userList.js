@@ -9,7 +9,9 @@ class UserList extends React.Component {
      * Creates an instance of a UserList.
      * 
      * @constructor
-     * @param {Object} props The properties of a UserList.
+     * @param {Object} props The properties of a UserList. 
+     *                 Requires an array of user objects which
+     *                 contains the id and name of a user.
      */
     constructor(props) {
         super(props);
@@ -32,7 +34,6 @@ class UserList extends React.Component {
         this.setState(prevState => ({
             users: prevState.users.filter(user => user.id !== id)
         }));
-        
     }
 
     /**

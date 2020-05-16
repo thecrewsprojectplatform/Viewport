@@ -3,7 +3,7 @@ import React from 'react';
 /**
  * Outputs the JSX for a User in our current UserList.
  * 
- * @param {Object} props The properties of a User.
+ * @param {Object} props The properties of a User. Requires a name and a onClick field.
  * @returns {JSX.Element} The current layout of the User.
  */
 function User(props) {
