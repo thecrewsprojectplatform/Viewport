@@ -1,4 +1,4 @@
-# MultimediaPlatform
+# Backend
 
 ## Setup
 To install the required packages:
