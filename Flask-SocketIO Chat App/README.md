@@ -1,8 +1,6 @@
 # MultimediaPlatform
 
 ----- Need to Install -----
-For Flask: pip install Flask
-
 For Flask-socketIO: pip install flask-socketio
 
 For Flaks-SQLAlchemy: pip install Flask-SQLAlchemy

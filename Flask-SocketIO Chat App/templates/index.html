@@ -1,0 +1,46 @@
+<html>
+<head>
+    <title>Chat Application</title>
+</head>
+<body>
+    <!-- Client-side SocketIO library -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    
+    <!-- Jquery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <!-- Establishing a chat application (receive and send) -->
+    <script type='text/javascript'>
+        // Establishing connections and creating sessions
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        // sends a message under event name 'chat message' along with data
+        socket.on('connect', function() {
+            var form = $('form').on('submit', function (e) {
+                e.preventDefault()
+                socket.emit('chat message', $('#msg').val());
+                $('#msg').val('');
+            });
+        });
+
+        socket.on('message response', function(msg) {
+            $('div.display_message').append('<p>'+msg+'</p>')
+        })  
+    </script>
+
+    <!-- Area for message display -->
+    <div class="display_message">
+
+        <!-- Jinja Syntax --> 
+        {% for msg_history in chat_history %} 
+            <p>{{ msg_history.message }}</p>
+        {% endfor %}
+
+    </div>
+
+    <!-- Front end (Text Box and Submit) -->
+    <form action="" method="POST">
+        <input type="text" id="msg" placeholder="Type message..." autocomplete="off"/>
+        <input type="submit" placeholder="Send"/>
+    </form>
+</body>
+</html>
