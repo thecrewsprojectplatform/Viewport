@@ -26,7 +26,6 @@ class RoomUserAPI(Resource):
     def post(self, room_id):
         args = self.reqparse.parse_args()
         room_user = RoomUser(room_id=room_id, user_id=args["user_id"])
-        print(f"Created {room_user}")
         db.session.add(room_user)
         db.session.commit()
         return jsonify(success=True)
@@ -34,7 +33,6 @@ class RoomUserAPI(Resource):
     def delete(self, room_id):
         args = self.reqparse.parse_args()
         room_user = RoomUser.query.filter_by(room_id=room_id, user_id=args["user_id"])
-        print(f"Deleted {room_user}")
         db.session.delete(room_user)
         db.session.commit()
         return jsonify(success=True)
