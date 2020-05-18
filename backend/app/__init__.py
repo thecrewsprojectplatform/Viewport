@@ -1,11 +1,12 @@
 from flask import Flask
 from flask_restful import Api
+from flask_restful_swagger import swagger
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
-api = Api(app)
+api = swagger.docs(Api(app), apiVersion="0.1")
 db = SQLAlchemy(app)
 
 from app import endpoints
