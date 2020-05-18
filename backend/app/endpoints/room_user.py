@@ -13,7 +13,7 @@ class RoomUserAPI(Resource):
 
     @marshal_with(User.resource_fields)
     @swagger.operation(
-        notes="Returned all users in a given room",
+        notes="Returns all users in a given room",
         responseClass=User.__name__,
         parameters=[
             {

@@ -81,7 +81,7 @@ class RoomAPI(Resource):
 
     @marshal_with(Room.resource_fields)
     @swagger.operation(
-        notes="Returned the specific room",
+        notes="Returns the specific room",
         responseClass=Room.__name__,
         parameters=[
             {
@@ -110,7 +110,7 @@ class RoomAPI(Resource):
 
     @marshal_with(Room.resource_fields)
     @swagger.operation(
-        notes="Updated the specific room",
+        notes="Updates the specific room",
         responseClass=Room.__name__,
         parameters=[
             {
@@ -142,7 +142,7 @@ class RoomAPI(Resource):
             {
                 "code": 201,
                 "message": "Updated the room"
-            }
+            },
         ]
     )
     def put(self, room_id):
@@ -174,7 +174,7 @@ class RoomAPI(Resource):
             {
                 "code": 201,
                 "message": "Deleted the room"
-            }
+            },
         ]
     )
     def delete(self, room_id):

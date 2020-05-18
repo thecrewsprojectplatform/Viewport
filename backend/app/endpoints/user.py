@@ -13,7 +13,7 @@ class UserListAPI(Resource):
 
     @marshal_with(User.resource_fields)
     @swagger.operation(
-        notes="Returned all users",
+        notes="Returns all users",
         responseClass=User.__name__,
         parameters=[],
         responseMessages=[
@@ -71,7 +71,7 @@ class UserAPI(Resource):
 
     @marshal_with(User.resource_fields)
     @swagger.operation(
-        notes="Returned the specific user",
+        notes="Returns the specific user",
         responseClass=User.__name__,
         parameters=[
             {
@@ -99,7 +99,7 @@ class UserAPI(Resource):
 
     @marshal_with(User.resource_fields)
     @swagger.operation(
-        notes="Updated the specific user",
+        notes="Updates the specific user",
         responseClass=User.__name__,
         parameters=[
             {
@@ -123,7 +123,7 @@ class UserAPI(Resource):
             {
                 "code": 201,
                 "message": "Updated the user"
-            }
+            },
         ]
     )
     def put(self, user_id):
@@ -155,7 +155,7 @@ class UserAPI(Resource):
             {
                 "code": 201,
                 "message": "Deleted the user"
-            }
+            },
         ]
     )
     def delete(self, user_id):
