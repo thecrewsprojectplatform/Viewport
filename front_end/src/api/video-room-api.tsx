@@ -14,6 +14,12 @@ export class VideoRoomApi {
         });
     }
 
+    async getRooms(): Promise<Room[]> {
+        return axios.get(this.BASE_URL + "/rooms").then(response => {
+            return response.data;
+        });
+    }
+
     async createUser(name: string): Promise<User> {
         return axios.post(this.BASE_URL + "/users", {"name": name}).then(response => {
             return response.data;

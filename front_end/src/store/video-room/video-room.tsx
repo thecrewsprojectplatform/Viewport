@@ -1,7 +1,7 @@
 import { ActionType } from "./actionType";
 import { produce } from "immer";
 import { VideoRoomApi } from "../../api/video-room-api";
-import { User } from "../../api/video-room-types";
+import { User, Room } from "../../api/video-room-types";
 
 export enum Status {
     NotStarted="NOT_STARTED",
@@ -13,6 +13,9 @@ export enum Status {
 export interface VideoRoomState {
     roomId: number;
     roomName: string;
+    roomList: Room[];
+    currentRoom: Room;
+    user: User;
     users: User[];
     fetchStatus: Status;
     updateStatus: Status;
@@ -29,6 +32,45 @@ interface SetVidoRoomUsersAction {
     users: User[];
 }
 
+interface GetRoomsAction {
+    type: ActionType.GetRooms;
+}
+
+interface GetRoomsSuccessAction {
+    type: ActionType.GetRoomsSuccess;
+    roomsList: Room[];
+}
+
+interface GetRoomsFailAction {
+    type: ActionType.GetRoomsFail;
+}
+
+interface AddUserToRoomAction {
+    type: ActionType.AddUserToRoom;
+}
+
+interface AddUserToRoomSuccessAction {
+    type: ActionType.AddUserToRoomSuccess;
+    room: Room;
+}
+
+interface AddUserToRoomFailAction {
+    type: ActionType.AddUserToRoomFail;
+}
+
+interface CreateRoomAndAddUserToRoomAction {
+    type: ActionType.CreateRoomAndAddUserToRoom;
+}
+
+interface CreateRoomAndAddUserToRoomSuccessAction {
+    type: ActionType.CreateRoomAndAddUserToRoomSuccess;
+    room: Room;
+}
+
+interface CreateRoomAndAddUserToRoomFailAction {
+    type: ActionType.CreateRoomAndAddUserToRoomFail;
+}
+
 interface CreateUserAndAddToRoomAction {
     type: ActionType.CreateUserAndAddToRoom;
 }
@@ -39,6 +81,19 @@ interface CreateUserAndAddToRoomSuccessAction {
 
 interface CreateUserAndAddToRoomFailAction {
     type: ActionType.CreateUserAndAddToRoomFail;
+}
+
+interface CreateUserAction {
+    type: ActionType.CreateUser;
+}
+
+interface CreateUserSuccessAction {
+    type: ActionType.CreateUserSuccess;
+    user: User;
+}
+
+interface CreateUserFailAction {
+    type: ActionType.CreateUserFail;
 }
 
 interface RemoveUserFromRoomAction {
@@ -55,9 +110,21 @@ interface RemoveUserFromRoomFailAction {
 
 type Action =   SetVidoRoomAction |
                 SetVidoRoomUsersAction |
+                GetRoomsAction |
+                GetRoomsSuccessAction |
+                GetRoomsFailAction |
+                AddUserToRoomAction |
+                AddUserToRoomSuccessAction |
+                AddUserToRoomFailAction |
+                CreateRoomAndAddUserToRoomAction |
+                CreateRoomAndAddUserToRoomSuccessAction |
+                CreateRoomAndAddUserToRoomFailAction |
                 CreateUserAndAddToRoomAction |
                 CreateUserAndAddToRoomSuccessAction |
                 CreateUserAndAddToRoomFailAction |
+                CreateUserAction |
+                CreateUserSuccessAction |
+                CreateUserFailAction |
                 RemoveUserFromRoomAction |
                 RemoveUserFromRoomSuccessAction |
                 RemoveUserFromRoomFailAction;
@@ -66,6 +133,9 @@ export const reducer = (
     state: VideoRoomState = {
         roomId: null,
         roomName: null,
+        roomList: [],
+        currentRoom: null,
+        user: null,
         users: [],
         fetchStatus: Status.NotStarted,
         updateStatus: Status.NotStarted,
@@ -81,6 +151,47 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.users = action.users;
             })
+        case ActionType.AddUserToRoom:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Running;
+            })
+        case ActionType.AddUserToRoomSuccess:
+            console.log("Entered AddUserToRoomSuccess");
+            console.log(action.room);  
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Succeeded;
+                draftState.currentRoom = action.room;
+            })
+        case ActionType.AddUserToRoomFail:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Failed;
+            })
+        case ActionType.GetRooms:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Running;
+            })
+        case ActionType.GetRoomsSuccess:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Succeeded;
+                draftState.roomList = action.roomsList;
+            })
+        case ActionType.GetRoomsFail:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Failed;
+            })
+        case ActionType.CreateRoomAndAddUserToRoom:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Running
+            })  
+        case ActionType.CreateRoomAndAddUserToRoomSuccess:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Succeeded;
+                draftState.currentRoom = action.room;
+            })    
+        case ActionType.CreateRoomAndAddUserToRoomFail:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Failed;
+            })    
         case ActionType.CreateUserAndAddToRoom:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Running;
@@ -90,6 +201,19 @@ export const reducer = (
                 draftState.updateStatus = Status.Succeeded;
             })
         case ActionType.CreateUserAndAddToRoomFail:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Failed;
+            })
+        case ActionType.CreateUser:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Running;
+            })
+        case ActionType.CreateUserSuccess:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Succeeded;
+                draftState.user = action.user;
+            })
+        case ActionType.CreateUserFail:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
             })
@@ -124,6 +248,64 @@ export const createRoomAction = (api: VideoRoomApi, roomName: string): any => {
     };
 };
 
+export const getRoomsAction = (api: VideoRoomApi): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.GetRooms,
+        } as GetRoomsAction);
+        api.getRooms().then(roomsList => {
+            dispatch({
+                type: ActionType.GetRoomsSuccess,
+                roomsList: roomsList,
+            } as GetRoomsSuccessAction);
+        }).catch(err => {
+            dispatch({
+                type: ActionType.GetRoomsFail
+            } as GetRoomsFailAction);
+        });
+    };
+};
+
+export const addUserToRoomAction = (api: VideoRoomApi, roomId: number, userId: number, roomList: Room[]): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.AddUserToRoom,
+        } as AddUserToRoomAction);
+        api.addUserToRoom(roomId, userId).then(response => {
+            console.log("Here");
+            console.log(roomList.find((room) => roomId === room.id))
+            dispatch({
+                type: ActionType.AddUserToRoomSuccess,
+                room: roomList.find((room) => roomId === room.id),
+            } as AddUserToRoomSuccessAction);
+        }).catch(err => {
+            dispatch({
+                type: ActionType.AddUserToRoomFail
+            } as AddUserToRoomFailAction);
+        });
+    };
+};
+
+export const createRoomAndAddUserToRoomAction = (api: VideoRoomApi, roomName: string, userId: number): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.CreateRoomAndAddUserToRoom,
+        } as CreateRoomAndAddUserToRoomAction);
+        api.createRoom(roomName).then(room => {
+            api.addUserToRoom(room.id, userId).then(response => {
+                dispatch({
+                    type: ActionType.CreateRoomAndAddUserToRoomSuccess,
+                    room: room,
+                } as CreateRoomAndAddUserToRoomSuccessAction);
+            })
+        }).catch(err => {
+            dispatch({
+                type: ActionType.CreateRoomAndAddUserToRoomFail
+            } as CreateRoomAndAddUserToRoomFailAction);
+        });
+    };
+};
+
 export const getRoomUsers = (api: VideoRoomApi, roomId: number): any => {
     return (dispatch): any => {
         api.getUsersInRoom(roomId).then(users => {
@@ -152,6 +334,24 @@ export const createUserAndAddToRoom = (api: VideoRoomApi, roomId: number, userNa
             dispatch({
                 type: ActionType.CreateUserAndAddToRoomFail
             } as CreateUserAndAddToRoomFailAction);
+        });
+    };
+}
+
+export const createUser = (api: VideoRoomApi, userName: string): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.CreateUser,
+        } as CreateUserAction);
+        api.createUser(userName).then(user => {
+            dispatch({
+                type: ActionType.CreateUserSuccess,
+                user: user,
+            } as CreateUserSuccessAction);
+        }).catch(err => {
+            dispatch({
+                type: ActionType.CreateUserFail
+            } as CreateUserFailAction);
         });
     };
 }
