@@ -1,5 +1,6 @@
 from flask import jsonify, request
 from flask_restful import Resource, reqparse
+from flask_restful_swagger import swagger
 from app import api, db
 from app.models.room import Room
 
@@ -10,6 +11,17 @@ class RoomListAPI(Resource):
         self.reqparse.add_argument("video_id", type=str, required=False, default="", location="json")
         super(RoomListAPI, self).__init__()
 
+    @swagger.operation(
+        notes="Returned all rooms",
+        responseClass=Room.__name__,
+        parameters=[],
+        responseMessages=[
+            {
+                "code": 201,
+                "message": "Got all of the rooms"
+            },
+        ]
+    )
     def get(self):
         return jsonify([
             {
@@ -20,6 +32,33 @@ class RoomListAPI(Resource):
             for x in Room.query.all()
         ])
 
+    @swagger.operation(
+        notes="Creates a new room",
+        responseClass=Room.__name__,
+        parameters=[
+            {
+                "name": "name",
+                "description": "Name of the room to add",
+                "required": True,
+                "allowMultiple": False,
+                "dataType": "string",
+                "paramType": "body"
+            }, {
+                "name": "video_id",
+                "description": "ID of the video to use in the room",
+                "required": False,
+                "allowMultiple": False,
+                "dataType": "string",
+                "paramType": "body"
+            },
+        ],
+        responseMessages=[
+            {
+                "code": 201,
+                "message": "Created the new room successfully"
+            },
+        ]
+    )
     def post(self):
         args = self.reqparse.parse_args()
         room = Room(name=args["name"], video_id=args["video_id"])
@@ -28,7 +67,7 @@ class RoomListAPI(Resource):
         return jsonify({
             "id": room.id,
             "name": room.name,
-            "video_id": room.video_id
+            "video_id": room.video_id,
         })
 
 class RoomAPI(Resource):
@@ -38,6 +77,26 @@ class RoomAPI(Resource):
         self.reqparse.add_argument("video_id", type=str, required=False, default="", location="json")
         super(RoomAPI, self).__init__()
 
+    @swagger.operation(
+        notes="Returns the specific room",
+        responseClass=Room.__name__,
+        parameters=[
+            {
+                "name": "room_id",
+                "description": "ID of the room to get",
+                "required": True,
+                "allowMultiple": False,
+                "dataType": "int",
+                "paramType": "path"
+            },
+        ],
+        responseMessages=[
+            {
+                "code": 201,
+                "message": "Returned the room"
+            },
+        ]
+    )
     def get(self, room_id):
         room = Room.query.get(room_id)
         return jsonify({
@@ -46,6 +105,42 @@ class RoomAPI(Resource):
             "video_id": room.video_id,
         })
 
+    @swagger.operation(
+        notes="Updates the specific room",
+        responseClass=Room.__name__,
+        parameters=[
+            {
+                "name": "room_id",
+                "description": "ID of the room to update",
+                "required": True,
+                "allowMultiple": False,
+                "dataType": "int",
+                "paramType": "path"
+            },
+            {
+                "name": "name",
+                "description": "Name to update room with",
+                "required": False,
+                "allowMultiple": False,
+                "dataType": "string",
+                "paramType": "body"
+            },
+            {
+                "name": "video_id",
+                "description": "ID of video to update room with",
+                "required": False,
+                "allowMultiple": False,
+                "dataType": "string",
+                "paramType": "body"
+            },
+        ],
+        responseMessages=[
+            {
+                "code": 201,
+                "message": "Updated the room"
+            },
+        ]
+    )
     def put(self, room_id):
         room = Room.query.get(room_id)
         args = self.reqparse.parse_args()
@@ -59,6 +154,25 @@ class RoomAPI(Resource):
             "video_id": room.video_id,
         })
 
+    @swagger.operation(
+        notes="Deletes the specific room",
+        parameters=[
+            {
+                "name": "room_id",
+                "description": "ID of the room to delete",
+                "required": True,
+                "allowMultiple": False,
+                "dataType": "int",
+                "paramType": "path"
+            },
+        ],
+        responseMessages=[
+            {
+                "code": 201,
+                "message": "Deleted the room"
+            },
+        ]
+    )
     def delete(self, room_id):
         room = Room.query.get(room_id)
         db.session.delete(room)
