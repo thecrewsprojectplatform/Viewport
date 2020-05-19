@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from flask_restful import Resource, reqparse, marshal_with
+from flask_restful import Resource, reqparse
 from flask_restful_swagger import swagger
 from app import api, db
 from app.models.room import Room
@@ -11,7 +11,6 @@ class RoomListAPI(Resource):
         self.reqparse.add_argument("video_id", type=str, required=False, default="", location="json")
         super(RoomListAPI, self).__init__()
 
-    @marshal_with(Room.resource_fields)
     @swagger.operation(
         notes="Returned all rooms",
         responseClass=Room.__name__,
@@ -33,7 +32,6 @@ class RoomListAPI(Resource):
             for x in Room.query.all()
         ])
 
-    @marshal_with(Room.resource_fields)
     @swagger.operation(
         notes="Creates a new room",
         responseClass=Room.__name__,
@@ -79,7 +77,6 @@ class RoomAPI(Resource):
         self.reqparse.add_argument("video_id", type=str, required=False, default="", location="json")
         super(RoomAPI, self).__init__()
 
-    @marshal_with(Room.resource_fields)
     @swagger.operation(
         notes="Returns the specific room",
         responseClass=Room.__name__,
@@ -108,7 +105,6 @@ class RoomAPI(Resource):
             "video_id": room.video_id,
         })
 
-    @marshal_with(Room.resource_fields)
     @swagger.operation(
         notes="Updates the specific room",
         responseClass=Room.__name__,

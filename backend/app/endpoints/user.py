@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from flask_restful import Resource, reqparse, marshal_with
+from flask_restful import Resource, reqparse
 from flask_restful_swagger import swagger
 from app import api, db
 from app.models.user import User
@@ -11,7 +11,6 @@ class UserListAPI(Resource):
         self.reqparse.add_argument("name", type=str, required=False, default="", location="json")
         super(UserListAPI, self).__init__()
 
-    @marshal_with(User.resource_fields)
     @swagger.operation(
         notes="Returns all users",
         responseClass=User.__name__,
@@ -32,7 +31,6 @@ class UserListAPI(Resource):
             for x in User.query.all()
         ])
 
-    @marshal_with(User.resource_fields)
     @swagger.operation(
         notes="Creates a new user",
         responseClass=User.__name__,
@@ -69,7 +67,6 @@ class UserAPI(Resource):
         self.reqparse.add_argument("name", type=str, required=False, default="", location="json")
         super(UserAPI, self).__init__()
 
-    @marshal_with(User.resource_fields)
     @swagger.operation(
         notes="Returns the specific user",
         responseClass=User.__name__,
@@ -97,7 +94,6 @@ class UserAPI(Resource):
             "name": user.name,
         })
 
-    @marshal_with(User.resource_fields)
     @swagger.operation(
         notes="Updates the specific user",
         responseClass=User.__name__,

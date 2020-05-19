@@ -1,17 +1,16 @@
 from flask import jsonify, request
-from flask_restful import Resource, reqparse, marshal_with
+from flask_restful import Resource, reqparse
 from flask_restful_swagger import swagger
 from app import api, db
 from app.models.room_user import RoomUser
 from app.models.user import User
 
-class RoomUserAPI(Resource):
+class RoomUserListAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument("user_id", type=str, required=False, default="", location="json")
-        super(RoomUserAPI, self).__init__()
+        super(RoomUserListAPI, self).__init__()
 
-    @marshal_with(User.resource_fields)
     @swagger.operation(
         notes="Returns all users in a given room",
         responseClass=User.__name__,
@@ -45,7 +44,6 @@ class RoomUserAPI(Resource):
             for x, user_id, user_name in room_users
         ])
 
-    @marshal_with(RoomUser.resource_fields)
     @swagger.operation(
         notes="Adds a user to a room",
         responseClass=RoomUser.__name__,
@@ -80,6 +78,7 @@ class RoomUserAPI(Resource):
         db.session.commit()
         return jsonify(success=True)
 
+class RoomUserAPI(Resource):
     @swagger.operation(
         notes="Removes a user from a room",
         parameters=[
@@ -96,7 +95,7 @@ class RoomUserAPI(Resource):
                 "required": True,
                 "allowMultiple": False,
                 "dataType": "string",
-                "paramType": "body"
+                "paramType": "path"
             },
         ],
         responseMessages=[
@@ -106,9 +105,8 @@ class RoomUserAPI(Resource):
             },
         ]
     )
-    def delete(self, room_id):
-        args = self.reqparse.parse_args()
-        room_user = RoomUser.query.filter_by(room_id=room_id, user_id=args["user_id"])
+    def delete(self, room_id, user_id):
+        room_user = RoomUser.query.filter_by(room_id=room_id, user_id=user_id).first()
         db.session.delete(room_user)
         db.session.commit()
         return jsonify(success=True)
