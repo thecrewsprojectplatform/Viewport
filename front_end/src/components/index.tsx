@@ -1,16 +1,26 @@
 import React, { useState, useLayoutEffect } from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router-dom";
-import { VideoRoomApi } from "../../api/video-room-api";
+import { VideoRoomApi } from "../api/video-room-api";
 import { BasePageR } from "./base-page";
 
+/**
+ * Represents the required properties of the BasePageRouter.
+ */
 interface Prop {
 
 }
 
 export const ApiContext = React.createContext(null);
 
-const VideoRoomRouter = (props: Prop) => {
+/**
+ * Routes the App to the BasePage.
+ * 
+ * @param {Object} props An object representing the require properties of
+ *                 the BasePage. Contains nothing.
+ * @returns {JSX.Element} The JSX representing the BasePage.
+ */
+const BasePageRouter = (props: Prop) => {
     const [api, setApi] = useState(null as VideoRoomApi);
     const [showPage, setShowPage] = useState(false);
 
@@ -35,10 +45,15 @@ const VideoRoomRouter = (props: Prop) => {
     )
 }
 
+/**
+ * Used to connect the state of the overall front end to the BasePageRouter.
+ * 
+ * @param {Object} state The current state of the BasePageRouter.
+ */
 const mapStateToProps = state => {
     return {
 
     }
 }
 
-export const VideoRoomRouterR = connect(mapStateToProps)(VideoRoomRouter);
+export const BasePageRouterR = connect(mapStateToProps)(BasePageRouter);
