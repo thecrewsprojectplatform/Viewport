@@ -1,22 +1,25 @@
 import React from "react";
 import { User } from "../../api/video-room-types";
 
+/**
+ * Represents the required properties of the User.
+ */
 interface Prop {
     user: User;
-    onRemoveClick: (id: number) => void;
 }
 
+/**
+ * Represents a user of our application.
+ * 
+ * @param {Object} props The properties of a User. 
+ *                 Requires a User which holds an userId
+ *                 and a username.
+ * @returns {JSX.Element} The JSX representing the RoomList.
+ */
 export const UserListItem = (props: Prop) => {
     return (
         <div className="User" key={props.user.id}>
             <span className="User-name">{props.user.name}</span>
-            <button
-                className="Remove-button"
-                onClick={(ev) => {
-                    props.onRemoveClick(props.user.id)}
-            }>
-                Remove
-            </button>
         </div>
     )
 }
