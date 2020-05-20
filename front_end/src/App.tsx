@@ -2,8 +2,7 @@ import React from 'react';
 import { BrowserRouter  as Router, Route } from "react-router-dom";
 import { Provider } from 'react-redux';
 import { store } from "./store";
-import { VideoRoomRouterR } from "./components/video-room";
-
+import { BasePageRouterR } from "./components";
 
 /**
  * @constructor App representing the current front end for our application.
@@ -18,7 +17,7 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <Router>
-          <Route path="/" component={VideoRoomRouterR} />
+          <Route path="/" component={BasePageRouterR} />
         </Router>
       </Provider>
     );

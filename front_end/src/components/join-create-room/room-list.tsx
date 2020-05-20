@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { connect } from "react-redux";
-import { createRoomAndAddUserToRoomAction, addUserToRoomAction, Status, VideoRoomState } from '../store/video-room/video-room';
+import { createRoomAndAddUserToRoomAction, addUserToRoomAction, Status, VideoRoomState } from '../../store/video-room/video-room';
 import { RoomListItem } from './room-list-item';
-import { store } from '../store';
-import { ApiContext } from './video-room';
-import { Room, User } from '../api/video-room-types';
-import { VideoRoomApi } from '../api/video-room-api';
+import { store } from '../../store';
+import { ApiContext } from '..';
+import { Room, User } from '../../api/video-room-types';
+import { VideoRoomApi } from '../../api/video-room-api';
 
 export interface Prop {
     currentRooms: Room[];

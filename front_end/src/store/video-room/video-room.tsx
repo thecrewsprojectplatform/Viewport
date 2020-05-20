@@ -156,8 +156,6 @@ export const reducer = (
                 draftState.updateStatus = Status.Running;
             })
         case ActionType.AddUserToRoomSuccess:
-            console.log("Entered AddUserToRoomSuccess");
-            console.log(action.room);  
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.room;
@@ -272,8 +270,6 @@ export const addUserToRoomAction = (api: VideoRoomApi, roomId: number, userId: n
             type: ActionType.AddUserToRoom,
         } as AddUserToRoomAction);
         api.addUserToRoom(roomId, userId).then(response => {
-            console.log("Here");
-            console.log(roomList.find((room) => roomId === room.id))
             dispatch({
                 type: ActionType.AddUserToRoomSuccess,
                 room: roomList.find((room) => roomId === room.id),

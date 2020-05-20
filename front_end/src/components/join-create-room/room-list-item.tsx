@@ -1,5 +1,5 @@
 import React from "react";
-import { Room } from "../api/video-room-types";
+import { Room } from "../../api/video-room-types";
 
 interface Prop {
     room: Room;
