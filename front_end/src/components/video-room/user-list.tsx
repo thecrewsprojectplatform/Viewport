@@ -44,33 +44,12 @@ const UserList = (props: Prop) => {
         }
     }, [props.updateStatus]);
 
-
     const onRemoveUserClick = (userId: number): void => {
         store.dispatch(removeUserFromRoom(api, props.roomId, userId));
     }
 
-    const createNewUserClick = (): void => {
-        const name = (document.getElementById('Add-user') as HTMLInputElement).value;
-        if (name !== "") {
-            store.dispatch(createUserAndAddToRoom(api, props.roomId, newUserName));
-            setNewUserName("");
-        }
-    }
-
     return (
         <div className="User-list">
-            <input 
-                id="Add-user" 
-                className="User-input" 
-                type="text" 
-                onChange={(event) => setNewUserName(event.target.value)} 
-                onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                        createNewUserClick();
-                    }
-                }}
-                value={newUserName}
-            />
             {
                 props.users && props.users.length !== 0 &&
                 (() => {
@@ -79,11 +58,9 @@ const UserList = (props: Prop) => {
                             <UserListItem 
                                 key={user.id}
                                 user={user}
-                                onRemoveClick={onRemoveUserClick}
                             />
                         )
                     })
-
                 })()
             }
         </div>

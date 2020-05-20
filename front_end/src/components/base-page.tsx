@@ -14,9 +14,9 @@ import { User } from "../api/video-room-types";
  * Represents the different pages our web application can render.
  */
 enum PageType {
-  LoginPage="LOGIN_PAGE",
-  JoinCreateRoomPage="JOIN_CREATE_ROOM_PAGE",
-  VideoRoomPage="VIDEO_ROOM_PAGE"
+    LoginPage="LOGIN_PAGE",
+    JoinCreateRoomPage="JOIN_CREATE_ROOM_PAGE",
+    VideoRoomPage="VIDEO_ROOM_PAGE"
 }
 
 /**
@@ -50,24 +50,24 @@ const BasePage = (props: Prop) => {
 
     return (
         <div className="App">
-        <header className="App-header">
-          <h2>
-            Multimedia Platform
-          </h2>
-        </header>
-        
+            <header className="App-header">
+                <h2>
+                    Multimedia Platform
+                </h2>
+            </header>
+
         {(() => {
-          // Condition rendering done here
-          switch (pageType) {
-            case PageType.LoginPage:
-              return <LoginPageR setPage={() => setPageType(PageType.JoinCreateRoomPage)}/>
-            case PageType.JoinCreateRoomPage:
-              return <JoinCreateRoomPageR setPage={() => setPageType(PageType.VideoRoomPage)} />
-            case PageType.VideoRoomPage:
-              return <VideoRoomPageR />
-          }
+            // Conditional rendering done here
+            switch (pageType) {
+                case PageType.LoginPage:
+                    return <LoginPageR setPage={() => setPageType(PageType.JoinCreateRoomPage)}/>
+                case PageType.JoinCreateRoomPage:
+                    return <JoinCreateRoomPageR setPage={() => setPageType(PageType.VideoRoomPage)} />
+                case PageType.VideoRoomPage:
+                    return <VideoRoomPageR />
+            }
         })()}
-      </div>
+        </div>
     )
 }
 

@@ -7,6 +7,9 @@ import { ApiContext } from '..';
 import { Room, User } from '../../api/video-room-types';
 import { VideoRoomApi } from '../../api/video-room-api';
 
+/**
+ * Represents the required properties of the UserList.
+ */
 export interface Prop {
     currentRooms: Room[];
     currentUser: User;
@@ -14,6 +17,16 @@ export interface Prop {
     setPage: () => void;
 }
 
+/**
+ * Represents a list of rooms currently available.
+ * 
+ * @param {Object} props The properties of a RoomList. 
+ *                 Requires an array of Room objects which
+ *                 contains the id and name of a room, the current
+ *                 User, and an updateStatus that holds the current
+ *                 state of the web application.
+ * @returns {JSX.Element} The JSX representing the RoomList.
+ */
 const RoomList = (props: Prop) => {
     const [newRoomName, setNewRoomName] = useState("");
     const api = useContext<VideoRoomApi>(ApiContext);
@@ -61,6 +74,11 @@ const RoomList = (props: Prop) => {
     )
 }
 
+/**
+ * Used to connect the state of the overall front end to the RoomList.
+ * 
+ * @param {Object} state The current state of the RoomList.
+ */
 const mapStateToProps = (state: VideoRoomState) => {
     return {
         currentRooms: state.roomList,
