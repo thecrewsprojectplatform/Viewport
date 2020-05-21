@@ -44,9 +44,11 @@ const UserList = (props: Prop) => {
         }
     }, [props.updateStatus]);
 
+    /*
     const onRemoveUserClick = (userId: number): void => {
         store.dispatch(removeUserFromRoom(api, props.roomId, userId));
-    }
+    } 
+    */
 
     return (
         <div className="User-list">

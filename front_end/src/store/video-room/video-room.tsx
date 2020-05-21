@@ -1,7 +1,7 @@
 import { ActionType } from "./actionType";
 import { produce } from "immer";
 import { VideoRoomApi } from "../../api/video-room-api";
-import { User, Room } from "../../api/video-room-types";
+import { User, Room, ChatMessage, ChatHistory } from "../../api/video-room-types";
 
 export enum Status {
     NotStarted="NOT_STARTED",
@@ -17,6 +17,9 @@ export interface VideoRoomState {
     currentRoom: Room;
     user: User;
     users: User[];
+    currentUser: User;
+    message: ChatMessage[];
+    chatHistory: ChatHistory[];
     fetchStatus: Status;
     updateStatus: Status;
 }
@@ -129,6 +132,8 @@ type Action =   SetVidoRoomAction |
                 RemoveUserFromRoomSuccessAction |
                 RemoveUserFromRoomFailAction;
 
+// takes in a state and an action
+// it applies some action to the state
 export const reducer = (
     state: VideoRoomState = {
         roomId: null,
@@ -137,6 +142,9 @@ export const reducer = (
         currentRoom: null,
         user: null,
         users: [],
+        message: [],
+        chatHistory: [],
+        currentUser: null,
         fetchStatus: Status.NotStarted,
         updateStatus: Status.NotStarted,
     }, action: Action
@@ -231,9 +239,10 @@ export const reducer = (
             return state;
     }
 }
-
+// these are what the components what actually call.
 export const createRoomAction = (api: VideoRoomApi, roomName: string): any => {
     return (dispatch): any => {
+        // if the room was created successfully.
         api.createRoom(roomName).then(room => {
             dispatch({
                 type: ActionType.SetVideoRoom,

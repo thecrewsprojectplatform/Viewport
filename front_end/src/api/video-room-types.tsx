@@ -15,12 +15,17 @@ export interface User {
     name: string;
 }
 
+/**
+ * Represents the required properties of a ChatMessage.
+ */
 export interface ChatMessage {
-    author: string;
-    message: string;
-  }
+    author: User[];
+    chat_message: string;
+}
   
-export interface ChatState {
-    input: string;
-    messages: ChatMessage[];
-  }
+  /**
+ * Represents the required properties of a ChatSendBox.
+ */
+export interface ChatHistory {
+    message_history: ChatMessage[];
+}
