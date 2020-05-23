@@ -1,36 +1,38 @@
 from flask import jsonify, request
-from flask_restful import Resource, reqparse
+from flask_restful import Resource, reqparse, abort
 from flask_restful_swagger import swagger
-from app import api, db
-from app.models.room import Room
+from typing import List
+from app import db
+from app.database.room import Room
 
-class RoomListAPI(Resource):
+class RoomListApi(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument("name", type=str, required=False, default="", location="json")
         self.reqparse.add_argument("video_id", type=str, required=False, default="", location="json")
-        super(RoomListAPI, self).__init__()
+        super(RoomListApi, self).__init__()
 
     @swagger.operation(
         notes="Returned all rooms",
-        responseClass=Room.__name__,
+        responseClass=List[Room.__name__],
         parameters=[],
         responseMessages=[
             {
-                "code": 201,
+                "code": 200,
                 "message": "Got all of the rooms"
-            },
+            }, {
+                "code": 500,
+                "message": "Internal server error",
+            }
         ]
     )
     def get(self):
-        return jsonify([
-            {
-                "id": x.id,
-                "name": x.name,
-                "video_id": x.video_id,
-            }
-            for x in Room.query.all()
-        ])
+        try:
+            return jsonify(self.__get_all_rooms())
+        except:
+            abort(500)
+    def __get_all_rooms(self):
+        return [room.to_json() for room in Room.query.all()]
 
     @swagger.operation(
         notes="Creates a new room",
@@ -54,28 +56,32 @@ class RoomListAPI(Resource):
         ],
         responseMessages=[
             {
-                "code": 201,
+                "code": 200,
                 "message": "Created the new room successfully"
-            },
+            }, {
+                "code": 500,
+                "message": "Internal server error",
+            }
         ]
     )
     def post(self):
-        args = self.reqparse.parse_args()
-        room = Room(name=args["name"], video_id=args["video_id"])
+        try:
+            args = self.reqparse.parse_args()
+            return jsonify(self.__create_room(args["name"], args["video_id"]))
+        except:
+            abort(500)
+    def __create_room(self, room_name, video_id):
+        room = Room(name=room_name, video_id=video_id)
         db.session.add(room)
         db.session.commit()
-        return jsonify({
-            "id": room.id,
-            "name": room.name,
-            "video_id": room.video_id,
-        })
+        return room.to_json()
 
-class RoomAPI(Resource):
+class RoomApi(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument("name", type=str, required=False, default="", location="json")
         self.reqparse.add_argument("video_id", type=str, required=False, default="", location="json")
-        super(RoomAPI, self).__init__()
+        super(RoomApi, self).__init__()
 
     @swagger.operation(
         notes="Returns the specific room",
@@ -92,18 +98,21 @@ class RoomAPI(Resource):
         ],
         responseMessages=[
             {
-                "code": 201,
+                "code": 200,
                 "message": "Returned the room"
-            },
+            }, {
+                "code": 500,
+                "message": "Internal server error",
+            }
         ]
     )
     def get(self, room_id):
-        room = Room.query.get(room_id)
-        return jsonify({
-            "id": room.id,
-            "name": room.name,
-            "video_id": room.video_id,
-        })
+        try:
+            return jsonify(self.__get_room(room_id))
+        except:
+            abort(500)
+    def __get_room(self, room_id):
+        return Room.query.get(room_id).to_json()
 
     @swagger.operation(
         notes="Updates the specific room",
@@ -136,23 +145,26 @@ class RoomAPI(Resource):
         ],
         responseMessages=[
             {
-                "code": 201,
+                "code": 200,
                 "message": "Updated the room"
-            },
+            }, {
+                "code": 500,
+                "message": "Internal server error",
+            }
         ]
     )
     def put(self, room_id):
+        try:
+            return self.__update_room(room_id, self.reqparse.parse_args())
+        except:
+            abort(500)
+    def __update_room(self, room_id, args):
         room = Room.query.get(room_id)
-        args = self.reqparse.parse_args()
-        for k, v in self.reqparse.parse_args().items():
+        for k, v in args.items():
             if v is not None:
                 setattr(room, k, v)
         db.session.commit()
-        return jsonify({
-            "id": room.id,
-            "name": room.name,
-            "video_id": room.video_id,
-        })
+        return room.to_json()
 
     @swagger.operation(
         notes="Deletes the specific room",
@@ -168,13 +180,22 @@ class RoomAPI(Resource):
         ],
         responseMessages=[
             {
-                "code": 201,
+                "code": 200,
                 "message": "Deleted the room"
-            },
+            }, {
+                "code": 500,
+                "message": "Internal server error",
+            }
         ]
     )
     def delete(self, room_id):
+        try:
+            self.__delete_room(room_id)
+            return jsonify(success=True)
+        except:
+            abort(500)
+    def __delete_room(self, room_id):
         room = Room.query.get(room_id)
         db.session.delete(room)
         db.session.commit()
-        return jsonify(success=True)
+        return

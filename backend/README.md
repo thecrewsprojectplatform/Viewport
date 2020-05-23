@@ -17,7 +17,7 @@ To start the Flask server, run:
 python start_server.py
 ```
 
-## Using the API
-The api can be found queried at `http://127.0.0.1:5000/{endpoint}`
+## Using the Api
+The Api can be found queried at `http://127.0.0.1:5000/{endpoint}`
 
-Documentation for the api can be found at `http://localhost:5000/api/spec.html`
+Documentation for the Api can be found at `http://localhost:5000/api/spec.html`
