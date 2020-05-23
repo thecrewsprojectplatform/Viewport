@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from flask_restful import Resource, reqparse, abort
 from flask_restful_swagger import swagger
+from typing import List
 from app import db
 from app.database.room_user import RoomUser
 from app.database.user import User
