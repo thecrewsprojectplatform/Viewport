@@ -42,7 +42,7 @@ const BasePage = (props: Prop) => {
 
     useEffect(() => {
         if (props.roomId === null) {
-            store.dispatch(createRoomAction(api, "New Room"));
+            //store.dispatch(createRoomAction(api, "New Room"));
         }
     }, [props.roomId])
 

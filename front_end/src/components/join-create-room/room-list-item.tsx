@@ -5,7 +5,7 @@ import { Room } from "../../api/video-room-types";
  * Represents the required properties of the User.
  */
 interface Prop {
-    room: Room;
+    currentRoom: Room;
     onJoinClick: (id: number) => void;
 }
 
@@ -20,12 +20,12 @@ interface Prop {
  */
 export const RoomListItem = (props: Prop) => {
     return (
-        <div className="Room" key={props.room.id}>
-            <span className="Room-name">{props.room.name}</span>
+        <div className="Room" key={props.currentRoom.id}>
+            <span className="Room-name">{props.currentRoom.name}</span>
             <button
                 className="Join-button"
                 onClick={(ev) => {
-                    props.onJoinClick(props.room.id)}
+                    props.onJoinClick(props.currentRoom.id)}
             }>
                 Join
             </button>

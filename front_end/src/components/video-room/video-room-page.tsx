@@ -11,8 +11,8 @@ import { Room, User } from "../../api/video-room-types";
  * Represents the required properties of the VideoRoomPage.
  */
 export interface Prop {
-    room: Room
-    currentUsers: User[];
+    currentRoom: Room
+    users: User[];
 }
 
 /**
@@ -28,10 +28,10 @@ const VideoRoomPage = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
 
     useEffect(() => {
-        if (props.room) {
-            store.dispatch(getRoomUsers(api, props.room.id));
+        if (props.currentRoom) {
+            store.dispatch(getRoomUsers(api, props.currentRoom.id));
         }
-    }, [props.room])
+    }, [props.currentRoom])
 
     return (
         <div className="row">
@@ -48,8 +48,8 @@ const VideoRoomPage = (props: Prop) => {
  */
 const mapStateToProps = (state: VideoRoomState) => {
     return {
-        room: state.currentRoom,
-        currentUsers: state.users,
+        currentRoom: state.currentRoom,
+        users: state.users,
         updateStatus: state.updateStatus,
     }
 }

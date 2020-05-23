@@ -11,8 +11,8 @@ import { VideoRoomApi } from '../../api/video-room-api';
  * Represents the required properties of the UserList.
  */
 export interface Prop {
-    currentRooms: Room[];
-    currentUser: User;
+    roomList: Room[];
+    user: User;
     updateStatus: Status;
     setPage: () => void;
 }
@@ -32,13 +32,13 @@ const RoomList = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
 
     const createNewRoomClick = (): void => {
-        store.dispatch(createRoomAndAddUserToRoomAction(api, newRoomName, props.currentUser.id));
+        store.dispatch(createRoomAndAddUserToRoomAction(api, newRoomName, props.user.id));
         setNewRoomName("");
         props.setPage();
     }
 
     const onJoinRoomClick = (roomId: number): void => {
-        store.dispatch(addUserToRoomAction(api, roomId, props.currentUser.id, props.currentRooms));
+        store.dispatch(addUserToRoomAction(api, roomId, props.user.id, props.roomList));
         props.setPage();
     }
 
@@ -58,11 +58,11 @@ const RoomList = (props: Prop) => {
             />
             {
                 (() => {
-                    return props.currentRooms.map((room) => {
+                    return props.roomList.map((room) => {
                         return (
                             <RoomListItem 
                                 key={room.id}
-                                room={room}
+                                currentRoom={room}
                                 onJoinClick={onJoinRoomClick}
                             />
                         )
@@ -81,8 +81,8 @@ const RoomList = (props: Prop) => {
  */
 const mapStateToProps = (state: VideoRoomState) => {
     return {
-        currentRooms: state.roomList,
-        currentUser: state.user,
+        roomList: state.roomList,
+        user: state.user,
         updateStatus: state.updateStatus,
     }
 }
