@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { connect } from "react-redux";
 import { createRoomAndAddUserToRoomAction, addUserToRoomAction, Status, VideoRoomState } from '../../store/video-room/video-room';
 import { RoomListItem } from './room-list-item';
@@ -12,7 +12,7 @@ import { VideoRoomApi } from '../../api/video-room-api';
  */
 export interface Prop {
     currentRooms: Room[];
-    currentUser: User;
+    user: User;
     updateStatus: Status;
     setPage: () => void;
 }
@@ -32,13 +32,13 @@ const RoomList = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
 
     const createNewRoomClick = (): void => {
-        store.dispatch(createRoomAndAddUserToRoomAction(api, newRoomName, props.currentUser.id));
+        store.dispatch(createRoomAndAddUserToRoomAction(api, newRoomName, props.user.id));
         setNewRoomName("");
         props.setPage();
     }
 
     const onJoinRoomClick = (roomId: number): void => {
-        store.dispatch(addUserToRoomAction(api, roomId, props.currentUser.id, props.currentRooms));
+        store.dispatch(addUserToRoomAction(api, roomId, props.user.id, props.currentRooms));
         props.setPage();
     }
 
@@ -82,7 +82,7 @@ const RoomList = (props: Prop) => {
 const mapStateToProps = (state: VideoRoomState) => {
     return {
         currentRooms: state.roomList,
-        currentUser: state.user,
+        user: state.user,
         updateStatus: state.updateStatus,
     }
 }

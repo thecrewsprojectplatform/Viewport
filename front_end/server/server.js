@@ -1,93 +1,38 @@
-const path = require('path');
-const express = require('express');
-const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
-const port = process.env.PORT || 5000;
+// require express first
+var express = require("express");
+//require socket.IO
+var socket = require('socket.io')
 
-// setting port value
-app.set('port', port);
+//setting up the express app by invoking the express function
+var app = express();
 
-app.use(express.static(path.join(__dirname, '../public')));
+//now create a server
+//When the server starts listening on port 4000 then fire a callbak function
+// The callback function will console.log a string 
+var server = app.listen(5000, function(){
+  console.log("Listening to requests on port 5000");
 
-app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
-
-io.on('connect', (socket) => {
-  // Say Hi to all connected clients
-  io.emit('broadcast', '[Server]: Welcome stranger!');
-
-  socket.on('chatMessage', (data) => {
-    // console.log(`message received from user: ${msg.from}`);
-    // console.log(`message received content: ${msg.content}`);
-    io.emit('messageResponse', data);
-  });
-
-  // Say Bye to all connected clients
-  socket.on('disconnect', function () {
-    io.emit('broadcast', '[Server]: Bye, bye, stranger!');
-  });
 });
+// serve a static file to the browser 
+app.use(express.static("public"));
 
-http.listen(port, () => {
-  // console.log('listening on *:5000');
-});
+//Socket setup
+//passing var server to the socket function and assigning it to var io
+//essentially now socket.IO will work on this server just created
+var io = socket(server);
 
 
-/* ONE POSSIBLE WAY WITH .TS
-const app = express();
-app.set("port", process.env.PORT || 5000);
-
-let http = require("http").Server(app);
-// set up socket.io and bind it to our
-// http server.
-let io = require("socket.io")(http);
-
-app.get("/", (req: any, res: any) => {
-  res.sendFile(path.resolve("./client/index.html"));
-});
-
-// whenever a user connects on port 5000 via
-// a websocket, log that a user has connected
-io.on("connection", function(socket: any) {
-  console.log("a user connected");
-  // whenever we receive a 'message' we log it out
-  socket.on("message", function(message: any) {
-    console.log(message);
-    socket.emit("message", message);
-  });
-});
-
-const server = http.listen(5000, function() {
-  console.log("listening on *:5000");
-});
-*/
-
-/* OLD WAY WITH .JS
-
-const express = require('express')
-const http = require('http')
-const socketIO = require('socket.io')
-
-// our localhost port
-const port = 5000
-const app = express()
-
-// our server instance
-const server = http.createServer(app)
-
-// This creates our socket using the instance of the server
-const io = socketIO(server)
-
-// Sending message
+//Then use the io.on method which looks for a connection
+//upon a connection execute a callback function which will console.log something
 io.on('connection', socket => {
-  console.log('New client connected')
+  console.log('made socket connection');
+    // this waits for the user to type in the message from the client side
+    socket.on('chatMessage', data => {
 
-  socket.on('chat message', (data) => {
-      io.emit('message response', data);
-  })
-})
-
-server.listen(port, () => console.log(`Listening on port ${port}`))
-
-
-*/
+        console.log('sent message to server')
+        // once message is received, this occurs
+        // message is emitted to all of the clients on the server.
+        io.emit('messageResponse', data);
+        console.log('message emitted to clients')
+    })
+});

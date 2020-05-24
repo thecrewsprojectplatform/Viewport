@@ -4,7 +4,6 @@ import { createRoomAction } from "../store/video-room/video-room";
 import { ApiContext } from ".";
 import { VideoRoomApi } from "../api/video-room-api";
 import { store } from "../store";
-import { UserListR } from "./video-room/user-list";
 import { VideoRoomPageR } from "./video-room/video-room-page";
 import { LoginPageR } from "./login/login-page";
 import { JoinCreateRoomPageR } from "./join-create-room/join-create-room-page";
@@ -87,6 +86,7 @@ const BasePage = (props: Prop) => {
 // from that state, get the roomId and user as a prop.
 // this function allows these props to be used in this file
 const mapStateToProps = state => {
+    console.log(state)
     return {
         roomId: state.roomId,
         user: state.user,

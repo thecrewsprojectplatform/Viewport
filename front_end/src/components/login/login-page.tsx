@@ -1,10 +1,9 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { connect } from "react-redux";
-import { createRoomAction, createUser } from "../../store/video-room/video-room";
+import { createUser } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
-import { UserListR } from "../video-room/user-list";
 
 /**
  * Represents the required properties of the LoginPage.
@@ -31,6 +30,7 @@ export const LoginPage = (props: Prop) => {
     
     return (
         <div>
+            {
             <input 
                 type="text" 
                 onChange={(event) => setNewUserName(event.target.value)} 
@@ -41,7 +41,7 @@ export const LoginPage = (props: Prop) => {
                     }
                 }}
                 value={newUserName}
-            />
+            />}
         </div>
     )
 }

@@ -19,13 +19,5 @@ export interface User {
  * Represents the required properties of a ChatMessage.
  */
 export interface ChatMessage {
-    author: User[];
-    chat_message: string;
-}
-  
-  /**
- * Represents the required properties of a ChatSendBox.
- */
-export interface ChatHistory {
-    message_history: ChatMessage[];
+    message: string;
 }

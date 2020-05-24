@@ -1,12 +1,12 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext} from "react";
 import { connect } from "react-redux";
-import { createRoomAction, getRoomUsers, VideoRoomState } from "../../store/video-room/video-room";
+import { getRoomUsers, VideoRoomState } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
 import { UserListR } from "./user-list";
 import { Room, User } from "../../api/video-room-types";
-import ChatApp from "./chat-app"
+import { ChatAppR } from "./chat-app/chat-app"
 
 /**
  * Represents the required properties of the VideoRoomPage.
@@ -38,7 +38,7 @@ const VideoRoomPage = (props: Prop) => {
         <div className="row">
             <span className="Video-section">YouTube videos go here</span>
             <UserListR />
-            <ChatApp />
+            <ChatAppR />
         </div>
     )
 }
