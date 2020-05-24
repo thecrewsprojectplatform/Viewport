@@ -52,6 +52,7 @@ interface AddUserToRoomAction {
 interface AddUserToRoomSuccessAction {
     type: ActionType.AddUserToRoomSuccess;
     room: Room;
+    roomId: number;
 }
 
 interface AddUserToRoomFailAction {
@@ -65,6 +66,7 @@ interface CreateRoomAndAddUserToRoomAction {
 interface CreateRoomAndAddUserToRoomSuccessAction {
     type: ActionType.CreateRoomAndAddUserToRoomSuccess;
     room: Room;
+    roomId: number;
 }
 
 interface CreateRoomAndAddUserToRoomFailAction {
@@ -159,6 +161,7 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.room;
+                draftState.roomId = action.roomId;
             })
         case ActionType.AddUserToRoomFail:
             return produce(state, draftState => {
@@ -185,6 +188,7 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.room;
+                draftState.roomId = action.roomId;
             })    
         case ActionType.CreateRoomAndAddUserToRoomFail:
             return produce(state, draftState => {
@@ -273,6 +277,7 @@ export const addUserToRoomAction = (api: VideoRoomApi, roomId: number, userId: n
             dispatch({
                 type: ActionType.AddUserToRoomSuccess,
                 room: roomList.find((room) => roomId === room.id),
+                roomId: roomId,
             } as AddUserToRoomSuccessAction);
         }).catch(err => {
             dispatch({
@@ -292,6 +297,7 @@ export const createRoomAndAddUserToRoomAction = (api: VideoRoomApi, roomName: st
                 dispatch({
                     type: ActionType.CreateRoomAndAddUserToRoomSuccess,
                     room: room,
+                    roomId: room.id,
                 } as CreateRoomAndAddUserToRoomSuccessAction);
             })
         }).catch(err => {

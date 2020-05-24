@@ -48,8 +48,6 @@ const UserList = (props: Prop) => {
         store.dispatch(removeUserFromRoom(api, props.roomId, userId));
     }
 
-    console.log(props.roomId);
-    console.log(props.users);
     return (
         <div className="User-list">
             {
