@@ -1,35 +1,40 @@
 from flask import jsonify, request
-from flask_restful import Resource, reqparse
+from flask_restful import Resource, reqparse, abort
 from flask_restful_swagger import swagger
-from app import api, db
-from app.models.user import User
-from app.models.room_user import RoomUser
+from typing import List
+from app import db
+from app.database.user import User
+from app.database.room_user import RoomUser
 
-class UserListAPI(Resource):
+
+class UserListApi(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument("name", type=str, required=False, default="", location="json")
-        super(UserListAPI, self).__init__()
+        super(UserListApi, self).__init__()
 
     @swagger.operation(
         notes="Returns all users",
-        responseClass=User.__name__,
+        responseClass=List[User.__name__],
         parameters=[],
         responseMessages=[
             {
-                "code": 201,
-                "message": "Got all of the users"
-            },
+                "code": 200,
+                "message": "Got all of the users",
+            }, {
+                "code": 500,
+                "message": "Internal server error",
+            }
         ]
     )
     def get(self):
-        return jsonify([
-            {
-                "id": x.id,
-                "name": x.name,
-            }
-            for x in User.query.all()
-        ])
+        try:
+            return jsonify(self.__get_all_users())
+        except:
+            abort(500)
+    def __get_all_users(self):
+        return [user.to_json() for user in User.query.all()]
+
 
     @swagger.operation(
         notes="Creates a new user",
@@ -46,26 +51,32 @@ class UserListAPI(Resource):
         ],
         responseMessages=[
             {
-                "code": 201,
+                "code": 200,
                 "message": "Created the new user successfully"
-            },
+            }, {
+                "code": 500,
+                "message": "Internal server error",
+            }
         ]
     )
     def post(self):
-        args = self.reqparse.parse_args()
-        user = User(name=args["name"])
+        try:
+            args = self.reqparse.parse_args()
+            return jsonify(self.__create_user(args["name"]))
+        except:
+            abort(500)
+    def __create_user(self, user_name):
+        user = User(name=user_name)
         db.session.add(user)
         db.session.commit()
-        return jsonify({
-            "id": user.id,
-            "name": user.name,
-        })
+        return user.to_json()
 
-class UserAPI(Resource):
+
+class UserApi(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument("name", type=str, required=False, default="", location="json")
-        super(UserAPI, self).__init__()
+        super(UserApi, self).__init__()
 
     @swagger.operation(
         notes="Returns the specific user",
@@ -82,17 +93,22 @@ class UserAPI(Resource):
         ],
         responseMessages=[
             {
-                "code": 201,
+                "code": 200,
                 "message": "Returned the user"
-            },
+            }, {
+                "code": 500,
+                "message": "Internal server error",
+            }
         ]
     )
     def get(self, user_id):
-        user = User.query.get(user_id)
-        return jsonify({
-            "id": user.id,
-            "name": user.name,
-        })
+        try:
+            return jsonify(self.__get_user(user_id))
+        except:
+            abort(500)
+    def __get_user(self, user_id):
+        return User.query.get(user_id).to_json()
+
 
     @swagger.operation(
         notes="Updates the specific user",
@@ -117,23 +133,26 @@ class UserAPI(Resource):
         ],
         responseMessages=[
             {
-                "code": 201,
+                "code": 200,
                 "message": "Updated the user"
-            },
+            }, {
+                "code": 500,
+                "message": "Internal server error",
+            }
         ]
     )
     def put(self, user_id):
+        try:
+            return jsonify(self.__update_user(user_id, self.reqparse.parse_args()))
+        except:
+            abort(500)
+    def __update_user(self, user_id, args):
         user = User.query.get(user_id)
-        args = self.reqparse.parse_args()
-        for k, v in self.reqparse.parse_args().items():
+        for k, v in args.items():
             if v is not None:
                 setattr(user, k, v)
         db.session.commit()
-        return jsonify({
-            "id": user.id,
-            "name": user.name,
-        })
-
+        return user.to_json()
 
     @swagger.operation(
         notes="Deletes the specific user",
@@ -149,13 +168,22 @@ class UserAPI(Resource):
         ],
         responseMessages=[
             {
-                "code": 201,
+                "code": 200,
                 "message": "Deleted the user"
-            },
+            }, {
+                "code": 500,
+                "message": "Internal server error",
+            }
         ]
     )
     def delete(self, user_id):
+        try:
+            self.__delete_user(user_id)
+            return jsonify(success=True)
+        except:
+            abort(500)
+    def __delete_user(self, user_id):
         user = User.query.get(user_id)
         db.session.delete(user)
         db.session.commit()
-        return jsonify(success=True)
+        return
