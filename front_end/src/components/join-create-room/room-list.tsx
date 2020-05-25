@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { connect } from "react-redux";
-import { createRoomAndAddUserToRoomAction, addUserToRoomAction, Status, VideoRoomState } from '../../store/video-room/video-room';
+import { createRoomAndAddUserToRoomAction, addUserToRoomAction, Status, VideoRoomState, getRoomsAction } from '../../store/video-room/video-room';
 import { RoomListItem } from './room-list-item';
 import { store } from '../../store';
 import { ApiContext } from '..';
@@ -30,6 +30,10 @@ export interface Prop {
 const RoomList = (props: Prop) => {
     const [newRoomName, setNewRoomName] = useState("");
     const api = useContext<VideoRoomApi>(ApiContext);
+
+    useEffect(() => {
+        store.dispatch(getRoomsAction(api))
+    }, []);
 
     const createNewRoomClick = (): void => {
         store.dispatch(createRoomAndAddUserToRoomAction(api, newRoomName, props.user.id));

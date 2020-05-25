@@ -51,6 +51,7 @@ export class VideoRoomApi {
     }
 
     async getUsersInRoom(roomId: number): Promise<User[]> {
+        //console.log(this.BASE_URL + "/rooms/" + roomId + "/users");
         return axios.get(this.BASE_URL + "/rooms/" + roomId + "/users").then(response => {
             return response.data;
         });

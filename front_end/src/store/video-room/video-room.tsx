@@ -130,6 +130,7 @@ interface RemoveUserFromRoomAction {
 interface RemoveUserFromRoomSuccessAction {
     type: ActionType.RemoveUserFromRoomSuccess;
     currentRoom: Room;
+    roomId: number;
     users: User[];
 }
 
@@ -285,6 +286,7 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.currentRoom;
+                draftState.roomId = action.roomId;
                 draftState.users = action.users;
             })
         case ActionType.RemoveUserFromRoomFail:
@@ -465,6 +467,7 @@ export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: nu
             dispatch({
                 type: ActionType.RemoveUserFromRoomSuccess,
                 currentRoom: null,
+                roomId: null,
                 users: [],
             } as RemoveUserFromRoomSuccessAction);
         }).catch(err => {
