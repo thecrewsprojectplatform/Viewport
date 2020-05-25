@@ -14,7 +14,7 @@ export interface Prop {
     roomList: Room[];
     user: User;
     updateStatus: Status;
-    setPage: () => void;
+    setPageForward: () => void;
 }
 
 /**
@@ -34,12 +34,12 @@ const RoomList = (props: Prop) => {
     const createNewRoomClick = (): void => {
         store.dispatch(createRoomAndAddUserToRoomAction(api, newRoomName, props.user.id));
         setNewRoomName("");
-        props.setPage();
+        props.setPageForward();
     }
 
     const onJoinRoomClick = (roomId: number): void => {
         store.dispatch(addUserToRoomAction(api, roomId, props.user.id, props.roomList));
-        props.setPage();
+        props.setPageForward();
     }
 
     return (

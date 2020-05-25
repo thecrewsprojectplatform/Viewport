@@ -13,6 +13,7 @@ import { Room, User } from "../../api/video-room-types";
 export interface Prop {
     currentRoom: Room
     users: User[];
+    setPageBackwards: () => void;
 }
 
 /**
@@ -34,9 +35,18 @@ const VideoRoomPage = (props: Prop) => {
     }, [props.currentRoom])
 
     return (
-        <div className="row">
-            <span className="Video-section">YouTube videos go here</span>
-            <UserListR />
+        <div>
+            <button
+                className="Exit-room-button"
+                onClick={(ev) => {
+                    props.setPageBackwards()}
+            }>
+                Exit Room
+            </button>
+            <div className="row">
+                <span className="Video-section">YouTube videos go here</span>
+                <UserListR />
+            </div>
         </div>
     )
 }

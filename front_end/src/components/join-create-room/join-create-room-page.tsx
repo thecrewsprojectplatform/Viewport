@@ -15,7 +15,8 @@ export interface Prop {
     roomList: Room[];
     currentUser: User;
     updateStatus: Status;
-    setPage: () => void;
+    setPageForward: () => void;
+    setPageBackwards: () => void;
 }
 
 /**
@@ -38,8 +39,15 @@ const JoinCreateRoomPage = (props: Prop) => {
 
     return (
         <div>
-            <span>Join or Create page!</span>
-            <RoomListR setPage={props.setPage}/>
+            <button
+                className="Logout-button"
+                onClick={(ev) => {
+                    props.setPageBackwards()}
+            }>
+                Logout
+            </button>
+            <p>Join or Create page!</p>
+            <RoomListR setPageForward={props.setPageForward}/>
         </div>
     )
 }

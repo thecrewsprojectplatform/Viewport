@@ -1,10 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 import { connect } from "react-redux";
-import { createRoomAction } from "../store/video-room/video-room";
 import { ApiContext } from ".";
 import { VideoRoomApi } from "../api/video-room-api";
-import { store } from "../store";
-import { UserListR } from "./video-room/user-list";
 import { VideoRoomPageR } from "./video-room/video-room-page";
 import { LoginPageR } from "./login/login-page";
 import { JoinCreateRoomPageR } from "./join-create-room/join-create-room-page";
@@ -62,9 +59,10 @@ const BasePage = (props: Prop) => {
                 case PageType.LoginPage:
                     return <LoginPageR setPage={() => setPageType(PageType.JoinCreateRoomPage)}/>
                 case PageType.JoinCreateRoomPage:
-                    return <JoinCreateRoomPageR setPage={() => setPageType(PageType.VideoRoomPage)} />
+                    return <JoinCreateRoomPageR setPageForward={() => setPageType(PageType.VideoRoomPage)}
+                                                setPageBackwards={() => setPageType(PageType.LoginPage)} />
                 case PageType.VideoRoomPage:
-                    return <VideoRoomPageR />
+                    return <VideoRoomPageR setPageBackwards={() => setPageType(PageType.JoinCreateRoomPage)} />
             }
         })()}
         </div>
@@ -77,6 +75,7 @@ const BasePage = (props: Prop) => {
  * @param {Object} state The current state of the BasePage.
  */
 const mapStateToProps = state => {
+    console.log(state);
     return {
         roomId: state.roomId,
         user: state.user,
