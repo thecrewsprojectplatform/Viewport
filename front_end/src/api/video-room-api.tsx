@@ -20,6 +20,12 @@ export class VideoRoomApi {
         });
     }
 
+    async removeRoom(roomId: number): Promise<void> {
+        return axios.delete(this.BASE_URL + "/rooms/" + roomId).then(response => {
+            return response.data;
+        });
+    }
+
     async createUser(name: string): Promise<User> {
         return axios.post(this.BASE_URL + "/users", {"name": name}).then(response => {
             return response.data;
