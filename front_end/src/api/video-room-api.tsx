@@ -32,6 +32,12 @@ export class VideoRoomApi {
         });
     }
 
+    async removeUser(userId: number): Promise<void> {
+        return axios.delete(this.BASE_URL + "/users/" + userId).then(response => {
+            return response.data;
+        });
+    } 
+
     async removeUserFromRoom(roomId: number, userId: number): Promise<void> {
         return axios.delete(this.BASE_URL + "/rooms/" + roomId + "/users/" + userId).then(response => {
             return response.data;
