@@ -20,6 +20,7 @@ export interface Prop {
  *                 the login page. Contains a setPage function.
  * @returns {JSX.Element} The JSX representing the login page.
  */
+
 export const LoginPage = (props: Prop) => {
     const [newUserName, setNewUserName] = useState("");
     const api = useContext<VideoRoomApi>(ApiContext);
@@ -27,7 +28,7 @@ export const LoginPage = (props: Prop) => {
     const createNewUserClick = (): void => {
         store.dispatch(createUser(api, newUserName));
     }
-    
+
     return (
         <div>
             {

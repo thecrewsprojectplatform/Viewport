@@ -18,6 +18,8 @@ export interface User {
 /**
  * Represents the required properties of a ChatMessage.
  */
-export interface ChatMessage {
-    message: string;
+
+export interface MessageDetail {
+    chat_message: string;
+    chat_username: string;
 }

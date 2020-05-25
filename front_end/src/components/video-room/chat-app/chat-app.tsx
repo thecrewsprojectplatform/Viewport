@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { VideoRoomState } from '../../../store/video-room/video-room';
 import { connect } from "react-redux";
-import { ChatMessage } from "../../../api/video-room-types";
 import { ChatMessageItem } from "./chat-message-item";
 import { sendMessageToServer } from "../../../store/video-room/video-room";
 import { store } from "../../../store";
+import { MessageDetail } from "../../../api/video-room-types";
 
 /**
  * Represents the required properties of the ChatApp.
  */
 export interface Prop {
-    message: ChatMessage
-    messageHistory: ChatMessage[]
+    clientMessage: string;
+    clientName: string;
+    messageHistory: MessageDetail[];
 }
 
 export const ChatApp = (props: Prop) => {
@@ -23,6 +24,7 @@ export const ChatApp = (props: Prop) => {
         setMessage('')
     };
 
+    //console.log(props.message)
     return(
         <div>
             <div className="display_message">
@@ -32,7 +34,8 @@ export const ChatApp = (props: Prop) => {
                         return props.messageHistory.map((message) => {
                             return (
                                 <ChatMessageItem
-                                    message={message}
+                                clientMessage={message.chat_message}
+                                clientName={message.chat_username}
                                 />
                             )
                         })
@@ -58,7 +61,8 @@ export const ChatApp = (props: Prop) => {
 
 const mapStateToProps = (state: VideoRoomState) => {
     return {
-        message: state.message,
+        clientMessage: state.clientMessage,
+        clientName: state.clientName,
         messageHistory: state.messageHistory
     }
 }

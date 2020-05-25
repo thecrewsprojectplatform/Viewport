@@ -38,7 +38,9 @@ const VideoRoomPage = (props: Prop) => {
         <div className="row">
             <span className="Video-section">YouTube videos go here</span>
             <UserListR />
+            <div>
             <ChatAppR />
+            </div>
         </div>
     )
 }

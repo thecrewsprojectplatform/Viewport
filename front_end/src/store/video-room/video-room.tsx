@@ -1,7 +1,7 @@
 import { ActionType } from "./actionType";
 import { produce } from "immer";
 import { VideoRoomApi } from "../../api/video-room-api";
-import { User, Room, ChatMessage } from "../../api/video-room-types";
+import { User, Room, MessageDetail } from "../../api/video-room-types";
 import { socket } from "../../App"
 
 export enum Status {
@@ -18,8 +18,9 @@ export interface VideoRoomState {
     currentRoom: Room;
     user: User;
     users: User[];
-    message: ChatMessage;
-    messageHistory: ChatMessage[];
+    clientMessage: string;
+    clientName: string;
+    messageHistory: MessageDetail[];
     currentUser: User;
     fetchStatus: Status;
     updateStatus: Status;
@@ -64,12 +65,13 @@ interface AddUserToRoomFailAction {
 
 interface SendToAllClientsAction {
     type: ActionType.SendMessageToAllClients;
-    message: ChatMessage;
+    clientName: string;
+    clientMessage: string;
 }
 
 interface SendInitialClientMessageAction {
     type: ActionType.SendInitialClientMessage;
-    message: ChatMessage;
+    clientMessage: string;
 }
 
 interface CreateRoomAndAddUserToRoomAction {
@@ -155,7 +157,8 @@ export const reducer = (
         currentRoom: null,
         user: null,
         users: [],
-        message: null,
+        clientMessage: null,
+        clientName: null,
         messageHistory: [],
         currentUser: null,
         fetchStatus: Status.NotStarted,
@@ -177,6 +180,10 @@ export const reducer = (
                 draftState.updateStatus = Status.Running;
             })
         case ActionType.AddUserToRoomSuccess:
+            // socket communication to let server know that
+            // a client has joined the room.
+            // Localizes all messages sent in that room.
+            socket.emit('joinRoom', action.room.name);
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.room;
@@ -203,6 +210,10 @@ export const reducer = (
                 draftState.updateStatus = Status.Running
             })  
         case ActionType.CreateRoomAndAddUserToRoomSuccess:
+            // socket communication to let server know that
+            // a client has joined the room.
+            // Localizes all messages sent in that room.
+            socket.emit('joinRoom', action.room.name);
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.room;
@@ -248,19 +259,28 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
             })
-        // socket.emit sends message that client has typed to the server
-        // keeps track of the message and keeps track of the history.
+        // socket.emit sends data that client has typed to the server
         case ActionType.SendInitialClientMessage:
-            socket.emit('chatMessage', action.message);
+            socket.emit('chatMessage', {
+                clientMessage: action.clientMessage,
+                currentRoomName: state.currentRoom.name,
+                clientName: state.user.name
+            });
             // produce is the only way you can directly modify the state
             // state is the current value, draftState is the future value
             return produce(state, draftState => {
-                draftState.message = action.message;
-                draftState.messageHistory = [...state.messageHistory, action.message]
+                draftState.clientMessage = action.clientMessage;
             })
+        // server sends the message to all clients
+        // keeps track of the message and keeps track of the history to display to each client.
         case ActionType.SendMessageToAllClients:
             return produce(state, draftState => {
-                draftState.message = action.message;
+                draftState.clientMessage = action.clientMessage;
+                draftState.clientName = action.clientName;
+                draftState.messageHistory = [...state.messageHistory, {
+                    chat_message: action.clientMessage,
+                    chat_username: action.clientName
+                }];
             })
         default:
             return state;
@@ -407,12 +427,14 @@ export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: nu
 };
 
 
-export const sendMessageToClients = (message: string): any => {
+export const sendMessageToAllClients = (message: string, username: string): any => {
     return (dispatch): any => {
         console.log("message to client")
+        console.log(message)
         dispatch ({
             type: ActionType.SendMessageToAllClients,
-            message: message,
+            clientMessage: message,
+            clientName: username
         });
     }
 }
@@ -422,7 +444,7 @@ export const sendMessageToServer = (message: string): any => {
         console.log("message to server")
         dispatch({
             type: ActionType.SendInitialClientMessage,
-            message: message
+            clientMessage: message
         })
     }
 }
