@@ -27,6 +27,7 @@ export class VideoRoomApi {
     }
 
     async createUser(name: string): Promise<User> {
+        console.log("Creating User...")
         return axios.post(this.BASE_URL + "/users", {"name": name}).then(response => {
             return response.data;
         });

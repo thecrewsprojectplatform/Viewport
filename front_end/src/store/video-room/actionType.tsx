@@ -7,6 +7,8 @@ export enum ActionType {
     GetRooms="GET_ROOMS",
     GetRoomsSuccess="GET_ROOMS_SUCCESS",
     GetRoomsFail="GET_ROOMS_FAIL",
+    SendInitialClientMessage = "CLIENT_SENT_A_MESSAGE",
+    SendMessageToAllClients = "SERVER_SENDS_A_MESSAGE_TO_ALL_CLIENTS",
     CreateRoomAndAddUserToRoom="CREATE_ROOM_AND_ADD_USER_TO_ROOM", 
     CreateRoomAndAddUserToRoomSuccess="CREATE_ROOM_AND_ADD_USER_TO_ROOM_SUCCESS",
     CreateRoomAndAddUserToRoomFail="CREATE_ROOM_AND_ADD_USER_TO_ROOM_FAIL",

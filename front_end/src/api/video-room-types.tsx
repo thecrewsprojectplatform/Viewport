@@ -14,3 +14,12 @@ export interface User {
     id: number;
     name: string;
 }
+
+/**
+ * Represents the required properties of a ChatMessage.
+ */
+
+export interface MessageDetail {
+    chat_message: string;
+    chat_username: string;
+}

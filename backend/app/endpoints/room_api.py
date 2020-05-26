@@ -14,7 +14,7 @@ class RoomListApi(Resource):
 
     @swagger.operation(
         notes="Returned all rooms",
-        #responseClass=List[Room.__name__],
+        # responseClass=List[Room.__name__],
         parameters=[],
         responseMessages=[
             {
@@ -36,7 +36,7 @@ class RoomListApi(Resource):
 
     @swagger.operation(
         notes="Creates a new room",
-        #responseClass=Room.__name__,
+        # responseClass=Room.__name__,
         parameters=[
             {
                 "name": "name",
@@ -85,7 +85,7 @@ class RoomApi(Resource):
 
     @swagger.operation(
         notes="Returns the specific room",
-        #responseClass=Room.__name__,
+        # responseClass=Room.__name__,
         parameters=[
             {
                 "name": "room_id",
@@ -116,7 +116,7 @@ class RoomApi(Resource):
 
     @swagger.operation(
         notes="Updates the specific room",
-        #responseClass=Room.__name__,
+        # responseClass=Room.__name__,
         parameters=[
             {
                 "name": "room_id",

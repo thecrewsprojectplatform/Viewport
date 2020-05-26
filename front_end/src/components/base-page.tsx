@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { connect } from "react-redux";
 import { ApiContext } from ".";
 import { VideoRoomApi } from "../api/video-room-api";
+import { store } from "../store";
 import { VideoRoomPageR } from "./video-room/video-room-page";
 import { LoginPageR } from "./login/login-page";
 import { JoinCreateRoomPageR } from "./join-create-room/join-create-room-page";
@@ -19,6 +20,7 @@ enum PageType {
 /**
  * Represents the required properties of the BasePage.
  */
+
 export interface Prop {
     roomId: string;
     user: User;
@@ -36,13 +38,18 @@ export interface Prop {
  */
 const BasePage = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
-
-    useEffect(() => {
+    // happens right away
+    // when a value in the list gets changed, call the function.
+    /*useEffect(() => {
         if (props.roomId === null) {
-            //store.dispatch(createRoomAction(api, "New Room"));
+            // send some action to the store
+            // change the store -> change the prop
+            // -> component rerenders.
+            store.dispatch(createRoomAction(api, "New Room"));
         }
-    }, [props.roomId])
+    }, [props.roomId])*/
 
+    // creating useState to set login page as the first page.
     const [pageType, setPageType] = useState(PageType.LoginPage);
 
     return (
@@ -74,6 +81,10 @@ const BasePage = (props: Prop) => {
  * 
  * @param {Object} state The current state of the BasePage.
  */
+
+// global state gets passed into this function.
+// from that state, get the roomId and user as a prop.
+// this function allows these props to be used in this file
 const mapStateToProps = state => {
     console.log(state);
     return {
@@ -82,4 +93,7 @@ const mapStateToProps = state => {
     }
 }
 
+// connect takes in mapStateToProps
+// which returns a function that takes in the basepage
+// which returns component that has all the correct props
 export const BasePageR = connect(mapStateToProps)(BasePage);

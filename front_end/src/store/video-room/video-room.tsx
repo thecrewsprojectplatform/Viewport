@@ -1,7 +1,8 @@
 import { ActionType } from "./actionType";
 import { produce } from "immer";
 import { VideoRoomApi } from "../../api/video-room-api";
-import { User, Room } from "../../api/video-room-types";
+import { User, Room, MessageDetail } from "../../api/video-room-types";
+import { socket } from "../../App"
 
 export enum Status {
     NotStarted="NOT_STARTED",
@@ -17,6 +18,10 @@ export interface VideoRoomState {
     currentRoom: Room;
     user: User;
     users: User[];
+    clientMessage: string;
+    clientName: string;
+    messageHistory: MessageDetail[];
+    currentUser: User;
     fetchStatus: Status;
     updateStatus: Status;
 }
@@ -57,6 +62,17 @@ interface AddUserToRoomSuccessAction {
 
 interface AddUserToRoomFailAction {
     type: ActionType.AddUserToRoomFail;
+}
+
+interface SendToAllClientsAction {
+    type: ActionType.SendMessageToAllClients;
+    clientName: string;
+    clientMessage: string;
+}
+
+interface SendInitialClientMessageAction {
+    type: ActionType.SendInitialClientMessage;
+    clientMessage: string;
 }
 
 interface CreateRoomAndAddUserToRoomAction {
@@ -146,6 +162,8 @@ type Action =   SetVidoRoomAction |
                 AddUserToRoomAction |
                 AddUserToRoomSuccessAction |
                 AddUserToRoomFailAction |
+                SendToAllClientsAction | 
+                SendInitialClientMessageAction |
                 CreateRoomAndAddUserToRoomAction |
                 CreateRoomAndAddUserToRoomSuccessAction |
                 CreateRoomAndAddUserToRoomFailAction |
@@ -165,6 +183,8 @@ type Action =   SetVidoRoomAction |
                 RemoveUserFromRoomSuccessAction |
                 RemoveUserFromRoomFailAction;
 
+// takes in a state and an action
+// it applies some action to the state
 export const reducer = (
     state: VideoRoomState = {
         roomId: null,
@@ -173,6 +193,10 @@ export const reducer = (
         currentRoom: null,
         user: null,
         users: [],
+        clientMessage: null,
+        clientName: null,
+        messageHistory: [],
+        currentUser: null,
         fetchStatus: Status.NotStarted,
         updateStatus: Status.NotStarted,
     }, action: Action
@@ -192,6 +216,10 @@ export const reducer = (
                 draftState.updateStatus = Status.Running;
             })
         case ActionType.AddUserToRoomSuccess:
+            // socket communication to let server know that
+            // a client has joined the room.
+            // Localizes all messages sent in that room.
+            socket.emit('joinRoom', action.room.name);
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.room;
@@ -219,6 +247,10 @@ export const reducer = (
                 draftState.updateStatus = Status.Running
             })  
         case ActionType.CreateRoomAndAddUserToRoomSuccess:
+            // socket communication to let server know that
+            // a client has joined the room.
+            // Localizes all messages sent in that room.
+            socket.emit('joinRoom', action.room.name);
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.room;
@@ -293,13 +325,37 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
             })
+        // socket.emit sends data that client has typed to the server
+        case ActionType.SendInitialClientMessage:
+            socket.emit('chatMessage', {
+                clientMessage: action.clientMessage,
+                currentRoomName: state.currentRoom.name,
+                clientName: state.user.name
+            });
+            // produce is the only way you can directly modify the state
+            // state is the current value, draftState is the future value
+            return produce(state, draftState => {
+                draftState.clientMessage = action.clientMessage;
+            })
+        // server sends the message to all clients
+        // keeps track of the message and keeps track of the history to display to each client.
+        case ActionType.SendMessageToAllClients:
+            return produce(state, draftState => {
+                draftState.clientMessage = action.clientMessage;
+                draftState.clientName = action.clientName;
+                draftState.messageHistory = [...state.messageHistory, {
+                    chat_message: action.clientMessage,
+                    chat_username: action.clientName
+                }];
+            })
         default:
             return state;
     }
 }
-
+// these are what the components what actually call.
 export const createRoomAction = (api: VideoRoomApi, roomName: string): any => {
     return (dispatch): any => {
+        // if the room was created successfully.
         api.createRoom(roomName).then(room => {
             dispatch({
                 type: ActionType.SetVideoRoom,
@@ -477,3 +533,26 @@ export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: nu
         });
     };
 };
+
+
+export const sendMessageToAllClients = (message: string, username: string): any => {
+    return (dispatch): any => {
+        console.log("message to client")
+        console.log(message)
+        dispatch ({
+            type: ActionType.SendMessageToAllClients,
+            clientMessage: message,
+            clientName: username
+        });
+    }
+}
+
+export const sendMessageToServer = (message: string): any => {
+    return (dispatch): any => {
+        console.log("message to server")
+        dispatch({
+            type: ActionType.SendInitialClientMessage,
+            clientMessage: message
+        })
+    }
+}
