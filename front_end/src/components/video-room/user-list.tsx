@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { User } from "../../api/video-room-types";
 import { UserListItem } from './user-list-item';
 import { store } from '../../store';
-import { getRoomUsers, createUserAndAddToRoom, removeUserFromRoom, VideoRoomState } from '../../store/video-room/video-room';
+import { getRoomUsers, VideoRoomState } from '../../store/video-room/video-room';
 import { VideoRoomApi } from "../../api/video-room-api";
 import { ApiContext } from "..";
 import { Status } from "../../store/video-room/video-room"
@@ -43,10 +43,6 @@ const UserList = (props: Prop) => {
             store.dispatch(getRoomUsers(api, props.roomId));
         }
     }, [props.updateStatus]);
-
-    const onRemoveUserClick = (userId: number): void => {
-        store.dispatch(removeUserFromRoom(api, props.roomId, userId));
-    }
 
     return (
         <div className="User-list">
