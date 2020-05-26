@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { IframeHTMLAttributes } from 'react';
 import ReactPlayer from 'react-player'
 
-
+/**
+ * Creates a video player with the following attributes:
+ *      Input field for loading videos from an url
+ *      play/pause button
+ *      Progress bar 
+ */
 class VideoPlayer extends React.Component {
+    player: HTMLIFrameElement;
+    urlInput: HTMLInputElement;
+
     state = {
         url: null,
         playing: false,
         played: 0,
-        
     }
-
-    load = url => {
+    
+    load = (url: string) => {
         this.setState({
             url,
             played: 0
@@ -21,13 +28,10 @@ class VideoPlayer extends React.Component {
         this.setState({ playing: !this.state.playing })
     }
 
-    handleProgress = state => {
+    handleProgress = (state: object) => {
         this.setState(state)
     }
 
-    ref = player => {
-        this.player = player
-    }
 
     render() {
         const {url, playing, played} = this.state
@@ -38,22 +42,20 @@ class VideoPlayer extends React.Component {
                     <input ref={input => { this.urlInput = input}} type='text' placeholder='Enter URL' />
                     <button onClick={() => this.setState({ url: this.urlInput.value })}>Load</button>
                 </div>
-                <div className='player-wrapper'>
-                    <ReactPlayer
-                        ref={this.ref}
-                        url={url}
-                        config={{
-                            youtube: {
-                                playerVars: { 
-                                    rel : 0}
-                            }
-                        }}
-                        playing={playing}
-                        onProgress={this.handleProgress}
-                    />
-                </div>
+                
+                <ReactPlayer
+                    url={url}
+                    config={{
+                        youtube: {
+                            playerVars: { 
+                                rel : 0}
+                        }
+                    }}
+                    playing={playing}
+                    onProgress={this.handleProgress}
+                />
+
                 <button onClick={this.handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
-            
             </div>
             <table>
                 <tbody>
