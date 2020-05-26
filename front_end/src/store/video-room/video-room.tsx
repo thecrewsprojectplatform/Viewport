@@ -114,12 +114,40 @@ interface CreateUserFailAction {
     type: ActionType.CreateUserFail;
 }
 
+interface RemoveUserAction {
+    type: ActionType.RemoveUser;
+}
+
+interface RemoveUserSuccessAction {
+    type: ActionType.RemoveUserSuccess;
+    user: User;
+}
+
+interface RemoveUserFailAction {
+    type: ActionType.RemoveUserFail;
+}
+
+interface RemoveRoomAction {
+    type: ActionType.RemoveRoom;
+}
+
+interface RemoveRoomSuccessAction {
+    type: ActionType.RemoveRoomSuccess;
+}
+
+interface RemoveRoomFailAction {
+    type: ActionType.RemoveRoomFail;
+}
+
 interface RemoveUserFromRoomAction {
     type: ActionType.RemoveUserFromRoom;
 }
 
 interface RemoveUserFromRoomSuccessAction {
     type: ActionType.RemoveUserFromRoomSuccess;
+    currentRoom: Room;
+    roomId: number;
+    users: User[];
 }
 
 interface RemoveUserFromRoomFailAction {
@@ -145,6 +173,12 @@ type Action =   SetVidoRoomAction |
                 CreateUserAction |
                 CreateUserSuccessAction |
                 CreateUserFailAction |
+                RemoveUserAction |
+                RemoveUserSuccessAction |
+                RemoveUserFailAction |
+                RemoveRoomAction |
+                RemoveRoomSuccessAction |
+                RemoveRoomFailAction |
                 RemoveUserFromRoomAction |
                 RemoveUserFromRoomSuccessAction |
                 RemoveUserFromRoomFailAction;
@@ -251,6 +285,31 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
             })
+        case ActionType.RemoveUser:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Running;
+            })
+        case ActionType.RemoveUserSuccess:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Succeeded;
+                draftState.user = action.user;
+            })
+        case ActionType.RemoveUserFail:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Failed;
+            })
+        case ActionType.RemoveRoom:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Running;
+            })
+        case ActionType.RemoveRoomSuccess:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Succeeded;
+            })
+        case ActionType.RemoveRoomFail:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Failed;
+            })
         case ActionType.RemoveUserFromRoom:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Running;
@@ -258,6 +317,9 @@ export const reducer = (
         case ActionType.RemoveUserFromRoomSuccess:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
+                draftState.currentRoom = action.currentRoom;
+                draftState.roomId = action.roomId;
+                draftState.users = action.users;
             })
         case ActionType.RemoveUserFromRoomFail:
             return produce(state, draftState => {
@@ -394,7 +456,7 @@ export const createUserAndAddToRoom = (api: VideoRoomApi, roomId: number, userNa
             } as CreateUserAndAddToRoomFailAction);
         });
     };
-}
+};
 
 export const createUser = (api: VideoRoomApi, userName: string): any => {
     return (dispatch): any => {
@@ -412,7 +474,44 @@ export const createUser = (api: VideoRoomApi, userName: string): any => {
             } as CreateUserFailAction);
         });
     };
-}
+};
+
+export const removeUser = (api: VideoRoomApi, userId: number): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.RemoveUser,
+        } as RemoveUserAction);
+        api.removeUser(userId).then(response => {
+            console.log("removed user successfully")
+            dispatch({
+                type: ActionType.RemoveUserSuccess,
+                user: null,
+            } as RemoveUserSuccessAction);
+        }).catch(err => {
+            dispatch({
+                type: ActionType.RemoveUserFail
+            } as RemoveUserFailAction);
+        });
+    };
+};
+
+export const removeRoom = (api: VideoRoomApi, roomId: number): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.RemoveRoom,
+        } as RemoveRoomAction);
+        api.removeRoom(roomId).then(response => {
+            console.log("removed room successfully")
+            dispatch({
+                type: ActionType.RemoveRoomSuccess,
+            } as RemoveRoomSuccessAction);
+        }).catch(err => {
+            dispatch({
+                type: ActionType.RemoveRoomFail
+            } as RemoveRoomFailAction);
+        });
+    };
+};
 
 export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: number): any => {
     return (dispatch): any => {
@@ -423,6 +522,9 @@ export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: nu
             console.log("removed user successfully")
             dispatch({
                 type: ActionType.RemoveUserFromRoomSuccess,
+                currentRoom: null,
+                roomId: null,
+                users: [],
             } as RemoveUserFromRoomSuccessAction);
         }).catch(err => {
             dispatch({

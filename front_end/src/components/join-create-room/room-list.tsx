@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { connect } from "react-redux";
-import { createRoomAndAddUserToRoomAction, addUserToRoomAction, Status, VideoRoomState } from '../../store/video-room/video-room';
+import { createRoomAndAddUserToRoomAction, addUserToRoomAction, Status, VideoRoomState, getRoomsAction } from '../../store/video-room/video-room';
 import { RoomListItem } from './room-list-item';
 import { store } from '../../store';
 import { ApiContext } from '..';
@@ -14,7 +14,7 @@ export interface Prop {
     currentRooms: Room[];
     user: User;
     updateStatus: Status;
-    setPage: () => void;
+    setPageForward: () => void;
 }
 
 /**
@@ -31,15 +31,19 @@ const RoomList = (props: Prop) => {
     const [newRoomName, setNewRoomName] = useState("");
     const api = useContext<VideoRoomApi>(ApiContext);
 
+    useEffect(() => {
+        store.dispatch(getRoomsAction(api))
+    }, []);
+
     const createNewRoomClick = (): void => {
         store.dispatch(createRoomAndAddUserToRoomAction(api, newRoomName, props.user.id));
         setNewRoomName("");
-        props.setPage();
+        props.setPageForward();
     }
 
     const onJoinRoomClick = (roomId: number): void => {
         store.dispatch(addUserToRoomAction(api, roomId, props.user.id, props.currentRooms));
-        props.setPage();
+        props.setPageForward();
     }
 
     return (
