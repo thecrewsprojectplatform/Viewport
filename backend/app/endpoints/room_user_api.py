@@ -14,7 +14,6 @@ class RoomUserListApi(Resource):
 
     @swagger.operation(
         notes="Returns all users in a given room",
-        # responseClass=List[User.__name__],
         parameters=[
             {
                 "name": "room_id",
@@ -50,7 +49,6 @@ class RoomUserListApi(Resource):
 
     @swagger.operation(
         notes="Adds a user to a room",
-        # responseClass=RoomUser.__name__,
         parameters=[
             {
                 "name": "room_id",

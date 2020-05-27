@@ -36,12 +36,23 @@ class RoomApiTest(TestCase):
         response = self.client.post("/rooms", json=self.test_room)
         self.assertEqual(response.json["name"], self.test_room["name"])
 
+    def test_post_no_name(self):
+        """Tests POST at /rooms without a room name"""
+        no_name_response = self.client.post("/rooms", json={})
+        self.assert500(no_name_response)
+
     def test_put(self):
         """Tests PUT at /rooms"""
         post_response = self.client.post("/rooms", json=self.test_room)
         put_response = self.client.put(f"/rooms/{post_response.json['id']}", json=self.updated_room)
         self.assertEqual(put_response.json["name"], self.updated_room["name"])
         self.assertEqual(post_response.json["id"], put_response.json["id"])
+
+    def test_put_bad_state(self):
+        """Tests PUT at /rooms"""
+        post_response = self.client.post("/rooms", json=self.test_room)
+        put_response = self.client.put(f"/rooms/{post_response.json['id']}", json={"name": "Updated Room", "video_state": "BAD_STATE"})
+        self.assert500(put_response)
 
     def test_delete(self):
         """Tests DELETE at /rooms"""

@@ -13,12 +13,6 @@ class RoomUser(db.Model):
     room_relation = db.relationship(Room, foreign_keys=room_id)
     user_relation = db.relationship(User, foreign_keys=user_id)
 
-    resource_fields = {
-        "id": fields.Integer,
-        "room_id": fields.String,
-        "user_id": fields.String,
-    }
-
     def __repr__(self):
         return f"<RoomUser>(id: {self.id}, room_id: {self.room_id}, user_id:{self.user_id})"
 
