@@ -16,6 +16,7 @@ export interface VideoRoomState {
     roomName: string;
     roomList: Room[];
     currentRoom: Room;
+    pastRoomId: number;
     user: User;
     users: User[];
     clientMessage: string;
@@ -144,6 +145,8 @@ interface RemoveUserFromRoomAction {
 }
 
 interface RemoveUserFromRoomSuccessAction {
+    pastRoomId: number;
+    messageHistory: MessageDetail[];
     type: ActionType.RemoveUserFromRoomSuccess;
     currentRoom: Room;
     roomId: number;
@@ -191,6 +194,7 @@ export const reducer = (
         roomName: null,
         roomList: [],
         currentRoom: null,
+        pastRoomId: null,
         user: null,
         users: [],
         clientMessage: null,
@@ -210,7 +214,8 @@ export const reducer = (
         case ActionType.SetVideoRoomUsers:
             return produce(state, draftState => {
                 draftState.users = action.users;
-            })
+                console.log("current users in the room are", action.users)
+            });
         case ActionType.AddUserToRoom:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Running;
@@ -219,7 +224,7 @@ export const reducer = (
             // socket communication to let server know that
             // a client has joined the room.
             // Localizes all messages sent in that room.
-            socket.emit('joinRoom', action.room.name);
+            socket.emit('joinRoom', action.room.id);
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.room;
@@ -250,7 +255,7 @@ export const reducer = (
             // socket communication to let server know that
             // a client has joined the room.
             // Localizes all messages sent in that room.
-            socket.emit('joinRoom', action.room.name);
+            socket.emit('joinRoom', action.room.id);
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.room;
@@ -315,9 +320,12 @@ export const reducer = (
                 draftState.updateStatus = Status.Running;
             })
         case ActionType.RemoveUserFromRoomSuccess:
+            socket.emit('leaveRoom', action.pastRoomId);
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.currentRoom;
+                draftState.pastRoomId = action.pastRoomId;
+                draftState.messageHistory = action.messageHistory;
                 draftState.roomId = action.roomId;
                 draftState.users = action.users;
             })
@@ -329,7 +337,7 @@ export const reducer = (
         case ActionType.SendInitialClientMessage:
             socket.emit('chatMessage', {
                 clientMessage: action.clientMessage,
-                currentRoomName: state.currentRoom.name,
+                currentRoomId: state.currentRoom.id,
                 clientName: state.user.name
             });
             // produce is the only way you can directly modify the state
@@ -429,10 +437,16 @@ export const createRoomAndAddUserToRoomAction = (api: VideoRoomApi, roomName: st
 export const getRoomUsers = (api: VideoRoomApi, roomId: number): any => {
     return (dispatch): any => {
         api.getUsersInRoom(roomId).then(users => {
-            dispatch({
-                type: ActionType.SetVideoRoomUsers,
-                users: users,
-            } as SetVidoRoomUsersAction);
+            socket.emit('addUserToServerUserList', {
+                currentRoomId: roomId,
+                clientList: users
+            })
+            socket.on('addUserToAllClientUserList', data => {
+                dispatch({
+                    type: ActionType.SetVideoRoomUsers,
+                    users: data.clientList,
+                } as SetVidoRoomUsersAction);
+            })
         }).catch(err => {
             console.log("Failed to get users in room");
         });
@@ -519,17 +533,34 @@ export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: nu
             type: ActionType.RemoveUserFromRoom,
         } as RemoveUserFromRoomAction);
         api.removeUserFromRoom(roomId, userId).then(response => {
-            console.log("removed user successfully")
             dispatch({
                 type: ActionType.RemoveUserFromRoomSuccess,
+                pastRoomId: roomId,
                 currentRoom: null,
                 roomId: null,
+                messageHistory: [],
                 users: [],
             } as RemoveUserFromRoomSuccessAction);
+            console.log("removed user successfully")
         }).catch(err => {
             dispatch({
                 type: ActionType.RemoveUserFromRoomFail
             } as RemoveUserFromRoomFailAction);
+        }).finally(() => {
+            api.getUsersInRoom(roomId).then(users => {
+                socket.emit('removeUserToServerUserList', {
+                    currentRoomId: roomId,
+                    clientList: users
+                });
+                socket.on('removeUserToAllClientUserList', data => {
+                    dispatch({
+                        type: ActionType.SetVideoRoomUsers,
+                        users: data.clientList
+                    } as SetVidoRoomUsersAction);
+                });
+            }).catch(err => {
+                console.log("Failed to get users in room");
+            });
         });
     };
 };

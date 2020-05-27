@@ -32,12 +32,28 @@ io.on('connection', socket => {
     socket.join(room);
   })
 
+  socket.on('leaveRoom', room => {
+    console.log('leaving the room:', room)
+    socket.leave(room);
+  })
+
   // this waits for the user to type in the message from the client side
   socket.on('chatMessage', data => {
       console.log('sent message to server')
       // once message is received, this occurs
       // message is emitted to all of the clients on the server.
-      io.to(data.currentRoomName).emit('messageResponse', data);
+      io.to(data.currentRoomId).emit('messageResponse', data);
       console.log('message emitted to clients')
   })
+
+  socket.on('addUserToServerUserList', data => {
+    console.log(data.clientList, 'has joined the room:', data.currentRoomId)
+    io.to(data.currentRoomId).emit('addUserToAllClientUserList', data);
+  })
+
+  socket.on('removeUserToServerUserList', data => {
+    console.log(data.clientList, 'remains in the room:', data.currentRoomId)
+    io.to(data.currentRoomId).emit('removeUserToAllClientUserList', data);
+  })
+
 });
