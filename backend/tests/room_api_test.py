@@ -49,7 +49,7 @@ class RoomApiTest(TestCase):
         self.assertEqual(post_response.json["id"], put_response.json["id"])
 
     def test_put_bad_state(self):
-        """Tests PUT at /rooms"""
+        """Tests PUT at /rooms with an invalid video_state"""
         post_response = self.client.post("/rooms", json=self.test_room)
         put_response = self.client.put(f"/rooms/{post_response.json['id']}", json={"name": "Updated Room", "video_state": "BAD_STATE"})
         self.assert500(put_response)
