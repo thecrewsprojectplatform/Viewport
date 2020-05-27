@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from flask_restful import Resource, reqparse, abort
+from flask_restful import Resource, reqparse
 from flask_restful_swagger import swagger
 from werkzeug.exceptions import BadRequest
 from typing import List
@@ -33,7 +33,7 @@ class UserListApi(Resource):
         try:
             return jsonify(self.__get_all_users())
         except:
-            abort(500)
+            return create_500_error()
     def __get_all_users(self):
         return [user.to_json() for user in User.query.all()]
 
@@ -71,7 +71,7 @@ class UserListApi(Resource):
         except BadRequest:
             return create_400_error()
         except:
-            abort(500)
+            return create_500_error()
     def __create_user(self, user_name):
         user = User(name=user_name)
         db.session.add(user)
@@ -117,7 +117,7 @@ class UserApi(Resource):
         except LookupError:
             return create_404_error()
         except:
-            abort(500)
+            return create_500_error()
     def __get_user(self, user_id):
         user = User.query.get(user_id)
         if user is None:
@@ -170,7 +170,7 @@ class UserApi(Resource):
         except LookupError:
             return create_404_error()
         except:
-            abort(500)
+            return create_500_error()
     def __update_user(self, user_id, args):
         user = User.query.get(user_id)
         if user is None:
@@ -212,7 +212,7 @@ class UserApi(Resource):
         except LookupError:
             return create_404_error()
         except:
-            abort(500)
+            return create_500_error()
     def __delete_user(self, user_id):
         user = User.query.get(user_id)
         if user is None:

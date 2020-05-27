@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from flask_restful import Resource, reqparse, abort
+from flask_restful import Resource, reqparse
 from flask_restful_swagger import swagger
 from werkzeug.exceptions import BadRequest
 from typing import List
@@ -47,7 +47,7 @@ class RoomUserListApi(Resource):
         except LookupError:
             return create_404_error()
         except:
-            abort(500)
+            return create_500_error()
     def __get_all_users_in_room(self, room_id):
         if Room.query.get(room_id) is None:
             raise LookupError("Room not found")
@@ -104,7 +104,7 @@ class RoomUserListApi(Resource):
         except LookupError:
             return create_404_error()
         except:
-            abort(500)
+            return create_500_error()
     def __add_user_to_room(self, user_id, room_id):
         if Room.query.get(room_id) is None:
             raise LookupError("Room not found")
@@ -155,7 +155,7 @@ class RoomUserApi(Resource):
         except LookupError:
             return create_404_error()
         except:
-            abort(500)
+            return create_500_error()
     def __remove_user_from_room(self, user_id, room_id):
         room_user = RoomUser.query.filter_by(room_id=room_id, user_id=user_id).first()
         if room_user is None:

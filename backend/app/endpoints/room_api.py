@@ -177,7 +177,7 @@ class RoomApi(Resource):
     def put(self, room_id):
         try:
             return self.__update_room(room_id, self.reqparse.parse_args())
-        except (AttributeError, BadRequest):
+        except BadRequest:
             return create_400_error()
         except LookupError:
             return create_404_error()
