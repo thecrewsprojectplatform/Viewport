@@ -7,6 +7,7 @@ import { store } from "../../store";
 import { UserListR } from "./user-list";
 import { Room, User } from "../../api/video-room-types";
 import { ChatAppR } from "./chat-app/chat-app"
+import VideoPlayer from "./video-player"
 
 /**
  * Represents the required properties of the VideoRoomPage.
@@ -62,7 +63,7 @@ const VideoRoomPage = (props: Prop) => {
                 Exit Room
             </button>
             <div className="row">
-                <span className="Video-section">YouTube videos go here</span>
+                <VideoPlayer />
                 <UserListR />
                 <div>
                 <ChatAppR />
