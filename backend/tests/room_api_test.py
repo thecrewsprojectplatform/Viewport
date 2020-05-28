@@ -8,7 +8,6 @@ from app import create_app, db
 
 class RoomApiTest(TestCase):
     test_room = {"name": "Test Room"}
-    updated_room = {"name": "Updated Room", "video_id": "Random ID"}
 
     def create_app(self):
         return create_app(for_testing=True)
@@ -21,13 +20,18 @@ class RoomApiTest(TestCase):
         db.drop_all()
 
     def test_get(self):
-        """Tests GET at /rooms"""
+        """Tests GET at /rooms/{room_id}"""
         post_response = self.client.post("/rooms", json=self.test_room)
         get_response = self.client.get(f"/rooms/{post_response.json['id']}")
         self.assertEqual(get_response.json, post_response.json)
 
+    def test_get_invalid_id(self):
+        """Tests GET at /rooms/{room_id} with invalid room_id"""
+        get_response = self.client.get("/rooms/0")
+        self.assert404(get_response)
+
     def test_get_all(self):
-        """Tests GET at /rooms/{room_id}"""
+        """Tests GET at /rooms"""
         response = self.client.get("/rooms")
         self.assertEqual(response.json, [])
 
@@ -36,12 +40,31 @@ class RoomApiTest(TestCase):
         response = self.client.post("/rooms", json=self.test_room)
         self.assertEqual(response.json["name"], self.test_room["name"])
 
+    def test_post_invalid_request(self):
+        """Tests POST at /rooms with invalid request body"""
+        response = self.client.post("/rooms", json={})
+        self.assert400(response)
+
     def test_put(self):
         """Tests PUT at /rooms"""
+        updated_room = {"name": "Updated Room", "video_id": "Random ID"}
         post_response = self.client.post("/rooms", json=self.test_room)
-        put_response = self.client.put(f"/rooms/{post_response.json['id']}", json=self.updated_room)
-        self.assertEqual(put_response.json["name"], self.updated_room["name"])
+        put_response = self.client.put(f"/rooms/{post_response.json['id']}", json=updated_room)
+        self.assertEqual(put_response.json["name"], updated_room["name"])
         self.assertEqual(post_response.json["id"], put_response.json["id"])
+
+    def test_put_invalid_id(self):
+        """Tests PUT at /rooms with invalid room_id"""
+        updated_room = {"name": "Updated Room", "video_id": "Random ID"}
+        put_response = self.client.put(f"/rooms/0", json=updated_room)
+        self.assert404(put_response)
+
+    def test_put_invalid_request(self):
+        """Tests PUT at /rooms with invalid request body"""
+        updated_room = {"name": "Updated Room"}
+        post_response = self.client.post("/rooms", json=self.test_room)
+        put_response = self.client.put(f"/rooms/{post_response.json['id']}", json=updated_room)
+        self.assert400(put_response)
 
     def test_delete(self):
         """Tests DELETE at /rooms"""
@@ -49,7 +72,12 @@ class RoomApiTest(TestCase):
         delete_response = self.client.delete(f"/rooms/{post_response.json['id']}")
         self.assert200(delete_response)
         get_response = self.client.get(f"/rooms/{post_response.json['id']}")
-        self.assert500(get_response)
+        self.assert404(get_response)
+
+    def test_delete_invalid_id(self):
+        """Tests DELETE at /rooms with invalid room_id"""
+        delete_response = self.client.delete(f"/rooms/0")
+        self.assert404(delete_response)
 
 if __name__ == "__main__":
     unittest.main()
