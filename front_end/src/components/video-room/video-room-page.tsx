@@ -1,19 +1,23 @@
 import React, { useEffect, useContext} from "react";
 import { connect } from "react-redux";
-import { getRoomUsers, VideoRoomState } from "../../store/video-room/video-room";
+import { createRoomAction, getRoomUsers, VideoRoomState, removeUserFromRoom, removeRoom, getRoomsAction } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
 import { UserListR } from "./user-list";
 import { Room, User } from "../../api/video-room-types";
 import { ChatAppR } from "./chat-app/chat-app"
+import VideoPlayer from "./video-player"
 
 /**
  * Represents the required properties of the VideoRoomPage.
  */
 export interface Prop {
-    currentRoom: Room
+    currentRoom: Room;
+    roomList: Room[];
+    currentUser: User;
     users: User[];
+    setPageBackwards: () => void;
 }
 
 /**
@@ -34,12 +38,36 @@ const VideoRoomPage = (props: Prop) => {
         }
     }, [props.currentRoom])
 
+    useEffect(() => {
+        store.dispatch(getRoomsAction(api))
+    }, []);
+
+    const exitRoomClick = (): void => {
+        if (props.users.length === 1) {
+            store.dispatch(removeUserFromRoom(api, props.currentRoom.id, props.currentUser.id));
+            store.dispatch(removeRoom(api, props.currentRoom.id));
+        } else {
+            store.dispatch(removeUserFromRoom(api, props.currentRoom.id, props.currentUser.id));
+        }
+        props.setPageBackwards()
+    }
+
     return (
-        <div className="row">
-            <span className="Video-section">YouTube videos go here</span>
-            <UserListR />
-            <div>
-            <ChatAppR />
+        <div>
+            <button
+                className="Exit-room-button"
+                onClick={(ev) => {
+                    exitRoomClick()
+                }
+            }>
+                Exit Room
+            </button>
+            <div className="row">
+                <VideoPlayer />
+                <UserListR />
+                <div>
+                <ChatAppR />
+                </div>
             </div>
         </div>
     )
@@ -53,6 +81,8 @@ const VideoRoomPage = (props: Prop) => {
 const mapStateToProps = (state: VideoRoomState) => {
     return {
         currentRoom: state.currentRoom,
+        roomList: state.roomList,
+        currentUser: state.user,
         users: state.users,
         updateStatus: state.updateStatus,
     }

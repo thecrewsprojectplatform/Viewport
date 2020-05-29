@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { connect } from "react-redux";
-import { getRoomsAction, VideoRoomState, Status } from "../../store/video-room/video-room";
+import { getRoomsAction, VideoRoomState, Status, removeUser } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
@@ -14,7 +14,8 @@ export interface Prop {
     roomList: Room[];
     currentUser: User;
     updateStatus: Status;
-    setPage: () => void;
+    setPageForward: () => void;
+    setPageBackwards: () => void;
 }
 
 /**
@@ -35,10 +36,23 @@ const JoinCreateRoomPage = (props: Prop) => {
         store.dispatch(getRoomsAction(api))
     }, []);
 
+    const logoutClick = (): void => {
+        store.dispatch(removeUser(api, props.currentUser.id));
+        props.setPageBackwards()
+    }
+
     return (
         <div>
-            <span>Join or Create page!</span>
-            <RoomListR setPage={props.setPage}/>
+            <button
+                className="Logout-button"
+                onClick={(ev) => {
+                    logoutClick()
+                }
+            }>
+                Logout
+            </button>
+            <p>Join or Create page!</p>
+            <RoomListR setPageForward={props.setPageForward}/>
         </div>
     )
 }
