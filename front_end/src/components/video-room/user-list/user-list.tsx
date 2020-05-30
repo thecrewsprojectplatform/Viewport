@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext, useLayoutEffect } from 'react';
 import { connect } from "react-redux";
-import { User } from "../../api/video-room-types";
+import { User } from "../../../api/video-room-types";
 import { UserListItem } from './user-list-item';
-import { store } from '../../store';
-import { getRoomUsers, VideoRoomState } from '../../store/video-room/video-room';
-import { VideoRoomApi } from "../../api/video-room-api";
-import { ApiContext } from "..";
-import { Status } from "../../store/video-room/video-room"
+import { store } from '../../../store';
+import { getRoomUsers, VideoRoomState } from '../../../store/video-room/video-room';
+import { VideoRoomApi } from "../../../api/video-room-api";
+import { ApiContext } from "../..";
+import { Status } from "../../../store/video-room/video-room"
 
 /**
  * Represents the required properties of the UserList.
@@ -44,13 +44,13 @@ const UserList = (props: Prop) => {
             store.dispatch(getRoomUsers(api, props.roomId));
         }
     }, [props.updateStatus]);
-
+    /*
     useEffect(() => {
         if (props.users.length < numberofUsers.length) {
             store.dispatch(getRoomUsers(api, props.roomId));
         }
     }, [props.users]);
-
+    */ 
     return (
         <div className="User-list">
             {

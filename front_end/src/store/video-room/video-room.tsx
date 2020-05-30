@@ -324,7 +324,6 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.currentRoom;
-                draftState.pastRoomId = action.pastRoomId;
                 draftState.messageHistory = action.messageHistory;
                 draftState.roomId = action.roomId;
                 draftState.users = action.users;
@@ -335,9 +334,10 @@ export const reducer = (
             })
         // socket.emit sends data that client has typed to the server
         case ActionType.SendInitialClientMessage:
-            socket.emit('chatMessage', {
+            socket.emit('clientMessageToServer', {
                 clientMessage: action.clientMessage,
                 currentRoomId: state.currentRoom.id,
+                clientId: state.user.id,
                 clientName: state.user.name
             });
             // produce is the only way you can directly modify the state
@@ -382,10 +382,16 @@ export const getRoomsAction = (api: VideoRoomApi): any => {
             type: ActionType.GetRooms,
         } as GetRoomsAction);
         api.getRooms().then(roomsList => {
-            dispatch({
-                type: ActionType.GetRoomsSuccess,
-                roomsList: roomsList,
-            } as GetRoomsSuccessAction);
+            console.log(roomsList)
+            socket.emit('updateRoomsToServerRoomList', {
+                roomsList: roomsList
+            });
+            socket.on('updateRoomsToAllClientRoomList', data => {
+                dispatch({
+                    type: ActionType.GetRoomsSuccess,
+                    roomsList: data.roomsList,
+                } as GetRoomsSuccessAction);
+            })
         }).catch(err => {
             dispatch({
                 type: ActionType.GetRoomsFail
@@ -430,6 +436,18 @@ export const createRoomAndAddUserToRoomAction = (api: VideoRoomApi, roomName: st
             dispatch({
                 type: ActionType.CreateRoomAndAddUserToRoomFail
             } as CreateRoomAndAddUserToRoomFailAction);
+        }).finally(() => {
+            api.getRooms().then(roomsList => {
+                socket.emit('updateRoomsToServerRoomList', {
+                    roomsList: roomsList
+                })
+                socket.on('updateRoomsToAllClientRoomList', data => {
+                    dispatch({
+                        type: ActionType.GetRoomsSuccess,
+                        roomsList: data.roomsList,
+                    } as GetRoomsSuccessAction);
+                })
+            });
         });
     };
 };
@@ -437,11 +455,13 @@ export const createRoomAndAddUserToRoomAction = (api: VideoRoomApi, roomName: st
 export const getRoomUsers = (api: VideoRoomApi, roomId: number): any => {
     return (dispatch): any => {
         api.getUsersInRoom(roomId).then(users => {
-            socket.emit('addUserToServerUserList', {
+            // this socket communication updates the userlist of the room
+            // once the user joins the room
+            socket.emit('updateUserToServerUserList', {
                 currentRoomId: roomId,
                 clientList: users
             })
-            socket.on('addUserToAllClientUserList', data => {
+            socket.on('updateUserToAllClientUserList', data => {
                 dispatch({
                     type: ActionType.SetVideoRoomUsers,
                     users: data.clientList,
@@ -478,6 +498,9 @@ export const createUser = (api: VideoRoomApi, userName: string): any => {
             type: ActionType.CreateUser,
         } as CreateUserAction);
         api.createUser(userName).then(user => {
+            socket.emit('getCurrentUser', {
+                currentUser: user
+            });
             dispatch({
                 type: ActionType.CreateUserSuccess,
                 user: user,
@@ -523,6 +546,18 @@ export const removeRoom = (api: VideoRoomApi, roomId: number): any => {
             dispatch({
                 type: ActionType.RemoveRoomFail
             } as RemoveRoomFailAction);
+        }).finally(() => {
+            api.getRooms().then(roomsList => {
+                socket.emit('updateRoomsToServerRoomList', {
+                    roomsList: roomsList
+                })
+                socket.on('updateRoomsToAllClientRoomList', data => {
+                    dispatch({
+                        type: ActionType.GetRoomsSuccess,
+                        roomsList: data.roomsList,
+                    } as GetRoomsSuccessAction);
+                })
+            });
         });
     };
 };
@@ -547,19 +582,19 @@ export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: nu
                 type: ActionType.RemoveUserFromRoomFail
             } as RemoveUserFromRoomFailAction);
         }).finally(() => {
+            // this socket communication updates the userlist of the room
+            // once the user leaves the room
             api.getUsersInRoom(roomId).then(users => {
-                socket.emit('removeUserToServerUserList', {
+                socket.emit('updateUserToServerUserList', {
                     currentRoomId: roomId,
                     clientList: users
                 });
-                socket.on('removeUserToAllClientUserList', data => {
+                socket.on('updateUserToAllClientUserList', data => {
                     dispatch({
                         type: ActionType.SetVideoRoomUsers,
                         users: data.clientList
                     } as SetVidoRoomUsersAction);
                 });
-            }).catch(err => {
-                console.log("Failed to get users in room");
             });
         });
     };
