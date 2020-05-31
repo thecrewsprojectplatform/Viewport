@@ -1,5 +1,5 @@
 import React from "react";
-import { User } from "../../api/video-room-types";
+import { User } from "../../../api/video-room-types";
 
 /**
  * Represents the required properties of the User.

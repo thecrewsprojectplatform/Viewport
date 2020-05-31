@@ -1,10 +1,10 @@
-import React, { useEffect, useContext} from "react";
+import React, { useEffect, useContext } from "react";
 import { connect } from "react-redux";
 import { createRoomAction, getRoomUsers, VideoRoomState, removeUserFromRoom, removeRoom, getRoomsAction } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
-import { UserListR } from "./user-list";
+import { UserListR } from "./user-list/user-list";
 import { Room, User } from "../../api/video-room-types";
 import { ChatAppR } from "./chat-app/chat-app"
 import VideoPlayer from "./video-player"

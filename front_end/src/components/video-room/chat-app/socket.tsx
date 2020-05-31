@@ -10,7 +10,7 @@ const configureSocket = dispatch => {
   });
 
   // listening for the server's client broadcast message
-  socket.on('messageResponse', data => {
+  socket.on('serverMessageToAllClients', data => {
       store.dispatch(sendMessageToAllClients(data.clientMessage, data.clientName))
   });
 
