@@ -1,9 +1,10 @@
 from app import create_app
 
 
+app = create_app()
+
 if __name__ == "__main__":
     """
     This script starts the server
     """
-    app = create_app()
-    app.run(debug=True)
+    app.run(threaded=True, port=5000)

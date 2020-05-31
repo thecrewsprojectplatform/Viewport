@@ -21,5 +21,11 @@ def create_app(for_testing=False):
     api = swagger.docs(Api(app), apiVersion="0.1")
 
     db.init_app(app)
+    try:
+        db.drop_all(app=app)
+    except:
+        pass
+    finally:
+        db.create_all(app=app)
     initialize_routes(api)
     return app
