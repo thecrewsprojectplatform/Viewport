@@ -11,6 +11,12 @@ To create the database for the first time, run:
 python create_new_db.py
 ```
 
+## Running the Tests
+To run the backend tests, run:
+```
+python tests\run_all_tests.py
+```
+
 ## Running the Backend
 To start the Flask server, run:
 ```
