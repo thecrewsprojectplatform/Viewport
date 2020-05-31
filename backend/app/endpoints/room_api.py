@@ -16,7 +16,6 @@ class RoomListApi(Resource):
 
     @swagger.operation(
         notes="Returned all rooms",
-        # responseClass=List[Room.__name__],
         parameters=[],
         responseMessages=[
             {
@@ -38,7 +37,6 @@ class RoomListApi(Resource):
 
     @swagger.operation(
         notes="Creates a new room",
-        # responseClass=Room.__name__,
         parameters=[
             {
                 "name": "name",
@@ -88,11 +86,11 @@ class RoomApi(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument("name", type=str, required=True, location="json")
         self.reqparse.add_argument("video_id", type=str, required=True, location="json")
+        self.reqparse.add_argument("video_state", type=str, required=False, default="PAUSED", location="json")
         super(RoomApi, self).__init__()
 
     @swagger.operation(
         notes="Returns the specific room",
-        # responseClass=Room.__name__,
         parameters=[
             {
                 "name": "room_id",
@@ -131,7 +129,6 @@ class RoomApi(Resource):
 
     @swagger.operation(
         notes="Updates the specific room",
-        # responseClass=Room.__name__,
         parameters=[
             {
                 "name": "room_id",
@@ -153,6 +150,14 @@ class RoomApi(Resource):
                 "name": "video_id",
                 "description": "ID of video to update room with",
                 "required": True,
+                "allowMultiple": False,
+                "dataType": "string",
+                "paramType": "body"
+            },
+            {
+                "name": "video_state",
+                "description": "Whether the video is playing or not, valid values: ['PLAYING', 'PAUSED']",
+                "required": False,
                 "allowMultiple": False,
                 "dataType": "string",
                 "paramType": "body"
@@ -188,6 +193,8 @@ class RoomApi(Resource):
         if room is None:
             raise LookupError("Room not found")
         for k, v in args.items():
+            if k == "video_state" and v not in Room.valid_video_states:
+                raise BadRequest()
             setattr(room, k, v)
         db.session.commit()
         return room.to_json()
