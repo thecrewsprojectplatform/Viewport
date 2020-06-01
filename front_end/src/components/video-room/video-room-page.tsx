@@ -8,6 +8,7 @@ import { UserListR } from "./user-list";
 import { Room, User } from "../../api/video-room-types";
 import { ChatAppR } from "./chat-app/chat-app"
 import VideoPlayer from "./video-player"
+import NavBar from "../nav-bar";
 
 /**
  * Represents the required properties of the VideoRoomPage.
@@ -54,19 +55,12 @@ const VideoRoomPage = (props: Prop) => {
 
     return (
         <div>
-            <button
-                className="Exit-room-button"
-                onClick={(ev) => {
-                    exitRoomClick()
-                }
-            }>
-                Exit Room
-            </button>
+            {NavBar("Exit Room", exitRoomClick)}
             <div className="row">
                 <VideoPlayer />
                 <UserListR />
                 <div>
-                <ChatAppR />
+                    <ChatAppR />
                 </div>
             </div>
         </div>

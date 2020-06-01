@@ -7,6 +7,7 @@ import { getRoomUsers, VideoRoomState } from '../../store/video-room/video-room'
 import { VideoRoomApi } from "../../api/video-room-api";
 import { ApiContext } from "..";
 import { Status } from "../../store/video-room/video-room"
+import { List } from '@material-ui/core';
 
 /**
  * Represents the required properties of the UserList.
@@ -46,6 +47,7 @@ const UserList = (props: Prop) => {
 
     return (
         <div className="User-list">
+            <List>
             {
                 props.users && props.users.length !== 0 &&
                 (() => {
@@ -59,6 +61,7 @@ const UserList = (props: Prop) => {
                     })
                 })()
             }
+            </List>
         </div>
     )
 }

@@ -6,6 +6,9 @@ import { store } from '../../store';
 import { ApiContext } from '..';
 import { Room, User } from '../../api/video-room-types';
 import { VideoRoomApi } from '../../api/video-room-api';
+import { Button, TextField, CssBaseline, Container, List } from '@material-ui/core';
+import useStyles from '../../styles';
+import { FixedSizeList } from 'react-window';
 
 /**
  * Represents the required properties of the UserList.
@@ -28,6 +31,7 @@ export interface Prop {
  * @returns {JSX.Element} The JSX representing the RoomList.
  */
 const RoomList = (props: Prop) => {
+    const classes = useStyles();
     const [newRoomName, setNewRoomName] = useState("");
     const api = useContext<VideoRoomApi>(ApiContext);
 
@@ -47,34 +51,43 @@ const RoomList = (props: Prop) => {
     }
 
     return (
-        <div className="Room-list">
-            <input 
-                id="Add-room" 
-                className="Room-input" 
-                type="text" 
-                onChange={(event) => setNewRoomName(event.target.value)} 
-                onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                        createNewRoomClick();
-                    }
-                }}
-                value={newRoomName}
-            />
-            {
-                (() => {
-                    return props.currentRooms.map((room) => {
-                        return (
-                            <RoomListItem 
-                                key={room.id}
-                                currentRoom={room}
-                                onJoinClick={onJoinRoomClick}
-                            />
-                        )
-                    })
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <div className="Room-list">
+                <form className={classes.form} onSubmit={createNewRoomClick} autoComplete="off">
+                        <TextField 
+                            variant="outlined"
+                            margin="normal"
+                            fullWidth
+                            id="create-new-room"
+                            label="Create New Room"
+                            name="create-new-room"
+                            autoComplete="off"
+                            autoFocus
+                        
+                            type="text" 
+                            onChange={(event) => setNewRoomName(event.target.value)}
+                            value={newRoomName}
+                        />
+                </form>
+                <List>
+                {
+                    (() => {
+                        return props.currentRooms.map((room) => {
+                            return (
+                                <RoomListItem 
+                                    key={room.id}
+                                    currentRoom={room}
+                                    onJoinClick={onJoinRoomClick}
+                                />
+                            )
+                        })
 
-                })()
-            }
-        </div>
+                    })()
+                }
+                </List>
+            </div>
+        </Container>
     )
 }
 

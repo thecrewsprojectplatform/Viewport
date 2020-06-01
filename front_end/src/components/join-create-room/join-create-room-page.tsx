@@ -6,6 +6,7 @@ import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
 import { User, Room } from "../../api/video-room-types";
 import { RoomListR } from "./room-list";
+import NavBar from "../nav-bar";
 
 /**
  * Represents the required properties of the JoinCreateRoomPage.
@@ -43,15 +44,7 @@ const JoinCreateRoomPage = (props: Prop) => {
 
     return (
         <div>
-            <button
-                className="Logout-button"
-                onClick={(ev) => {
-                    logoutClick()
-                }
-            }>
-                Logout
-            </button>
-            <p>Join or Create page!</p>
+            {NavBar("Logout", logoutClick)}
             <RoomListR setPageForward={props.setPageForward}/>
         </div>
     )
