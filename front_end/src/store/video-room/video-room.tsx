@@ -19,6 +19,8 @@ export interface VideoRoomState {
     pastRoomId: number;
     user: User;
     users: User[];
+    url: string;
+    playing: boolean;
     clientMessage: string;
     clientName: string;
     messageHistory: MessageDetail[];
@@ -74,6 +76,26 @@ interface SendToAllClientsAction {
 interface SendInitialClientMessageAction {
     type: ActionType.SendInitialClientMessage;
     clientMessage: string;
+}
+
+interface SendUrlToServerAction {
+    type: ActionType.SendUrlToServer;
+    url: string;
+}
+
+interface LoadVideoAction {
+    type: ActionType.LoadVideo;
+    url: string;
+}
+
+interface SendControlsToServerAction {
+    type: ActionType.SendControlsToServer;
+    playing: boolean;
+}
+
+interface ControlVideoAction {
+    type: ActionType.ControlVideo;
+    playing; boolean;
 }
 
 interface CreateRoomAndAddUserToRoomAction {
@@ -167,6 +189,10 @@ type Action =   SetVidoRoomAction |
                 AddUserToRoomFailAction |
                 SendToAllClientsAction | 
                 SendInitialClientMessageAction |
+                SendUrlToServerAction |
+                LoadVideoAction |
+                SendControlsToServerAction |
+                ControlVideoAction |
                 CreateRoomAndAddUserToRoomAction |
                 CreateRoomAndAddUserToRoomSuccessAction |
                 CreateRoomAndAddUserToRoomFailAction |
@@ -197,6 +223,8 @@ export const reducer = (
         pastRoomId: null,
         user: null,
         users: [],
+        url: null,
+        playing: false,
         clientMessage: null,
         clientName: null,
         messageHistory: [],
@@ -355,6 +383,36 @@ export const reducer = (
                     chat_message: action.clientMessage,
                     chat_username: action.clientName
                 }];
+            })
+        case ActionType.SendUrlToServer:
+            socket.emit('sendUrlToServer', {
+                url: action.url,
+                currentRoomId: state.currentRoom.id,
+                clientId: state.user.id,
+                clientName: state.user.name
+            });
+            return produce(state, draftState => {
+                draftState.url = action.url
+            })
+        case ActionType.LoadVideo:
+            return produce(state, draftState => {
+                draftState.url = action.url;
+                console.log('setting url')
+                console.log(action.url)
+            });
+        case ActionType.SendControlsToServer:
+            socket.emit('sendControlsToServer', {
+                playing: action.playing,
+                currentRoomId: state.currentRoom.id,
+                clientId: state.user.id,
+                clientName: state.user.name
+            })
+            return produce(state, draftState => {
+                draftState.playing = action.playing;
+            })
+        case ActionType.ControlVideo:
+            return produce(state, draftState => {
+                draftState.playing = action.playing;
             })
         default:
             return state;
@@ -619,6 +677,52 @@ export const sendMessageToServer = (message: string): any => {
         dispatch({
             type: ActionType.SendInitialClientMessage,
             clientMessage: message
+        })
+    }
+}
+
+export const sendUrlToServer = (url: string): any => {
+    return (dispatch): any => {
+        console.log("sending url to server")
+        dispatch({
+            type: ActionType.SendUrlToServer,
+            url: url
+        })
+    }
+}
+
+export const sendUrlToAllClients = (url: string): any => {
+    return (dispatch): any => {
+        console.log("client recieved url")
+        console.log(url)
+
+    }
+}
+
+export const loadVideo = (url: HTMLInputElement): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.LoadVideo,
+            url: url
+        })
+    }
+}
+
+export const sendControlsToServer = (playing: boolean): any => {
+    return (dispatch): any => {
+        console.log("sending controls to server")
+        dispatch({
+            type: ActionType.SendControlsToServer,
+            playing: playing
+        })
+    }
+}
+
+export const controlVideo = (playing: boolean): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.ControlVideo,
+            playing: playing
         })
     }
 }

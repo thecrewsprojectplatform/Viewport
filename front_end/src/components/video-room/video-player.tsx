@@ -1,5 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import {connect } from 'react-redux';
 import ReactPlayer from 'react-player'
+import { store } from '../../store';
+import { sendUrlToServer, VideoRoomState, loadVideo, sendControlsToServer } from '../../store/video-room/video-room';
+
+export interface Prop {
+    url: string;
+    playing: boolean;
+}
 
 /**
  * Creates a video player with the following attributes:
@@ -7,67 +15,60 @@ import ReactPlayer from 'react-player'
  *      play/pause button
  *      Progress bar 
  */
-class VideoPlayer extends React.Component {
-    player: HTMLIFrameElement;
-    urlInput: HTMLInputElement;
+const VideoPlayer = (props: Prop) => {
+    const [url, setUrl] = useState(null)
+    const [playing, setPlaying] = useState(true)
 
-    state = {
-        url: null,
-        playing: false,
-        played: 0,
-    }
-    
-    load = (url: string) => {
-        this.setState({
-            url,
-            played: 0
-        })
-    }
-
-    handlePlayPause = () => {
-        this.setState({ playing: !this.state.playing })
-    }
-
-    handleProgress = (state: object) => {
-        this.setState(state)
+    const loadButton = () => {
+        store.dispatch(sendUrlToServer(url))
     }
 
 
-    render() {
-        const {url, playing, played} = this.state
+    const handlePlayPause = () => {
+        console.log(props.playing)
+        store.dispatch(sendControlsToServer(playing))
+        setPlaying(!playing)
+    }
+
+    const handleProgress = (state: object) => {
+        //this.setState(state)
+    }
+
         return (
             <div>
             <div>
                 <div>
-                    <input ref={input => { this.urlInput = input}} type='text' placeholder='Enter URL' />
-                    <button onClick={() => this.setState({ url: this.urlInput.value })}>Load</button>
+                    <input 
+                        type='text'
+                        placeholder='Enter URL'
+                        className='FORM-CONTROL'
+                        value={url}
+                        onChange={event => setUrl(event.target.value)} />
+                    <button onClick={loadButton}>Load</button>
                 </div>
                 
                 <ReactPlayer
-                    url={url}
+                    url={props.url}
                     config={{
                         youtube: {
                             playerVars: { 
                                 rel : 0}
                         }
                     }}
-                    playing={playing}
-                    onProgress={this.handleProgress}
+                    playing={props.playing}
                 />
-
-                <button onClick={this.handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
+                <button onClick={handlePlayPause}>{props.playing ? 'Pause' : 'Play'}</button>
             </div>
-            <table>
-                <tbody>
-                    <tr>
-                    <th>Played</th>
-                    <th><progress max={1} value={played} /></th>
-                    </tr>
-                </tbody>
-            </table>
             </div>
         );
     }
+
+
+const mapStateToProps = (state: VideoRoomState) => {
+    return {
+        url: state.url,
+        playing: state.playing
+    }
 }
 
-export default VideoPlayer;
+export default connect(mapStateToProps)(VideoPlayer);
