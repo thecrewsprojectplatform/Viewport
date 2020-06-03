@@ -45,7 +45,7 @@ const RoomList = (props: Prop) => {
         store.dispatch(addUserToRoomAction(api, roomId, props.user.id, props.currentRooms));
         props.setPageForward();
     }
-
+ 
     return (
         <div className="Room-list">
             <input 

@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { connect } from "react-redux";
-import { createRoomAction, getRoomUsers, VideoRoomState, removeUserFromRoom, removeRoom, getRoomsAction } from "../../store/video-room/video-room";
+import { userClosedBrowser, getRoomUsers, VideoRoomState, removeUserFromRoom, removeRoom, getRoomsAction } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
@@ -8,6 +8,7 @@ import { UserListR } from "./user-list/user-list";
 import { Room, User } from "../../api/video-room-types";
 import { ChatAppR } from "./chat-app/chat-app"
 import VideoPlayer from "./video-player"
+import { socket } from "../../App"
 
 /**
  * Represents the required properties of the VideoRoomPage.
@@ -51,6 +52,11 @@ const VideoRoomPage = (props: Prop) => {
         }
         props.setPageBackwards()
     }
+
+    // listening for the server to tell that client has disconnected
+    socket.on('clientDisconnectedUpdateUserList', data => {
+        store.dispatch(userClosedBrowser(api, data.currentRoomId, data.currentUserId))
+    });
 
     return (
         <div>
