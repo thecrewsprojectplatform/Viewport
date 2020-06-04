@@ -27,4 +27,7 @@ export enum ActionType {
     RemoveUserFromRoom="REMOVE_USER_FROM_ROOM",
     RemoveUserFromRoomSuccess="REMOVE_USER_FROM_ROOM_SUCCESS",
     RemoveUserFromRoomFail="REMOVE_USER_FROM_ROOM_FAIL",
+    RemoveUserAfterBrowserClose="REMOVE_USER_AFTER_BROWSER_CLOSE",
+    RemoveUserAfterBrowserCloseSuccess="REMOVE_USER_AFTER_BROWSER_CLOSE_SUCESS",
+    RemoveUserAfterBrowserCloseFail="REMOVE_USER_AFTER_BROWSER_CLOSE_FAIL",
 }
