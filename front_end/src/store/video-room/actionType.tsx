@@ -1,4 +1,5 @@
 export enum ActionType {
+    SetVideoRoom="SET_VIDEO_ROOM",
     SetVideoRoomUsers="SET_VIDEO_ROOM_USERS",
     AddUserToRoom="ADD_USER_TO_ROOM",
     AddUserToRoomSuccess="ADD_USER_TO_ROOM_SUCCESS",
@@ -8,6 +9,11 @@ export enum ActionType {
     GetRoomsFail="GET_ROOMS_FAIL",
     SendInitialClientMessage = "CLIENT_SENT_A_MESSAGE",
     SendMessageToAllClients = "SERVER_SENDS_A_MESSAGE_TO_ALL_CLIENTS",
+    SendUrlToServer = "SERVER_SENDS_URL",
+    SendUrltoAllClients = "SERVER_SENDS_URL_TO_ALL_CLIENTS",
+    LoadVideo = "LOAD_VIDEO",
+    ControlVideo = "CONTROL_VIDEO",
+    GetAndUpdateRoom = "GET_AND_UPDATE_ROOM",
     CreateRoomAndAddUserToRoom="CREATE_ROOM_AND_ADD_USER_TO_ROOM", 
     CreateRoomAndAddUserToRoomSuccess="CREATE_ROOM_AND_ADD_USER_TO_ROOM_SUCCESS",
     CreateRoomAndAddUserToRoomFail="CREATE_ROOM_AND_ADD_USER_TO_ROOM_FAIL",

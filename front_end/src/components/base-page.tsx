@@ -38,7 +38,17 @@ export interface Prop {
  */
 const BasePage = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
-    
+    // happens right away
+    // when a value in the list gets changed, call the function.
+    /*useEffect(() => {
+        if (props.roomId === null) {
+            // send some action to the store
+            // change the store -> change the prop
+            // -> component rerenders.
+            store.dispatch(createRoomAction(api, "New Room"));
+        }
+    }, [props.roomId])*/
+
     // creating useState to set login page as the first page.
     const [pageType, setPageType] = useState(PageType.LoginPage);
 
@@ -76,7 +86,7 @@ const BasePage = (props: Prop) => {
 // from that state, get the roomId and user as a prop.
 // this function allows these props to be used in this file
 const mapStateToProps = state => {
-    console.log(state);
+    //console.log(state);
     return {
         roomId: state.roomId,
         user: state.user,
