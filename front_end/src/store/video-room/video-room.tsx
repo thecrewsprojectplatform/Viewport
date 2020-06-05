@@ -27,6 +27,12 @@ export interface VideoRoomState {
     updateStatus: Status;
 }
 
+interface SetVidoRoomAction {
+    type: ActionType.SetVideoRoom;
+    name: string;
+    id: number;
+}
+
 interface SetVidoRoomUsersAction {
     type: ActionType.SetVideoRoomUsers;
     users: User[];
@@ -168,7 +174,8 @@ interface RemoveUserAfterBrowserCloseFailAction {
     type: ActionType.RemoveUserAfterBrowserCloseFail;
 }
 
-type Action =   SetVidoRoomUsersAction |
+type Action =   SetVidoRoomAction |
+                SetVidoRoomUsersAction |
                 GetRoomsAction |
                 GetRoomsSuccessAction |
                 GetRoomsFailAction |
@@ -219,15 +226,24 @@ export const reducer = (
     }, action: Action
 ): VideoRoomState => {
     switch (action.type) {
+        case ActionType.SetVideoRoom:
+            return produce(state, draftState => {
+                draftState.roomId = action.id;
+                draftState.roomName = action.name;
+            });
         case ActionType.SetVideoRoomUsers:
             return produce(state, draftState => {
                 draftState.users = action.users;
+                console.log("current users in the room are", action.users)
             });
         case ActionType.AddUserToRoom:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Running;
             })
         case ActionType.AddUserToRoomSuccess:
+            // socket communication to let server know that
+            // a client has joined the room.
+            // Localizes all messages sent in that room.
             socket.emit('joinRoom', action.room.id);
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
@@ -256,6 +272,9 @@ export const reducer = (
                 draftState.updateStatus = Status.Running
             })  
         case ActionType.CreateRoomAndAddUserToRoomSuccess:
+            // socket communication to let server know that
+            // a client has joined the room.
+            // Localizes all messages sent in that room.
             socket.emit('joinRoom', action.room.id);
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
@@ -346,6 +365,8 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.clientMessage = action.clientMessage;
             })
+        // server sends the message to all clients
+        // keeps track of the message and keeps track of the history to display to each client.
         case ActionType.SendMessageToAllClients:
             return produce(state, draftState => {
                 draftState.clientMessage = action.clientMessage;
@@ -371,6 +392,21 @@ export const reducer = (
             return state;
     }
 }
+// these are what the components what actually call.
+export const createRoomAction = (api: VideoRoomApi, roomName: string): any => {
+    return (dispatch): any => {
+        // if the room was created successfully.
+        api.createRoom(roomName).then(room => {
+            dispatch({
+                type: ActionType.SetVideoRoom,
+                id: room.id,
+                name: room.name,
+            } as SetVidoRoomAction);
+        }).catch(err => {
+            console.log("Failed to create room");
+        });
+    };
+};
 
 export const getRoomsAction = (api: VideoRoomApi): any => {
     return (dispatch): any => {
@@ -378,6 +414,7 @@ export const getRoomsAction = (api: VideoRoomApi): any => {
             type: ActionType.GetRooms,
         } as GetRoomsAction);
         api.getRooms().then(roomsList => {
+            console.log(roomsList)
             socket.emit('updateRoomsToServerRoomList', {
                 roomsList: roomsList
             });
