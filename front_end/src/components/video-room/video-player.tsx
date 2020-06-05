@@ -1,5 +1,16 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
+import {connect } from 'react-redux';
 import ReactPlayer from 'react-player'
+import { store } from '../../store';
+import { sendUrlToServer, VideoRoomState, getAndUpdateRoom} from '../../store/video-room/video-room';
+import { VideoRoomApi } from '../../api/video-room-api';
+import { ApiContext } from '..';
+import { Room } from '../../api/video-room-types';
+
+export interface Prop {
+    currentRoom: Room;
+    url: string;
+}
 
 /**
  * Creates a video player with the following attributes:
@@ -7,67 +18,72 @@ import ReactPlayer from 'react-player'
  *      play/pause button
  *      Progress bar 
  */
-class VideoPlayer extends React.Component {
-    player: HTMLIFrameElement;
-    urlInput: HTMLInputElement;
+const VideoPlayer = (props: Prop) => {
+    const api = useContext<VideoRoomApi>(ApiContext)
 
-    state = {
-        url: null,
-        playing: false,
-        played: 0,
-    }
-    
-    load = (url: string) => {
-        this.setState({
-            url,
-            played: 0
-        })
+    const [url, setUrl] = useState(null)
+
+    const loadButton = () => {
+        store.dispatch(sendUrlToServer(url))
+        // By default, set the video_state to paused after loading
+        api.updateRoom(props.currentRoom.id, props.currentRoom.name, props.currentRoom.video_id, "PAUSED")
     }
 
-    handlePlayPause = () => {
-        this.setState({ playing: !this.state.playing })
+    const handlePlayPause = () => {
+        store.dispatch(getAndUpdateRoom(api, props.currentRoom.id))
     }
 
-    handleProgress = (state: object) => {
-        this.setState(state)
+    /** Currently the play/pause button grabs from the api, does the opposite of what it gets and then updates the api
+        For example: 
+            API.video_state = PAUSED
+            When the play/pause button is pressed, it will start the video and then update the api to PLAYING
+    */
+    const checkVideoState = () => {
+        if (props.currentRoom) {
+            return props.currentRoom.video_state == null || props.currentRoom.video_state == "PLAYING" ? false : true
+        }
+        return false
     }
 
+    const handleProgress = (state: object) => {
+        //this.setState(state)
+    }
 
-    render() {
-        const {url, playing, played} = this.state
         return (
             <div>
             <div>
                 <div>
-                    <input ref={input => { this.urlInput = input}} type='text' placeholder='Enter URL' />
-                    <button onClick={() => this.setState({ url: this.urlInput.value })}>Load</button>
+                    <input 
+                        type='text'
+                        placeholder='Enter URL'
+                        className='FORM-CONTROL'
+                        value={url}
+                        onChange={event => setUrl(event.target.value)} />
+                    <button onClick={loadButton}>Load</button>
                 </div>
                 
                 <ReactPlayer
-                    url={url}
+                    url={props.url}
                     config={{
                         youtube: {
                             playerVars: { 
                                 rel : 0}
                         }
                     }}
-                    playing={playing}
-                    onProgress={this.handleProgress}
+                    playing={checkVideoState()}
                 />
-
-                <button onClick={this.handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
+                <button onClick={handlePlayPause}>{checkVideoState() ? 'Pause' : 'Play'}</button>
             </div>
-            <table>
-                <tbody>
-                    <tr>
-                    <th>Played</th>
-                    <th><progress max={1} value={played} /></th>
-                    </tr>
-                </tbody>
-            </table>
             </div>
         );
     }
+
+
+const mapStateToProps = (state: VideoRoomState) => {
+    return {
+        currentRoom: state.currentRoom,
+        url: state.url,
+    }
 }
 
-export default VideoPlayer;
+export default connect(mapStateToProps)(VideoPlayer);
