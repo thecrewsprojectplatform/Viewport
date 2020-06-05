@@ -97,8 +97,6 @@ io.on('connection', socket => {
       currentRoomId: socket.roomId,
       currentUserId: socket.usernameId
     })
-
-    socket.close()
   });
   
 });
