@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import {connect } from 'react-redux';
 import ReactPlayer from 'react-player'
 import { store } from '../../store';
-import { sendUrlToServer, VideoRoomState, loadVideo, sendControlsToServer, getRoomState, getVideoState } from '../../store/video-room/video-room';
+import { sendUrlToServer, VideoRoomState, getAndUpdateRoom} from '../../store/video-room/video-room';
 import { VideoRoomApi } from '../../api/video-room-api';
 import { ApiContext } from '..';
 import { Room } from '../../api/video-room-types';
@@ -10,7 +10,6 @@ import { Room } from '../../api/video-room-types';
 export interface Prop {
     currentRoom: Room;
     url: string;
-    video_state: string;
 }
 
 /**
@@ -23,22 +22,22 @@ const VideoPlayer = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
 
     const [url, setUrl] = useState(null)
-    const [playing, setPlaying] = useState(false)
 
     const loadButton = () => {
         store.dispatch(sendUrlToServer(url))
-        store.dispatch(getRoomState(api, props.currentRoom.id))
+        // By default, set the video_state to paused after loading
+        api.updateRoom(props.currentRoom.id, props.currentRoom.name, props.currentRoom.video_id, "PAUSED")
     }
 
     const handlePlayPause = () => {
-
-
-        // fetches room state from the api
-        store.dispatch(getRoomState(api, props.currentRoom.id))
-
-        //store.dispatch(sendControlsToServer(playing))
+        store.dispatch(getAndUpdateRoom(api, props.currentRoom.id))
     }
 
+    /** Currently the play/pause button grabs from the api, does the opposite of what it gets and then updates the api
+        For example: 
+            API.video_state = PAUSED
+            When the play/pause button is pressed, it will start the video and then update the api to PLAYING
+    */
     const checkVideoState = () => {
         if (props.currentRoom) {
             return props.currentRoom.video_state == null || props.currentRoom.video_state == "PLAYING" ? false : true
@@ -84,7 +83,6 @@ const mapStateToProps = (state: VideoRoomState) => {
     return {
         currentRoom: state.currentRoom,
         url: state.url,
-        video_state: state.video_state
     }
 }
 

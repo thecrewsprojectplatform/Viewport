@@ -39,8 +39,8 @@ export class VideoRoomApi {
             "video_id": video_id,
             "video_state": video_state
         }).then(response => {
-            console.log("room updated succesfully")
-            console.log(response.data)
+            //console.log("room updated succesfully")
+            //console.log(response.data)
         }).catch((err) => {
             console.log(err)
         })

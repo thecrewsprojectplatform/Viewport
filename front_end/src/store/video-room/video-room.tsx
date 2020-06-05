@@ -21,8 +21,6 @@ export interface VideoRoomState {
     users: User[];
     url: string;
     video_id: string;
-    video_state: string;
-    playing: boolean;
     clientMessage: string;
     clientName: string;
     messageHistory: MessageDetail[];
@@ -90,23 +88,14 @@ interface LoadVideoAction {
     url: string;
 }
 
-interface SendControlsToServerAction {
-    type: ActionType.SendControlsToServer;
-    playing: boolean;
-}
-
 interface ControlVideoAction {
     type: ActionType.ControlVideo;
     room: Room
 }
 
-interface GetVideoStateAction {
-    type: ActionType.GetVideoState;
-    video_state: string;
-}
 
-interface GetRoomStateAction {
-    type: ActionType.GetRoomState;
+interface GetAndUpdateRoomAction {
+    type: ActionType.GetAndUpdateRoom;
     room: Room;
 }
 
@@ -203,10 +192,8 @@ type Action =   SetVidoRoomAction |
                 SendInitialClientMessageAction |
                 SendUrlToServerAction |
                 LoadVideoAction |
-                SendControlsToServerAction |
                 ControlVideoAction |
-                GetVideoStateAction |
-                GetRoomStateAction |
+                GetAndUpdateRoomAction |
                 CreateRoomAndAddUserToRoomAction |
                 CreateRoomAndAddUserToRoomSuccessAction |
                 CreateRoomAndAddUserToRoomFailAction |
@@ -239,8 +226,6 @@ export const reducer = (
         users: [],
         url: null,
         video_id: null,
-        video_state: null,
-        playing: false,
         clientMessage: null,
         clientName: null,
         messageHistory: [],
@@ -413,36 +398,18 @@ export const reducer = (
         case ActionType.LoadVideo:
             return produce(state, draftState => {
                 draftState.url = action.url;
-                console.log('setting url')
-                console.log(action.url)
             });
-        case ActionType.SendControlsToServer:
-            socket.emit('sendControlsToServer', {
-                playing: action.playing,
-                currentRoomId: state.currentRoom.id,
-                clientId: state.user.id,
-                clientName: state.user.name
-            })
-            return produce(state, draftState => {
-                draftState.playing = action.playing;
-            })
         case ActionType.ControlVideo:
             return produce(state, draftState => {
                 draftState.currentRoom = action.room;
             })
-        case ActionType.GetVideoState:
-            return produce(state, draftState => {
-                draftState.video_state = action.video_state;
-            })
-        case ActionType.GetRoomState:
+        case ActionType.GetAndUpdateRoom:
             socket.emit('getRoomStateToServer', {
                 currentRoomId: action.room.id,
                 room: action.room
             })
             return produce(state, draftState => {
                 draftState.currentRoom = action.room;
-                console.log('getting room data')
-                console.log(action.room)
             })
         default:
             return state;
@@ -713,7 +680,6 @@ export const sendMessageToServer = (message: string): any => {
 
 export const sendUrlToServer = (url: string): any => {
     return (dispatch): any => {
-        console.log("sending url to server")
         dispatch({
             type: ActionType.SendUrlToServer,
             url: url
@@ -730,16 +696,6 @@ export const loadVideo = (url: HTMLInputElement): any => {
     }
 }
 
-export const sendControlsToServer = (playing: boolean): any => {
-    return (dispatch): any => {
-        console.log("sending controls to server")
-        dispatch({
-            type: ActionType.SendControlsToServer,
-            playing: playing
-        })
-    }
-}
-
 export const controlVideo = (room: Room): any => {
     return (dispatch): any => {
         dispatch({
@@ -749,23 +705,11 @@ export const controlVideo = (room: Room): any => {
     }
 }
 
-export const getVideoState = (api: VideoRoomApi, roomId: number): any => {
+export const getAndUpdateRoom = (api: VideoRoomApi, roomId: number): any => {
     return (dispatch): any => {
         api.getRoom(roomId).then(room => {
             dispatch({
-                type: ActionType.GetVideoState,
-                video_state: room.video_state
-            } as GetVideoStateAction);
-            console.log(room)
-        })
-    }
-}
-
-export const getRoomState = (api: VideoRoomApi, roomId: number): any => {
-    return (dispatch): any => {
-        api.getRoom(roomId).then(room => {
-            dispatch({
-                type: ActionType.GetRoomState,
+                type: ActionType.GetAndUpdateRoom,
                 room: room
             })
             if (room.video_state == null || room.video_state == "PLAYING") {
