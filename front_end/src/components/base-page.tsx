@@ -86,7 +86,7 @@ const BasePage = (props: Prop) => {
 // from that state, get the roomId and user as a prop.
 // this function allows these props to be used in this file
 const mapStateToProps = state => {
-    console.log(state);
+    //console.log(state);
     return {
         roomId: state.roomId,
         user: state.user,

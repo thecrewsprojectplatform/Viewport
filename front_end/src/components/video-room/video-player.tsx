@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import {connect } from 'react-redux';
 import ReactPlayer from 'react-player'
 import { store } from '../../store';
-import { sendUrlToServer, VideoRoomState, loadVideo, sendControlsToServer } from '../../store/video-room/video-room';
+import { sendUrlToServer, VideoRoomState, loadVideo, sendControlsToServer, getRoomState, getVideoState } from '../../store/video-room/video-room';
+import { VideoRoomApi } from '../../api/video-room-api';
+import { ApiContext } from '..';
+import { Room } from '../../api/video-room-types';
 
 export interface Prop {
+    currentRoom: Room;
     url: string;
-    playing: boolean;
+    video_state: string;
 }
 
 /**
@@ -16,18 +20,30 @@ export interface Prop {
  *      Progress bar 
  */
 const VideoPlayer = (props: Prop) => {
+    const api = useContext<VideoRoomApi>(ApiContext)
+
     const [url, setUrl] = useState(null)
-    const [playing, setPlaying] = useState(true)
+    const [playing, setPlaying] = useState(false)
 
     const loadButton = () => {
         store.dispatch(sendUrlToServer(url))
+        store.dispatch(getRoomState(api, props.currentRoom.id))
     }
 
-
     const handlePlayPause = () => {
-        console.log(props.playing)
-        store.dispatch(sendControlsToServer(playing))
-        setPlaying(!playing)
+
+
+        // fetches room state from the api
+        store.dispatch(getRoomState(api, props.currentRoom.id))
+
+        //store.dispatch(sendControlsToServer(playing))
+    }
+
+    const checkVideoState = () => {
+        if (props.currentRoom) {
+            return props.currentRoom.video_state == null || props.currentRoom.video_state == "PLAYING" ? false : true
+        }
+        return false
     }
 
     const handleProgress = (state: object) => {
@@ -55,9 +71,9 @@ const VideoPlayer = (props: Prop) => {
                                 rel : 0}
                         }
                     }}
-                    playing={props.playing}
+                    playing={checkVideoState()}
                 />
-                <button onClick={handlePlayPause}>{props.playing ? 'Pause' : 'Play'}</button>
+                <button onClick={handlePlayPause}>{checkVideoState() ? 'Pause' : 'Play'}</button>
             </div>
             </div>
         );
@@ -66,8 +82,9 @@ const VideoPlayer = (props: Prop) => {
 
 const mapStateToProps = (state: VideoRoomState) => {
     return {
+        currentRoom: state.currentRoom,
         url: state.url,
-        playing: state.playing
+        video_state: state.video_state
     }
 }
 

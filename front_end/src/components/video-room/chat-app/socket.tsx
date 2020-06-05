@@ -18,8 +18,9 @@ const configureSocket = dispatch => {
     store.dispatch(loadVideo(data.url))
   });
 
-  socket.on('sendControlsToAllClients', data => {
-    store.dispatch(controlVideo(data.playing))
+  socket.on('sendRoomStateToAllClients', data => {
+    //console.log(data.room.video_state)
+    store.dispatch(controlVideo(data.room))
   })
 
   return socket;

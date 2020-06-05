@@ -72,6 +72,12 @@ io.on('connection', socket => {
       console.log('controls emitted to clients')
   })
 
+  socket.on('getRoomStateToServer', data => {
+      console.log('client has sent room to the server')
+      io.to(data.currentRoomId).emit('sendRoomStateToAllClients', data);
+      console.log('room emitted to all clients')
+  })
+
   /*  UPDATING THE USERLIST OF THE ROOM  */ 
   socket.on('updateUserToServerUserList', data => {
     console.log(data.clientList, 'is in the room:', data.currentRoomId)

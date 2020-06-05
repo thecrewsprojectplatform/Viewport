@@ -14,6 +14,8 @@ export enum ActionType {
     LoadVideo = "LOAD_VIDEO",
     SendControlsToServer = "SEND_CONTROLs_TO_SERVER",
     ControlVideo = "CONTROL_VIDEO",
+    GetVideoState = "GET_VIDEO_STATE",
+    GetRoomState = "GET_ROOM_STATE",
     CreateRoomAndAddUserToRoom="CREATE_ROOM_AND_ADD_USER_TO_ROOM", 
     CreateRoomAndAddUserToRoomSuccess="CREATE_ROOM_AND_ADD_USER_TO_ROOM_SUCCESS",
     CreateRoomAndAddUserToRoomFail="CREATE_ROOM_AND_ADD_USER_TO_ROOM_FAIL",
