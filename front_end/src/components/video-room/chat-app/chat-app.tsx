@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { VideoRoomState } from '../../../store/video-room/video-room';
+import { VideoRoomState, sendMessageToServer } from '../../../store/video-room/video-room';
 import { connect } from "react-redux";
 import { ChatMessageItem } from "./chat-message-item";
-import { sendMessageToServer } from "../../../store/video-room/video-room";
 import { store } from "../../../store";
 import { MessageDetail } from "../../../api/video-room-types";
 
