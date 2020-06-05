@@ -31,7 +31,8 @@ Most socket event communications goes as follows:
 */
 io.on('connection', socket => {
   console.log('A new client has joined our server!');
-  var currentUser = [];
+  const currentUsers = [];
+  const currentRooms = [];
 
   /*  JOINING A ROOM (For room specific socket communication) */ 
   socket.on('joinRoom', room => {
@@ -45,10 +46,16 @@ io.on('connection', socket => {
     socket.leave(room);
   })
 
-  /* GET THE CURRENT USER */
+  /* GET THE CURRENT USER SOCKET */
   socket.on('getCurrentUser', data => {
-    console.log('current user is:', data)
-    currentUser = data.currentUser;
+    socket.usernameId = data.currentUser.id;
+    currentUsers.push(socket.usernameId);
+  })
+
+  /* GET THE CURRENT ROOM SOCKET */
+  socket.on('getCurrentRoom', data => {
+    socket.roomId = data.currentRoomId;
+    currentRooms.push(socket.roomId);
   })
 
   /*  SENDING A MESSAGE  */ 
@@ -90,7 +97,14 @@ io.on('connection', socket => {
     io.emit('updateRoomsToAllClientRoomList', data)
   })
 
-  socket.on('disconnect', function(){
+  /* UPDATING USERLIST AND API WHEN CLIENT DISCONNECTS */
+  socket.on('disconnect', function() {
     console.log('A client has left our server.');
+    currentUsers.splice(currentUsers.indexOf(socket.usernameId), 1);
+    io.emit('clientDisconnectedUpdateUserList', {
+      currentRoomId: socket.roomId,
+      currentUserId: socket.usernameId
+    })
   });
+  
 });
