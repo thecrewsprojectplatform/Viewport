@@ -1,4 +1,5 @@
 export enum ActionType {
+    SetVideoRoom="SET_VIDEO_ROOM",
     SetVideoRoomUsers="SET_VIDEO_ROOM_USERS",
     AddUserToRoom="ADD_USER_TO_ROOM",
     AddUserToRoomSuccess="ADD_USER_TO_ROOM_SUCCESS",

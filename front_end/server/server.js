@@ -60,7 +60,11 @@ io.on('connection', socket => {
 
   /*  SENDING A MESSAGE  */ 
   socket.on('clientMessageToServer', data => {
+      console.log('Client has sent a message to the server')
+      // once message is received, this occurs
+      // message is emitted to all of the clients on the server.
       io.to(data.currentRoomId).emit('serverMessageToAllClients', data);
+      console.log('message emitted to clients')
   })
 
   /*  UPDATING THE USERLIST OF THE ROOM  */ 
@@ -78,7 +82,6 @@ io.on('connection', socket => {
   /* UPDATING USERLIST AND API WHEN CLIENT DISCONNECTS */
   socket.on('disconnect', function() {
     console.log('A client has left our server.');
-    currentRooms.splice(currentRooms.indexOf(socket.roomId), 1);
     currentUsers.splice(currentUsers.indexOf(socket.usernameId), 1);
     io.emit('clientDisconnectedUpdateUserList', {
       currentRoomId: socket.roomId,
