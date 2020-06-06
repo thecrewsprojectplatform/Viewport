@@ -722,18 +722,13 @@ export const controlVideo = (room: Room): any => {
     }
 }
 
-export const getAndUpdateRoom = (api: VideoRoomApi, roomId: number): any => {
+export const getAndSendRoomState = (api: VideoRoomApi, roomId: number): any => {
     return (dispatch): any => {
         api.getRoom(roomId).then(room => {
             socket.emit('getRoomStateToServer', {
                 currentRoomId: roomId,
                 room: room
             })
-            if (room.video_state == null || room.video_state == "PLAYING") {
-                api.updateRoom(roomId, room.name, room.video_id, "PAUSED")
-            } else {
-                api.updateRoom(roomId, room.name, room.video_id, "PLAYING")
-            }
         })
 
     }

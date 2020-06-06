@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import {connect } from 'react-redux';
 import ReactPlayer from 'react-player'
 import { store } from '../../store';
-import { sendUrlToServer, VideoRoomState, getAndUpdateRoom} from '../../store/video-room/video-room';
+import { sendUrlToServer, VideoRoomState, getAndSendRoomState} from '../../store/video-room/video-room';
 import { VideoRoomApi } from '../../api/video-room-api';
 import { ApiContext } from '..';
 import { Room } from '../../api/video-room-types';
@@ -17,7 +17,7 @@ export interface Prop {
  * Creates a video player with the following attributes:
  *      Input field for loading videos from an url
  *      play/pause button
- *      Progress bar 
+ *      Progress bar (currently disabled)
  */
 const VideoPlayer = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
@@ -30,18 +30,28 @@ const VideoPlayer = (props: Prop) => {
         api.updateRoom(props.currentRoom.id, props.currentRoom.name, props.currentRoom.video_id, "PAUSED")
     }
 
-    const handlePlayPause = () => {
-        store.dispatch(getAndUpdateRoom(api, props.currentRoom.id))
+    const updateVideoState = (playing: string) => {
+        api.updateRoom(props.currentRoom.id, props.currentRoom.name, props.currentRoom.video_id, playing).then(() => {
+            store.dispatch(getAndSendRoomState(api, props.currentRoom.id))
+        })
     }
 
-    /** Currently the play/pause button grabs from the api, does the opposite of what it gets and then updates the api
-        For example: 
-            API.video_state = PAUSED
-            When the play/pause button is pressed, it will start the video and then update the api to PLAYING
+    /** Play/Pause button does the following 3 things:
+     *  1) updates the video_state in the api, 
+     *  2) reads the new video_state, 
+     *  3) sends the new video_state to all clients      
     */
+    const handlePlayPause = () => {
+        if (props.currentRoom.video_state == null || props.currentRoom.video_state == "PAUSED") {
+            updateVideoState("PLAYING")
+        } else {
+            updateVideoState("PAUSED")
+        }
+    }
+
     const checkVideoState = () => {
         if (props.currentRoom) {
-            return props.currentRoom.video_state == null || props.currentRoom.video_state == "PLAYING" ? false : true
+            return props.currentRoom.video_state == null || props.currentRoom.video_state == "PAUSED" ? false : true
         }
         return false
     }
