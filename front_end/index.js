@@ -13,7 +13,7 @@ const server = app.listen(5001, function(){
 });
 // serve a static file to the browser 
 app.use(express.static(path.join(__dirname, "client/build")));
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.join(path.join(__dirname, "/client/build/index.html")));
 })
 // app.use(express.static("public"));
