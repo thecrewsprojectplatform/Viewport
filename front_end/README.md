@@ -21,3 +21,11 @@ From this directory, run
 '''
 node index.js
 '''
+
+## Deploying to Heroku
+First, you do need to log in through the Heroku CLI, so install it and do that. Then, after pushing changes to master you can push the changes to the Heroku application by doing the following:
+```
+git subtree push --prefix front_end heroku master
+```
+
+You can then see the website at [heroku](https://multimedia-platform-frontend.herokuapp.com)
