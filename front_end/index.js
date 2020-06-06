@@ -8,32 +8,27 @@ const app = express();
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "client/build")));
 
-
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
 
 //When the server starts listening on port 5001 then fire a callback function
-const server = app.listen(process.env.PORT || 5001, () => {
-  console.log("Listening to requests on port 5001");
+const PORT = process.env.PORT || 5001;
+const server = app.listen(PORT, () => {
+  console.log(`Listening to requests on port ${PORT}`);
 });
 
-/* SOCKET SETUP
-/
-Establishing a socket communication network on the server.
-/
-*/
+// Establishing socket communication network
 const io = socket(server);
 
-/* SOCKET CONNECTION
-/
-Looks for a client connection onto the server
-Most socket event communications goes as follows:
-1) Client sends message to server
-2) Server receives the message
-3) Server sends the message to all clients in the specified room (currentRoomID)
-/
-*/
+/**
+ * SOCKET CONNECTION
+ * Looks for a client connection onto the server
+ * Most socket event communications goes as follows:
+ * 1) Client sends message to server
+ * 2) Server receives the message
+ * 3) Server sends the message to all clients in the specified room (currentRoomID)
+ */
 io.on('connection', socket => {
   console.log('A new client has joined our server!');
   const currentUsers = [];
