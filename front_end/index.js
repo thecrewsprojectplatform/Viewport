@@ -1,24 +1,29 @@
-var express = require("express");
-var socket = require('socket.io')
+const express = require("express");
+const socket = require('socket.io');
+const path = require('path');
 
 //setting up the express app by invoking the express function
-var app = express();
+const app = express();
 
 //now create a server
 //When the server starts listening on port 5001 then fire a callback function
-var server = app.listen(5001, function(){
+const server = app.listen(5001, function(){
   console.log("Listening to requests on port 5001");
 
 });
 // serve a static file to the browser 
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "client/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(path.join(__dirname, "/client/build/index.html")));
+})
+// app.use(express.static("public"));
 
 /* SOCKET SETUP
 /
 Establishing a socket communication network on the server.
 /
 */
-var io = socket(server);
+const io = socket(server);
 
 /* SOCKET CONNECTION
 /
