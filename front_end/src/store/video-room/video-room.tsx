@@ -93,12 +93,6 @@ interface ControlVideoAction {
     room: Room
 }
 
-
-interface GetAndUpdateRoomAction {
-    type: ActionType.GetAndUpdateRoom;
-    room: Room;
-}
-
 interface CreateRoomAndAddUserToRoomAction {
     type: ActionType.CreateRoomAndAddUserToRoom;
 }
@@ -210,7 +204,6 @@ type Action =   SetVidoRoomAction |
                 SendUrlToServerAction |
                 LoadVideoAction |
                 ControlVideoAction |
-                GetAndUpdateRoomAction |
                 CreateRoomAndAddUserToRoomAction |
                 CreateRoomAndAddUserToRoomSuccessAction |
                 CreateRoomAndAddUserToRoomFailAction |
@@ -398,22 +391,11 @@ export const reducer = (
                 clientId: state.user.id,
                 clientName: state.user.name
             });
-            return produce(state, draftState => {
-                draftState.url = action.url
-            })
         case ActionType.LoadVideo:
             return produce(state, draftState => {
                 draftState.url = action.url;
             });
         case ActionType.ControlVideo:
-            return produce(state, draftState => {
-                draftState.currentRoom = action.room;
-            })
-        case ActionType.GetAndUpdateRoom:
-            socket.emit('getRoomStateToServer', {
-                currentRoomId: action.room.id,
-                room: action.room
-            })
             return produce(state, draftState => {
                 draftState.currentRoom = action.room;
             })
@@ -723,18 +705,13 @@ export const controlVideo = (room: Room): any => {
     }
 }
 
-export const getAndUpdateRoom = (api: VideoRoomApi, roomId: number): any => {
+export const getAndSendRoomState = (api: VideoRoomApi, roomId: number): any => {
     return (dispatch): any => {
         api.getRoom(roomId).then(room => {
-            dispatch({
-                type: ActionType.GetAndUpdateRoom,
+            socket.emit('getRoomStateToServer', {
+                currentRoomId: roomId,
                 room: room
             })
-            if (room.video_state == null || room.video_state == "PLAYING") {
-                api.updateRoom(roomId, room.name, room.video_id, "PAUSED")
-            } else {
-                api.updateRoom(roomId, room.name, room.video_id, "PLAYING")
-            }
         })
 
     }

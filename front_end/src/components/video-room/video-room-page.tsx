@@ -72,8 +72,8 @@ const VideoRoomPage = (props: Prop) => {
             }>
                 Exit Room
             </button>
+            <VideoPlayer />
             <div className="row">
-                <VideoPlayer />
                 <UserListR />
                 <div>
                 <ChatAppR />
