@@ -418,7 +418,6 @@ export const reducer = (
 // these are what the components what actually call.
 export const createRoomAction = (api: VideoRoomApi, roomName: string): any => {
     return (dispatch): any => {
-        // if the room was created successfully.
         api.createRoom(roomName).then(room => {
             dispatch({
                 type: ActionType.SetVideoRoom,
@@ -512,8 +511,6 @@ export const getRoomUsers = (api: VideoRoomApi, roomId: number): any => {
             socket.emit('getCurrentRoom', {
                 currentRoomId: roomId
             });
-            // this socket communication updates the userlist of the room
-            // once the user joins the room
             socket.emit('updateUserToServerUserList', {
                 currentRoomId: roomId,
                 clientList: users
@@ -731,8 +728,6 @@ export const userClosedBrowser = (api: VideoRoomApi, roomId: number, userId: num
                 type: ActionType.RemoveUserAfterBrowserCloseFail
             } as RemoveUserAfterBrowserCloseFailAction);
         }).finally(() => {
-            // this socket communication updates the userlist of the room
-            // once the user leaves the room
             api.getUsersInRoom(roomId).then(users => {
                 socket.emit('updateUserToServerUserList', {
                     currentRoomId: roomId,

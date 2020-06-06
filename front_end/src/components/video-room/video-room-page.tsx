@@ -54,12 +54,7 @@ const VideoRoomPage = (props: Prop) => {
     }
 
     socket.on('clientDisconnectedUpdateUserList', data => {
-        if (props.users.length === 1) {
-            store.dispatch(userClosedBrowser(api, data.currentRoomId, data.currentUserId))
-            store.dispatch(removeRoom(api, data.currentRoom.id));
-        } else {
-            store.dispatch(userClosedBrowser(api, data.currentRoomId, data.currentUserId))
-        }
+        store.dispatch(userClosedBrowser(api, data.currentRoomId, data.currentUserId))
     });
 
     return (

@@ -44,7 +44,7 @@ const VideoPlayer = (props: Prop) => {
      *  3) sends the new video_state to all clients      
     */
     const handlePlayPause = () => {
-        if (props.currentRoom.video_state == null || props.currentRoom.video_state == "PAUSED") {
+        if (props.currentRoom.video_state === null || props.currentRoom.video_state === "PAUSED") {
             updateVideoState("PLAYING")
         } else {
             updateVideoState("PAUSED")
@@ -53,13 +53,13 @@ const VideoPlayer = (props: Prop) => {
 
     const checkVideoState = () => {
         if (props.currentRoom) {
-            return props.currentRoom.video_state == null || props.currentRoom.video_state == "PAUSED" ? false : true
+            return props.currentRoom.video_state === null || props.currentRoom.video_state === "PAUSED" ? false : true
         }
         return false
     }
 
     const checkUrl = (url: string) => {
-        if (!ReactPlayer.canPlay(url) && url != '') {
+        if (!ReactPlayer.canPlay(url) && url !== '') {
             setInvalidUrlMessage('The url pasted is not valid')
         } else {
             setUrl(url)
