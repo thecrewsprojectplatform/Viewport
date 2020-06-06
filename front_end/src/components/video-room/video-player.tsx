@@ -68,6 +68,7 @@ const VideoPlayer = (props: Prop) => {
                         url={props.url}
                         width='100%'
                         height='100%'
+                        controls={false}
                         config={{
                             youtube: {
                                 playerVars: { 
