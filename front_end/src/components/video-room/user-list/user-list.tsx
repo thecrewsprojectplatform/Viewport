@@ -29,13 +29,11 @@ export interface Prop {
  * @returns {JSX.Element} The JSX representing the UserList.
  */
 const UserList = (props: Prop) => {
-    const [numberofUsers, setnumberofUsers] = useState([]);
     const api = useContext<VideoRoomApi>(ApiContext);
 
     useEffect(() => {
         if (props.roomId) {
             store.dispatch(getRoomUsers(api, props.roomId));
-            setnumberofUsers(props.users)
         }
     }, [props.roomId]);
 
@@ -44,13 +42,7 @@ const UserList = (props: Prop) => {
             store.dispatch(getRoomUsers(api, props.roomId));
         }
     }, [props.updateStatus]);
-    /*
-    useEffect(() => {
-        if (props.users.length < numberofUsers.length) {
-            store.dispatch(getRoomUsers(api, props.roomId));
-        }
-    }, [props.users]);
-    */ 
+
     return (
         <div className="User-list">
             {

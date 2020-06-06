@@ -233,8 +233,6 @@ type Action =   SetVidoRoomAction |
                 RemoveUserAfterBrowserCloseSuccessAction |
                 RemoveUserAfterBrowserCloseFailAction;
 
-// takes in a state and an action
-// it applies some action to the state
 export const reducer = (
     state: VideoRoomState = {
         roomId: null,
@@ -263,16 +261,12 @@ export const reducer = (
         case ActionType.SetVideoRoomUsers:
             return produce(state, draftState => {
                 draftState.users = action.users;
-                //console.log("current users in the room are", action.users)
             });
         case ActionType.AddUserToRoom:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Running;
             })
         case ActionType.AddUserToRoomSuccess:
-            // socket communication to let server know that
-            // a client has joined the room.
-            // Localizes all messages sent in that room.
             socket.emit('joinRoom', action.room.id);
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
@@ -301,9 +295,6 @@ export const reducer = (
                 draftState.updateStatus = Status.Running
             })  
         case ActionType.CreateRoomAndAddUserToRoomSuccess:
-            // socket communication to let server know that
-            // a client has joined the room.
-            // Localizes all messages sent in that room.
             socket.emit('joinRoom', action.room.id);
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
@@ -381,7 +372,6 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
             })
-        // socket.emit sends data that client has typed to the server
         case ActionType.SendInitialClientMessage:
             socket.emit('clientMessageToServer', {
                 clientMessage: action.clientMessage,
@@ -389,13 +379,9 @@ export const reducer = (
                 clientId: state.user.id,
                 clientName: state.user.name
             });
-            // produce is the only way you can directly modify the state
-            // state is the current value, draftState is the future value
             return produce(state, draftState => {
                 draftState.clientMessage = action.clientMessage;
             })
-        // server sends the message to all clients
-        // keeps track of the message and keeps track of the history to display to each client.
         case ActionType.SendMessageToAllClients:
             return produce(state, draftState => {
                 draftState.clientMessage = action.clientMessage;
@@ -469,7 +455,6 @@ export const getRoomsAction = (api: VideoRoomApi): any => {
             type: ActionType.GetRooms,
         } as GetRoomsAction);
         api.getRooms().then(roomsList => {
-            //console.log(roomsList)
             socket.emit('updateRoomsToServerRoomList', {
                 roomsList: roomsList
             });
@@ -672,8 +657,6 @@ export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: nu
                 type: ActionType.RemoveUserFromRoomFail
             } as RemoveUserFromRoomFailAction);
         }).finally(() => {
-            // this socket communication updates the userlist of the room
-            // once the user leaves the room
             api.getUsersInRoom(roomId).then(users => {
                 socket.emit('updateUserToServerUserList', {
                     currentRoomId: roomId,

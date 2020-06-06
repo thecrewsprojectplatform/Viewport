@@ -13,11 +13,7 @@ var server = app.listen(5001, function(){
 // serve a static file to the browser 
 app.use(express.static("public"));
 
-/* SOCKET SETUP
-/
-Establishing a socket communication network on the server.
-/
-*/
+/* SOCKET SETUP */
 var io = socket(server);
 
 /* SOCKET CONNECTION */
@@ -53,8 +49,6 @@ io.on('connection', socket => {
   /*  SENDING A MESSAGE  */ 
   socket.on('clientMessageToServer', data => {
       console.log('Client has sent a message to the server')
-      // once message is received, this occurs
-      // message is emitted to all of the clients on the server.
       io.to(data.currentRoomId).emit('serverMessageToAllClients', data);
       console.log('message emitted to clients')
   })
@@ -89,7 +83,7 @@ io.on('connection', socket => {
     io.emit('updateRoomsToAllClientRoomList', data)
   })
 
-  /* UPDATING USERLIST AND API WHEN CLIENT DISCONNECTS */
+  /* UPDATING USERLIST, ROOMLIST AND API WHEN CLIENT DISCONNECTS */
   socket.on('disconnect', function() {
     console.log('A client has left our server.');
     currentUsers.splice(currentUsers.indexOf(socket.usernameId), 1);
