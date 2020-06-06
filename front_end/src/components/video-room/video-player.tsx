@@ -24,6 +24,8 @@ const VideoPlayer = (props: Prop) => {
 
     const [url, setUrl] = useState(null)
 
+    const [invalidUrlMessage, setInvalidUrlMessage] = useState('')
+
     const loadButton = () => {
         store.dispatch(sendUrlToServer(url))
         // By default, set the video_state to paused after loading
@@ -56,6 +58,15 @@ const VideoPlayer = (props: Prop) => {
         return false
     }
 
+    const checkUrl = (url: string) => {
+        if (!ReactPlayer.canPlay(url) && url != '') {
+            setInvalidUrlMessage('The url pasted is not valid')
+        } else {
+            setUrl(url)
+            setInvalidUrlMessage('')
+        }
+    }
+
     const handleProgress = (state: object) => {
         //this.setState(state)
     }
@@ -69,8 +80,9 @@ const VideoPlayer = (props: Prop) => {
                         placeholder='Enter URL'
                         className='FORM-CONTROL'
                         value={url}
-                        onChange={event => setUrl(event.target.value)} />
+                        onChange={event => checkUrl(event.target.value)} />
                     <button onClick={loadButton}>Load</button>
+                    <label> {invalidUrlMessage}</label>
                 </div>
                 <div className='player-wrapper'>
                     <ReactPlayer
