@@ -14,7 +14,7 @@ app.get("*", (req, res) => {
 });
 
 //When the server starts listening on port 5001 then fire a callback function
-app.listen(process.env.PORT || 5001, () => {
+const server = app.listen(process.env.PORT || 5001, () => {
   console.log("Listening to requests on port 5001");
 });
 
