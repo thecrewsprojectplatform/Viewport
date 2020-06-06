@@ -1,0 +1,14 @@
+.player-wrapper {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 aspect ratio */
+}
+
+.react-player {
+    position: absolute;
+    top: 0;
+    left: 0%;
+    padding-top: .5625%;
+    padding-bottom: .5625%;
+    padding-left: 1%;
+    padding-right: 1%;
+}
