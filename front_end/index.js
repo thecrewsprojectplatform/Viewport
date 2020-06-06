@@ -5,18 +5,18 @@ const path = require('path');
 //setting up the express app by invoking the express function
 const app = express();
 
-//now create a server
-//When the server starts listening on port 5001 then fire a callback function
-const server = app.listen(5001, function(){
-  console.log("Listening to requests on port 5001");
-
-});
-// serve a static file to the browser 
+// Serve static files from the React app
 app.use(express.static(path.join(__dirname, "client/build")));
-app.get("/", (req, res) => {
-  res.sendFile(path.join(path.join(__dirname, "/client/build/index.html")));
-})
-// app.use(express.static("public"));
+
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
+
+//When the server starts listening on port 5001 then fire a callback function
+app.listen(process.env.PORT || 5001, () => {
+  console.log("Listening to requests on port 5001");
+});
 
 /* SOCKET SETUP
 /
