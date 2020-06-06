@@ -5,7 +5,7 @@ export class VideoRoomApi {
     BASE_URL: string
 
     constructor() {
-        this.BASE_URL = "http://127.0.0.1:5000";
+        this.BASE_URL = process.env.REACT_APP_API_BASE_URL;
     }
 
     async createRoom(name: string): Promise<Room> {
