@@ -6,6 +6,7 @@ import { sendUrlToServer, VideoRoomState, getAndUpdateRoom} from '../../store/vi
 import { VideoRoomApi } from '../../api/video-room-api';
 import { ApiContext } from '..';
 import { Room } from '../../api/video-room-types';
+import './video-player.css';
 
 export interface Prop {
     currentRoom: Room;
@@ -61,17 +62,22 @@ const VideoPlayer = (props: Prop) => {
                         onChange={event => setUrl(event.target.value)} />
                     <button onClick={loadButton}>Load</button>
                 </div>
-                
-                <ReactPlayer
-                    url={props.url}
-                    config={{
-                        youtube: {
-                            playerVars: { 
-                                rel : 0}
-                        }
-                    }}
-                    playing={checkVideoState()}
-                />
+                <div className='player-wrapper'>
+                    <ReactPlayer
+                        className='react-player'
+                        url={props.url}
+                        width='100%'
+                        height='100%'
+                        config={{
+                            youtube: {
+                                playerVars: { 
+                                    rel : 0,
+                                    disablekb: 1}
+                            }
+                        }}
+                        playing={checkVideoState()}
+                    />
+                </div>
                 <button onClick={handlePlayPause}>{checkVideoState() ? 'Pause' : 'Play'}</button>
             </div>
             </div>
