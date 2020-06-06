@@ -4,6 +4,7 @@ origin/michaelnguy98/basic-front-end
 
 # dependencies
 /node_modules
+*/node_modules
 /.pnp
 .pnp.js
 
@@ -11,7 +12,7 @@ origin/michaelnguy98/basic-front-end
 /coverage
 
 # production
-/build
+*/build
 
 # misc
 .DS_Store
