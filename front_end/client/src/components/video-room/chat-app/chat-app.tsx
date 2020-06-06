@@ -17,13 +17,11 @@ export interface Prop {
 export const ChatApp = (props: Prop) => {
     const [msg, setMessage] = useState("");
 
-    // sending message to the server after pressing the button
     const sendMessageClick = (): void => {
         store.dispatch(sendMessageToServer(msg))
         setMessage('')
     };
 
-    //console.log(props.message)
     return(
         <div>
             <div className="display_message">
@@ -38,7 +36,6 @@ export const ChatApp = (props: Prop) => {
                                 />
                             )
                         })
-                    // the extra () calls the function.
                     })()
                 }
             </div>

@@ -1,8 +1,7 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { connect } from "react-redux";
 import { ApiContext } from ".";
 import { VideoRoomApi } from "../api/video-room-api";
-import { store } from "../store";
 import { VideoRoomPageR } from "./video-room/video-room-page";
 import { LoginPageR } from "./login/login-page";
 import { JoinCreateRoomPageR } from "./join-create-room/join-create-room-page";
@@ -37,19 +36,7 @@ export interface Prop {
  * @returns {JSX.Element} The JSX representing the current page.
  */
 const BasePage = (props: Prop) => {
-    const api = useContext<VideoRoomApi>(ApiContext);
-    // happens right away
-    // when a value in the list gets changed, call the function.
-    /*useEffect(() => {
-        if (props.roomId === null) {
-            // send some action to the store
-            // change the store -> change the prop
-            // -> component rerenders.
-            store.dispatch(createRoomAction(api, "New Room"));
-        }
-    }, [props.roomId])*/
 
-    // creating useState to set login page as the first page.
     const [pageType, setPageType] = useState(PageType.LoginPage);
 
     return (
@@ -61,7 +48,6 @@ const BasePage = (props: Prop) => {
             </header>
 
         {(() => {
-            // Conditional rendering done here
             switch (pageType) {
                 case PageType.LoginPage:
                     return <LoginPageR setPage={() => setPageType(PageType.JoinCreateRoomPage)}/>
@@ -82,18 +68,11 @@ const BasePage = (props: Prop) => {
  * @param {Object} state The current state of the BasePage.
  */
 
-// global state gets passed into this function.
-// from that state, get the roomId and user as a prop.
-// this function allows these props to be used in this file
 const mapStateToProps = state => {
-    //console.log(state);
     return {
         roomId: state.roomId,
         user: state.user,
     }
 }
 
-// connect takes in mapStateToProps
-// which returns a function that takes in the basepage
-// which returns component that has all the correct props
 export const BasePageR = connect(mapStateToProps)(BasePage);

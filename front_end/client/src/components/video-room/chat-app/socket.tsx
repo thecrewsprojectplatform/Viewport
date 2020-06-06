@@ -5,12 +5,10 @@ import { store } from "../../../store";
 const socket = io();
 
 const configureSocket = dispatch => {
-  // make sure our socket is connected to the port
   socket.on('connect', () => {
     console.log('connected');
   });
 
-  // listening for the server's client broadcast message
   socket.on('serverMessageToAllClients', data => {
     store.dispatch(sendMessageToAllClients(data.clientMessage, data.clientName))
   });

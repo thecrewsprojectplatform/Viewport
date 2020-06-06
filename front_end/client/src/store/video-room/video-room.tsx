@@ -29,12 +29,6 @@ export interface VideoRoomState {
     updateStatus: Status;
 }
 
-interface SetVidoRoomAction {
-    type: ActionType.SetVideoRoom;
-    name: string;
-    id: number;
-}
-
 interface SetVidoRoomUsersAction {
     type: ActionType.SetVideoRoomUsers;
     users: User[];
@@ -191,8 +185,7 @@ interface RemoveUserAfterBrowserCloseFailAction {
     type: ActionType.RemoveUserAfterBrowserCloseFail;
 }
 
-type Action =   SetVidoRoomAction |
-                SetVidoRoomUsersAction |
+type Action =   SetVidoRoomUsersAction |
                 GetRoomsAction |
                 GetRoomsSuccessAction |
                 GetRoomsFailAction |
@@ -246,11 +239,6 @@ export const reducer = (
     }, action: Action
 ): VideoRoomState => {
     switch (action.type) {
-        case ActionType.SetVideoRoom:
-            return produce(state, draftState => {
-                draftState.roomId = action.id;
-                draftState.roomName = action.name;
-            });
         case ActionType.SetVideoRoomUsers:
             return produce(state, draftState => {
                 draftState.users = action.users;
@@ -258,67 +246,67 @@ export const reducer = (
         case ActionType.AddUserToRoom:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Running;
-            })
+            });
         case ActionType.AddUserToRoomSuccess:
             socket.emit('joinRoom', action.room.id);
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.room;
                 draftState.roomId = action.roomId;
-            })
+            });
         case ActionType.AddUserToRoomFail:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
-            })
+            });
         case ActionType.GetRooms:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Running;
-            })
+            });
         case ActionType.GetRoomsSuccess:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.roomList = action.roomsList;
-            })
+            });
         case ActionType.GetRoomsFail:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
-            })
+            });
         case ActionType.CreateRoomAndAddUserToRoom:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Running
-            })  
+            });
         case ActionType.CreateRoomAndAddUserToRoomSuccess:
             socket.emit('joinRoom', action.room.id);
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.room;
                 draftState.roomId = action.roomId;
-            })    
+            });    
         case ActionType.CreateRoomAndAddUserToRoomFail:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
-            })    
+            });    
         case ActionType.CreateUserAndAddToRoom:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Running;
-            })
+            });
         case ActionType.CreateUserAndAddToRoomSuccess:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
-            })
+            });
         case ActionType.CreateUserAndAddToRoomFail:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
-            })
+            });
         case ActionType.CreateUser:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Running;
-            })
+            });
         case ActionType.CreateUserSuccess:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.user = action.user;
-            })
+            });
         case ActionType.CreateUserFail:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
@@ -326,32 +314,32 @@ export const reducer = (
         case ActionType.RemoveUser:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Running;
-            })
+            });
         case ActionType.RemoveUserSuccess:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.user = action.user;
-            })
+            });
         case ActionType.RemoveUserFail:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
-            })
+            });
         case ActionType.RemoveRoom:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Running;
-            })
+            });
         case ActionType.RemoveRoomSuccess:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
-            })
+            });
         case ActionType.RemoveRoomFail:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
-            })
+            });
         case ActionType.RemoveUserFromRoom:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Running;
-            })
+            });
         case ActionType.RemoveUserFromRoomSuccess:
             socket.emit('leaveRoom', action.pastRoomId);
             return produce(state, draftState => {
@@ -360,7 +348,7 @@ export const reducer = (
                 draftState.messageHistory = action.messageHistory;
                 draftState.roomId = action.roomId;
                 draftState.users = action.users;
-            })
+            });
         case ActionType.RemoveUserFromRoomFail:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
@@ -374,7 +362,7 @@ export const reducer = (
             });
             return produce(state, draftState => {
                 draftState.clientMessage = action.clientMessage;
-            })
+            });
         case ActionType.SendMessageToAllClients:
             return produce(state, draftState => {
                 draftState.clientMessage = action.clientMessage;
@@ -383,7 +371,7 @@ export const reducer = (
                     chat_message: action.clientMessage,
                     chat_username: action.clientName
                 }];
-            })
+            });
         case ActionType.SendUrlToServer:
             socket.emit('sendUrlToServer', {
                 url: action.url,
@@ -398,37 +386,23 @@ export const reducer = (
         case ActionType.ControlVideo:
             return produce(state, draftState => {
                 draftState.currentRoom = action.room;
-            })
+            });
         case ActionType.RemoveUserAfterBrowserClose:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Running;
-            })
+            });
         case ActionType.RemoveUserAfterBrowserCloseSuccess:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
-            })
+            });
         case ActionType.RemoveUserAfterBrowserCloseFail:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
-            })
+            });
         default:
             return state;
     }
 }
-// these are what the components what actually call.
-export const createRoomAction = (api: VideoRoomApi, roomName: string): any => {
-    return (dispatch): any => {
-        api.createRoom(roomName).then(room => {
-            dispatch({
-                type: ActionType.SetVideoRoom,
-                id: room.id,
-                name: room.name,
-            } as SetVidoRoomAction);
-        }).catch(err => {
-            console.log("Failed to create room");
-        });
-    };
-};
 
 export const getRoomsAction = (api: VideoRoomApi): any => {
     return (dispatch): any => {
