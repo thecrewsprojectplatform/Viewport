@@ -20,10 +20,30 @@ export class VideoRoomApi {
         });
     }
 
+    async getRoom(roomId: number): Promise<Room> {
+        return axios.get(this.BASE_URL + "/rooms/" + roomId).then(response => {
+            return response.data;
+        })
+    }
+
     async removeRoom(roomId: number): Promise<void> {
         return axios.delete(this.BASE_URL + "/rooms/" + roomId).then(response => {
             return response.data;
         });
+    }
+
+    async updateRoom(roomId: number, name: string, video_id: string, video_state: string): Promise<void> {
+        return axios.put(this.BASE_URL + "/rooms/" + roomId, {
+            "room_id": roomId,
+            "name": name,
+            "video_id": video_id,
+            "video_state": video_state
+        }).then(response => {
+            //console.log("room updated succesfully")
+            //console.log(response.data)
+        }).catch((err) => {
+            console.log(err)
+        })
     }
 
     async createUser(name: string): Promise<User> {

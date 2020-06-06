@@ -31,7 +31,8 @@ Most socket event communications goes as follows:
 */
 io.on('connection', socket => {
   console.log('A new client has joined our server!');
-  var currentUser = [];
+  const currentUsers = [];
+  const currentRooms = [];
 
   /*  JOINING A ROOM (For room specific socket communication) */ 
   socket.on('joinRoom', room => {
@@ -45,10 +46,16 @@ io.on('connection', socket => {
     socket.leave(room);
   })
 
-  /* GET THE CURRENT USER */
+  /* GET THE CURRENT USER SOCKET */
   socket.on('getCurrentUser', data => {
-    console.log('current user is:', data)
-    currentUser = data.currentUser;
+    socket.usernameId = data.currentUser.id;
+    currentUsers.push(socket.usernameId);
+  })
+
+  /* GET THE CURRENT ROOM SOCKET */
+  socket.on('getCurrentRoom', data => {
+    socket.roomId = data.currentRoomId;
+    currentRooms.push(socket.roomId);
   })
 
   /*  SENDING A MESSAGE  */ 
@@ -58,6 +65,24 @@ io.on('connection', socket => {
       // message is emitted to all of the clients on the server.
       io.to(data.currentRoomId).emit('serverMessageToAllClients', data);
       console.log('message emitted to clients')
+  })
+
+  socket.on('sendUrlToServer', data => {
+      console.log('Client has sent url to the server')
+      io.to(data.currentRoomId).emit('sendUrlToAllClients', data);
+      console.log('url emitted to clients')
+  })
+
+  socket.on('sendControlsToServer', data => {
+      console.log('Client has sent controls to the server')
+      io.to(data.currentRoomId).emit('sendControlsToAllClients', data);
+      console.log('controls emitted to clients')
+  })
+
+  socket.on('getRoomStateToServer', data => {
+      console.log('client has sent room to the server')
+      io.to(data.currentRoomId).emit('sendRoomStateToAllClients', data);
+      console.log('room emitted to all clients')
   })
 
   /*  UPDATING THE USERLIST OF THE ROOM  */ 
@@ -72,7 +97,14 @@ io.on('connection', socket => {
     io.emit('updateRoomsToAllClientRoomList', data)
   })
 
-  socket.on('disconnect', function(){
+  /* UPDATING USERLIST AND API WHEN CLIENT DISCONNECTS */
+  socket.on('disconnect', function() {
     console.log('A client has left our server.');
+    currentUsers.splice(currentUsers.indexOf(socket.usernameId), 1);
+    io.emit('clientDisconnectedUpdateUserList', {
+      currentRoomId: socket.roomId,
+      currentUserId: socket.usernameId
+    })
   });
+  
 });

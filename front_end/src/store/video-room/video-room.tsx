@@ -19,6 +19,8 @@ export interface VideoRoomState {
     pastRoomId: number;
     user: User;
     users: User[];
+    url: string;
+    video_id: string;
     clientMessage: string;
     clientName: string;
     messageHistory: MessageDetail[];
@@ -74,6 +76,27 @@ interface SendToAllClientsAction {
 interface SendInitialClientMessageAction {
     type: ActionType.SendInitialClientMessage;
     clientMessage: string;
+}
+
+interface SendUrlToServerAction {
+    type: ActionType.SendUrlToServer;
+    url: string;
+}
+
+interface LoadVideoAction {
+    type: ActionType.LoadVideo;
+    url: string;
+}
+
+interface ControlVideoAction {
+    type: ActionType.ControlVideo;
+    room: Room
+}
+
+
+interface GetAndUpdateRoomAction {
+    type: ActionType.GetAndUpdateRoom;
+    room: Room;
 }
 
 interface CreateRoomAndAddUserToRoomAction {
@@ -157,6 +180,23 @@ interface RemoveUserFromRoomFailAction {
     type: ActionType.RemoveUserFromRoomFail;
 }
 
+interface RemoveUserAfterBrowserCloseAction {
+    type: ActionType.RemoveUserAfterBrowserClose;
+}
+
+interface RemoveUserAfterBrowserCloseSuccessAction {
+    type: ActionType.RemoveUserAfterBrowserCloseSuccess;
+    pastRoomId: number;
+    messageHistory: MessageDetail[];
+    currentRoom: Room;
+    roomId: number;
+    users: User[];
+}
+
+interface RemoveUserAfterBrowserCloseFailAction {
+    type: ActionType.RemoveUserAfterBrowserCloseFail;
+}
+
 type Action =   SetVidoRoomAction |
                 SetVidoRoomUsersAction |
                 GetRoomsAction |
@@ -167,6 +207,10 @@ type Action =   SetVidoRoomAction |
                 AddUserToRoomFailAction |
                 SendToAllClientsAction | 
                 SendInitialClientMessageAction |
+                SendUrlToServerAction |
+                LoadVideoAction |
+                ControlVideoAction |
+                GetAndUpdateRoomAction |
                 CreateRoomAndAddUserToRoomAction |
                 CreateRoomAndAddUserToRoomSuccessAction |
                 CreateRoomAndAddUserToRoomFailAction |
@@ -184,7 +228,10 @@ type Action =   SetVidoRoomAction |
                 RemoveRoomFailAction |
                 RemoveUserFromRoomAction |
                 RemoveUserFromRoomSuccessAction |
-                RemoveUserFromRoomFailAction;
+                RemoveUserFromRoomFailAction |
+                RemoveUserAfterBrowserCloseAction |
+                RemoveUserAfterBrowserCloseSuccessAction |
+                RemoveUserAfterBrowserCloseFailAction;
 
 // takes in a state and an action
 // it applies some action to the state
@@ -197,6 +244,8 @@ export const reducer = (
         pastRoomId: null,
         user: null,
         users: [],
+        url: null,
+        video_id: null,
         clientMessage: null,
         clientName: null,
         messageHistory: [],
@@ -214,7 +263,7 @@ export const reducer = (
         case ActionType.SetVideoRoomUsers:
             return produce(state, draftState => {
                 draftState.users = action.users;
-                console.log("current users in the room are", action.users)
+                //console.log("current users in the room are", action.users)
             });
         case ActionType.AddUserToRoom:
             return produce(state, draftState => {
@@ -356,6 +405,44 @@ export const reducer = (
                     chat_username: action.clientName
                 }];
             })
+        case ActionType.SendUrlToServer:
+            socket.emit('sendUrlToServer', {
+                url: action.url,
+                currentRoomId: state.currentRoom.id,
+                clientId: state.user.id,
+                clientName: state.user.name
+            });
+            return produce(state, draftState => {
+                draftState.url = action.url
+            })
+        case ActionType.LoadVideo:
+            return produce(state, draftState => {
+                draftState.url = action.url;
+            });
+        case ActionType.ControlVideo:
+            return produce(state, draftState => {
+                draftState.currentRoom = action.room;
+            })
+        case ActionType.GetAndUpdateRoom:
+            socket.emit('getRoomStateToServer', {
+                currentRoomId: action.room.id,
+                room: action.room
+            })
+            return produce(state, draftState => {
+                draftState.currentRoom = action.room;
+            })
+        case ActionType.RemoveUserAfterBrowserClose:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Running;
+            })
+        case ActionType.RemoveUserAfterBrowserCloseSuccess:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Succeeded;
+            })
+        case ActionType.RemoveUserAfterBrowserCloseFail:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Failed;
+            })
         default:
             return state;
     }
@@ -382,7 +469,7 @@ export const getRoomsAction = (api: VideoRoomApi): any => {
             type: ActionType.GetRooms,
         } as GetRoomsAction);
         api.getRooms().then(roomsList => {
-            console.log(roomsList)
+            //console.log(roomsList)
             socket.emit('updateRoomsToServerRoomList', {
                 roomsList: roomsList
             });
@@ -455,6 +542,9 @@ export const createRoomAndAddUserToRoomAction = (api: VideoRoomApi, roomName: st
 export const getRoomUsers = (api: VideoRoomApi, roomId: number): any => {
     return (dispatch): any => {
         api.getUsersInRoom(roomId).then(users => {
+            socket.emit('getCurrentRoom', {
+                currentRoomId: roomId
+            });
             // this socket communication updates the userlist of the room
             // once the user joins the room
             socket.emit('updateUserToServerUserList', {
@@ -621,4 +711,80 @@ export const sendMessageToServer = (message: string): any => {
             clientMessage: message
         })
     }
+}
+
+export const sendUrlToServer = (url: string): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.SendUrlToServer,
+            url: url
+        })
+    }
+}
+
+export const loadVideo = (url: HTMLInputElement): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.LoadVideo,
+            url: url
+        })
+    }
+}
+
+export const controlVideo = (room: Room): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.ControlVideo,
+            room: room
+        })
+    }
+}
+
+export const getAndUpdateRoom = (api: VideoRoomApi, roomId: number): any => {
+    return (dispatch): any => {
+        api.getRoom(roomId).then(room => {
+            dispatch({
+                type: ActionType.GetAndUpdateRoom,
+                room: room
+            })
+            if (room.video_state == null || room.video_state == "PLAYING") {
+                api.updateRoom(roomId, room.name, room.video_id, "PAUSED")
+            } else {
+                api.updateRoom(roomId, room.name, room.video_id, "PLAYING")
+            }
+        })
+
+    }
+}
+
+export const userClosedBrowser = (api: VideoRoomApi, roomId: number, userId: number): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.RemoveUserAfterBrowserClose,
+        } as RemoveUserAfterBrowserCloseAction);
+        api.removeUserFromRoom(roomId, userId).then(response => {
+            dispatch({
+                type: ActionType.RemoveUserAfterBrowserCloseSuccess,
+            } as RemoveUserAfterBrowserCloseSuccessAction);
+        }).catch(err => {
+            dispatch({
+                type: ActionType.RemoveUserAfterBrowserCloseFail
+            } as RemoveUserAfterBrowserCloseFailAction);
+        }).finally(() => {
+            // this socket communication updates the userlist of the room
+            // once the user leaves the room
+            api.getUsersInRoom(roomId).then(users => {
+                socket.emit('updateUserToServerUserList', {
+                    currentRoomId: roomId,
+                    clientList: users
+                });
+                socket.on('updateUserToAllClientUserList', data => {
+                    dispatch({
+                        type: ActionType.SetVideoRoomUsers,
+                        users: data.clientList
+                    } as SetVidoRoomUsersAction);
+                });
+            });
+        });
+    };
 }
