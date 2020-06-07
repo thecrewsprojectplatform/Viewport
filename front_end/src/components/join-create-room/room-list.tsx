@@ -70,6 +70,7 @@ const RoomList = (props: Prop) => {
                             value={newRoomName}
                         />
                 </form>
+                Available Rooms:
                 <List>
                 {
                     (() => {
