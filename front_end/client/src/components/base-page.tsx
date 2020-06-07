@@ -1,7 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import { ApiContext } from ".";
-import { VideoRoomApi } from "../api/video-room-api";
 import { VideoRoomPageR } from "./video-room/video-room-page";
 import { LoginPageR } from "./login/login-page";
 import { JoinCreateRoomPageR } from "./join-create-room/join-create-room-page";

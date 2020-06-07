@@ -21,14 +21,7 @@ const server = app.listen(PORT, () => {
 // Establishing socket communication network
 const io = socket(server);
 
-/**
- * SOCKET CONNECTION
- * Looks for a client connection onto the server
- * Most socket event communications goes as follows:
- * 1) Client sends message to server
- * 2) Server receives the message
- * 3) Server sends the message to all clients in the specified room (currentRoomID)
- */
+/* SOCKET CONNECTION */
 io.on('connection', socket => {
   console.log('A new client has joined our server!');
   const currentUsers = [];

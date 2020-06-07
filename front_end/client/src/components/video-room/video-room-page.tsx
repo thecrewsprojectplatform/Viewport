@@ -33,16 +33,6 @@ export interface Prop {
 const VideoRoomPage = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
 
-    useEffect(() => {
-        if (props.currentRoom) {
-            store.dispatch(getRoomUsers(api, props.currentRoom.id));
-        }
-    }, [props.currentRoom])
-
-    useEffect(() => {
-        store.dispatch(getRoomsAction(api))
-    }, []);
-
     const exitRoomClick = (): void => {
         if (props.users.length === 1) {
             store.dispatch(removeUserFromRoom(api, props.currentRoom.id, props.currentUser.id));
@@ -53,8 +43,27 @@ const VideoRoomPage = (props: Prop) => {
         props.setPageBackwards()
     }
 
+    const disconnectedUser = (data) => {
+        if (props.users.length === 1) {
+            store.dispatch(userClosedBrowser(api, data.currentRoom.id, data.currentUser.id));
+            store.dispatch(removeRoom(api, data.currentRoom.id));
+        } else {
+            store.dispatch(userClosedBrowser(api, data.currentRoom.id, data.currentUser.id));
+        }
+    }
+
+    useEffect(() => {
+        if (props.currentRoom) {
+            store.dispatch(getRoomUsers(api, props.currentRoom.id));
+        }
+    }, [props.currentRoom])
+
+    useEffect(() => {
+        store.dispatch(getRoomsAction(api))
+    }, []);
+
     socket.on('clientDisconnectedUpdateUserList', data => {
-        store.dispatch(userClosedBrowser(api, data.currentRoomId, data.currentUserId))
+        disconnectedUser(data);
     });
 
     return (
