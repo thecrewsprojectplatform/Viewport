@@ -34,13 +34,13 @@ io.on('connection', socket => {
   const currentUsers = [];
   const currentRooms = [];
 
-  /*  JOINING A ROOM (For room specific socket communication) */ 
+  /*  JOINING A ROOM (For room specific socket communication) */
   socket.on('joinRoom', room => {
     console.log('joining on room name:', room)
     socket.join(room);
   })
 
-  /*  Leaving A ROOM  */ 
+  /*  Leaving A ROOM  */
   socket.on('leaveRoom', room => {
     console.log('leaving the room:', room)
     socket.leave(room);
@@ -58,11 +58,9 @@ io.on('connection', socket => {
     currentRooms.push(socket.roomId);
   })
 
-  /*  SENDING A MESSAGE  */ 
+  /*  SENDING A MESSAGE  */
   socket.on('clientMessageToServer', data => {
       console.log('Client has sent a message to the server')
-      // once message is received, this occurs
-      // message is emitted to all of the clients on the server.
       io.to(data.currentRoomId).emit('serverMessageToAllClients', data);
       console.log('message emitted to clients')
   })
@@ -85,19 +83,19 @@ io.on('connection', socket => {
       console.log('room emitted to all clients')
   })
 
-  /*  UPDATING THE USERLIST OF THE ROOM  */ 
+  /*  UPDATING THE USERLIST OF THE ROOM  */
   socket.on('updateUserToServerUserList', data => {
     console.log(data.clientList, 'is in the room:', data.currentRoomId)
     io.to(data.currentRoomId).emit('updateUserToAllClientUserList', data);
   })
-  
+
   /*  UPDATING THE ROOMLIST IN THE JOIN-CREATE-ROOM PAGE  */
   socket.on('updateRoomsToServerRoomList', data => {
     console.log('Current Room list is', data.roomsList)
     io.emit('updateRoomsToAllClientRoomList', data)
   })
 
-  /* UPDATING USERLIST AND API WHEN CLIENT DISCONNECTS */
+  /* UPDATING USERLIST, ROOMLIST AND API WHEN CLIENT DISCONNECTS */
   socket.on('disconnect', function() {
     console.log('A client has left our server.');
     currentUsers.splice(currentUsers.indexOf(socket.usernameId), 1);
@@ -106,5 +104,5 @@ io.on('connection', socket => {
       currentUserId: socket.usernameId
     })
   });
-  
+
 });

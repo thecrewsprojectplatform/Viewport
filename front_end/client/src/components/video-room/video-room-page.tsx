@@ -53,7 +53,6 @@ const VideoRoomPage = (props: Prop) => {
         props.setPageBackwards()
     }
 
-    // listening for the server to tell that client has disconnected
     socket.on('clientDisconnectedUpdateUserList', data => {
         store.dispatch(userClosedBrowser(api, data.currentRoomId, data.currentUserId))
     });

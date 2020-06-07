@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { VideoRoomState } from '../../../store/video-room/video-room';
+import { VideoRoomState, sendMessageToServer } from '../../../store/video-room/video-room';
 import { connect } from "react-redux";
 import { ChatMessageItem } from "./chat-message-item";
-import { sendMessageToServer } from "../../../store/video-room/video-room";
 import { store } from "../../../store";
 import { MessageDetail } from "../../../api/video-room-types";
 
@@ -18,13 +17,11 @@ export interface Prop {
 export const ChatApp = (props: Prop) => {
     const [msg, setMessage] = useState("");
 
-    // sending message to the server after pressing the button
     const sendMessageClick = (): void => {
         store.dispatch(sendMessageToServer(msg))
         setMessage('')
     };
 
-    //console.log(props.message)
     return(
         <div>
             <div className="display_message">
@@ -39,7 +36,6 @@ export const ChatApp = (props: Prop) => {
                                 />
                             )
                         })
-                    // the extra () calls the function.
                     })()
                 }
             </div>
