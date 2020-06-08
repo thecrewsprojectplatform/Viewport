@@ -1,5 +1,10 @@
 import React from 'react';
 import ReactPlayer from 'react-player'
+import '../../'
+import useStyles from '../../styles';
+import { TextField, Button, IconButton } from '@material-ui/core';
+import InputAdornment from "@material-ui/core/InputAdornment";
+import SearchIcon from "@material-ui/icons/Search";
 
 /**
  * Creates a video player with the following attributes:
@@ -32,39 +37,50 @@ class VideoPlayer extends React.Component {
         this.setState(state)
     }
 
-
     render() {
-        const {url, playing, played} = this.state
+        const {url, playing, played} = this.state;
         return (
-            <div>
-            <div>
+            <div className="Video-section">
                 <div>
-                    <input ref={input => { this.urlInput = input}} type='text' placeholder='Enter URL' />
-                    <button onClick={() => this.setState({ url: this.urlInput.value })}>Load</button>
+                    <div>
+                        <TextField inputRef={input => { this.urlInput = input}}
+                                   variant='filled'
+                                   type='text' 
+                                   placeholder='Enter URL'
+                                   InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                    <IconButton onClick={() => this.setState({ url: this.urlInput.value })}>
+                                                        <SearchIcon />
+                                                    </IconButton>
+                                            </InputAdornment>
+                                        )
+                                   }}
+                        />
+                    </div>
+                    <ReactPlayer
+                        url={url}
+                        config={{
+                            youtube: {
+                                playerVars: { 
+                                    rel : 0}
+                            }
+                        }}
+                        playing={playing}
+                        onProgress={this.handleProgress}
+                    />
+                    <Button variant='contained' 
+                            onClick={this.handlePlayPause}>{playing ? 'Pause' : 'Play'}
+                    </Button>
                 </div>
-                
-                <ReactPlayer
-                    url={url}
-                    config={{
-                        youtube: {
-                            playerVars: { 
-                                rel : 0}
-                        }
-                    }}
-                    playing={playing}
-                    onProgress={this.handleProgress}
-                />
-
-                <button onClick={this.handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
-            </div>
-            <table>
-                <tbody>
-                    <tr>
-                    <th>Played</th>
-                    <th><progress max={1} value={played} /></th>
-                    </tr>
-                </tbody>
-            </table>
+                <table>
+                    <tbody>
+                        <tr>
+                        <th>Played</th>
+                        <th><progress max={1} value={played} /></th>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         );
     }

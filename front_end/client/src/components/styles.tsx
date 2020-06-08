@@ -15,26 +15,7 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         marginTop: theme.spacing(1),
         display: 'flex',
-        flexDirection: 'row',
-    },
-    videoRoom: {
-        marginTop: theme.spacing(2),
-        display: 'flex',
-        flexDirection: 'row',
-    },
-    chatApp: {
-        flexGrow: 3
-    },
-    formControl: {
-        width: '90%',
-        height: 22,
-        font: '90%'
-    },
-    videoPlayer: {
-        flexGrow: 1
-    },
-    userList: {
-        flexGrow: 1
+        flexDirection: 'row'
     },
     submit: {
         margin: theme.spacing(3, 0, 2),

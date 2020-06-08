@@ -64,6 +64,7 @@ const RoomList = (props: Prop) => {
                             name="create-new-room"
                             autoComplete="off"
                             autoFocus
+                            required
                         
                             type="text" 
                             onChange={(event) => setNewRoomName(event.target.value)}

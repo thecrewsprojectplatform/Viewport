@@ -19,7 +19,7 @@ interface Prop {
  */
 export const UserListItem = (props: Prop) => {
     return (
-        <ListItem className= "User" key={props.user.id}>
+        <ListItem button className="User" key={props.user.id}>
                 <ListItemText primary={props.user.name} />
         </ListItem>
     )
