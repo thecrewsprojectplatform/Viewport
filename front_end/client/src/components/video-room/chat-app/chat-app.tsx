@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { ChatMessageItem } from "./chat-message-item";
 import { store } from "../../../store";
 import { MessageDetail } from "../../../api/video-room-types";
+import { TextField } from "@material-ui/core";
+import useStyles from "../../styles";
 
 /**
  * Represents the required properties of the ChatApp.
@@ -15,15 +17,19 @@ export interface Prop {
 }
 
 export const ChatApp = (props: Prop) => {
+    const classes = useStyles();
     const [msg, setMessage] = useState("");
 
-    const sendMessageClick = (): void => {
-        store.dispatch(sendMessageToServer(msg))
-        setMessage('')
+    // sending message to the server after pressing the button
+    const sendMessageClick = (event): void => {
+        if ((event.key === 'Enter') && (msg !== "")) {
+            store.dispatch(sendMessageToServer(msg))
+            setMessage('')
+        }
     };
 
     return(
-        <div>
+        <div className={classes.chatApp}>
             <div className="display_message">
                 {
                     props.messageHistory && props.messageHistory.length !== 0 &&
@@ -39,17 +45,22 @@ export const ChatApp = (props: Prop) => {
                     })()
                 }
             </div>
-            <input 
+            <TextField 
                 type="text" 
-                placeholder="Type message..." 
-                className="form-control"
+                placeholder="Send a message..." 
+                variant="outlined"
+                className={classes.formControl}
+                InputProps={{
+                    className: classes.formControl
+                }}
+                InputLabelProps={{
+                    shrink: true
+                }}
+
                 value={msg} 
                 onChange={event => setMessage(event.target.value)}
+                onKeyDown={sendMessageClick}
             />
-            <button 
-                onClick={sendMessageClick} 
-                className="btn btn-primary form-control">Send
-            </button>
             <br/>
         </div>
     ) 

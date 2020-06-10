@@ -8,6 +8,9 @@ import { UserListR } from "./user-list/user-list";
 import { Room, User } from "../../api/video-room-types";
 import { ChatAppR } from "./chat-app/chat-app"
 import VideoPlayer from "./video-player"
+import NavBar from "../nav-bar";
+import { Container, CssBaseline } from "@material-ui/core";
+import useStyles from "../styles";
 import { socket } from "../../App"
 
 /**
@@ -31,6 +34,7 @@ export interface Prop {
  * @returns {JSX.Element} The JSX representing the video room page.
  */
 const VideoRoomPage = (props: Prop) => {
+    const classes = useStyles();
     const api = useContext<VideoRoomApi>(ApiContext);
 
     useEffect(() => {
@@ -59,21 +63,13 @@ const VideoRoomPage = (props: Prop) => {
 
     return (
         <div>
-            <button
-                className="Exit-room-button"
-                onClick={(ev) => {
-                    exitRoomClick()
-                }
-            }>
-                Exit Room
-            </button>
-            <VideoPlayer />
-            <div className="row">
-                <UserListR />
-                <div>
-                <ChatAppR />
-                </div>
-            </div>
+            {NavBar("Exit Room", exitRoomClick)}
+            <Container className={classes.videoRoom} maxWidth='xl'>
+                <CssBaseline />
+                    <UserListR />
+                    <VideoPlayer />
+                    <ChatAppR />
+            </Container>
         </div>
     )
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { ListItem, ListItemText } from "@material-ui/core";
 import { User } from "../../../api/video-room-types";
 
 /**
@@ -18,8 +19,8 @@ interface Prop {
  */
 export const UserListItem = (props: Prop) => {
     return (
-        <div className="User" key={props.user.id}>
-            <span className="User-name">{props.user.name}</span>
-        </div>
+        <ListItem button className="User" key={props.user.id}>
+                <ListItemText primary={props.user.name} />
+        </ListItem>
     )
 }
