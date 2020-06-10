@@ -49,6 +49,7 @@ export const ChatApp = (props: Prop) => {
                 type="text" 
                 placeholder="Send a message..." 
                 variant="outlined"
+                className={classes.formControl}
                 InputProps={{
                     className: classes.formControl
                 }}

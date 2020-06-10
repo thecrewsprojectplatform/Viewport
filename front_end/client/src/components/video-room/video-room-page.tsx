@@ -64,13 +64,11 @@ const VideoRoomPage = (props: Prop) => {
     return (
         <div>
             {NavBar("Exit Room", exitRoomClick)}
-            <Container>
+            <Container className={classes.videoRoom} maxWidth='xl'>
                 <CssBaseline />
-                <div className={classes.videoRoom}>
                     <UserListR />
                     <VideoPlayer />
                     <ChatAppR />
-                </div>
             </Container>
         </div>
     )

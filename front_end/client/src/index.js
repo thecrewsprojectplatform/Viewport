@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App.tsx';
 import './index.css';
-import 'typeface-roboto';
 import * as serviceWorker from './serviceWorker';
+
+import 'fontsource-roboto';
 
 ReactDOM.render(
   <React.StrictMode>

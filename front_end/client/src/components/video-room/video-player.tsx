@@ -9,6 +9,7 @@ import { Room } from '../../api/video-room-types';
 import './video-player.css';
 import { Button, TextField, InputAdornment, IconButton } from '@material-ui/core';
 import SearchIcon from "@material-ui/icons/Search";
+import useStyles from '../styles';
 
 export interface Prop {
     currentRoom: Room;
@@ -22,6 +23,7 @@ export interface Prop {
  *      Progress bar (currently disabled)
  */
 const VideoPlayer = (props: Prop) => {
+    const classes = useStyles();
     const api = useContext<VideoRoomApi>(ApiContext)
 
     const [url, setUrl] = useState(null)
@@ -73,49 +75,55 @@ const VideoPlayer = (props: Prop) => {
         //this.setState(state)
     }
 
-        return (
-            <div>
-            <div>
-                <div>
-                    <TextField  variant='filled'
-                                type='text' 
-                                placeholder='Enter URL'
-                                value={url}
-                                onChange={event => checkUrl(event.target.value)} />
+    const handleEnter = (event): void => {
+        if ((event.key === 'Enter') && (url !== "")) {
+            loadButton()
+        }
+    };
 
-                                InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                    <IconButton onClick={loadButton}>
-                                                        <SearchIcon />
-                                                    </IconButton>
-                                            </InputAdornment>
-                                            )
-                                    }}
-                    />
-                    <label> {invalidUrlMessage}</label>
+        return (
+            <div className={classes.videoPlayer}>
+                <div>
+                    <div>
+                        <TextField  variant='filled'
+                                    type='text' 
+                                    placeholder='Enter URL'
+                                    value={url}
+                                    onChange={event => checkUrl(event.target.value)}
+                                    onKeyDown={handleEnter}
+
+                                    InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                        <IconButton onClick={loadButton}>
+                                                            <SearchIcon />
+                                                        </IconButton>
+                                                </InputAdornment>
+                                                )
+                                        }}
+                        />
+                    </div>
+                    <div className='player-wrapper'>
+                        <ReactPlayer
+                            className='react-player'
+                            url={props.url}
+                            width='100%'
+                            height='100%'
+                            controls={false}
+                            config={{
+                                youtube: {
+                                    playerVars: { 
+                                        rel : 0,
+                                        disablekb: 1}
+                                }
+                            }}
+                            playing={checkVideoState()}
+                        />
+                    </div>
+                    <Button variant='contained' 
+                        onClick={handlePlayPause}>{checkVideoState() ? 'Pause' : 'Play'}
+                    </Button>
                 </div>
-                <div className='player-wrapper'>
-                    <ReactPlayer
-                        className='react-player'
-                        url={props.url}
-                        width='100%'
-                        height='100%'
-                        controls={false}
-                        config={{
-                            youtube: {
-                                playerVars: { 
-                                    rel : 0,
-                                    disablekb: 1}
-                            }
-                        }}
-                        playing={checkVideoState()}
-                    />
-                </div>
-                <Button variant='contained' 
-                    onClick={handlePlayPause}>{checkVideoState() ? 'Pause' : 'Play'}
-                </Button>
-            </div>
             </div>
         );
     }

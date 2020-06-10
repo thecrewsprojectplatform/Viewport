@@ -2,10 +2,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     login: {
-      marginTop: theme.spacing(8),
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
     },
     form: {
         width: '100%',
@@ -23,18 +23,21 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
     },
     chatApp: {
+        flexBasis: 0,
         flexGrow: 3
     },
     formControl: {
         width: '90%',
-        height: 22,
-        font: '90%'
+        height: 20,
+        fontSize: '90%'
     },
     videoPlayer: {
-        flexGrow: 1
+        flexGrow: 10,
+        textAlign: 'center'
     },
     userList: {
-        flexGrow: 1
+        flexBasis: 0,
+        flexGrow: 2
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
