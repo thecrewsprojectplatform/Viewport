@@ -17,7 +17,6 @@ class UserListApi(Resource):
 
     @swagger.operation(
         notes="Returns all users",
-        # responseClass=List[User.__name__],
         parameters=[],
         responseMessages=[
             {
@@ -40,7 +39,6 @@ class UserListApi(Resource):
 
     @swagger.operation(
         notes="Creates a new user",
-        # responseClass=User.__name__,
         parameters=[
             {
                 "name": "name",
@@ -87,7 +85,6 @@ class UserApi(Resource):
 
     @swagger.operation(
         notes="Returns the specific user",
-        # responseClass=User.__name__,
         parameters=[
             {
                 "name": "user_id",
@@ -127,7 +124,6 @@ class UserApi(Resource):
 
     @swagger.operation(
         notes="Updates the specific user",
-        # responseClass=User.__name__,
         parameters=[
             {
                 "name": "user_id",
