@@ -7,6 +7,7 @@ import { store } from "../../store";
 import { User, Room } from "../../api/video-room-types";
 import { RoomListR } from "./room-list";
 import { socket } from "../../App"
+import NavBar from "../nav-bar";
 
 /**
  * Represents the required properties of the JoinCreateRoomPage.
@@ -25,7 +26,7 @@ export interface Prop {
  * Represents the join/create room page. Users input a room name into a textbox
  * if they want to create a room and join it. The current list of available rooms
  * is displayed so users can also join already existing rooms.
- * 
+ *
  * @param {Object} props An object representing the require properties of
  *                 the join/create room page. Contains a list of rooms,
  *                 the current user, the current update status, and a
@@ -53,15 +54,7 @@ const JoinCreateRoomPage = (props: Prop) => {
 
     return (
         <div>
-            <button
-                className="Logout-button"
-                onClick={(ev) => {
-                    logoutClick()
-                }
-            }>
-                Logout
-            </button>
-            <p>Join or Create page!</p>
+            {NavBar("Logout", logoutClick)}
             <RoomListR setPageForward={props.setPageForward}/>
         </div>
     )
@@ -69,7 +62,7 @@ const JoinCreateRoomPage = (props: Prop) => {
 
 /**
  * Used to connect the state of the overall front end to the JoinCreateRoomPage.
- * 
+ *
  * @param {Object} state The current state of the JoinCreateRoomPage.
  */
 const mapStateToProps = (state: VideoRoomState) => {

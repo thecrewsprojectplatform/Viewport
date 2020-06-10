@@ -39,23 +39,18 @@ const BasePage = (props: Prop) => {
 
     return (
         <div className="App">
-            <header className="App-header">
-                <h2>
-                    Multimedia Platform
-                </h2>
-            </header>
-
-        {(() => {
-            switch (pageType) {
-                case PageType.LoginPage:
-                    return <LoginPageR setPage={() => setPageType(PageType.JoinCreateRoomPage)}/>
-                case PageType.JoinCreateRoomPage:
-                    return <JoinCreateRoomPageR setPageForward={() => setPageType(PageType.VideoRoomPage)}
-                                                setPageBackwards={() => setPageType(PageType.LoginPage)} />
-                case PageType.VideoRoomPage:
-                    return <VideoRoomPageR setPageBackwards={() => setPageType(PageType.JoinCreateRoomPage)} />
-            }
-        })()}
+            {(() => {
+                // Conditional rendering done here
+                switch (pageType) {
+                    case PageType.LoginPage:
+                        return <LoginPageR setPage={() => setPageType(PageType.JoinCreateRoomPage)}/>
+                    case PageType.JoinCreateRoomPage:
+                        return <JoinCreateRoomPageR setPageForward={() => setPageType(PageType.VideoRoomPage)}
+                                                    setPageBackwards={() => setPageType(PageType.LoginPage)} />
+                    case PageType.VideoRoomPage:
+                        return <VideoRoomPageR setPageBackwards={() => setPageType(PageType.JoinCreateRoomPage)} />
+                }
+            })()}
         </div>
     )
 }

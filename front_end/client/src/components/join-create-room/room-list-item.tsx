@@ -1,5 +1,6 @@
 import React from "react";
 import { Room } from "../../api/video-room-types";
+import { ListItem, ListItemText } from "@material-ui/core";
 
 /**
  * Represents the required properties of the User.
@@ -19,16 +20,21 @@ interface Prop {
  * @returns {JSX.Element} The JSX representing the RoomList.
  */
 export const RoomListItem = (props: Prop) => {
+    /*
+    const handleClick = (event): void => {
+        props.onJoinClick(props.currentRoom.id)} 
+        event.preventDefault();
+    }
+    */
+
+    const handleClick = (event): void => {
+        props.onJoinClick(props.currentRoom.id)
+        event.preventDefault();
+    }
+    
     return (
-        <div className="Room" key={props.currentRoom.id}>
-            <span className="Room-name">{props.currentRoom.name}</span>
-            <button
-                className="Join-button"
-                onClick={(ev) => {
-                    props.onJoinClick(props.currentRoom.id)}
-            }>
-                Join
-            </button>
-        </div>
+            <ListItem button onClick={handleClick} key={props.currentRoom.id}>
+                <ListItemText primary={props.currentRoom.name} />
+            </ListItem>
     )
 }
