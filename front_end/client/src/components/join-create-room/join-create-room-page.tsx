@@ -1,19 +1,22 @@
 import React, { useEffect, useContext } from "react";
 import { connect } from "react-redux";
-import { getRoomsAction, VideoRoomState, Status, removeUser } from "../../store/video-room/video-room";
+import { userClosedBrowser, removeRoom, getRoomsAction, VideoRoomState, Status, removeUser } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
 import { User, Room } from "../../api/video-room-types";
 import { RoomListR } from "./room-list";
+import { socket } from "../../App"
 
 /**
  * Represents the required properties of the JoinCreateRoomPage.
  */
 export interface Prop {
+    users: User[];
     roomList: Room[];
     currentUser: User;
     updateStatus: Status;
+    userListDisconnect: User[];
     setPageForward: () => void;
     setPageBackwards: () => void;
 }
@@ -41,6 +44,13 @@ const JoinCreateRoomPage = (props: Prop) => {
         props.setPageBackwards()
     }
 
+    socket.on('clientDisconnectedUpdateRoomList', data => {
+        if (props.userListDisconnect.length === 0) {
+            console.log('remove room', data.currentRoomId)
+            store.dispatch(removeRoom(api, data.currentRoomId));
+        }
+    });
+
     return (
         <div>
             <button
@@ -64,9 +74,11 @@ const JoinCreateRoomPage = (props: Prop) => {
  */
 const mapStateToProps = (state: VideoRoomState) => {
     return {
+        users: state.users,
         roomList: state.roomList,
         currentUser: state.user,
         updateStatus: state.updateStatus,
+        userListDisconnect: state.userListDisconnect
     }
 }
 

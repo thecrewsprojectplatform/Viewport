@@ -19,6 +19,7 @@ export interface VideoRoomState {
     pastRoomId: number;
     user: User;
     users: User[];
+    userListDisconnect: User[];
     url: string;
     video_id: string;
     clientMessage: string;
@@ -185,6 +186,11 @@ interface RemoveUserAfterBrowserCloseFailAction {
     type: ActionType.RemoveUserAfterBrowserCloseFail;
 }
 
+interface ReceiveUserOfTheRoomWhenUserDisconnectAction {
+    type: ActionType.ReceiveUserOfTheRoomWhenUserDisconnect
+    userListDisconnect: User[];
+}
+
 type Action =   SetVidoRoomUsersAction |
                 GetRoomsAction |
                 GetRoomsSuccessAction |
@@ -217,7 +223,8 @@ type Action =   SetVidoRoomUsersAction |
                 RemoveUserFromRoomFailAction |
                 RemoveUserAfterBrowserCloseAction |
                 RemoveUserAfterBrowserCloseSuccessAction |
-                RemoveUserAfterBrowserCloseFailAction;
+                RemoveUserAfterBrowserCloseFailAction |
+                ReceiveUserOfTheRoomWhenUserDisconnectAction;
 
 export const reducer = (
     state: VideoRoomState = {
@@ -228,6 +235,7 @@ export const reducer = (
         pastRoomId: null,
         user: null,
         users: [],
+        userListDisconnect: [],
         url: null,
         video_id: null,
         clientMessage: null,
@@ -399,6 +407,10 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
             });
+        case ActionType.ReceiveUserOfTheRoomWhenUserDisconnect:
+            return produce(state, draftState => {
+                draftState.userListDisconnect = action.userListDisconnect
+            });
         default:
             return state;
     }
@@ -496,7 +508,7 @@ export const getRoomUsers = (api: VideoRoomApi, roomId: number): any => {
                 } as SetVidoRoomUsersAction);
             })
         }).catch(err => {
-            console.log("Failed to get users in room");
+            console.log("Failed to get the list of users in room");
         });
     };
 };
@@ -621,6 +633,10 @@ export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: nu
                         users: data.clientList
                     } as SetVidoRoomUsersAction);
                 });
+                console.log('current people in room disconnected is', users)
+                socket.emit('updateUserListDisconnected', {
+                    userListDisconnect: users
+                })
             });
         });
     };
@@ -696,6 +712,7 @@ export const userClosedBrowser = (api: VideoRoomApi, roomId: number, userId: num
         api.removeUserFromRoom(roomId, userId).then(response => {
             dispatch({
                 type: ActionType.RemoveUserAfterBrowserCloseSuccess,
+                pastRoomId: roomId
             } as RemoveUserAfterBrowserCloseSuccessAction);
         }).catch(err => {
             dispatch({
@@ -716,4 +733,13 @@ export const userClosedBrowser = (api: VideoRoomApi, roomId: number, userId: num
             });
         });
     };
+}
+
+export const userListToJoinRoomWhenUserCloseBrowser = (users): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.ReceiveUserOfTheRoomWhenUserDisconnect,
+            userListDisconnect: users
+        })
+    }
 }

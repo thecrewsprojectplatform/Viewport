@@ -1,5 +1,5 @@
 import io from "socket.io-client";
-import { sendMessageToAllClients, loadVideo, controlVideo } from "../../../store/video-room/video-room";
+import { userListToJoinRoomWhenUserCloseBrowser, sendMessageToAllClients, loadVideo, controlVideo } from "../../../store/video-room/video-room";
 import { store } from "../../../store";
 
 const socket = io();
@@ -14,11 +14,15 @@ const configureSocket = dispatch => {
   });
 
   socket.on('sendUrlToAllClients', data => {
-      store.dispatch(loadVideo(data.url))
+    store.dispatch(loadVideo(data.url))
   });
 
   socket.on('sendRoomStateToAllClients', data => {
-      store.dispatch(controlVideo(data.room))
+    store.dispatch(controlVideo(data.room))
+  })
+
+  socket.on('updateUserListDisconnectedClients', data => {
+    store.dispatch(userListToJoinRoomWhenUserCloseBrowser(data.userListDisconnect))
   })
 
   return socket;

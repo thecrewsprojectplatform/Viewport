@@ -40,18 +40,10 @@ const VideoRoomPage = (props: Prop) => {
         } else {
             store.dispatch(removeUserFromRoom(api, props.currentRoom.id, props.currentUser.id));
         }
+
         props.setPageBackwards()
     }
-
-    const disconnectedUser = (data) => {
-        if (props.users.length === 1) {
-            store.dispatch(userClosedBrowser(api, data.currentRoom.id, data.currentUser.id));
-            store.dispatch(removeRoom(api, data.currentRoom.id));
-        } else {
-            store.dispatch(userClosedBrowser(api, data.currentRoom.id, data.currentUser.id));
-        }
-    }
-
+ 
     useEffect(() => {
         if (props.currentRoom) {
             store.dispatch(getRoomUsers(api, props.currentRoom.id));
@@ -61,9 +53,10 @@ const VideoRoomPage = (props: Prop) => {
     useEffect(() => {
         store.dispatch(getRoomsAction(api))
     }, []);
-
+    
     socket.on('clientDisconnectedUpdateUserList', data => {
-        disconnectedUser(data);
+        console.log('disconnect:', data.currentUserId)
+        store.dispatch(userClosedBrowser(api, data.currentRoomId, data.currentUserId));
     });
 
     return (
