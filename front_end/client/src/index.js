@@ -4,6 +4,8 @@ import App from './App.tsx';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 
+import 'fontsource-roboto';
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

@@ -7,6 +7,9 @@ import { VideoRoomApi } from '../../api/video-room-api';
 import { ApiContext } from '..';
 import { Room } from '../../api/video-room-types';
 import './video-player.css';
+import { Button, TextField, InputAdornment, IconButton } from '@material-ui/core';
+import SearchIcon from "@material-ui/icons/Search";
+import useStyles from '../styles';
 
 export interface Prop {
     currentRoom: Room;
@@ -20,6 +23,7 @@ export interface Prop {
  *      Progress bar (currently disabled)
  */
 const VideoPlayer = (props: Prop) => {
+    const classes = useStyles();
     const api = useContext<VideoRoomApi>(ApiContext)
 
     const [url, setUrl] = useState(null)
@@ -44,7 +48,7 @@ const VideoPlayer = (props: Prop) => {
      *  3) sends the new video_state to all clients      
     */
     const handlePlayPause = () => {
-        if (props.currentRoom.video_state == null || props.currentRoom.video_state == "PAUSED") {
+        if (props.currentRoom.video_state === null || props.currentRoom.video_state === "PAUSED") {
             updateVideoState("PLAYING")
         } else {
             updateVideoState("PAUSED")
@@ -53,13 +57,13 @@ const VideoPlayer = (props: Prop) => {
 
     const checkVideoState = () => {
         if (props.currentRoom) {
-            return props.currentRoom.video_state == null || props.currentRoom.video_state == "PAUSED" ? false : true
+            return props.currentRoom.video_state === null || props.currentRoom.video_state === "PAUSED" ? false : true
         }
         return false
     }
 
     const checkUrl = (url: string) => {
-        if (!ReactPlayer.canPlay(url) && url != '') {
+        if (!ReactPlayer.canPlay(url) && url !== '') {
             setInvalidUrlMessage('The url pasted is not valid')
         } else {
             setUrl(url)
@@ -71,38 +75,55 @@ const VideoPlayer = (props: Prop) => {
         //this.setState(state)
     }
 
+    const handleEnter = (event): void => {
+        if ((event.key === 'Enter') && (url !== "")) {
+            loadButton()
+        }
+    };
+
         return (
-            <div>
-            <div>
+            <div className={classes.videoPlayer}>
                 <div>
-                    <input 
-                        type='text'
-                        placeholder='Enter URL'
-                        className='FORM-CONTROL'
-                        value={url}
-                        onChange={event => checkUrl(event.target.value)} />
-                    <button onClick={loadButton}>Load</button>
-                    <label> {invalidUrlMessage}</label>
+                    <div>
+                        <TextField  variant='filled'
+                                    type='text' 
+                                    placeholder='Enter URL'
+                                    value={url}
+                                    onChange={event => checkUrl(event.target.value)}
+                                    onKeyDown={handleEnter}
+
+                                    InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                        <IconButton onClick={loadButton}>
+                                                            <SearchIcon />
+                                                        </IconButton>
+                                                </InputAdornment>
+                                                )
+                                        }}
+                        />
+                    </div>
+                    <div className='player-wrapper'>
+                        <ReactPlayer
+                            className='react-player'
+                            url={props.url}
+                            width='100%'
+                            height='100%'
+                            controls={false}
+                            config={{
+                                youtube: {
+                                    playerVars: { 
+                                        rel : 0,
+                                        disablekb: 1}
+                                }
+                            }}
+                            playing={checkVideoState()}
+                        />
+                    </div>
+                    <Button variant='contained' 
+                        onClick={handlePlayPause}>{checkVideoState() ? 'Pause' : 'Play'}
+                    </Button>
                 </div>
-                <div className='player-wrapper'>
-                    <ReactPlayer
-                        className='react-player'
-                        url={props.url}
-                        width='100%'
-                        height='100%'
-                        controls={false}
-                        config={{
-                            youtube: {
-                                playerVars: { 
-                                    rel : 0,
-                                    disablekb: 1}
-                            }
-                        }}
-                        playing={checkVideoState()}
-                    />
-                </div>
-                <button onClick={handlePlayPause}>{checkVideoState() ? 'Pause' : 'Play'}</button>
-            </div>
             </div>
         );
     }

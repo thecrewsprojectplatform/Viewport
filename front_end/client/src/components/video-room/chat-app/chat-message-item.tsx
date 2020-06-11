@@ -8,8 +8,7 @@ interface Prop {
 export const ChatMessageItem = (props: Prop) => {
     return (
         <div className="message">
-            <span className="message-name">{props.clientMessage}</span>
-            <span className="message-user">{props.clientName}</span>
+            <span>{props.clientName + ": " + props.clientMessage}</span>
         </div>
     )
 }

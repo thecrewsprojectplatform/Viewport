@@ -6,7 +6,9 @@ import { store } from '../../../store';
 import { getRoomUsers, VideoRoomState } from '../../../store/video-room/video-room';
 import { VideoRoomApi } from "../../../api/video-room-api";
 import { ApiContext } from "../..";
-import { Status } from "../../../store/video-room/video-room"
+import { Status } from "../../../store/video-room/video-room";
+import { List } from '@material-ui/core';
+import useStyles from '../../styles';
 
 /**
  * Represents the required properties of the UserList.
@@ -29,13 +31,12 @@ export interface Prop {
  * @returns {JSX.Element} The JSX representing the UserList.
  */
 const UserList = (props: Prop) => {
-    const [numberofUsers, setnumberofUsers] = useState([]);
+    const classes = useStyles();
     const api = useContext<VideoRoomApi>(ApiContext);
 
     useEffect(() => {
         if (props.roomId) {
             store.dispatch(getRoomUsers(api, props.roomId));
-            setnumberofUsers(props.users)
         }
     }, [props.roomId]);
 
@@ -44,15 +45,10 @@ const UserList = (props: Prop) => {
             store.dispatch(getRoomUsers(api, props.roomId));
         }
     }, [props.updateStatus]);
-    /*
-    useEffect(() => {
-        if (props.users.length < numberofUsers.length) {
-            store.dispatch(getRoomUsers(api, props.roomId));
-        }
-    }, [props.users]);
-    */ 
+
     return (
-        <div className="User-list">
+        <div className={classes.userList}>
+            <List>
             {
                 props.users && props.users.length !== 0 &&
                 (() => {
@@ -66,6 +62,7 @@ const UserList = (props: Prop) => {
                     })
                 })()
             }
+            </List>
         </div>
     )
 }
