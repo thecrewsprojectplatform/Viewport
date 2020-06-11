@@ -14,11 +14,11 @@ const configureSocket = dispatch => {
   });
 
   socket.on('sendUrlToAllClients', data => {
-      store.dispatch(loadVideo(data.url))
+    store.dispatch(loadVideo(data.url))
   });
 
   socket.on('sendRoomStateToAllClients', data => {
-      store.dispatch(controlVideo(data.room))
+    store.dispatch(controlVideo(data.room))
   })
 
   return socket;
