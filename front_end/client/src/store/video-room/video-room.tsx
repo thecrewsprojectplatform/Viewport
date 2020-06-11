@@ -658,7 +658,7 @@ export const sendUrlToServer = (url: string): any => {
     }
 }
 
-export const loadVideo = (url: HTMLInputElement): any => {
+export const loadVideo = (url: string): any => {
     return (dispatch): any => {
         dispatch({
             type: ActionType.LoadVideo,

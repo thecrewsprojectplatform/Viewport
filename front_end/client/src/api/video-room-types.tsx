@@ -5,6 +5,7 @@ export interface Room {
     id: number;
     name: string;
     video_id: string;
+    video_url: string;
     video_state: string;
 }
 

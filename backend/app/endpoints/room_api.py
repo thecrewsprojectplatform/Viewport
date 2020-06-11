@@ -86,6 +86,7 @@ class RoomApi(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument("name", type=str, required=True, location="json")
         self.reqparse.add_argument("video_id", type=str, required=True, location="json")
+        self.reqparse.add_argument("video_url", type=str, required=True, location="json")
         self.reqparse.add_argument("video_state", type=str, required=False, default="PAUSED", location="json")
         super(RoomApi, self).__init__()
 
@@ -149,6 +150,14 @@ class RoomApi(Resource):
             {
                 "name": "video_id",
                 "description": "ID of video to update room with",
+                "required": True,
+                "allowMultiple": False,
+                "dataType": "string",
+                "paramType": "body"
+            },
+            {
+                "name": "video_url",
+                "description": "Url of video to update room with",
                 "required": True,
                 "allowMultiple": False,
                 "dataType": "string",

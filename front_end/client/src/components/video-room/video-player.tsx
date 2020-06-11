@@ -33,11 +33,11 @@ const VideoPlayer = (props: Prop) => {
     const loadButton = () => {
         store.dispatch(sendUrlToServer(url))
         // By default, set the video_state to paused after loading
-        api.updateRoom(props.currentRoom.id, props.currentRoom.name, props.currentRoom.video_id, "PAUSED")
+        api.updateRoom(props.currentRoom.id, props.currentRoom.name, props.currentRoom.video_id, url, "PAUSED")
     }
 
     const updateVideoState = (playing: string) => {
-        api.updateRoom(props.currentRoom.id, props.currentRoom.name, props.currentRoom.video_id, playing).then(() => {
+        api.updateRoom(props.currentRoom.id, props.currentRoom.name, props.currentRoom.video_id, url, playing).then(() => {
             store.dispatch(getAndSendRoomState(api, props.currentRoom.id))
         })
     }
