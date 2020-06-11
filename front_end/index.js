@@ -93,13 +93,16 @@ socket.on('sendControlsToServer', data => {
   socket.on('disconnect', function() {
     console.log('A client has left our server.');
     console.log('deleting client ID #', socket.usernameId, 'in room ID #', socket.roomId)
-    io.emit('clientDisconnectedUpdateUserList', {
-      currentRoomId: socket.roomId,
-      currentUserId: socket.usernameId
-    })
+
     io.emit('clientDisconnectedUpdateRoomList', {
       currentRoomId: socket.roomId,
     })
+
+    io.emit('clientDisconnectedUpdateUserList', {
+      currentRoomId: socket.roomId,
+      currentUserId: socket.usernameId,
+    })
+
   });
 
 });

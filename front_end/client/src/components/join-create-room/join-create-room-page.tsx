@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { connect } from "react-redux";
-import { userClosedBrowser, removeRoom, getRoomsAction, VideoRoomState, Status, removeUser } from "../../store/video-room/video-room";
+import { removeRoom, closedBrowserUserList, getRoomsAction, VideoRoomState, Status, removeUser } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
@@ -17,7 +17,6 @@ export interface Prop {
     roomList: Room[];
     currentUser: User;
     updateStatus: Status;
-    userListDisconnect: User[];
     setPageForward: () => void;
     setPageBackwards: () => void;
 }
@@ -36,21 +35,35 @@ export interface Prop {
 const JoinCreateRoomPage = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
 
-    useEffect(() => {
-        store.dispatch(getRoomsAction(api))
-    }, []);
-
     const logoutClick = (): void => {
         store.dispatch(removeUser(api, props.currentUser.id));
         props.setPageBackwards()
     }
 
+    useEffect(() => {
+        store.dispatch(getRoomsAction(api))
+    }, []);
+
+    socket.on('clientDisconnectedUpdateUserList', data => {
+        api.removeUserFromRoom(data.currentRoomId, data.currentUserId).then(() => {
+            store.dispatch(closedBrowserUserList(api, data.currentRoomId));
+        }).finally(() => {
+            api.getUsersInRoom(data.currentRoomId).then(users => {
+                if (users.length === 0) {
+                    store.dispatch(removeRoom(api, data.currentRoomId));
+                }
+            })
+        })
+    });
+
+    /*
     socket.on('clientDisconnectedUpdateRoomList', data => {
         if (props.userListDisconnect.length === 0) {
+            console.log(props.userListDisconnect)
             console.log('remove room', data.currentRoomId)
             store.dispatch(removeRoom(api, data.currentRoomId));
         }
-    });
+    });*/
 
     return (
         <div>
@@ -71,7 +84,6 @@ const mapStateToProps = (state: VideoRoomState) => {
         roomList: state.roomList,
         currentUser: state.user,
         updateStatus: state.updateStatus,
-        userListDisconnect: state.userListDisconnect
     }
 }
 

@@ -32,5 +32,4 @@ export enum ActionType {
     RemoveUserAfterBrowserClose="REMOVE_USER_AFTER_BROWSER_CLOSE",
     RemoveUserAfterBrowserCloseSuccess="REMOVE_USER_AFTER_BROWSER_CLOSE_SUCESS",
     RemoveUserAfterBrowserCloseFail="REMOVE_USER_AFTER_BROWSER_CLOSE_FAIL",
-    ReceiveUserOfTheRoomWhenUserDisconnect="RECEIVE_USER_OF_THE_ROOM_WHEN_USERS_DISCONNECT",
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { connect } from "react-redux";
-import { userClosedBrowser, getRoomUsers, VideoRoomState, removeUserFromRoom, removeRoom, getRoomsAction } from "../../store/video-room/video-room";
+import { getRoomUsers, VideoRoomState, removeUserFromRoom, removeRoom, getRoomsAction } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
@@ -11,7 +11,6 @@ import VideoPlayer from "./video-player"
 import NavBar from "../nav-bar";
 import { Container, CssBaseline } from "@material-ui/core";
 import useStyles from "../styles";
-import { socket } from "../../App"
 
 /**
  * Represents the required properties of the VideoRoomPage.
@@ -57,11 +56,6 @@ const VideoRoomPage = (props: Prop) => {
     useEffect(() => {
         store.dispatch(getRoomsAction(api))
     }, []);
-    
-    socket.on('clientDisconnectedUpdateUserList', data => {
-        console.log('disconnect:', data.currentUserId)
-        store.dispatch(userClosedBrowser(api, data.currentRoomId, data.currentUserId));
-    });
 
     return (
         <div>

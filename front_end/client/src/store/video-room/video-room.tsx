@@ -19,7 +19,6 @@ export interface VideoRoomState {
     pastRoomId: number;
     user: User;
     users: User[];
-    userListDisconnect: User[];
     url: string;
     video_id: string;
     clientMessage: string;
@@ -186,11 +185,6 @@ interface RemoveUserAfterBrowserCloseFailAction {
     type: ActionType.RemoveUserAfterBrowserCloseFail;
 }
 
-interface ReceiveUserOfTheRoomWhenUserDisconnectAction {
-    type: ActionType.ReceiveUserOfTheRoomWhenUserDisconnect
-    userListDisconnect: User[];
-}
-
 type Action =   SetVidoRoomUsersAction |
                 GetRoomsAction |
                 GetRoomsSuccessAction |
@@ -223,8 +217,7 @@ type Action =   SetVidoRoomUsersAction |
                 RemoveUserFromRoomFailAction |
                 RemoveUserAfterBrowserCloseAction |
                 RemoveUserAfterBrowserCloseSuccessAction |
-                RemoveUserAfterBrowserCloseFailAction |
-                ReceiveUserOfTheRoomWhenUserDisconnectAction;
+                RemoveUserAfterBrowserCloseFailAction ;
 
 export const reducer = (
     state: VideoRoomState = {
@@ -235,7 +228,6 @@ export const reducer = (
         pastRoomId: null,
         user: null,
         users: [],
-        userListDisconnect: [],
         url: null,
         video_id: null,
         clientMessage: null,
@@ -406,10 +398,6 @@ export const reducer = (
         case ActionType.RemoveUserAfterBrowserCloseFail:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
-            });
-        case ActionType.ReceiveUserOfTheRoomWhenUserDisconnect:
-            return produce(state, draftState => {
-                draftState.userListDisconnect = action.userListDisconnect
             });
         default:
             return state;
@@ -704,42 +692,26 @@ export const getAndSendRoomState = (api: VideoRoomApi, roomId: number): any => {
     }
 }
 
-export const userClosedBrowser = (api: VideoRoomApi, roomId: number, userId: number): any => {
+export const closedBrowserUserList = (api: VideoRoomApi, roomId: number): any => {
     return (dispatch): any => {
         dispatch({
             type: ActionType.RemoveUserAfterBrowserClose,
         } as RemoveUserAfterBrowserCloseAction);
-        api.removeUserFromRoom(roomId, userId).then(response => {
-            dispatch({
-                type: ActionType.RemoveUserAfterBrowserCloseSuccess,
-                pastRoomId: roomId
-            } as RemoveUserAfterBrowserCloseSuccessAction);
+        api.getUsersInRoom(roomId).then(users => {
+            socket.emit('updateUserToServerUserList', {
+                currentRoomId: roomId,
+                clientList: users
+            })
+            socket.on('updateUserToAllClientUserList', data => {
+                dispatch({
+                    type: ActionType.SetVideoRoomUsers,
+                    users: data.clientList,
+                } as SetVidoRoomUsersAction);
+            })
         }).catch(err => {
             dispatch({
                 type: ActionType.RemoveUserAfterBrowserCloseFail
             } as RemoveUserAfterBrowserCloseFailAction);
-        }).finally(() => {
-            api.getUsersInRoom(roomId).then(users => {
-                socket.emit('updateUserToServerUserList', {
-                    currentRoomId: roomId,
-                    clientList: users
-                });
-                socket.on('updateUserToAllClientUserList', data => {
-                    dispatch({
-                        type: ActionType.SetVideoRoomUsers,
-                        users: data.clientList
-                    } as SetVidoRoomUsersAction);
-                });
-            });
         });
     };
-}
-
-export const userListToJoinRoomWhenUserCloseBrowser = (users): any => {
-    return (dispatch): any => {
-        dispatch({
-            type: ActionType.ReceiveUserOfTheRoomWhenUserDisconnect,
-            userListDisconnect: users
-        })
-    }
 }
