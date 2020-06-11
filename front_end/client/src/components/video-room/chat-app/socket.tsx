@@ -10,7 +10,7 @@ const configureSocket = dispatch => {
   });
 
   socket.on('serverMessageToAllClients', data => {
-    store.dispatch(sendMessageToAllClients(data.clientMessage, data.clientName))
+    store.dispatch(sendMessageToAllClients(data.clientMessage, data.clientName, data.msgTime))
   });
 
   socket.on('sendUrlToAllClients', data => {

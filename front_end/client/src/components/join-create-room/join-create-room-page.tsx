@@ -56,15 +56,6 @@ const JoinCreateRoomPage = (props: Prop) => {
         })
     });
 
-    /*
-    socket.on('clientDisconnectedUpdateRoomList', data => {
-        if (props.userListDisconnect.length === 0) {
-            console.log(props.userListDisconnect)
-            console.log('remove room', data.currentRoomId)
-            store.dispatch(removeRoom(api, data.currentRoomId));
-        }
-    });*/
-
     return (
         <div>
             {NavBar("Logout", logoutClick)}

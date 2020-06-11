@@ -23,4 +23,5 @@ export interface User {
 export interface MessageDetail {
     chat_message: string;
     chat_username: string;
+    message_time: string;
 }
