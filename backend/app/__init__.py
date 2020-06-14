@@ -22,6 +22,7 @@ def create_app(for_testing=False):
 
     db.init_app(app)
     try:
+        db.session.remove()
         db.drop_all(app=app)
     except:
         pass
