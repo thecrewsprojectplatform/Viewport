@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { ChatMessageItem } from "./chat-message-item";
 import { store } from "../../../store";
 import { MessageDetail } from "../../../api/video-room-types";
-import { TextField } from "@material-ui/core";
+import { TextField, Typography } from "@material-ui/core";
 import useStyles from "../../styles";
 
 /**
@@ -30,7 +30,10 @@ export const ChatApp = (props: Prop) => {
 
     return(
         <div className={classes.chatApp}>
-            <div className="display_message">
+            <Typography className={classes.chatHeader}>
+                Stream Chat:
+            </Typography>
+            <div className={classes.displayMessage}>
                 {
                     props.messageHistory && props.messageHistory.length !== 0 &&
                     (() => {
