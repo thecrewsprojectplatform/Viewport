@@ -386,6 +386,7 @@ export const reducer = (
                 clientId: state.user.id,
                 clientName: state.user.name
             });
+            return state;
         case ActionType.LoadVideo:
             return produce(state, draftState => {
                 draftState.url = action.url;
