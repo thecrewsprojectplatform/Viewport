@@ -10,15 +10,15 @@ const configureSocket = dispatch => {
   });
 
   socket.on('serverMessageToAllClients', data => {
-    store.dispatch(sendMessageToAllClients(data.clientMessage, data.clientName))
+    store.dispatch(sendMessageToAllClients(data.clientMessage, data.clientName, data.msgTime))
   });
 
   socket.on('sendUrlToAllClients', data => {
-      store.dispatch(loadVideo(data.url))
+    store.dispatch(loadVideo(data.url))
   });
 
   socket.on('sendRoomStateToAllClients', data => {
-      store.dispatch(controlVideo(data.room))
+    store.dispatch(controlVideo(data.room))
   })
 
   return socket;

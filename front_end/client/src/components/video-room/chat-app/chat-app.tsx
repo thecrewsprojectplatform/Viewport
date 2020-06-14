@@ -13,17 +13,21 @@ import useStyles from "../../styles";
 export interface Prop {
     clientMessage: string;
     clientName: string;
+    msgTime: string;
     messageHistory: MessageDetail[];
 }
 
 export const ChatApp = (props: Prop) => {
     const classes = useStyles();
     const [msg, setMessage] = useState("");
+    const msgTime = new Date().toLocaleTimeString('en-US');
 
+
+    
     // sending message to the server after pressing the button
     const sendMessageClick = (event): void => {
         if ((event.key === 'Enter') && (msg !== "")) {
-            store.dispatch(sendMessageToServer(msg))
+            store.dispatch(sendMessageToServer(msg, msgTime))
             setMessage('')
         }
     };
@@ -42,6 +46,7 @@ export const ChatApp = (props: Prop) => {
                                 <ChatMessageItem
                                 clientMessage={message.chat_message}
                                 clientName={message.chat_username}
+                                msgTime={message.message_time}
                                 />
                             )
                         })
@@ -73,6 +78,7 @@ const mapStateToProps = (state: VideoRoomState) => {
     return {
         clientMessage: state.clientMessage,
         clientName: state.clientName,
+        msgTime: state.msgTime,
         messageHistory: state.messageHistory
     }
 }

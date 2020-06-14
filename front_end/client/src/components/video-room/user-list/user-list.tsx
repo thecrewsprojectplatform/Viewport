@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useLayoutEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { connect } from "react-redux";
 import { User } from "../../../api/video-room-types";
 import { UserListItem } from './user-list-item';
