@@ -32,14 +32,46 @@ export class VideoRoomApi {
         });
     }
 
-    async updateRoom(roomId: number, name: string, video_id: string, video_url: string, video_state: string): Promise<void> {
+    async updateRoomName(roomId: number, name: string) : Promise<void> {
         return axios.put(this.BASE_URL + "/rooms/" + roomId, {
-            "room_id": roomId,
+            "name": name
+        }).then(response => {
+            console.log("updated room name to: " + name)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    async updateRoomVideoUrl(roomId: number, name: string, video_url: string) : Promise<void> {
+        return axios.put(this.BASE_URL + "/rooms/" + roomId, {
+            "video_url": video_url
+        }).then(response => {
+            console.log("updated room video url to: " + video_url)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    async updateRoomVideoState(roomId: number, name: string, video_state: string) : Promise<void> {
+        return axios.put(this.BASE_URL + "/rooms/" + roomId, {
+            "video_state": video_state
+        }).then(response => {
+            console.log("updated room video_state to: " + video_state)
+        }).catch((err) => {
+            console.log(video_state)
+            console.log(err)
+        })
+    }
+
+    async updateRoom(roomId: number, name: string, video_id: string, video_url: string, video_state: string, video_time: number): Promise<void> {
+        return axios.put(this.BASE_URL + "/rooms/" + roomId, {
             "name": name,
             "video_id": video_id,
             "video_url": video_url,
-            "video_state": video_state
+            "video_state": video_state,
+            "video_time": video_time
         }).then(response => {
+            console.log(video_time)
             //console.log("room updated succesfully")
             //console.log(response.data)
         }).catch((err) => {

@@ -47,7 +47,6 @@ const RoomList = (props: Prop) => {
     const onJoinRoomClick = (roomId: number): void => {
         store.dispatch(addUserToRoomAction(api, roomId, props.user.id, props.currentRooms));
         api.getRoom(roomId).then(room => {
-            console.log(room)
             store.dispatch(loadVideo(room.video_url))
         })
         props.setPageForward();
