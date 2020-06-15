@@ -31,6 +31,7 @@ describe('Chat App component', () => {
     wrapper.find('value').simulate('change', {
       target: { msg: 'test'}
     })
+
   });
 
   test('Should render message onChange', () => {
@@ -68,6 +69,7 @@ describe('Chat App component', () => {
   test('Should update props onKeyDown', () => {
 
   });
+  
 })
 
 /*
