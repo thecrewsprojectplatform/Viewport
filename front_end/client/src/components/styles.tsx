@@ -75,11 +75,7 @@ const useStyles = makeStyles((theme) => ({
         border: '1px solid #E0E0E0',
         borderRadius: '10px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
-
         overflow: 'hidden',
-        display: 'inline-block',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
     },
     userListHeader: {
         paddingTop: theme.spacing(1),
@@ -96,10 +92,13 @@ const useStyles = makeStyles((theme) => ({
         padding: '0%',
     },
     user: {
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
+
+    },
+    userName: {
         minWidth: 0,
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
     },
     submit: {
         margin: theme.spacing(3, 0, 2),

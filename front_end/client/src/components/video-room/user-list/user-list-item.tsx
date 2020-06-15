@@ -22,8 +22,8 @@ export const UserListItem = (props: Prop) => {
     const classes = useStyles();
 
     return (
-        <ListItem button key={props.user.id}>
-                <ListItemText primary={props.user.name} className={classes.user} />
+        <ListItem button key={props.user.id} className={classes.user}>
+                <ListItemText primary={props.user.name} className={classes.userName} />
         </ListItem>
     )
 }
