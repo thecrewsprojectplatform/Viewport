@@ -25,14 +25,20 @@ const useStyles = makeStyles((theme) => ({
     chatApp: {
         flexBasis: 0,
         flexGrow: 3,
-        maxWidth: '15%',
-        height: 'calc(75vh - 300px)',
+        maxWidth: '25%',
+        height: 'calc(120vh - 300px)',
         border: '1px solid #E0E0E0',
+        borderRadius: '10px',
+        overflow: 'hidden',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
     },
     chatHeader: {
-        paddingBottom: theme.spacing(2),
+        paddingTop: theme.spacing(2),
+        paddingLeft: theme.spacing(1),
         borderBottom: '1px solid #E0E0E0',
-        height: '10%',
+        height: '6%',
+        background: '#E3E3E3',
+        fontSize: '80%',
     },
     displayMessage: {
         background: '#F9F9F9',
@@ -41,12 +47,18 @@ const useStyles = makeStyles((theme) => ({
         overflowWrap: 'break-word',
 
         height: '90%',
-        padding: '0%',
+        paddingLeft: '3%',
+        paddingRight: '3%'
+    },
+    typingSection: {
+        height: '4%',
     },
     formControl: {
         width: '100%',
-        height: 20,
-        fontSize: '90%'
+        height: '90%',
+        fontSize: '90%',
+        paddingLeft: '3%',
+        paddingRight: '3%',
     },
     videoPlayer: {
         flexGrow: 10,
@@ -59,8 +71,10 @@ const useStyles = makeStyles((theme) => ({
         flexBasis: 0,
         flexGrow: 2,
         height: 'calc(75vh - 300px)',
-        border: '1px solid #E0E0E0',
         maxWidth: '15%',
+        border: '1px solid #E0E0E0',
+        borderRadius: '10px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
 
         overflow: 'hidden',
         display: 'inline-block',
@@ -68,9 +82,12 @@ const useStyles = makeStyles((theme) => ({
         whiteSpace: 'nowrap',
     },
     userListHeader: {
-        paddingBottom: theme.spacing(2),
+        paddingTop: theme.spacing(1),
+        paddingLeft: theme.spacing(1),
+        background: '#E3E3E3',
         borderBottom: '1px solid #E0E0E0',
         height: '10%',
+        fontSize: '80%',
     },
     userListContent: {
         background: '#F9F9F9',

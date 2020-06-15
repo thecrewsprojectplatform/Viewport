@@ -49,7 +49,7 @@ const UserList = (props: Prop) => {
     return (
         <div className={classes.userList}>
             <Typography className={classes.userListHeader}>
-                Active users:
+                ACTIVE USERS
             </Typography>
             <List className={classes.userListContent}>
             {
