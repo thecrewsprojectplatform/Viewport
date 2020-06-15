@@ -59,7 +59,10 @@ const JoinCreateRoomPage = (props: Prop) => {
 
     return (
         <div>
-            {NavBar("Logout", logoutClick)}
+            <NavBar
+                buttonName="Logout"
+                buttonOnClick={logoutClick}
+            />
             <RoomListR setPageForward={props.setPageForward}/>
         </div>
     )

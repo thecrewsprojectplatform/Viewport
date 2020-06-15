@@ -47,7 +47,7 @@ class RoomApiTest(TestCase):
 
     def test_put(self):
         """Tests PUT at /rooms"""
-        updated_room = {"name": "Updated Room", "video_id": "Random ID"}
+        updated_room = {"name": "Updated Room", "video_id": "Random ID", "video_url": "Random Url"}
         post_response = self.client.post("/rooms", json=self.test_room)
         put_response = self.client.put(f"/rooms/{post_response.json['id']}", json=updated_room)
         self.assertEqual(put_response.json["name"], updated_room["name"])
@@ -55,7 +55,7 @@ class RoomApiTest(TestCase):
 
     def test_put_invalid_id(self):
         """Tests PUT at /rooms with invalid room_id"""
-        updated_room = {"name": "Updated Room", "video_id": "Random ID", "video_state": "BAD_STATE"}
+        updated_room = {"name": "Updated Room", "video_id": "Random ID", "video_url": "Random Url", "video_state": "BAD_STATE"}
         put_response = self.client.put(f"/rooms/0", json=updated_room)
         self.assert404(put_response)
 

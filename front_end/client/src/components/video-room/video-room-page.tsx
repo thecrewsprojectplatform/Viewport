@@ -59,7 +59,11 @@ const VideoRoomPage = (props: Prop) => {
 
     return (
         <div>
-            {NavBar("Exit Room", exitRoomClick)}
+            <NavBar
+                title={props.currentRoom === null ? "" : props.currentRoom.name}
+                buttonName="Exit Room"
+                buttonOnClick={exitRoomClick}
+            />
             <Container className={classes.videoRoom} maxWidth='xl'>
                 <CssBaseline />
                     <UserListR />
