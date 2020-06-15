@@ -23,6 +23,7 @@ export interface VideoRoomState {
     video_id: string;
     clientMessage: string;
     clientName: string;
+    msgTime: string;
     messageHistory: MessageDetail[];
     currentUser: User;
     fetchStatus: Status;
@@ -65,11 +66,13 @@ interface SendToAllClientsAction {
     type: ActionType.SendMessageToAllClients;
     clientName: string;
     clientMessage: string;
+    msgTime: string;
 }
 
 interface SendInitialClientMessageAction {
     type: ActionType.SendInitialClientMessage;
     clientMessage: string;
+    msgTime: string;
 }
 
 interface SendUrlToServerAction {
@@ -217,7 +220,7 @@ type Action =   SetVidoRoomUsersAction |
                 RemoveUserFromRoomFailAction |
                 RemoveUserAfterBrowserCloseAction |
                 RemoveUserAfterBrowserCloseSuccessAction |
-                RemoveUserAfterBrowserCloseFailAction;
+                RemoveUserAfterBrowserCloseFailAction ;
 
 export const reducer = (
     state: VideoRoomState = {
@@ -232,6 +235,7 @@ export const reducer = (
         video_id: null,
         clientMessage: null,
         clientName: null,
+        msgTime: null,
         messageHistory: [],
         currentUser: null,
         fetchStatus: Status.NotStarted,
@@ -356,6 +360,7 @@ export const reducer = (
         case ActionType.SendInitialClientMessage:
             socket.emit('clientMessageToServer', {
                 clientMessage: action.clientMessage,
+                msgTime: action.msgTime,
                 currentRoomId: state.currentRoom.id,
                 clientId: state.user.id,
                 clientName: state.user.name
@@ -367,9 +372,11 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.clientMessage = action.clientMessage;
                 draftState.clientName = action.clientName;
+                draftState.msgTime = action.msgTime;
                 draftState.messageHistory = [...state.messageHistory, {
                     chat_message: action.clientMessage,
-                    chat_username: action.clientName
+                    chat_username: action.clientName,
+                    message_time: action.msgTime
                 }];
             });
         case ActionType.SendUrlToServer:
@@ -379,6 +386,7 @@ export const reducer = (
                 clientId: state.user.id,
                 clientName: state.user.name
             });
+            return state;
         case ActionType.LoadVideo:
             return produce(state, draftState => {
                 draftState.url = action.url;
@@ -496,7 +504,7 @@ export const getRoomUsers = (api: VideoRoomApi, roomId: number): any => {
                 } as SetVidoRoomUsersAction);
             })
         }).catch(err => {
-            console.log("Failed to get users in room");
+            console.log("Failed to get the list of users in room");
         });
     };
 };
@@ -621,30 +629,36 @@ export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: nu
                         users: data.clientList
                     } as SetVidoRoomUsersAction);
                 });
+                console.log('current people in room disconnected is', users)
+                socket.emit('updateUserListDisconnected', {
+                    userListDisconnect: users
+                })
             });
         });
     };
 };
 
 
-export const sendMessageToAllClients = (message: string, username: string): any => {
+export const sendMessageToAllClients = (message: string, username: string, msgTime: string): any => {
     return (dispatch): any => {
         console.log("message to client")
         console.log(message)
         dispatch ({
             type: ActionType.SendMessageToAllClients,
             clientMessage: message,
-            clientName: username
+            clientName: username,
+            msgTime: msgTime
         });
     }
 }
 
-export const sendMessageToServer = (message: string): any => {
+export const sendMessageToServer = (message: string, msgTime: string): any => {
     return (dispatch): any => {
         console.log("message to server")
         dispatch({
             type: ActionType.SendInitialClientMessage,
-            clientMessage: message
+            clientMessage: message,
+            msgTime: msgTime
         })
     }
 }
@@ -688,32 +702,26 @@ export const getAndSendRoomState = (api: VideoRoomApi, roomId: number): any => {
     }
 }
 
-export const userClosedBrowser = (api: VideoRoomApi, roomId: number, userId: number): any => {
+export const closedBrowserUserList = (api: VideoRoomApi, roomId: number): any => {
     return (dispatch): any => {
         dispatch({
             type: ActionType.RemoveUserAfterBrowserClose,
         } as RemoveUserAfterBrowserCloseAction);
-        api.removeUserFromRoom(roomId, userId).then(response => {
-            dispatch({
-                type: ActionType.RemoveUserAfterBrowserCloseSuccess,
-            } as RemoveUserAfterBrowserCloseSuccessAction);
+        api.getUsersInRoom(roomId).then(users => {
+            socket.emit('updateUserToServerUserList', {
+                currentRoomId: roomId,
+                clientList: users
+            })
+            socket.on('updateUserToAllClientUserList', data => {
+                dispatch({
+                    type: ActionType.SetVideoRoomUsers,
+                    users: data.clientList,
+                } as SetVidoRoomUsersAction);
+            })
         }).catch(err => {
             dispatch({
                 type: ActionType.RemoveUserAfterBrowserCloseFail
             } as RemoveUserAfterBrowserCloseFailAction);
-        }).finally(() => {
-            api.getUsersInRoom(roomId).then(users => {
-                socket.emit('updateUserToServerUserList', {
-                    currentRoomId: roomId,
-                    clientList: users
-                });
-                socket.on('updateUserToAllClientUserList', data => {
-                    dispatch({
-                        type: ActionType.SetVideoRoomUsers,
-                        users: data.clientList
-                    } as SetVidoRoomUsersAction);
-                });
-            });
         });
     };
 }

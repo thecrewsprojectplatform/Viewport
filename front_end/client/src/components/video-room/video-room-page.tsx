@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { connect } from "react-redux";
-import { userClosedBrowser, getRoomUsers, VideoRoomState, removeUserFromRoom, removeRoom, getRoomsAction } from "../../store/video-room/video-room";
+import { getRoomUsers, VideoRoomState, removeUserFromRoom, removeRoom, getRoomsAction } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
@@ -11,7 +11,6 @@ import VideoPlayer from "./video-player"
 import NavBar from "../nav-bar";
 import { Container, CssBaseline } from "@material-ui/core";
 import useStyles from "../styles";
-import { socket } from "../../App"
 
 /**
  * Represents the required properties of the VideoRoomPage.
@@ -37,6 +36,17 @@ const VideoRoomPage = (props: Prop) => {
     const classes = useStyles();
     const api = useContext<VideoRoomApi>(ApiContext);
 
+    const exitRoomClick = (): void => {
+        if (props.users.length === 1) {
+            store.dispatch(removeUserFromRoom(api, props.currentRoom.id, props.currentUser.id));
+            store.dispatch(removeRoom(api, props.currentRoom.id));
+        } else {
+            store.dispatch(removeUserFromRoom(api, props.currentRoom.id, props.currentUser.id));
+        }
+
+        props.setPageBackwards()
+    }
+ 
     useEffect(() => {
         if (props.currentRoom) {
             store.dispatch(getRoomUsers(api, props.currentRoom.id));
@@ -47,23 +57,13 @@ const VideoRoomPage = (props: Prop) => {
         store.dispatch(getRoomsAction(api))
     }, []);
 
-    const exitRoomClick = (): void => {
-        if (props.users.length === 1) {
-            store.dispatch(removeUserFromRoom(api, props.currentRoom.id, props.currentUser.id));
-            store.dispatch(removeRoom(api, props.currentRoom.id));
-        } else {
-            store.dispatch(removeUserFromRoom(api, props.currentRoom.id, props.currentUser.id));
-        }
-        props.setPageBackwards()
-    }
-
-    socket.on('clientDisconnectedUpdateUserList', data => {
-        store.dispatch(userClosedBrowser(api, data.currentRoomId, data.currentUserId))
-    });
-
     return (
         <div>
-            {NavBar("Exit Room", exitRoomClick)}
+            <NavBar
+                title={props.currentRoom === null ? "" : props.currentRoom.name}
+                buttonName="Exit Room"
+                buttonOnClick={exitRoomClick}
+            />
             <Container className={classes.videoRoom} maxWidth='xl'>
                 <CssBaseline />
                     <UserListR />

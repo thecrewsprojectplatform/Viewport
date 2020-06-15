@@ -6,7 +6,7 @@ import { store } from '../../store';
 import { ApiContext } from '..';
 import { Room, User } from '../../api/video-room-types';
 import { VideoRoomApi } from '../../api/video-room-api';
-import { Button, TextField, CssBaseline, Container, List } from '@material-ui/core';
+import { TextField, CssBaseline, Container, List } from '@material-ui/core';
 import useStyles from '../styles';
 
 /**

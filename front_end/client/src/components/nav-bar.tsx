@@ -5,7 +5,13 @@ import Typography from '@material-ui/core/Typography'
 import { Button } from '@material-ui/core';
 import useStyles from './styles';
 
-const NavBar = (name, onClick) => {
+export interface Prop {
+    title?: string;
+    buttonName: string;
+    buttonOnClick: () => void;
+}
+
+const NavBar = (props: Prop) => {
     const classes = useStyles();
 
     return(
@@ -13,9 +19,9 @@ const NavBar = (name, onClick) => {
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" className={classes.title}>
-                        Multimedia Platform
+                        {props.title || "Multimedia Platform"}
                     </Typography>
-                    <Button color="inherit" onClick={onClick}>{name}</Button>
+                    <Button color="inherit" onClick={props.buttonOnClick}>{props.buttonName}</Button>
                 </Toolbar>
             </AppBar>
         </div>
