@@ -1,15 +1,15 @@
 import React, { useState, useContext } from 'react';
 import {connect } from 'react-redux';
 import ReactPlayer from 'react-player'
-import { store } from '../../store';
-import { sendUrlToServer, VideoRoomState, getAndSendRoomState} from '../../store/video-room/video-room';
-import { VideoRoomApi } from '../../api/video-room-api';
-import { ApiContext } from '..';
-import { Room } from '../../api/video-room-types';
+import { store } from '../../../store';
+import { sendUrlToServer, VideoRoomState, getAndSendRoomState} from '../../../store/video-room/video-room';
+import { VideoRoomApi } from '../../../api/video-room-api';
+import { ApiContext } from '../..';
+import { Room } from '../../../api/video-room-types';
 import './video-player.css';
 import { Button, TextField, InputAdornment, IconButton } from '@material-ui/core';
 import SearchIcon from "@material-ui/icons/Search";
-import useStyles from '../styles';
+import useStyles from '../../styles';
 
 export interface Prop {
     currentRoom: Room;
@@ -33,11 +33,14 @@ const VideoPlayer = (props: Prop) => {
     const loadButton = () => {
         store.dispatch(sendUrlToServer(url))
         // By default, set the video_state to paused after loading
-        api.updateRoom(props.currentRoom.id, props.currentRoom.name, props.currentRoom.video_id, "PAUSED")
+        //api.updateRoomVideoUrl(props.currentRoom.id, props.currentRoom.name, url)
+        //api.updateRoomVideoState(props.currentRoom.id, props.currentRoom.name, "PAUSED")
+        api.updateRoom(props.currentRoom.id, props.currentRoom.name, props.currentRoom.video_id, url, "PAUSED", 0)
     }
 
     const updateVideoState = (playing: string) => {
-        api.updateRoom(props.currentRoom.id, props.currentRoom.name, props.currentRoom.video_id, playing).then(() => {
+        //api.updateRoomVideoState(props.currentRoom.id, props.currentRoom.name, playing).then(() => {
+        api.updateRoom(props.currentRoom.id, props.currentRoom.name, props.currentRoom.video_id, url, playing, 1).then(() => {
             store.dispatch(getAndSendRoomState(api, props.currentRoom.id))
         })
     }

@@ -23,7 +23,6 @@ export const ChatApp = (props: Prop) => {
     const msgTime = new Date().toLocaleTimeString('en-US');
     const messagesEndRef = useRef(null);
 
-    // sending message to the server after pressing the button
     const sendMessageClick = (event): void => {
         if ((event.key === 'Enter') && (msg !== "")) {
             store.dispatch(sendMessageToServer(msg, msgTime))
@@ -60,9 +59,9 @@ export const ChatApp = (props: Prop) => {
                 <div ref={messagesEndRef} />
             </div>
             <div className={classes.typingSection}>
-                <TextField 
-                    type="text" 
-                    placeholder="Send a message..." 
+                <TextField
+                    type="text"
+                    placeholder="Send a message..."
                     variant="outlined"
                     className={classes.formControl}
                     InputProps={{
@@ -72,13 +71,13 @@ export const ChatApp = (props: Prop) => {
                         shrink: true
                     }}
 
-                    value={msg} 
+                    value={msg}
                     onChange={event => setMessage(event.target.value)}
                     onKeyDown={sendMessageClick}
                 />
             </div>
         </div>
-    ) 
+    )
 }
 
 const mapStateToProps = (state: VideoRoomState) => {

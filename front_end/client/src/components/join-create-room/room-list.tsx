@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { connect } from "react-redux";
-import { createRoomAndAddUserToRoomAction, addUserToRoomAction, Status, VideoRoomState, getRoomsAction } from '../../store/video-room/video-room';
+import { createRoomAndAddUserToRoomAction, addUserToRoomAction, Status, VideoRoomState, getRoomsAction, loadVideo } from '../../store/video-room/video-room';
 import { RoomListItem } from './room-list-item';
 import { store } from '../../store';
 import { ApiContext } from '..';
@@ -46,6 +46,9 @@ const RoomList = (props: Prop) => {
 
     const onJoinRoomClick = (roomId: number): void => {
         store.dispatch(addUserToRoomAction(api, roomId, props.user.id, props.currentRooms));
+        api.getRoom(roomId).then(room => {
+            store.dispatch(loadVideo(room.video_url))
+        })
         props.setPageForward();
     }
  
