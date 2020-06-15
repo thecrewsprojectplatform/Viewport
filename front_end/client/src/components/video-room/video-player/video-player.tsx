@@ -1,15 +1,15 @@
 import React, { useState, useContext } from 'react';
 import {connect } from 'react-redux';
 import ReactPlayer from 'react-player'
-import { store } from '../../store';
-import { sendUrlToServer, VideoRoomState, getAndSendRoomState} from '../../store/video-room/video-room';
-import { VideoRoomApi } from '../../api/video-room-api';
-import { ApiContext } from '..';
-import { Room } from '../../api/video-room-types';
+import { store } from '../../../store';
+import { sendUrlToServer, VideoRoomState, getAndSendRoomState} from '../../../store/video-room/video-room';
+import { VideoRoomApi } from '../../../api/video-room-api';
+import { ApiContext } from '../..';
+import { Room } from '../../../api/video-room-types';
 import './video-player.css';
 import { Button, TextField, InputAdornment, IconButton } from '@material-ui/core';
 import SearchIcon from "@material-ui/icons/Search";
-import useStyles from '../styles';
+import useStyles from '../../styles';
 
 export interface Prop {
     currentRoom: Room;

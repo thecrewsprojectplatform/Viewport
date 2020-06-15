@@ -7,7 +7,7 @@ import { store } from "../../store";
 import { UserListR } from "./user-list/user-list";
 import { Room, User } from "../../api/video-room-types";
 import { ChatAppR } from "./chat-app/chat-app"
-import VideoPlayer from "./video-player"
+import VideoPlayer from "./video-player/video-player"
 import NavBar from "../nav-bar";
 import { Container, CssBaseline } from "@material-ui/core";
 import useStyles from "../styles";
