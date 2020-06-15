@@ -22,9 +22,6 @@ export const ChatApp = (props: Prop) => {
     const [msg, setMessage] = useState("");
     const msgTime = new Date().toLocaleTimeString('en-US');
 
-
-    
-    // sending message to the server after pressing the button
     const sendMessageClick = (event): void => {
         if ((event.key === 'Enter') && (msg !== "")) {
             store.dispatch(sendMessageToServer(msg, msgTime))

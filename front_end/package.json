@@ -10,5 +10,9 @@
     "scripts": {
         "start": "node index.js",
         "heroku-postbuild": "cd client && npm install && npm run build"
+    },
+    "devDependencies": {
+        "enzyme": "^3.11.0",
+        "enzyme-adapter-react-16": "^1.15.2"
     }
 }
