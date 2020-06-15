@@ -91,16 +91,20 @@ const VideoPlayer = (props: Prop) => {
                                     value={url}
                                     onChange={event => checkUrl(event.target.value)}
                                     onKeyDown={handleEnter}
+                                    className={classes.searchBar}
 
                                     InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                        <IconButton onClick={loadButton}>
-                                                            <SearchIcon />
-                                                        </IconButton>
-                                                </InputAdornment>
-                                                )
-                                        }}
+                                        style: {
+                                            height: 40,
+                                        },
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                    <IconButton onClick={loadButton}>
+                                                        <SearchIcon />
+                                                    </IconButton>
+                                            </InputAdornment>
+                                            )
+                                    }}
                         />
                     </div>
                     <div className='player-wrapper'>

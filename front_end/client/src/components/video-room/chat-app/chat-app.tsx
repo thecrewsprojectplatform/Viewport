@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { VideoRoomState, sendMessageToServer } from '../../../store/video-room/video-room';
 import { connect } from "react-redux";
 import { ChatMessageItem } from "./chat-message-item";
 import { store } from "../../../store";
 import { MessageDetail } from "../../../api/video-room-types";
-import { TextField } from "@material-ui/core";
+import { TextField, Typography } from "@material-ui/core";
 import useStyles from "../../styles";
 
 /**
@@ -21,9 +21,8 @@ export const ChatApp = (props: Prop) => {
     const classes = useStyles();
     const [msg, setMessage] = useState("");
     const msgTime = new Date().toLocaleTimeString('en-US');
+    const messagesEndRef = useRef(null);
 
-
-    
     // sending message to the server after pressing the button
     const sendMessageClick = (event): void => {
         if ((event.key === 'Enter') && (msg !== "")) {
@@ -32,9 +31,18 @@ export const ChatApp = (props: Prop) => {
         }
     };
 
+    const scrollToBottom = () => {
+        messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+    };
+
+    useEffect(scrollToBottom, [props.messageHistory]);
+
     return(
         <div className={classes.chatApp}>
-            <div className="display_message">
+            <Typography className={classes.chatHeader}>
+                ROOM CHAT
+            </Typography>
+            <div className={classes.displayMessage}>
                 {
                     props.messageHistory && props.messageHistory.length !== 0 &&
                     (() => {
@@ -49,24 +57,26 @@ export const ChatApp = (props: Prop) => {
                         })
                     })()
                 }
+                <div ref={messagesEndRef} />
             </div>
-            <TextField 
-                type="text" 
-                placeholder="Send a message..." 
-                variant="outlined"
-                className={classes.formControl}
-                InputProps={{
-                    className: classes.formControl
-                }}
-                InputLabelProps={{
-                    shrink: true
-                }}
+            <div className={classes.typingSection}>
+                <TextField 
+                    type="text" 
+                    placeholder="Send a message..." 
+                    variant="outlined"
+                    className={classes.formControl}
+                    InputProps={{
+                        className: classes.formControl
+                    }}
+                    InputLabelProps={{
+                        shrink: true
+                    }}
 
-                value={msg} 
-                onChange={event => setMessage(event.target.value)}
-                onKeyDown={sendMessageClick}
-            />
-            <br/>
+                    value={msg} 
+                    onChange={event => setMessage(event.target.value)}
+                    onKeyDown={sendMessageClick}
+                />
+            </div>
         </div>
     ) 
 }
