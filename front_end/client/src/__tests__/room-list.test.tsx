@@ -3,11 +3,9 @@ import { shallow } from 'enzyme';
 import ReactDOM from 'react-dom';
 import { ChatMessageItem } from "../components/video-room/chat-app/chat-message-item";
 import { ChatApp } from "../components/video-room/chat-app/chat-app";
-import App from '../App';
-import { render } from '@testing-library/react';
+
 
 describe('Room list component', () => {
-
     test('Should render without errors', () => {
 
     })
