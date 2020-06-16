@@ -7,7 +7,7 @@ import { VideoRoomApi } from '../../api/video-room-api';
 import { ApiContext } from '..';
 import { Room } from '../../api/video-room-types';
 import './video-player.css';
-import { Button, TextField, InputAdornment, IconButton } from '@material-ui/core';
+import { Button, TextField, InputAdornment, IconButton, Slider } from '@material-ui/core';
 import SearchIcon from "@material-ui/icons/Search";
 import useStyles from '../styles';
 
@@ -26,9 +26,11 @@ const VideoPlayer = (props: Prop) => {
     const classes = useStyles();
     const api = useContext<VideoRoomApi>(ApiContext)
 
+    const [player, setPlayer] = useState(null)
     const [url, setUrl] = useState(null)
-
     const [invalidUrlMessage, setInvalidUrlMessage] = useState('')
+    const [videoTime, setVideoTime] = useState(0.0)
+    const [seeking, setSeeking] = useState(false)
 
     const loadButton = () => {
         store.dispatch(sendUrlToServer(url))
@@ -74,15 +76,44 @@ const VideoPlayer = (props: Prop) => {
         }
     }
 
-    const handleProgress = (state: object) => {
-        //this.setState(state)
-    }
-
     const handleEnter = (event): void => {
         if ((event.key === 'Enter') && (url !== "")) {
             loadButton()
         }
     };
+
+    const handleProgress = state => {
+        if (!seeking) {
+            setVideoTime(state.played)
+        }
+        console.log(state)
+    }
+
+    const handleSeekChange = (event, newTime) => {
+        setSeeking(true)
+        setVideoTime(newTime)
+    }
+
+    const handleSeekMouseUp = (event, newTime) => {
+        console.log(player.getDuration())
+        setSeeking(false)
+        if (player) {
+            player.seekTo(newTime)
+        } else {
+            console.log('player not found')
+        }
+    }
+
+    const formatSliderLabel = (value) => {
+        if (player) {
+            return Math.trunc(player.getDuration() * value)
+        }
+        console.log('player not found')
+    }
+
+    const ref = player => {
+        setPlayer(player)
+    }
 
         return (
             <div className={classes.videoPlayer}>
@@ -108,6 +139,7 @@ const VideoPlayer = (props: Prop) => {
                     </div>
                     <div className='player-wrapper'>
                         <ReactPlayer
+                            ref={ref}
                             className='react-player'
                             url={props.url}
                             width='100%'
@@ -121,11 +153,25 @@ const VideoPlayer = (props: Prop) => {
                                 }
                             }}
                             playing={checkVideoState()}
+                            onProgress={handleProgress}
                         />
                     </div>
                     <Button variant='contained' 
                         onClick={handlePlayPause}>{checkVideoState() ? 'Pause' : 'Play'}
                     </Button>
+
+                    <Slider 
+                        value={videoTime}
+                        onChange={handleSeekChange}
+                        min={0.0}
+                        max={1.0}
+                        step={0.0001}
+                        onChangeCommitted={handleSeekMouseUp}
+                        aria-labelledby="continous-slider"
+                        valueLabelDisplay="auto"
+                        valueLabelFormat={value => <div>{formatSliderLabel(value)} </div>}
+                    />
+
                 </div>
             </div>
         );
