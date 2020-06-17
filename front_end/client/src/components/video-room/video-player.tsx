@@ -29,8 +29,8 @@ const VideoPlayer = (props: Prop) => {
     const [player, setPlayer] = useState(null)
     const [url, setUrl] = useState(null)
     const [invalidUrlMessage, setInvalidUrlMessage] = useState('')
-    //const [videoTime, setVideoTime] = useState(0.0)
     const [seeking, setSeeking] = useState(false)
+    const [videoSliderTime, setVideoSliderTime] = useState(0.0)
 
     const loadButton = () => {
         store.dispatch(sendUrlToServer(url))
@@ -98,6 +98,7 @@ const VideoPlayer = (props: Prop) => {
 
     const handleProgress = state => {
         if (!seeking) {
+            //setVideoSliderTime(state.played)
             api.updateRoom(
                 props.currentRoom.id,
                 props.currentRoom.name,
@@ -111,6 +112,12 @@ const VideoPlayer = (props: Prop) => {
 
     const handleSeekChange = (event, newTime) => {
         setSeeking(true)
+        //setVideoSliderTime(newTime)
+        
+    }
+
+    const handleSeekMouseUp = (event, newTime) => {
+        setSeeking(false)
         api.updateRoom(
             props.currentRoom.id,
             props.currentRoom.name,
@@ -120,13 +127,8 @@ const VideoPlayer = (props: Prop) => {
             newTime
         ).then(() => {
             store.dispatch(getAndSendRoomState(api, props.currentRoom.id))
-            console.log(newTime)
         })
-    }
-
-    const handleSeekMouseUp = (event, newTime) => {
-        console.log(newTime)
-        setSeeking(false)
+        //setVideoSliderTime(newTime)
         if (player) {
             player.seekTo(newTime)
         } else {
@@ -143,6 +145,7 @@ const VideoPlayer = (props: Prop) => {
 
     const getVideoTime = () => {
         if (props.currentRoom) {
+            player.seekTo(props.currentRoom.video_time)
             return props.currentRoom.video_time
         } else {
             return 0
