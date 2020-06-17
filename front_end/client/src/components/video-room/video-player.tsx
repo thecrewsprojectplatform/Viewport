@@ -30,7 +30,6 @@ const VideoPlayer = (props: Prop) => {
     const [url, setUrl] = useState(null)
     const [invalidUrlMessage, setInvalidUrlMessage] = useState('')
     const [seeking, setSeeking] = useState(false)
-    const [videoSliderTime, setVideoSliderTime] = useState(0.0)
 
     const loadButton = () => {
         store.dispatch(sendUrlToServer(url))
@@ -43,7 +42,7 @@ const VideoPlayer = (props: Prop) => {
             props.currentRoom.video_id,
             url,
             "PAUSED",
-            props.currentRoom.video_time
+            0
         )
     }
 
@@ -98,7 +97,7 @@ const VideoPlayer = (props: Prop) => {
 
     const handleProgress = state => {
         if (!seeking) {
-            //setVideoSliderTime(state.played)
+            console.log(state.played)
             api.updateRoom(
                 props.currentRoom.id,
                 props.currentRoom.name,
@@ -112,8 +111,6 @@ const VideoPlayer = (props: Prop) => {
 
     const handleSeekChange = (event, newTime) => {
         setSeeking(true)
-        //setVideoSliderTime(newTime)
-        
     }
 
     const handleSeekMouseUp = (event, newTime) => {
@@ -128,12 +125,6 @@ const VideoPlayer = (props: Prop) => {
         ).then(() => {
             store.dispatch(getAndSendRoomState(api, props.currentRoom.id))
         })
-        //setVideoSliderTime(newTime)
-        if (player) {
-            player.seekTo(newTime)
-        } else {
-            console.log('player not found')
-        }
     }
 
     const formatSliderLabel = (value) => {
@@ -195,6 +186,7 @@ const VideoPlayer = (props: Prop) => {
                             }}
                             playing={checkVideoState()}
                             onProgress={handleProgress}
+                            progressInterval={5000}
                         />
                     </div>
                     <Button variant='contained' 
@@ -206,7 +198,7 @@ const VideoPlayer = (props: Prop) => {
                         onChange={handleSeekChange}
                         min={0.0}
                         max={1.0}
-                        step={0.0001}
+                        step={0.0000001}
                         onChangeCommitted={handleSeekMouseUp}
                         aria-labelledby="continous-slider"
                         valueLabelDisplay="auto"
