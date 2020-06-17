@@ -13,10 +13,9 @@ const setup = () => {
 const wrapper = setup();
 
 describe('Chat Message component', () => {
-
     test('Should render without errors', () => {
         expect(wrapper).not.toBe(null);
-        expect(wrapper.find('.message-container').length.toBe(1))
+        expect(wrapper.find('.message-container').length).toBe(1);
     })
 
 })

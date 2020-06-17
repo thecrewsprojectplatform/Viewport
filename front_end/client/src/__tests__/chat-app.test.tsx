@@ -1,10 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import ReactDOM from 'react-dom';
 import { ChatMessageItem } from "../components/video-room/chat-app/chat-message-item";
 import { ChatApp } from "../components/video-room/chat-app/chat-app";
 import App from '../App';
-import { render } from '@testing-library/react';
+import { render, configure } from '@testing-library/react';
 
 
 const setup = () => {
