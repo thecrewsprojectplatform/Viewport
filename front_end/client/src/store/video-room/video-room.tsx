@@ -159,9 +159,9 @@ interface RemoveUserFromRoomAction {
 }
 
 interface RemoveUserFromRoomSuccessAction {
+    type: ActionType.RemoveUserFromRoomSuccess;
     pastRoomId: number;
     messageHistory: MessageDetail[];
-    type: ActionType.RemoveUserFromRoomSuccess;
     currentRoom: Room;
     roomId: number;
     users: User[];
