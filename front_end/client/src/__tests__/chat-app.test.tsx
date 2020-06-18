@@ -8,8 +8,6 @@ import { MessageDetail } from "../api/video-room-types";
 import { store } from "../store/index";
 import { reducer } from "../store/reducer";
 import { ActionType } from "../store/video-room/actionType";
-import checkPropTypes from 'check-prop-types';
-import configureStore from 'redux-mock-store';
  
 //const mockStore = configureStore([]);
 
