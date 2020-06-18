@@ -54,6 +54,7 @@ const JoinCreateRoomPage = (props: Prop) => {
                 }
             })
         })
+        api.removeUser(data.currentUserId)
     });
 
     return (

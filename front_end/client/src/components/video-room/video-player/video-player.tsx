@@ -1,15 +1,15 @@
 import React, { useState, useContext } from 'react';
 import {connect } from 'react-redux';
 import ReactPlayer from 'react-player'
-import { store } from '../../store';
-import { sendUrlToServer, VideoRoomState, getAndSendRoomState} from '../../store/video-room/video-room';
-import { VideoRoomApi } from '../../api/video-room-api';
-import { ApiContext } from '..';
-import { Room } from '../../api/video-room-types';
+import { store } from '../../../store';
+import { sendUrlToServer, VideoRoomState, getAndSendRoomState} from '../../../store/video-room/video-room';
+import { VideoRoomApi } from '../../../api/video-room-api';
+import { ApiContext } from '../..';
+import { Room } from '../../../api/video-room-types';
 import './video-player.css';
 import { Button, TextField, InputAdornment, IconButton, Slider } from '@material-ui/core';
 import SearchIcon from "@material-ui/icons/Search";
-import useStyles from '../styles';
+import useStyles from '../../styles';
 
 export interface Prop {
     currentRoom: Room;
@@ -157,16 +157,20 @@ const VideoPlayer = (props: Prop) => {
                                     value={url}
                                     onChange={event => checkUrl(event.target.value)}
                                     onKeyDown={handleEnter}
+                                    className={classes.searchBar}
 
                                     InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                        <IconButton onClick={loadButton}>
-                                                            <SearchIcon />
-                                                        </IconButton>
-                                                </InputAdornment>
-                                                )
-                                        }}
+                                        style: {
+                                            height: 40,
+                                        },
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                    <IconButton onClick={loadButton}>
+                                                        <SearchIcon />
+                                                    </IconButton>
+                                            </InputAdornment>
+                                            )
+                                    }}
                         />
                     </div>
                     <div className='player-wrapper'>

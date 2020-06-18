@@ -7,7 +7,7 @@ import { getRoomUsers, VideoRoomState } from '../../../store/video-room/video-ro
 import { VideoRoomApi } from "../../../api/video-room-api";
 import { ApiContext } from "../..";
 import { Status } from "../../../store/video-room/video-room";
-import { List } from '@material-ui/core';
+import { List, Typography } from '@material-ui/core';
 import useStyles from '../../styles';
 
 /**
@@ -48,7 +48,10 @@ const UserList = (props: Prop) => {
 
     return (
         <div className={classes.userList}>
-            <List>
+            <Typography className={classes.userListHeader}>
+                ACTIVE USERS
+            </Typography>
+            <List className={classes.userListContent}>
             {
                 props.users && props.users.length !== 0 &&
                 (() => {
