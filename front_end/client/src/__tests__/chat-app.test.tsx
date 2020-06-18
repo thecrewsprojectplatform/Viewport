@@ -1,25 +1,43 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import ReactDOM from 'react-dom';
 import { ChatMessageItem } from "../components/video-room/chat-app/chat-message-item";
-import { ChatApp } from "../components/video-room/chat-app/chat-app";
-import App from '../App';
-import { render, configure } from '@testing-library/react';
+import { ChatAppR } from "../components/video-room/chat-app/chat-app";
+import { MessageDetail } from "../api/video-room-types";
+import { store } from "../store/index";
+import { reducer } from "../store/reducer";
+import { ActionType } from "../store/video-room/actionType";
+import checkPropTypes from 'check-prop-types';
+import configureStore from 'redux-mock-store';
+ 
+//const mockStore = configureStore([]);
 
+jest.mock('../App.tsx', () => "root")
+
+const messageHist: MessageDetail = {    
+  chat_message: 'test',
+  chat_username: 'test user',
+  message_time: '1:11',
+};
+
+const props = {
+  clientMessage: messageHist.chat_message,
+  clientName: messageHist.chat_username,
+  msgTime: messageHist.message_time,
+  messageHistory:[messageHist, messageHist]
+}
 
 const setup = () => {
   return shallow(
-    <ChatApp
-      clientMessage=''
-      clientName=''
-      msgTime=''
-      messageHistory={[]}
-    />
+    <Provider store={store}>
+      <ChatAppR {...props}/>
+    </Provider>
   )
 };
 
 const wrapper = setup();
+const instance = wrapper.instance();
 
 describe('Chat App component', () => {
 
@@ -27,87 +45,51 @@ describe('Chat App component', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  test('Should render message value', () => {
-
-    wrapper.find('value').simulate('change', {
-      target: { msg: 'test'}
-    })
-
+  test('Should render correct message items', () => {
+    expect(wrapper.find(ChatMessageItem ({
+      clientMessage: 'test',
+      clientName: "test user",
+      msgTime: "1:11"})
+      ).length).toEqual(3);
   });
 
-  test('Should render message onChange', () => {
-
-  });
-
-  test('Should send message onKeyDown', () => {
-
-  });
-
-  test('Should update messageHistory onKeyDown', () => {
-
-  });
-
-  test('Should update ChatMessageItem and display message', () => {
-
-  });
-
-  test('Should dispatch onKeyDown', () => {
-
-  });
-
-  test('Should update API onKeyDown', () => {
-
-  });
-
-  test('Should send data to socket onKeyDown', () => {
-
-  });
-
-  test('Should reset message value onKeyDown', () => {
-
-  });
-
-  test('Should update props onKeyDown', () => {
-
-  });
-  
 })
 
 /*
-describe('Chat App Component', () => {
+describe('My Connected React-Redux Component', () => {
+  let store;
+  let component;
+ 
+  beforeEach(() => {
+    store = mockStore({
+      clientMessage: messageHist.chat_message,
+      clientName: messageHist.chat_username,
+      msgTime: messageHist.message_time,
+      messageHistory:[messageHist, messageHist]
+    });
 
-  test('renders without crashing', () => {
-    const component = shallow( <ChatAppR />)
-  })
+    store.dispatch = jest.fn();
 
-})
-*/
-
-/*
-const props: Prop = {    
-  clientMessage: 'test msg',
-  clientName: 'test name',
-  msgTime: 'test msg time',
-  messageHistory: []
-}
-
-const setup = () => {
-  const component = shallow( <ChatAppR {...props} /> )
-  return component
-};
-  
-describe('Chat Application Component', () => {
-  it('renders without crashing', () => {
-    const wrapper = setup();
-    expect(wrapper).not.toBe(null)
+    component = renderer.create(
+      <Provider store={store}>
+        <ChatAppR />
+      </Provider>
+    );
   });
-
-  it('should render correct number of messages', () => {
-    const wrapper = setup();
-    expect(wrapper.find(Message).length).toEqual(2);
-  })
-
+ 
+  it('should render with given state from Redux store', () => {
+    expect(component.toJSON()).toMatchSnapshot();
+  });
+ 
+  it('should dispatch an action on button click', () => {
+ 
+  });
 });
-
 */
-
+/*
+describe('Reducer component', () => {
+  test('should return the initial state', () => {
+    expect(reducer(undefined, {})).toEqual({});
+  });
+})
+*/
