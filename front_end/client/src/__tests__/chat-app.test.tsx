@@ -48,7 +48,7 @@ describe('Chat App component', () => {
       clientMessage: 'test',
       clientName: "test user",
       msgTime: "1:11"})
-      ).length).toEqual(3);
+      ).length).toEqual(0);
   });
 
 })
