@@ -28,7 +28,7 @@ const VideoPlayer = (props: Prop) => {
 
     const [player, setPlayer] = useState(null)
     const [url, setUrl] = useState(null)
-    const [invalidUrlMessage, setInvalidUrlMessage] = useState('')
+
     const [seeking, setSeeking] = useState(false)
 
     const loadButton = () => {
@@ -38,7 +38,7 @@ const VideoPlayer = (props: Prop) => {
             props.currentRoom.id,
             props.currentRoom.name,
             props.currentRoom.video_id,
-            url,
+            props.url,
             "PAUSED",
             0,
             0
@@ -83,14 +83,14 @@ const VideoPlayer = (props: Prop) => {
         return false
     }
 
-    // Check if an url entered is valid
-    const checkUrl = (url: string) => {
-        if (!ReactPlayer.canPlay(url) && url !== '') {
-            setInvalidUrlMessage('The url pasted is not valid')
-        } else {
-            setUrl(url)
-            setInvalidUrlMessage('')
+    /**
+     * Check if the url entered is valid and return wether or not to display an error message
+     */
+    const displayError = () => {
+        if (ReactPlayer.canPlay(url)) {
+            return false
         }
+        return true
     }
 
     const handleEnter = (event): void => {
@@ -194,26 +194,27 @@ const VideoPlayer = (props: Prop) => {
             <div className={classes.videoPlayer}>
                 <div>
                     <div>
-                        <TextField  variant='filled'
-                                    type='text' 
-                                    placeholder='Enter URL'
-                                    value={url}
-                                    onChange={event => checkUrl(event.target.value)}
-                                    onKeyDown={handleEnter}
-                                    className={classes.searchBar}
+                        <TextField  
+                            error={displayError()}
+                            variant='filled'
+                            type='text' 
+                            placeholder='Enter URL'
+                            onChange={event => setUrl(event.target.value)}
+                            onKeyDown={handleEnter}
+                            className={classes.searchBar}
 
-                                    InputProps={{
-                                        style: {
-                                            height: 40,
-                                        },
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                    <IconButton onClick={loadButton}>
-                                                        <SearchIcon />
-                                                    </IconButton>
-                                            </InputAdornment>
-                                            )
-                                    }}
+                            InputProps={{
+                                style: {
+                                    height: 40,
+                                },
+                                endAdornment: (
+                                     <InputAdornment position="end">
+                                        <IconButton onClick={loadButton}>
+                                            <SearchIcon />
+                                        </IconButton>
+                                    </InputAdornment>
+                               )
+                            }}
                         />
                     </div>
                     <div className='player-wrapper'>
