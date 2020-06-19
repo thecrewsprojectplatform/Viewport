@@ -42,6 +42,7 @@ const VideoPlayer = (props: Prop) => {
             props.currentRoom.video_id,
             url,
             "PAUSED",
+            0,
             0
         )
     }
@@ -52,9 +53,10 @@ const VideoPlayer = (props: Prop) => {
             props.currentRoom.id,
             props.currentRoom.name,
             props.currentRoom.video_id, 
-            url,
+            props.currentRoom.video_url,
             playing,
-            props.currentRoom.video_time
+            props.currentRoom.video_time,
+            player.getDuration()
         ).then(() => {
             store.dispatch(getAndSendRoomState(api, props.currentRoom.id))
         })
@@ -67,9 +69,9 @@ const VideoPlayer = (props: Prop) => {
     */
     const handlePlayPause = () => {
         if (props.currentRoom.video_state === null || props.currentRoom.video_state === "PAUSED") {
-            updateVideoState("PLAYING")
-        } else {
-            updateVideoState("PAUSED")
+            handleOnPlay()
+        } else if (props.currentRoom.video_state === "PLAYING") {
+            handleOnPause()
         }
     }
 
@@ -97,20 +99,31 @@ const VideoPlayer = (props: Prop) => {
 
     const handleProgress = state => {
         if (!seeking) {
-            console.log(state.played)
             api.updateRoom(
                 props.currentRoom.id,
                 props.currentRoom.name,
                 props.currentRoom.video_id, 
-                url,
+                props.currentRoom.video_url,
                 props.currentRoom.video_state,
-                state.played
+                state.played,
+                props.currentRoom.video_length
             )
         }
     }
 
     const handleSeekChange = (event, newTime) => {
         setSeeking(true)
+        api.updateRoom(
+            props.currentRoom.id,
+            props.currentRoom.name,
+            props.currentRoom.video_id,
+            props.currentRoom.video_url, 
+            props.currentRoom.video_state,
+            newTime,
+            props.currentRoom.video_length
+        ).then(() => {
+            store.dispatch(getAndSendRoomState(api, props.currentRoom.id))
+        })
     }
 
     const handleSeekMouseUp = (event, newTime) => {
@@ -119,9 +132,10 @@ const VideoPlayer = (props: Prop) => {
             props.currentRoom.id,
             props.currentRoom.name,
             props.currentRoom.video_id,
-            url, 
+            props.currentRoom.video_url, 
             props.currentRoom.video_state,
-            newTime
+            newTime,
+            props.currentRoom.video_length
         ).then(() => {
             store.dispatch(getAndSendRoomState(api, props.currentRoom.id))
         })
@@ -145,6 +159,26 @@ const VideoPlayer = (props: Prop) => {
 
     const ref = player => {
         setPlayer(player)
+    }
+
+    const handleOnPlay = () => {
+        updateVideoState("PLAYING")
+    }
+
+    const handleOnPause = () => {
+        api.getRoom(props.currentRoom.id).then(room => {
+            api.updateRoom(
+                props.currentRoom.id,
+                props.currentRoom.name,
+                props.currentRoom.video_id,
+                props.currentRoom.video_url,
+                "PAUSED",
+                room.video_time,
+                props.currentRoom.video_length
+            ).then(() => {
+                store.dispatch(getAndSendRoomState(api, props.currentRoom.id))
+            })
+        })
     }
 
         return (
@@ -190,7 +224,8 @@ const VideoPlayer = (props: Prop) => {
                             }}
                             playing={checkVideoState()}
                             onProgress={handleProgress}
-                            progressInterval={5000}
+                            onPlay={handleOnPlay}
+                            onPause={handleOnPause}
                         />
                     </div>
                     <Button variant='contained' 
