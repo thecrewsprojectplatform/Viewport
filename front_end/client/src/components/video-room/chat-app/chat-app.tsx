@@ -6,6 +6,7 @@ import { store } from "../../../store";
 import { MessageDetail } from "../../../api/video-room-types";
 import { TextField, Typography } from "@material-ui/core";
 import useStyles from "../../styles";
+import PropTypes from "prop-types";
 
 /**
  * Represents the required properties of the ChatApp.

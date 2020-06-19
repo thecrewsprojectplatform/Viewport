@@ -34,8 +34,6 @@ const VideoPlayer = (props: Prop) => {
     const loadButton = () => {
         store.dispatch(sendUrlToServer(url))
         // By default, set the video_state to paused after loading
-        //api.updateRoomVideoUrl(props.currentRoom.id, props.currentRoom.name, url)
-        //api.updateRoomVideoState(props.currentRoom.id, props.currentRoom.name, "PAUSED")
         api.updateRoom(
             props.currentRoom.id,
             props.currentRoom.name,
@@ -47,8 +45,10 @@ const VideoPlayer = (props: Prop) => {
         )
     }
 
+    /**
+     * This updates whether or not the video is playing
+     */
     const updateVideoState = (playing: string) => {
-        //api.updateRoomVideoState(props.currentRoom.id, props.currentRoom.name, playing).then(() => {
         api.updateRoom(
             props.currentRoom.id,
             props.currentRoom.name,
@@ -75,6 +75,7 @@ const VideoPlayer = (props: Prop) => {
         }
     }
 
+    // Check if the video is playing or paused
     const checkVideoState = () => {
         if (props.currentRoom) {
             return props.currentRoom.video_state === null || props.currentRoom.video_state === "PAUSED" ? false : true
@@ -82,6 +83,7 @@ const VideoPlayer = (props: Prop) => {
         return false
     }
 
+    // Check if an url entered is valid
     const checkUrl = (url: string) => {
         if (!ReactPlayer.canPlay(url) && url !== '') {
             setInvalidUrlMessage('The url pasted is not valid')
@@ -97,6 +99,10 @@ const VideoPlayer = (props: Prop) => {
         }
     };
 
+    /**
+     * Updates the api on what part the video is at, by default, updates every second
+     * @param state the state of the video
+     */
     const handleProgress = state => {
         if (!seeking) {
             api.updateRoom(
@@ -111,6 +117,11 @@ const VideoPlayer = (props: Prop) => {
         }
     }
 
+    /**
+     * Takes care of video time selection
+     * @param event 
+     * @param newTime what part of the video to go to, by percentage, where 1 represents the end of the video
+     */
     const handleSeekChange = (event, newTime) => {
         setSeeking(true)
         api.updateRoom(
@@ -126,21 +137,10 @@ const VideoPlayer = (props: Prop) => {
         })
     }
 
-    const handleSeekMouseUp = (event, newTime) => {
-        setSeeking(false)
-        api.updateRoom(
-            props.currentRoom.id,
-            props.currentRoom.name,
-            props.currentRoom.video_id,
-            props.currentRoom.video_url, 
-            props.currentRoom.video_state,
-            newTime,
-            props.currentRoom.video_length
-        ).then(() => {
-            store.dispatch(getAndSendRoomState(api, props.currentRoom.id))
-        })
-    }
-
+    /**
+     * Formats the slider value that gets displayed
+     * @param value the original slider value
+     */
     const formatSliderLabel = (value) => {
         if (player) {
             return Math.trunc(player.getDuration() * value)
@@ -148,7 +148,7 @@ const VideoPlayer = (props: Prop) => {
         console.log('player not found')
     }
 
-    const getVideoTime = () => {
+    const getAndSetVideoTime = () => {
         if (props.currentRoom) {
             player.seekTo(props.currentRoom.video_time)
             return props.currentRoom.video_time
@@ -161,10 +161,19 @@ const VideoPlayer = (props: Prop) => {
         setPlayer(player)
     }
 
+    /**
+     * Handles what happens when the play button gets pressed
+     */
     const handleOnPlay = () => {
         updateVideoState("PLAYING")
     }
 
+    /**
+     * Handles what happens when the pause button gets pressed
+     * 
+     * Here we are updating our props to match with that of the server
+     * and then pausing the video for everyone at that time stamp
+     */
     const handleOnPause = () => {
         api.getRoom(props.currentRoom.id).then(room => {
             api.updateRoom(
@@ -224,8 +233,8 @@ const VideoPlayer = (props: Prop) => {
                             }}
                             playing={checkVideoState()}
                             onProgress={handleProgress}
-                            onPlay={handleOnPlay}
-                            onPause={handleOnPause}
+                            //onPlay={handleOnPlay}
+                            //onPause={handleOnPause}
                         />
                     </div>
                     <Button variant='contained' 
@@ -233,12 +242,11 @@ const VideoPlayer = (props: Prop) => {
                     </Button>
 
                     <Slider 
-                        value={getVideoTime()}
+                        value={getAndSetVideoTime()}
                         onChange={handleSeekChange}
                         min={0.0}
                         max={1.0}
                         step={0.0000001}
-                        onChangeCommitted={handleSeekMouseUp}
                         aria-labelledby="continous-slider"
                         valueLabelDisplay="auto"
                         valueLabelFormat={value => <div>{formatSliderLabel(value)} </div>}
