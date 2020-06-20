@@ -4,6 +4,8 @@ import { VideoRoomApi } from "../../api/video-room-api";
 import { User, Room, MessageDetail } from "../../api/video-room-types";
 import { socket } from "../../App"
 
+const VIDEO_SYNC_MAX_DIFFERENCE = 3
+
 export enum Status {
     NotStarted="NOT_STARTED",
     Running="RUNNING",
@@ -21,6 +23,7 @@ export interface VideoRoomState {
     users: User[];
     url: string;
     video_id: string;
+    video_length: number;
     clientMessage: string;
     clientName: string;
     msgTime: string;
@@ -87,7 +90,8 @@ interface LoadVideoAction {
 
 interface ControlVideoAction {
     type: ActionType.ControlVideo;
-    room: Room
+    room: Room;
+    video_length: number;
 }
 
 interface CreateRoomAndAddUserToRoomAction {
@@ -233,6 +237,7 @@ export const reducer = (
         users: [],
         url: null,
         video_id: null,
+        video_length: 0,
         clientMessage: null,
         clientName: null,
         msgTime: null,
@@ -393,7 +398,13 @@ export const reducer = (
             });
         case ActionType.ControlVideo:
             return produce(state, draftState => {
-                draftState.currentRoom = action.room;
+                const video_length = action.room.video_length
+                if (draftState.currentRoom.video_state !== action.room.video_state ||
+                    Math.abs(draftState.currentRoom.video_time - action.room.video_time) * video_length > VIDEO_SYNC_MAX_DIFFERENCE) {
+                        draftState.currentRoom = action.room;
+                } else {
+                    //draftState.currentRoom.video_state = action.room.video_state
+                }
             });
         case ActionType.RemoveUserAfterBrowserClose:
             return produce(state, draftState => {
