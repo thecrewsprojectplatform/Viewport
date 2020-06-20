@@ -28,6 +28,7 @@ export const UserListItem = (props: Prop) => {
     return (
         <ListItem button className={classes.user} key={props.user.id}>
             {
+                // TODO: need to make list look better so can edit user name
                 /*
                 props.isCurrentUser ? (
                     <Fragment>
