@@ -55,7 +55,9 @@ const UserList = (props: Prop) => {
             {
                 props.users && props.users.length !== 0 &&
                 (() => {
-                    return props.users.map((user) => {
+                    return props.users.sort(function (a, b) {
+                            return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+                        }).map((user) => {
                         return (
                             <UserListItem 
                                 key={user.id}
