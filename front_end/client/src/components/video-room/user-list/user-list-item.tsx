@@ -28,8 +28,7 @@ export const UserListItem = (props: Prop) => {
     return (
         <ListItem button className={classes.user} key={props.user.id}>
             {
-                // TODO: need to make list look better so can edit user name
-                /*
+                // TODO: need to make list look better
                 props.isCurrentUser ? (
                     <Fragment>
                         <ListItemAvatar>
@@ -47,9 +46,7 @@ export const UserListItem = (props: Prop) => {
                 ) : (
                     <ListItemText primary={props.user.name} className={classes.userName} inset />
                 )
-                */
             }
-            <ListItemText primary={props.user.name} className={classes.userName} />
         </ListItem>
     )
 }
