@@ -1,12 +1,6 @@
-import React, { useEffect, useContext } from 'react';
-import { connect } from "react-redux";
+import React from 'react';
 import { User } from "../../../api/video-room-types";
 import { UserListItem } from './user-list-item';
-import { store } from '../../../store';
-import { getRoomUsers, VideoRoomState } from '../../../store/video-room/video-room';
-import { VideoRoomApi } from "../../../api/video-room-api";
-import { ApiContext } from "../..";
-import { Status } from "../../../store/video-room/video-room";
 import { List, Typography } from '@material-ui/core';
 import useStyles from '../../styles';
 
@@ -14,9 +8,9 @@ import useStyles from '../../styles';
  * Represents the required properties of the UserList.
  */
 export interface Prop {
-    roomId: number;
     users: User[];
-    updateStatus: Status;
+    currentUser: User;
+    onEditClick: () => void;
 }
 
 /**
@@ -30,21 +24,8 @@ export interface Prop {
  *                 web application.
  * @returns {JSX.Element} The JSX representing the UserList.
  */
-const UserList = (props: Prop) => {
+export const UserList = (props: Prop) => {
     const classes = useStyles();
-    const api = useContext<VideoRoomApi>(ApiContext);
-
-    useEffect(() => {
-        if (props.roomId) {
-            store.dispatch(getRoomUsers(api, props.roomId));
-        }
-    }, [props.roomId]);
-
-    useEffect(() => {
-        if (props.updateStatus === Status.Succeeded) {
-            store.dispatch(getRoomUsers(api, props.roomId));
-        }
-    }, [props.updateStatus]);
 
     return (
         <div className={classes.userList}>
@@ -60,6 +41,8 @@ const UserList = (props: Prop) => {
                             <UserListItem 
                                 key={user.id}
                                 user={user}
+                                isCurrentUser={user.id === props.currentUser.id}
+                                onEditClick={props.onEditClick}
                             />
                         )
                     })
@@ -69,18 +52,3 @@ const UserList = (props: Prop) => {
         </div>
     )
 }
-
-/**
- * Used to connect the state of the overall front end to the UserList.
- * 
- * @param {Object} state The current state of the UserList.
- */
-const mapStateToProps = (state: VideoRoomState) => {
-    return {
-        roomId: state.roomId,
-        users: state.users,
-        updateStatus: state.updateStatus,
-    }
-}
-
-export const UserListR = connect(mapStateToProps)(UserList);

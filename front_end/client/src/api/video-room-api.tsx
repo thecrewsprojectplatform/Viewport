@@ -80,8 +80,13 @@ export class VideoRoomApi {
     }
 
     async createUser(name: string): Promise<User> {
-        console.log("Creating User...")
         return axios.post(this.BASE_URL + "/users", {"name": name}).then(response => {
+            return response.data;
+        });
+    }
+
+    async updateUser(userId: number, newName: string): Promise<User> {
+        return axios.put(`${this.BASE_URL}/users/${userId}`, {"name": newName}).then(response => {
             return response.data;
         });
     }
@@ -105,7 +110,6 @@ export class VideoRoomApi {
     }
 
     async getUsersInRoom(roomId: number): Promise<User[]> {
-        //console.log(this.BASE_URL + "/rooms/" + roomId + "/users");
         return axios.get(this.BASE_URL + "/rooms/" + roomId + "/users").then(response => {
             return response.data;
         });

@@ -2,7 +2,9 @@ import React, { useState, useLayoutEffect } from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import { VideoRoomApi } from "../api/video-room-api";
-import { BasePageR } from "./base-page";
+import { VideoRoomPageR } from "./video-room/video-room-page";
+import { JoinCreateRoomPageR } from "./join-create-room/join-create-room-page";
+import { LoginPageR } from "./login/login-page";
 
 /**
  * Represents the required properties of the BasePageRouter.
@@ -44,7 +46,9 @@ const BasePageRouter = (props: Prop) => {
         // value = setting the thing people can access
         <ApiContext.Provider value={api}>
             <Switch>
-                <Route path="" component={BasePageR} />
+                <Route path="/rooms/:videoRoomId" component={VideoRoomPageR} />
+                <Route path="/rooms" component={JoinCreateRoomPageR} />
+                <Route path="/" component={LoginPageR} />
             </Switch>
         </ApiContext.Provider>
     )

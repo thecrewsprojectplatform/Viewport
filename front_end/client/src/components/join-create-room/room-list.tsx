@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { connect } from "react-redux";
 import { createRoomAndAddUserToRoomAction, addUserToRoomAction, Status, VideoRoomState, getRoomsAction, loadVideo } from '../../store/video-room/video-room';
+import { useHistory } from "react-router-dom";
 import { RoomListItem } from './room-list-item';
 import { store } from '../../store';
 import { ApiContext } from '..';
@@ -13,10 +14,10 @@ import useStyles from '../styles';
  * Represents the required properties of the UserList.
  */
 export interface Prop {
-    currentRooms: Room[];
+    currentRoom: Room;
+    availableRooms: Room[];
     user: User;
     updateStatus: Status;
-    setPageForward: () => void;
 }
 
 /**
@@ -33,23 +34,29 @@ const RoomList = (props: Prop) => {
     const classes = useStyles();
     const [newRoomName, setNewRoomName] = useState("");
     const api = useContext<VideoRoomApi>(ApiContext);
+    const history = useHistory();
 
     useEffect(() => {
         store.dispatch(getRoomsAction(api))
     }, []);
 
-    const createNewRoomClick = (): void => {
+    useEffect(() => {
+        if (props.currentRoom) {
+            history.push(`/rooms/${props.currentRoom.id}`)
+        }
+    }, [props.currentRoom]);
+
+    const createNewRoomClick = (event): void => {
         store.dispatch(createRoomAndAddUserToRoomAction(api, newRoomName, props.user.id));
-        setNewRoomName("");
-        props.setPageForward();
+        event.preventDefault();
     }
 
     const onJoinRoomClick = (roomId: number): void => {
-        store.dispatch(addUserToRoomAction(api, roomId, props.user.id, props.currentRooms));
+        store.dispatch(addUserToRoomAction(api, roomId, props.user.id, props.availableRooms));
         api.getRoom(roomId).then(room => {
             store.dispatch(loadVideo(room.video_url))
         })
-        props.setPageForward();
+        history.push(`/rooms/${roomId}`)
     }
  
     return (
@@ -61,9 +68,9 @@ const RoomList = (props: Prop) => {
                             variant="outlined"
                             margin="normal"
                             fullWidth
-                            id="create-new-room"
+                            id="EditUserModal"
                             label="Create New Room"
-                            name="create-new-room"
+                            name="EditUserModal"
                             autoComplete="off"
                             autoFocus
                             required
@@ -77,7 +84,7 @@ const RoomList = (props: Prop) => {
                 <List>
                 {
                     (() => {
-                        return props.currentRooms.map((room) => {
+                        return props.availableRooms.map((room) => {
                             return (
                                 <RoomListItem 
                                     key={room.id}
@@ -102,7 +109,8 @@ const RoomList = (props: Prop) => {
  */
 const mapStateToProps = (state: VideoRoomState) => {
     return {
-        currentRooms: state.roomList,
+        availableRooms: state.roomList,
+        currentRoom: state.currentRoom,
         user: state.user,
         updateStatus: state.updateStatus,
     }
