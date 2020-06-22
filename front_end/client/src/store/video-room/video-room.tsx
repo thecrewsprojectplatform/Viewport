@@ -30,7 +30,7 @@ export interface VideoRoomState {
     updateStatus: Status;
 }
 
-interface SetVidoRoomUsersAction {
+export interface SetVidoRoomUsersAction {
     type: ActionType.SetVideoRoomUsers;
     users: User[];
 }
@@ -188,6 +188,42 @@ interface RemoveUserAfterBrowserCloseFailAction {
     type: ActionType.RemoveUserAfterBrowserCloseFail;
 }
 
+export interface Actions {
+    SetVidoRoomUsersAction: SetVidoRoomUsersAction
+    GetRoomsAction: GetRoomsAction
+    GetRoomsSuccessAction: GetRoomsSuccessAction
+    GetRoomsFailAction: GetRoomsFailAction
+    AddUserToRoomAction: AddUserToRoomAction
+    AddUserToRoomSuccessAction: AddUserToRoomSuccessAction
+    AddUserToRoomFailAction: AddUserToRoomFailAction
+    SendToAllClientsAction: SendToAllClientsAction 
+    SendInitialClientMessageAction: SendInitialClientMessageAction
+    SendUrlToServerAction: SendUrlToServerAction
+    LoadVideoAction: LoadVideoAction
+    ControlVideoAction: ControlVideoAction
+    CreateRoomAndAddUserToRoomAction: CreateRoomAndAddUserToRoomAction
+    CreateRoomAndAddUserToRoomSuccessAction: CreateRoomAndAddUserToRoomSuccessAction
+    CreateRoomAndAddUserToRoomFailAction: CreateUserAndAddToRoomFailAction
+    CreateUserAndAddToRoomAction: CreateUserAndAddToRoomAction
+    CreateUserAndAddToRoomSuccessAction: CreateUserAndAddToRoomSuccessAction
+    CreateUserAndAddToRoomFailAction: CreateUserAndAddToRoomFailAction
+    CreateUserAction: CreateUserAction
+    CreateUserSuccessAction: CreateUserSuccessAction
+    CreateUserFailAction: CreateUserFailAction
+    RemoveUserAction: RemoveUserAction
+    RemoveUserSuccessAction: RemoveUserSuccessAction
+    RemoveUserFailAction: RemoveUserFailAction
+    RemoveRoomAction: RemoveRoomAction
+    RemoveRoomSuccessAction: RemoveRoomSuccessAction
+    RemoveRoomFailAction: RemoveRoomFailAction
+    RemoveUserFromRoomAction: RemoveUserFromRoomAction
+    RemoveUserFromRoomSuccessAction: RemoveUserFromRoomSuccessAction
+    RemoveUserFromRoomFailAction: RemoveUserFromRoomFailAction
+    RemoveUserAfterBrowserCloseAction: RemoveUserAfterBrowserCloseAction
+    RemoveUserAfterBrowserCloseSuccessAction: RemoveUserAfterBrowserCloseSuccessAction
+    RemoveUserAfterBrowserCloseFailAction: RemoveUserAfterBrowserCloseFailAction
+}
+
 type Action =   SetVidoRoomUsersAction |
                 GetRoomsAction |
                 GetRoomsSuccessAction |
@@ -252,7 +288,10 @@ export const reducer = (
                 draftState.updateStatus = Status.Running;
             });
         case ActionType.AddUserToRoomSuccess:
-            socket.emit('joinRoom', action.room.id);
+            socket.emit('joinRoom', {
+                roomId: action.room.id,
+                clientName: state.clientName
+            });
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.room;
@@ -280,7 +319,10 @@ export const reducer = (
                 draftState.updateStatus = Status.Running
             });
         case ActionType.CreateRoomAndAddUserToRoomSuccess:
-            socket.emit('joinRoom', action.room.id);
+            socket.emit('joinRoom', {
+                roomId: action.room.id,
+                clientName: state.clientName
+            });
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.room;
@@ -345,7 +387,10 @@ export const reducer = (
                 draftState.updateStatus = Status.Running;
             });
         case ActionType.RemoveUserFromRoomSuccess:
-            socket.emit('leaveRoom', action.pastRoomId);
+            socket.emit('leaveRoom', {
+                roomId: action.pastRoomId,
+                clientName: state.clientName
+            });
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.currentRoom = action.currentRoom;
@@ -497,12 +542,14 @@ export const getRoomUsers = (api: VideoRoomApi, roomId: number): any => {
                 currentRoomId: roomId,
                 clientList: users
             })
+            /*
             socket.on('updateUserToAllClientUserList', data => {
                 dispatch({
                     type: ActionType.SetVideoRoomUsers,
                     users: data.clientList,
                 } as SetVidoRoomUsersAction);
             })
+            */
         }).catch(err => {
             console.log("Failed to get the list of users in room");
         });
@@ -623,12 +670,14 @@ export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: nu
                     currentRoomId: roomId,
                     clientList: users
                 });
+                /*
                 socket.on('updateUserToAllClientUserList', data => {
                     dispatch({
                         type: ActionType.SetVideoRoomUsers,
                         users: data.clientList
                     } as SetVidoRoomUsersAction);
                 });
+                */
                 console.log('current people in room disconnected is', users)
                 socket.emit('updateUserListDisconnected', {
                     userListDisconnect: users
@@ -712,16 +761,31 @@ export const closedBrowserUserList = (api: VideoRoomApi, roomId: number): any =>
                 currentRoomId: roomId,
                 clientList: users
             })
+            /*
             socket.on('updateUserToAllClientUserList', data => {
                 dispatch({
                     type: ActionType.SetVideoRoomUsers,
                     users: data.clientList,
                 } as SetVidoRoomUsersAction);
             })
+            */
         }).catch(err => {
             dispatch({
                 type: ActionType.RemoveUserAfterBrowserCloseFail
             } as RemoveUserAfterBrowserCloseFailAction);
         });
     };
+}
+
+export const socketCommunication = () => {
+    return (dispatch): any => {
+        /*
+        socket.on('updateUserToAllClientUserList', data => {
+            dispatch({
+                type: ActionType.SetVideoRoomUsers,
+                users: data.clientList,
+            } as SetVidoRoomUsersAction);
+        })
+        */
+    }
 }
