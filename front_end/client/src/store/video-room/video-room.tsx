@@ -114,6 +114,8 @@ interface CreateUserAndAddToRoomAction {
 
 interface CreateUserAndAddToRoomSuccessAction {
     type: ActionType.CreateUserAndAddToRoomSuccess;
+    user: User;
+    roomId: number;
 }
 
 interface CreateUserAndAddToRoomFailAction {
@@ -135,6 +137,19 @@ interface CreateUserFailAction {
 
 interface RemoveUserAction {
     type: ActionType.RemoveUser;
+}
+
+interface EditUserNameAction {
+    type: ActionType.EditUserName;
+}
+
+interface EditUserNameSuccessAction {
+    type: ActionType.EditUserNameSuccess;
+    user: User;
+}
+
+interface EditUserNameFailAction {
+    type: ActionType.EditUserNameFail;
 }
 
 interface RemoveUserSuccessAction {
@@ -166,7 +181,6 @@ interface RemoveUserFromRoomSuccessAction {
     type: ActionType.RemoveUserFromRoomSuccess;
     pastRoomId: number;
     messageHistory: MessageDetail[];
-    currentRoom: Room;
     roomId: number;
     users: User[];
 }
@@ -224,7 +238,10 @@ type Action =   SetVidoRoomUsersAction |
                 RemoveUserFromRoomFailAction |
                 RemoveUserAfterBrowserCloseAction |
                 RemoveUserAfterBrowserCloseSuccessAction |
-                RemoveUserAfterBrowserCloseFailAction ;
+                RemoveUserAfterBrowserCloseFailAction |
+                EditUserNameAction |
+                EditUserNameSuccessAction |
+                EditUserNameFailAction;
 
 export const reducer = (
     state: VideoRoomState = {
@@ -300,8 +317,11 @@ export const reducer = (
                 draftState.updateStatus = Status.Running;
             });
         case ActionType.CreateUserAndAddToRoomSuccess:
+            socket.emit('joinRoom', action.roomId);
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
+                draftState.user = action.user;
+                draftState.currentRoom = state.roomList.find((room) => room.id == action.roomId);
             });
         case ActionType.CreateUserAndAddToRoomFail:
             return produce(state, draftState => {
@@ -317,6 +337,20 @@ export const reducer = (
                 draftState.user = action.user;
             });
         case ActionType.CreateUserFail:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Failed;
+            });
+        case ActionType.EditUserName:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Running;
+            });
+        case ActionType.EditUserNameSuccess:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.Succeeded;
+                draftState.user = action.user;
+                draftState.users = state.users.filter((user) => user.id !== action.user.id).concat([action.user]);
+            });
+        case ActionType.EditUserNameFail:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
             })
@@ -340,6 +374,7 @@ export const reducer = (
         case ActionType.RemoveRoomSuccess:
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
+                draftState.currentRoom = null;
             });
         case ActionType.RemoveRoomFail:
             return produce(state, draftState => {
@@ -353,7 +388,7 @@ export const reducer = (
             socket.emit('leaveRoom', action.pastRoomId);
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
-                draftState.currentRoom = action.currentRoom;
+                draftState.currentRoom = null;
                 draftState.messageHistory = action.messageHistory;
                 draftState.roomId = action.roomId;
                 draftState.users = action.users;
@@ -529,6 +564,8 @@ export const createUserAndAddToRoom = (api: VideoRoomApi, roomId: number, userNa
             api.addUserToRoom(roomId, user.id).then(response => {
                 dispatch({
                     type: ActionType.CreateUserAndAddToRoomSuccess,
+                    user: user,
+                    roomId: roomId,
                 } as CreateUserAndAddToRoomSuccessAction);
             })
         }).catch(err => {
@@ -560,13 +597,33 @@ export const createUser = (api: VideoRoomApi, userName: string): any => {
     };
 };
 
+export const editUserName = (api: VideoRoomApi, userId: number, newUserName: string): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.EditUserName,
+        } as EditUserNameAction);
+        api.updateUser(userId, newUserName).then(user => {
+            socket.emit('getCurrentUser', {
+                currentUser: user
+            });
+            dispatch({
+                type: ActionType.EditUserNameSuccess,
+                user: user,
+            } as EditUserNameSuccessAction);
+        }).catch(err => {
+            dispatch({
+                type: ActionType.EditUserNameFail
+            } as EditUserNameFailAction);
+        });
+    };
+};
+
 export const removeUser = (api: VideoRoomApi, userId: number): any => {
     return (dispatch): any => {
         dispatch({
             type: ActionType.RemoveUser,
         } as RemoveUserAction);
         api.removeUser(userId).then(response => {
-            console.log("removed user successfully")
             dispatch({
                 type: ActionType.RemoveUserSuccess,
                 user: null,
@@ -585,7 +642,6 @@ export const removeRoom = (api: VideoRoomApi, roomId: number): any => {
             type: ActionType.RemoveRoom,
         } as RemoveRoomAction);
         api.removeRoom(roomId).then(response => {
-            console.log("removed room successfully")
             dispatch({
                 type: ActionType.RemoveRoomSuccess,
             } as RemoveRoomSuccessAction);
@@ -623,7 +679,6 @@ export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: nu
                 messageHistory: [],
                 users: [],
             } as RemoveUserFromRoomSuccessAction);
-            console.log("removed user successfully")
         }).catch(err => {
             dispatch({
                 type: ActionType.RemoveUserFromRoomFail
@@ -640,7 +695,6 @@ export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: nu
                         users: data.clientList
                     } as SetVidoRoomUsersAction);
                 });
-                console.log('current people in room disconnected is', users)
                 socket.emit('updateUserListDisconnected', {
                     userListDisconnect: users
                 })
@@ -652,8 +706,6 @@ export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: nu
 
 export const sendMessageToAllClients = (message: string, username: string, msgTime: string): any => {
     return (dispatch): any => {
-        console.log("message to client")
-        console.log(message)
         dispatch ({
             type: ActionType.SendMessageToAllClients,
             clientMessage: message,
@@ -665,7 +717,6 @@ export const sendMessageToAllClients = (message: string, username: string, msgTi
 
 export const sendMessageToServer = (message: string, msgTime: string): any => {
     return (dispatch): any => {
-        console.log("message to server")
         dispatch({
             type: ActionType.SendInitialClientMessage,
             clientMessage: message,
