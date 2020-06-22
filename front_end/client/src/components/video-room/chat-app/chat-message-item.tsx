@@ -1,6 +1,7 @@
 import React from "react";
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
 
 export interface Prop {
     clientMessage: string;
@@ -32,4 +33,3 @@ export const ChatMessageItem = (props: Prop) => {
         </div>
     )
 }
-

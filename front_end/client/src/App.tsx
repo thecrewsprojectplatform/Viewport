@@ -3,9 +3,10 @@ import { BrowserRouter  as Router, Route } from "react-router-dom";
 import { Provider } from 'react-redux';
 import { store } from "./store";
 import { BasePageRouterR } from "./components";
+import { VideoRoomApi } from "./api/video-room-api";
 import configureSocket from '../src/components/video-room/chat-app/socket'
 
-export const socket = configureSocket(store.dispatch)
+export const socket = configureSocket(store.dispatch, new VideoRoomApi)
 
 /**
  * @constructor App representing the current front end for our application.
