@@ -240,6 +240,9 @@ export interface Actions {
     RemoveUserAfterBrowserCloseAction: RemoveUserAfterBrowserCloseAction
     RemoveUserAfterBrowserCloseSuccessAction: RemoveUserAfterBrowserCloseSuccessAction
     RemoveUserAfterBrowserCloseFailAction: RemoveUserAfterBrowserCloseFailAction
+    EditUserNameAction: EditUserNameAction
+    EditUserNameSuccessAction: EditUserNameSuccessAction
+    EditUserNameFailAction: EditUserNameFailAction
 }
 
 type Action =   SetVidoRoomUsersAction |
@@ -512,12 +515,6 @@ export const getRoomsAction = (api: VideoRoomApi): any => {
             socket.emit('updateRoomsToServerRoomList', {
                 roomsList: roomsList
             });
-            socket.on('updateRoomsToAllClientRoomList', data => {
-                dispatch({
-                    type: ActionType.GetRoomsSuccess,
-                    roomsList: data.roomsList,
-                } as GetRoomsSuccessAction);
-            })
         }).catch(err => {
             dispatch({
                 type: ActionType.GetRoomsFail
@@ -567,12 +564,6 @@ export const createRoomAndAddUserToRoomAction = (api: VideoRoomApi, roomName: st
                 socket.emit('updateRoomsToServerRoomList', {
                     roomsList: roomsList
                 })
-                socket.on('updateRoomsToAllClientRoomList', data => {
-                    dispatch({
-                        type: ActionType.GetRoomsSuccess,
-                        roomsList: data.roomsList,
-                    } as GetRoomsSuccessAction);
-                })
             });
         });
     };
@@ -588,14 +579,6 @@ export const getRoomUsers = (api: VideoRoomApi, roomId: number): any => {
                 currentRoomId: roomId,
                 clientList: users
             })
-            /*
-            socket.on('updateUserToAllClientUserList', data => {
-                dispatch({
-                    type: ActionType.SetVideoRoomUsers,
-                    users: data.clientList,
-                } as SetVidoRoomUsersAction);
-            })
-            */
         }).catch(err => {
             console.log("Failed to get the list of users in room");
         });
@@ -701,12 +684,6 @@ export const removeRoom = (api: VideoRoomApi, roomId: number): any => {
                 socket.emit('updateRoomsToServerRoomList', {
                     roomsList: roomsList
                 })
-                socket.on('updateRoomsToAllClientRoomList', data => {
-                    dispatch({
-                        type: ActionType.GetRoomsSuccess,
-                        roomsList: data.roomsList,
-                    } as GetRoomsSuccessAction);
-                })
             });
         });
     };
@@ -736,14 +713,6 @@ export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: nu
                     currentRoomId: roomId,
                     clientList: users
                 });
-                /*
-                socket.on('updateUserToAllClientUserList', data => {
-                    dispatch({
-                        type: ActionType.SetVideoRoomUsers,
-                        users: data.clientList
-                    } as SetVidoRoomUsersAction);
-                });
-                */
                 socket.emit('updateUserListDisconnected', {
                     userListDisconnect: users
                 })
@@ -823,31 +792,10 @@ export const closedBrowserUserList = (api: VideoRoomApi, roomId: number): any =>
                 currentRoomId: roomId,
                 clientList: users
             })
-            /*
-            socket.on('updateUserToAllClientUserList', data => {
-                dispatch({
-                    type: ActionType.SetVideoRoomUsers,
-                    users: data.clientList,
-                } as SetVidoRoomUsersAction);
-            })
-            */
         }).catch(err => {
             dispatch({
                 type: ActionType.RemoveUserAfterBrowserCloseFail
             } as RemoveUserAfterBrowserCloseFailAction);
         });
     };
-}
-
-export const socketCommunication = () => {
-    return (dispatch): any => {
-        /*
-        socket.on('updateUserToAllClientUserList', data => {
-            dispatch({
-                type: ActionType.SetVideoRoomUsers,
-                users: data.clientList,
-            } as SetVidoRoomUsersAction);
-        })
-        */
-    }
 }

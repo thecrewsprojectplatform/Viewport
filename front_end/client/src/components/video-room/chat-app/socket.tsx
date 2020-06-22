@@ -7,6 +7,10 @@ import { ActionType } from "../../../store/video-room/actionType";
 
 const socket = io();
 
+/** 
+ * Represents the socket communication that is received on the clientside.
+ * All of the socket communications that the clients receive should be on this page
+*/
 const configureSocket = (dispatch, api: VideoRoomApi) => {
 
   socket.on('connect', () => {
@@ -45,7 +49,12 @@ const configureSocket = (dispatch, api: VideoRoomApi) => {
     } as Actions["SetVidoRoomUsersAction"]);
   })
 
-
+  socket.on('updateRoomsToAllClientRoomList', data => {
+    dispatch({
+        type: ActionType.GetRoomsSuccess,
+        roomsList: data.roomsList,
+    } as Actions["GetRoomsSuccessAction"]);
+  })
 
   return socket;
 }
