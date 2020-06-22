@@ -5,11 +5,15 @@ import { ChatApp, ChatAppR } from "../components/video-room/chat-app/chat-app";
 import { MessageDetail } from "../api/video-room-types";
 import {render, fireEvent, cleanup} from '@testing-library/react';
 import TextField from '@material-ui/core/TextField';
+import { store } from "../store/index";
+import { reducer } from "../store/reducer";
+import { ActionType } from "../store/video-room/actionType";
 
+//const mockStore = configureStore([]);
 
 jest.mock('../App.tsx', () => "root")
 
-const messageHist: MessageDetail = {    
+const messageHist: MessageDetail = {
   chat_message: 'test',
   chat_username: 'test user',
   message_time: '1:11',
@@ -36,7 +40,7 @@ const wrapper = setup();
 describe('Chat App component', () => {
 
   test('Should render without errors', () => {
-    expect(wrapper.exists()).toBe(true);  
+    expect(wrapper.exists()).toBe(true);
   });
 
   test('Should render correct number of messages', () => {
