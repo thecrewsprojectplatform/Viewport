@@ -26,15 +26,15 @@ io.on('connection', socket => {
   console.log('A new client has joined our server!');
 
   /*  JOINING A ROOM (For room specific socket communication) */
-  socket.on('joinRoom', room => {
-    console.log('joining on room name:', room)
-    socket.join(room);
+  socket.on('joinRoom', data => {
+    console.log('joining on room name:', data.roomId)
+    socket.join(data.roomId);
   })
 
   /*  Leaving A ROOM  */
-  socket.on('leaveRoom', room => {
-    console.log('leaving the room:', room)
-    socket.leave(room);
+  socket.on('leaveRoom', data => {
+    console.log('leaving the room:', data.roomId)
+    socket.leave(data.roomId);
   })
 
   /* GET THE CURRENT USER SOCKET */

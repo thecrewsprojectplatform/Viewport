@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import { createUser } from "../../store/video-room/video-room";
@@ -8,12 +9,13 @@ import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
 import { TextField, CssBaseline, Button } from "@material-ui/core";
 import useStyles from "../styles";
+import { User } from "../../api/video-room-types";
 
 /**
  * Represents the required properties of the LoginPage.
  */
 export interface Prop {
-    setPage: () => void;
+    currentUser: User;
 }
 
 /**
@@ -25,22 +27,19 @@ export interface Prop {
  * @returns {JSX.Element} The JSX representing the login page.
  */
 
-export const LoginPage = (props: Prop) => {
+const LoginPage = (props: Prop) => {
     const classes = useStyles();
-    const [newUserName, setNewUserName] = useState("");
+    const [newUserName, setNewUserName] = useState(props.currentUser ? props.currentUser.name : "");
     const api = useContext<VideoRoomApi>(ApiContext);
-
-    const createNewUserClick = (): void => {
-        store.dispatch(createUser(api, newUserName));
-    }
+    const history = useHistory();
 
     const handleChange = (event): void => {
         setNewUserName(event.target.value);
     }
 
     const handleSubmit = (event): void => {
-        createNewUserClick();
-        props.setPage();
+        store.dispatch(createUser(api, newUserName));
+        history.push("/rooms")
         event.preventDefault();
     }
 
@@ -89,7 +88,7 @@ export const LoginPage = (props: Prop) => {
  */
 const mapStateToProps = state => {
     return {
-        
+        currentUser: state.user,
     }
 }
 

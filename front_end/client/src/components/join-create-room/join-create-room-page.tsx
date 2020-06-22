@@ -1,4 +1,5 @@
 import React, { useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { removeRoom, closedBrowserUserList, getRoomsAction, VideoRoomState, Status, removeUser } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
@@ -6,7 +7,6 @@ import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
 import { User, Room } from "../../api/video-room-types";
 import { RoomListR } from "./room-list";
-import { socket } from "../../App"
 import NavBar from "../nav-bar";
 
 /**
@@ -17,8 +17,6 @@ export interface Prop {
     roomList: Room[];
     currentUser: User;
     updateStatus: Status;
-    setPageForward: () => void;
-    setPageBackwards: () => void;
 }
 
 /**
@@ -32,30 +30,18 @@ export interface Prop {
  *                 setPage function.
  * @returns {JSX.Element} The JSX representing the join/create room page.
  */
-const JoinCreateRoomPage = (props: Prop) => {
+export const JoinCreateRoomPage = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
+    const history = useHistory();
 
     const logoutClick = (): void => {
         store.dispatch(removeUser(api, props.currentUser.id));
-        props.setPageBackwards()
+        history.push("/");
     }
 
     useEffect(() => {
         store.dispatch(getRoomsAction(api))
     }, []);
-
-    socket.on('clientDisconnectedUpdateUserList', data => {
-        api.removeUserFromRoom(data.currentRoomId, data.currentUserId).then(() => {
-            store.dispatch(closedBrowserUserList(api, data.currentRoomId));
-        }).finally(() => {
-            api.getUsersInRoom(data.currentRoomId).then(users => {
-                if (users.length === 0) {
-                    store.dispatch(removeRoom(api, data.currentRoomId));
-                }
-            })
-        })
-        api.removeUser(data.currentUserId)
-    });
 
     return (
         <div>
@@ -63,7 +49,7 @@ const JoinCreateRoomPage = (props: Prop) => {
                 buttonName="Logout"
                 buttonOnClick={logoutClick}
             />
-            <RoomListR setPageForward={props.setPageForward}/>
+            <RoomListR />
         </div>
     )
 }

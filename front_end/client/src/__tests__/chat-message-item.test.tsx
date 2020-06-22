@@ -1,12 +1,16 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { ChatMessageItem } from "../components/video-room/chat-app/chat-message-item";
+
+const props = {
+    clientMessage: 'hello',
+    clientName: 'tester1',
+    msgTime: '1:11',
+  }
 
 const setup = () => {
     return shallow(<ChatMessageItem 
-        clientMessage="test"
-        clientName="test user"
-        msgTime="1:11"
+        {...props}
     />)
 };
 

@@ -7,6 +7,8 @@ export interface Room {
     video_id: string;
     video_url: string;
     video_state: string;
+    video_time: number;
+    video_length: number;
 }
 
 /**

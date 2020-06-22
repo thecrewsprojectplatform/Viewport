@@ -20,13 +20,6 @@ interface Prop {
  * @returns {JSX.Element} The JSX representing the RoomList.
  */
 export const RoomListItem = (props: Prop) => {
-    /*
-    const handleClick = (event): void => {
-        props.onJoinClick(props.currentRoom.id)} 
-        event.preventDefault();
-    }
-    */
-
     const handleClick = (event): void => {
         props.onJoinClick(props.currentRoom.id)
         event.preventDefault();
