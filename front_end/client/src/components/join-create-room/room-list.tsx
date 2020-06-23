@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { createRoomAndAddUserToRoomAction, addUserToRoomAction, Status, VideoRoomState, getRoomsAction, loadVideo } from '../../store/video-room/video-room';
 import { useHistory } from "react-router-dom";
 import { RoomListItem } from './room-list-item';
+import { CreateRoomInput } from './create-room-input';
 import { store } from '../../store';
 import { ApiContext } from '..';
 import { Room, User } from '../../api/video-room-types';
@@ -30,7 +31,7 @@ export interface Prop {
  *                 state of the web application.
  * @returns {JSX.Element} The JSX representing the RoomList.
  */
-const RoomList = (props: Prop) => {
+export const RoomList = (props: Prop) => {
     const classes = useStyles();
     const [newRoomName, setNewRoomName] = useState("");
     const api = useContext<VideoRoomApi>(ApiContext);
@@ -46,9 +47,9 @@ const RoomList = (props: Prop) => {
         }
     }, [props.currentRoom]);
 
-    const createNewRoomClick = (event): void => {
+    const createNewRoomClick = (): void => {
         store.dispatch(createRoomAndAddUserToRoomAction(api, newRoomName, props.user.id));
-        event.preventDefault();
+        //event.preventDefault();
     }
 
     const onJoinRoomClick = (roomId: number): void => {
@@ -63,23 +64,12 @@ const RoomList = (props: Prop) => {
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className="Room-list">
-                <form className={classes.form} onSubmit={createNewRoomClick} autoComplete="off">
-                        <TextField 
-                            variant="outlined"
-                            margin="normal"
-                            fullWidth
-                            id="EditUserModal"
-                            label="Create New Room"
-                            name="EditUserModal"
-                            autoComplete="off"
-                            autoFocus
-                            required
-                        
-                            type="text" 
-                            onChange={(event) => setNewRoomName(event.target.value)}
-                            value={newRoomName}
-                        />
-                </form>
+                <CreateRoomInput
+                    currentRoom={props.currentRoom}
+                    createNewRoomClick={createNewRoomClick}
+                    setNewRoomName={setNewRoomName}
+                    newRoomName={newRoomName}
+                />
                 Available Rooms:
                 <List>
                 {

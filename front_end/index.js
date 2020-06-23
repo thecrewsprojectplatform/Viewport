@@ -29,12 +29,14 @@ io.on('connection', socket => {
   socket.on('joinRoom', data => {
     console.log('joining on room name:', data.roomId)
     socket.join(data.roomId);
+    io.broadcast.to(data.roomId).emit('userJoinedRoom', data)
   })
 
   /*  Leaving A ROOM  */
   socket.on('leaveRoom', data => {
     console.log('leaving the room:', data.roomId)
     socket.leave(data.roomId);
+    io.broadcast.to(data.roomId).emit('userLeftRoom', data)
   })
 
   /* GET THE CURRENT USER SOCKET */

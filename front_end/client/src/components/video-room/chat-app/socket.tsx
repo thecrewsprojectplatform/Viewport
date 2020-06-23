@@ -11,7 +11,9 @@ const socket = io();
  * Represents the socket communication that is received on the clientside.
  * All of the socket communications that the clients receive should be on this page
 */
+
 const configureSocket = (dispatch, api: VideoRoomApi) => {
+  const msgTime = ''
 
   socket.on('connect', () => {
     console.log('connected');
@@ -27,6 +29,14 @@ const configureSocket = (dispatch, api: VideoRoomApi) => {
 
   socket.on('sendRoomStateToAllClients', data => {
     store.dispatch(controlVideo(data.room))
+  })
+
+  socket.on('userJoinedRoom', data => {
+    store.dispatch(sendMessageToAllClients(data.clientMessage, data.clientName, msgTime))
+  })
+
+  socket.on('userLeftRoom', data => {
+    store.dispatch(sendMessageToAllClients(data.clientMessage, data.clientName, msgTime))
   })
 
   socket.on('clientDisconnectedUpdateUserList', data => {

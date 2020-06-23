@@ -26,7 +26,6 @@ const props = {
   messageHistory:[messageHist, messageHist]
 }
 
-
 const setup = () => {
   return shallow(
     <ChatApp {...props}/>
@@ -48,6 +47,14 @@ describe('Chat App component', () => {
   });
 
   test('should call sendMessageClick on click enter', () => {
+    /*
+    const mockKeyDown = jest.fn();
+    expect(mockKeyDown).toHaveBeenCalledTimes(0);
+
+    const onClick = wrapper.find(TextField);
+    onClick.simulate('click')
+    expect(mockKeyDown).toHaveBeenCalledTimes(1);
+    */
     /*
     const spy = jest.spyOn(ChatApp.prototype, 'sendMessageClick');
     expect(spy).toHaveBeenCalledTimes(0);
