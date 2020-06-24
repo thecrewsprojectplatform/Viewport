@@ -26,8 +26,8 @@ export const RoomListItem = (props: Prop) => {
     }
     
     return (
-            <ListItem button onClick={handleClick} key={props.currentRoom.id}>
-                <ListItemText primary={props.currentRoom.name} />
-            </ListItem>
+        <ListItem button onClick={handleClick} key={props.currentRoom.id}>
+            <ListItemText primary={props.currentRoom.name} />
+        </ListItem>
     )
 }

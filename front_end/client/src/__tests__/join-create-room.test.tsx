@@ -5,10 +5,9 @@ import NavBar from "../components/nav-bar";
 import configureStore from 'redux-mock-store';
 import { useDispatch } from 'react-redux';
 import { Provider } from 'react-redux';
+import { Button } from '@material-ui/core';
 
 jest.mock('../App.tsx', () => "root")
-
-const mockStore = configureStore([]);
 
 enum Status {
     NotStarted="NOT_STARTED",
@@ -16,25 +15,6 @@ enum Status {
     Succeeded="SUCCEEDED",
     Failed="FAILED",
 }
-
-const store = mockStore({
-    roomId: null,
-    roomName: null,
-    roomList: [],
-    currentRoom: null,
-    pastRoomId: null,
-    user: null,
-    users: [],
-    url: null,
-    video_id: null,
-    clientMessage: null,
-    clientName: null,
-    msgTime: null,
-    messageHistory: [],
-    currentUser: null,
-    fetchStatus: Status.NotStarted,
-    updateStatus: Status.NotStarted,
-});
 
 const props = {
     users: [],
@@ -46,10 +26,8 @@ const props = {
 }
 
 const setup = () => {
-    return mount(
-        <Provider store={store}>
-            <JoinCreateRoomPage {...props} />
-        </Provider>
+    return shallow(
+        <JoinCreateRoomPage {...props} />
     )
 };
   
@@ -63,12 +41,22 @@ describe('Join-Create-Room component', () => {
     })
 
     test('Should test logout on logout click', () => {
+        /*
         const spy = jest.spyOn(wrapper.find(NavBar).props(), 'buttonOnClick');
         wrapper.update();
         const onClick = wrapper.find(NavBar);
         expect(spy).toHaveBeenCalledTimes(0)
         onClick.simulate('click')
         expect(spy).toHaveBeenCalledTimes(1)
+        */
+        
+       const logSpy = jest.spyOn(console, 'log');
+       const wrapper = shallow(<JoinCreateRoomPage {...props} />);
+       const button = wrapper.find(NavBar).dive().find(Button);
+       expect(button.text()).toBe('Logout');
+       button.simulate('click');
+       expect(logSpy).toBeCalledWith("Testing logoutClick");
+
         /*
         const navBar = wrapper.find(NavBar).dive()
         navBar.find('button').simulate('click')

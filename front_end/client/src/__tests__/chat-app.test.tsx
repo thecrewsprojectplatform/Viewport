@@ -43,17 +43,8 @@ describe('Chat App component', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-<<<<<<< HEAD
-  test('Should render correct message items', () => {
-    expect(wrapper.find(ChatMessageItem ({
-      clientMessage: 'test',
-      clientName: "test user",
-      msgTime: "1:11"})
-      ).length).toEqual(0);
-=======
   test('Should render correct number of messages', () => {
     expect(wrapper.at(0).find(ChatMessageItem)).toHaveLength(2)
->>>>>>> master
   });
 
   test('should call sendMessageClick on click enter', () => {
