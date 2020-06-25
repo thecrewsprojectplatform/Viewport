@@ -42,17 +42,11 @@ describe('Room list component', () => {
         expect(wrapper.exists()).toBe(true);  
     })
 
-    test('Should test createNewRoomClick', () => {
-        /*
-        const fakeEvent = { preventDefault: () => console.log('preventDefault') };
-        const loginComponent = shallow(<RoomList {...props} />);
-        expect(loginComponent.find('form').length).toBe(1);
-        loginComponent.find('.form').simulate('submit', fakeEvent);
-        expect(loginComponent.find(Notification).length).toBe(1);
-        */
+    test('Should render createRoomInput', () => {
+        
     })
 
-    test('Should test onchange event with setNewRoomName', () => {
+    test('Should Test correct render of this component.', () => {
         
     })
 

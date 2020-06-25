@@ -315,7 +315,6 @@ export const reducer = (
         case ActionType.AddUserToRoomSuccess:
             socket.emit('joinRoom', {
                 roomId: action.roomId,
-                username: state.user.name
             });
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
@@ -346,7 +345,6 @@ export const reducer = (
         case ActionType.CreateRoomAndAddUserToRoomSuccess:
             socket.emit('joinRoom', {
                 roomId: action.roomId,
-                username: state.user.name
             });
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
@@ -364,7 +362,6 @@ export const reducer = (
         case ActionType.CreateUserAndAddToRoomSuccess:
             socket.emit('joinRoom', { 
                 roomId: action.roomId,
-                username: state.user.name
             });
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
@@ -435,7 +432,6 @@ export const reducer = (
         case ActionType.RemoveUserFromRoomSuccess:
             socket.emit('leaveRoom', {
                 roomId: action.pastRoomId,
-                clientName: state.clientName
             });
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
