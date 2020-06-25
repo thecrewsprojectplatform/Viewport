@@ -17,7 +17,7 @@ const roomDetail: Room = {
     video_length: 1
 };
 
-describe('Room list component', () => {
+describe('Roomlist Item component', () => {
 
     test('Should render without errors', () => {
         const mockClick = jest.fn();

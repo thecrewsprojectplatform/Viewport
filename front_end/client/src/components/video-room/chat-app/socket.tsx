@@ -30,7 +30,7 @@ const configureSocket = (dispatch, api: VideoRoomApi) => {
   socket.on('sendRoomStateToAllClients', data => {
     store.dispatch(controlVideo(data.room))
   })
-
+  /*
   socket.on('userJoinedRoom', data => {
     store.dispatch(sendMessageToAllClients(data.clientMessage, data.clientName, msgTime))
   })
@@ -38,6 +38,7 @@ const configureSocket = (dispatch, api: VideoRoomApi) => {
   socket.on('userLeftRoom', data => {
     store.dispatch(sendMessageToAllClients(data.clientMessage, data.clientName, msgTime))
   })
+  */
 
   socket.on('clientDisconnectedUpdateUserList', data => {
     api.removeUserFromRoom(data.currentRoomId, data.currentUserId).then(() => {
