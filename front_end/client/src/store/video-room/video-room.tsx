@@ -314,7 +314,7 @@ export const reducer = (
             });
         case ActionType.AddUserToRoomSuccess:
             socket.emit('joinRoom', {
-                roomId: action.room.id,
+                roomId: action.roomId,
                 username: state.user.name
             });
             return produce(state, draftState => {
@@ -345,7 +345,7 @@ export const reducer = (
             });
         case ActionType.CreateRoomAndAddUserToRoomSuccess:
             socket.emit('joinRoom', {
-                roomId: action.room.id,
+                roomId: action.roomId,
                 username: state.user.name
             });
             return produce(state, draftState => {

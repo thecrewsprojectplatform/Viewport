@@ -17,11 +17,19 @@ const theme = createMuiTheme({
 });
 
 export const ChatMessageItem = (props: Prop) => {
-    if (props.msgTime === '') {
+    if (props.msgTime === 'true') {
         return (
             <div className="message-container">
                 <span className = "name-message">
-                    {props.clientName + ": " + props.clientMessage}
+                    {props.clientName + " has joined the room"}
+                </span>
+            </div>
+        )
+    } else if (props.msgTime === 'false') {
+        return (
+            <div className="message-container">
+                <span className = "name-message">
+                    {props.clientName + " has left the room"}
                 </span>
             </div>
         )

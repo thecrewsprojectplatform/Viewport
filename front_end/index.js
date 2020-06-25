@@ -29,19 +29,25 @@ io.on('connection', socket => {
   socket.on('joinRoom', data => {
     console.log('joining on room name:', data.roomId)
     socket.join(data.roomId);
-    io.broadcast.to(data.roomId).emit('userJoinedRoom', data)
+    io.to(data.roomId).emit('userJoinedRoom', {
+      userName: socket.userName
+    })
   })
 
   /*  Leaving A ROOM  */
   socket.on('leaveRoom', data => {
     console.log('leaving the room:', data.roomId)
     socket.leave(data.roomId);
-    io.broadcast.to(data.roomId).emit('userLeftRoom', data)
+    io.to(data.roomId).emit('userLeftRoom', {
+      userName: socket.userName
+    })
   })
 
   /* GET THE CURRENT USER SOCKET */
   socket.on('getCurrentUser', data => {
+    console.log('A new user has been created', data.currentUser.id)
     socket.usernameId = data.currentUser.id;
+    socket.userName = data.currentUser.name
   })
 
   /* GET THE CURRENT ROOM SOCKET */
@@ -95,6 +101,10 @@ socket.on('sendControlsToServer', data => {
   socket.on('disconnect', function() {
     console.log('A client has left our server.');
     console.log('deleting client ID #', socket.usernameId, 'in room ID #', socket.roomId)
+
+    io.to(socket.roomId).emit('userLeftRoom', {
+      userName: socket.userName
+    })
 
     io.emit('clientDisconnectedUpdateRoomList', {
       currentRoomId: socket.roomId,

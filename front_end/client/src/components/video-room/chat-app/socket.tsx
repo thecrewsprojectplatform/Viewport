@@ -4,6 +4,7 @@ import { store } from "../../../store";
 import { removeRoom, closedBrowserUserList, Actions } from "../../../store/video-room/video-room";
 import { VideoRoomApi } from "../../../api/video-room-api";
 import { ActionType } from "../../../store/video-room/actionType";
+import { useState } from "react";
 
 const socket = io();
 
@@ -13,7 +14,8 @@ const socket = io();
 */
 
 const configureSocket = (dispatch, api: VideoRoomApi) => {
-  const msgTime = ''
+  let msgTime;
+  const newUserAlertMessage = '';
 
   socket.on('connect', () => {
     console.log('connected');
@@ -30,15 +32,16 @@ const configureSocket = (dispatch, api: VideoRoomApi) => {
   socket.on('sendRoomStateToAllClients', data => {
     store.dispatch(controlVideo(data.room))
   })
-  /*
+
   socket.on('userJoinedRoom', data => {
-    store.dispatch(sendMessageToAllClients(data.clientMessage, data.clientName, msgTime))
+    msgTime = 'true'
+    store.dispatch(sendMessageToAllClients(newUserAlertMessage, data.userName, msgTime))
   })
 
   socket.on('userLeftRoom', data => {
-    store.dispatch(sendMessageToAllClients(data.clientMessage, data.clientName, msgTime))
+    msgTime = 'false'
+    store.dispatch(sendMessageToAllClients(newUserAlertMessage, data.userName, msgTime))
   })
-  */
 
   socket.on('clientDisconnectedUpdateUserList', data => {
     api.removeUserFromRoom(data.currentRoomId, data.currentUserId).then(() => {
