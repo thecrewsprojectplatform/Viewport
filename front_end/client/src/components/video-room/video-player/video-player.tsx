@@ -149,7 +149,7 @@ const VideoPlayer = (props: Prop) => {
     }
 
     const getAndSetVideoTime = () => {
-        if (props.currentRoom) {
+        if (props.currentRoom && player != null) {
             player.seekTo(props.currentRoom.video_time)
             return props.currentRoom.video_time
         } else {
