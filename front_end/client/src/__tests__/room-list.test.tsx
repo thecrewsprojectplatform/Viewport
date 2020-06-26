@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import { Room } from "../api/video-room-types";
 import { RoomList } from '../components/join-create-room/room-list';
 import { RoomListItem } from '../components/join-create-room/room-list-item';
+import { CreateRoomInput } from '../components/join-create-room/create-room-input';
 
 jest.mock('../App.tsx', () => "root")
 
@@ -43,11 +44,7 @@ describe('Room list component', () => {
     })
 
     test('Should render createRoomInput', () => {
-        
-    })
-
-    test('Should Test correct render of this component.', () => {
-        
+        expect(wrapper.find(CreateRoomInput).exists()).toBeTruthy()
     })
 
     test('should render RoomListItem', () => {

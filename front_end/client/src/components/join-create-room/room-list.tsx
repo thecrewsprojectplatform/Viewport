@@ -49,7 +49,6 @@ export const RoomList = (props: Prop) => {
 
     const createNewRoomClick = (): void => {
         store.dispatch(createRoomAndAddUserToRoomAction(api, newRoomName, props.user.id));
-        //event.preventDefault();
     }
 
     const onJoinRoomClick = (roomId: number): void => {

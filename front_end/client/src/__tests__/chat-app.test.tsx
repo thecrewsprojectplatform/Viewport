@@ -1,13 +1,9 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import { ChatMessageItem } from "../components/video-room/chat-app/chat-message-item";
-import { ChatApp, ChatAppR } from "../components/video-room/chat-app/chat-app";
+import { ChatApp } from "../components/video-room/chat-app/chat-app";
 import { MessageDetail } from "../api/video-room-types";
-import {render, fireEvent, cleanup} from '@testing-library/react';
-import TextField from '@material-ui/core/TextField';
-import { store } from "../store/index";
-import { reducer } from "../store/reducer";
-import { ActionType } from "../store/video-room/actionType";
+import { ChatMessageInput } from '../components/video-room/chat-app/chat-message-input';
 
 //const mockStore = configureStore([]);
 
@@ -33,8 +29,6 @@ const setup = () => {
 };
 
 const wrapper = setup();
-//console.log(wrapper.debug())
-
 
 describe('Chat App component', () => {
 
@@ -46,35 +40,8 @@ describe('Chat App component', () => {
     expect(wrapper.at(0).find(ChatMessageItem)).toHaveLength(2)
   });
 
-  test('should call sendMessageClick on click enter', () => {
-    /*
-    const mockKeyDown = jest.fn();
-    expect(mockKeyDown).toHaveBeenCalledTimes(0);
-
-    const onClick = wrapper.find(TextField);
-    onClick.simulate('click')
-    expect(mockKeyDown).toHaveBeenCalledTimes(1);
-    */
-    /*
-    const spy = jest.spyOn(ChatApp.prototype, 'sendMessageClick');
-    expect(spy).toHaveBeenCalledTimes(0);
-    wrapper.find(TextField).simulate('keypress', {key: 'Enter'});
-    expect(spy).toHaveBeenCalledTimes(1);
-    */
+  test('Should find ChatMessageInput', () => {
+    expect(wrapper.find(ChatMessageInput)).toHaveLength(1)
   });
 
-  test('should render <TextField />', () => {
-    expect(wrapper.find(TextField)).toHaveLength(1)
-  });
-
-  test('should check for changed message value on change', () => {
-
-  /* does not work right now, wrapper isn't updated
-    expect(wrapper.find(TextField).text()).toBe('')
-    wrapper.find(TextField).simulate('change', {
-      target: { value: 'text message' }
-    });
-    expect(wrapper.find(TextField).text()).toBe('text message')
-  */
-  });
 })
