@@ -10,6 +10,7 @@ import { store } from "../../store";
 import { TextField, CssBaseline, Button } from "@material-ui/core";
 import useStyles from "../styles";
 import { User } from "../../api/video-room-types";
+import { LoginForm } from "./login-form";
 
 /**
  * Represents the required properties of the LoginPage.
@@ -50,32 +51,11 @@ const LoginPage = (props: Prop) => {
                 <Typography variant="h4" component="h1" align="center" gutterBottom>
                     Multimedia Platform
                 </Typography>
-                <form className={classes.form} onSubmit={handleSubmit} autoComplete="off">
-                    <TextField 
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="username"
-                        label="Username"
-                        name="username"
-                        autoComplete="off"
-                        autoFocus
-                    
-                        type="text" 
-                        onChange={handleChange}
-                        value={newUserName}
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Sign In
-                    </Button>
-                </form>
+                <LoginForm
+                    newUserName={newUserName}
+                    handleChange={handleChange}
+                    handleSubmit={handleSubmit}
+                />
             </div>
         </Container>
     )

@@ -32,7 +32,6 @@ const setup = () => {
 };
   
 const wrapper = setup();
-console.log(wrapper.debug())
 
 describe('Join-Create-Room component', () => {
 
@@ -49,13 +48,15 @@ describe('Join-Create-Room component', () => {
         onClick.simulate('click')
         expect(spy).toHaveBeenCalledTimes(1)
         */
-        
+       
+        /*
        const logSpy = jest.spyOn(console, 'log');
        const wrapper = shallow(<JoinCreateRoomPage {...props} />);
        const button = wrapper.find(NavBar).dive().find(Button);
        expect(button.text()).toBe('Logout');
        button.simulate('click');
        expect(logSpy).toBeCalledWith("Testing logoutClick");
+        */
 
         /*
         const navBar = wrapper.find(NavBar).dive()

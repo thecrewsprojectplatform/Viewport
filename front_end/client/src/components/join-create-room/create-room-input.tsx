@@ -7,10 +7,9 @@ import useStyles from '../styles';
  * Represents the required properties of the User.
  */
 interface Prop {
-    currentRoom: Room;
+    newRoomName: String;
     createNewRoomClick: () => void;
     setNewRoomName: (name: string) => void;
-    newRoomName: String
 }
 
 /**
@@ -27,7 +26,6 @@ export const CreateRoomInput = (props: Prop) => {
 
     const handleClick = (event): void => {
         props.createNewRoomClick()
-        console.log('handleClick has been triggered')
         event.preventDefault();
     }
 

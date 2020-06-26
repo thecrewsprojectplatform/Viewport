@@ -112,7 +112,6 @@ const VideoRoomPage = (props: Prop) => {
  * @param {Object} state The current state of the VideoRoomPage.
  */
 const mapStateToProps = (state: VideoRoomState) => {
-    console.log(state);
     return {
         currentRoom: state.currentRoom,
         roomList: state.roomList,
