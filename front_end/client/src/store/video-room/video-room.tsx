@@ -4,7 +4,7 @@ import { VideoRoomApi } from "../../api/video-room-api";
 import { User, Room, MessageDetail } from "../../api/video-room-types";
 import { socket } from "../../App"
 
-const VIDEO_SYNC_MAX_DIFFERENCE = 3
+const VIDEO_SYNC_MAX_DIFFERENCE = 3  // in seconds
 
 export enum Status {
     NotStarted="NOT_STARTED",
@@ -743,15 +743,6 @@ export const sendMessageToServer = (message: string, msgTime: string): any => {
     }
 }
 
-export const sendUrlToServer = (url: string): any => {
-    return (dispatch): any => {
-        dispatch({
-            type: ActionType.SendUrlToServer,
-            url: url
-        })
-    }
-}
-
 export const loadVideo = (url: string): any => {
     return (dispatch): any => {
         dispatch({
@@ -767,18 +758,6 @@ export const controlVideo = (room: Room): any => {
             type: ActionType.ControlVideo,
             room: room
         })
-    }
-}
-
-export const getAndSendRoomState = (api: VideoRoomApi, roomId: number): any => {
-    return (dispatch): any => {
-        api.getRoom(roomId).then(room => {
-            socket.emit('getRoomStateToServer', {
-                currentRoomId: roomId,
-                room: room
-            })
-        })
-
     }
 }
 

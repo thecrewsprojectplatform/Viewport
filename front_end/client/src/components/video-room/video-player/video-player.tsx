@@ -1,19 +1,24 @@
 import React, { useState, useContext } from 'react';
 import {connect } from 'react-redux';
 import ReactPlayer from 'react-player'
+
+import { ActionType } from '../../../store/video-room/actionType';
 import { store } from '../../../store';
-import { sendUrlToServer, VideoRoomState, getAndSendRoomState} from '../../../store/video-room/video-room';
+import { VideoRoomState } from '../../../store/video-room/video-room';
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { ApiContext } from '../..';
 import { Room } from '../../../api/video-room-types';
+import { socket } from "../../../App"
+
 import './video-player.css';
 import { Button, TextField, InputAdornment, IconButton, Slider } from '@material-ui/core';
 import SearchIcon from "@material-ui/icons/Search";
 import useStyles from '../../styles';
 
-export interface Prop {
+interface Prop {
     currentRoom: Room;
     url: string;
+    sendUrlToServer: Function
 }
 
 /**
@@ -32,7 +37,12 @@ const VideoPlayer = (props: Prop) => {
     const [seeking, setSeeking] = useState(false)
 
     const loadButton = () => {
-        store.dispatch(sendUrlToServer(url))
+        socket.emit('sendUrlToServer', {
+            url: url,
+            currentRoomId: props.currentRoom.id,
+            clientId: props.currentRoom.id,
+            clientName: props.currentRoom.name
+        });
         // By default, set the video_state to paused after loading
         api.updateRoom(
             props.currentRoom.id,
@@ -43,6 +53,15 @@ const VideoPlayer = (props: Prop) => {
             0,
             0
         )
+    }
+
+    const getAndSendRoomState = (api: VideoRoomApi, roomId: number) => {
+        api.getRoom(props.currentRoom.id).then(room => {
+            socket.emit('getRoomStateToServer', {
+                currentRoomId: props.currentRoom.id,
+                room: room
+            })
+        })
     }
 
     /**
@@ -58,7 +77,7 @@ const VideoPlayer = (props: Prop) => {
             props.currentRoom.video_time,
             player.getDuration()
         ).then(() => {
-            store.dispatch(getAndSendRoomState(api, props.currentRoom.id))
+            getAndSendRoomState(api, props.currentRoom.id)
         })
     }
 
@@ -133,7 +152,7 @@ const VideoPlayer = (props: Prop) => {
             newTime,
             props.currentRoom.video_length
         ).then(() => {
-            store.dispatch(getAndSendRoomState(api, props.currentRoom.id))
+            getAndSendRoomState(api, props.currentRoom.id)
         })
     }
 
@@ -185,7 +204,7 @@ const VideoPlayer = (props: Prop) => {
                 room.video_time,
                 props.currentRoom.video_length
             ).then(() => {
-                store.dispatch(getAndSendRoomState(api, props.currentRoom.id))
+                getAndSendRoomState(api, props.currentRoom.id)
             })
         })
     }
@@ -266,4 +285,10 @@ const mapStateToProps = (state: VideoRoomState) => {
     }
 }
 
-export default connect(mapStateToProps)(VideoPlayer);
+const mapDispatchToProps = dispatch => {
+    return {
+        sendUrlToServer: (url: string) => dispatch({type: ActionType.SendUrlToServer, url: url})
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(VideoPlayer);
