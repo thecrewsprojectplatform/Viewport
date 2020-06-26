@@ -6,6 +6,7 @@ import { store } from "../../../store";
 import { MessageDetail } from "../../../api/video-room-types";
 import { TextField, Typography } from "@material-ui/core";
 import useStyles from "../../styles";
+import { ChatMessageInput } from "./chat-message-input";
 
 /**
  * Represents the required properties of the ChatApp.
@@ -23,8 +24,8 @@ export const ChatApp = (props: Prop) => {
     const msgTime = new Date().toLocaleTimeString('en-US');
     const messagesEndRef = useRef(null);
 
-    const sendMessageClick = (event): void => {
-        if ((event.key === 'Enter') && (msg !== "")) {
+    const sendMessageClick = (): void => {
+        if (msg !== "") {
             store.dispatch(sendMessageToServer(msg, msgTime))
             setMessage('')
         }
@@ -58,23 +59,11 @@ export const ChatApp = (props: Prop) => {
                 }
                 <div ref={messagesEndRef} />
             </div>
-            <div className={classes.typingSection}>
-                <TextField
-                    type="text"
-                    placeholder="Send a message..."
-                    id="messageSender"
-                    variant="outlined"
-                    className={classes.formControl}
-                    InputProps={{
-                        className: classes.formControl
-                    }}
-                    InputLabelProps={{
-                        shrink: true
-                    }}
-
-                    value={msg}
-                    onChange={event => setMessage(event.target.value)}
-                    onKeyDown={sendMessageClick}
+            <div>
+                <ChatMessageInput
+                    sendMessageClick={sendMessageClick}
+                    setMessage={setMessage}
+                    msg={msg}
                 />
             </div>
         </div>

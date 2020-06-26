@@ -1,7 +1,6 @@
 import React from "react";
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import PropTypes from 'prop-types';
 
 export interface Prop {
     clientMessage: string;
@@ -18,18 +17,36 @@ const theme = createMuiTheme({
 });
 
 export const ChatMessageItem = (props: Prop) => {
-    return (
-        <div className="message-container">
-            <span className = "name-message">
-                {props.clientName + ": " + props.clientMessage}
-            </span>
-            <br>
-            </br>
-            <ThemeProvider theme={theme}>
-                <Typography className = "message=time" variant="subtitle1">
-                    {"Sent at " + props.msgTime}
-                </Typography>
-            </ThemeProvider>
-        </div>
-    )
+    if (props.msgTime === 'true') {
+        return (
+            <div className="message-container">
+                <span className = "name-message">
+                    {props.clientName + " has joined the room"}
+                </span>
+            </div>
+        )
+    } else if (props.msgTime === 'false') {
+        return (
+            <div className="message-container">
+                <span className = "name-message">
+                    {props.clientName + " has left the room"}
+                </span>
+            </div>
+        )
+    } else {
+        return (
+            <div className="message-container">
+                <span className = "name-message">
+                    {props.clientName + ": " + props.clientMessage}
+                </span>
+                <br>
+                </br>
+                <ThemeProvider theme={theme}>
+                    <Typography className = "message=time" variant="subtitle1">
+                        {"Sent at " + props.msgTime}
+                    </Typography>
+                </ThemeProvider>
+            </div>
+        )
+    }
 }
