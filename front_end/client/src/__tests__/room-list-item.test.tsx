@@ -1,11 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Room } from "../api/video-room-types";
-import { RoomList } from '../components/join-create-room/room-list';
 import { RoomListItem } from '../components/join-create-room/room-list-item';
 import ListItem from '@material-ui/core/ListItem';
-
-jest.mock('../App.tsx', () => "root")
 
 const roomDetail: Room = {
     id: 1,
@@ -19,29 +16,35 @@ const roomDetail: Room = {
 
 describe('Roomlist Item component', () => {
 
-    test('Should render without errors', () => {
-        const mockClick = jest.fn();
-        const wrapper = shallow(
+    let wrapper;
+    let mockClick;
+
+    beforeEach(() => {
+        jest.mock('../App.tsx', () => "root")
+        mockClick = jest.fn();
+        wrapper = shallow(
             <RoomListItem
                 currentRoom={roomDetail}
                 onJoinClick={mockClick} 
             />
         )
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks
+    })
+
+    test('Should render without errors', () => {
         expect(wrapper.exists()).toBe(true);  
     })
 
     test('Should test onJoinRoomClick', () => {
-        const fakeEvent = { preventDefault: () => console.log('preventDefault') };
-        const mockClick = jest.fn();
-        const wrapper = shallow(
-            <RoomListItem
-                currentRoom={roomDetail}
-                onJoinClick={mockClick} 
-            />
-        )
+        const fakeEvent = { preventDefault: () => {} };
         expect(mockClick).toHaveBeenCalledTimes(0);
+
         const onClick = wrapper.find(ListItem);
         onClick.simulate('click', fakeEvent)
+
         expect(mockClick).toHaveBeenCalledTimes(1);
     })
 

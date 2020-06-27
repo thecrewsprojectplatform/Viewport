@@ -5,8 +5,6 @@ import { ChatApp } from "../components/video-room/chat-app/chat-app";
 import { MessageDetail } from "../api/video-room-types";
 import { ChatMessageInput } from '../components/video-room/chat-app/chat-message-input';
 
-//const mockStore = configureStore([]);
-
 jest.mock('../App.tsx', () => "root")
 
 const messageHist: MessageDetail = {

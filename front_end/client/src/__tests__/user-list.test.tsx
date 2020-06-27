@@ -37,5 +37,4 @@ describe('Userlist component', () => {
         expect(wrapper.at(0).find(UserListItem)).toHaveLength(2)
     })
 
-
 })
