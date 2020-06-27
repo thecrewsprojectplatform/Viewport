@@ -28,7 +28,7 @@ export interface Prop {
  * @returns {JSX.Element} The JSX representing the login page.
  */
 
-const LoginPage = (props: Prop) => {
+export const LoginPage = (props: Prop) => {
     const classes = useStyles();
     const [newUserName, setNewUserName] = useState(props.currentUser ? props.currentUser.name : "");
     const api = useContext<VideoRoomApi>(ApiContext);

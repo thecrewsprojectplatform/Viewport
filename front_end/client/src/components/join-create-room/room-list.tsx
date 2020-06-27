@@ -23,8 +23,8 @@ export interface Prop {
 
 /**
  * Represents a list of rooms currently available.
- * 
- * @param {Object} props The properties of a RoomList. 
+ *
+ * @param {Object} props The properties of a RoomList.
  *                 Requires an array of Room objects which
  *                 contains the id and name of a room, the current
  *                 User, and an updateStatus that holds the current
@@ -58,15 +58,16 @@ export const RoomList = (props: Prop) => {
         })
         history.push(`/rooms/${roomId}`)
     }
- 
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className="Room-list">
                 <CreateRoomInput
-                    newRoomName={newRoomName}
+                    currentRoom={props.currentRoom}
                     createNewRoomClick={createNewRoomClick}
                     setNewRoomName={setNewRoomName}
+                    newRoomName={newRoomName}
                 />
                 Available Rooms:
                 <List>
@@ -74,7 +75,7 @@ export const RoomList = (props: Prop) => {
                     (() => {
                         return props.availableRooms.map((room) => {
                             return (
-                                <RoomListItem 
+                                <RoomListItem
                                     key={room.id}
                                     currentRoom={room}
                                     onJoinClick={onJoinRoomClick}
@@ -92,7 +93,7 @@ export const RoomList = (props: Prop) => {
 
 /**
  * Used to connect the state of the overall front end to the RoomList.
- * 
+ *
  * @param {Object} state The current state of the RoomList.
  */
 const mapStateToProps = (state: VideoRoomState) => {

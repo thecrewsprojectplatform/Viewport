@@ -314,8 +314,7 @@ export const reducer = (
             });
         case ActionType.AddUserToRoomSuccess:
             socket.emit('joinRoom', {
-                roomId: action.room.id,
-                clientName: state.clientName
+                roomId: action.roomId,
             });
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
@@ -345,8 +344,7 @@ export const reducer = (
             });
         case ActionType.CreateRoomAndAddUserToRoomSuccess:
             socket.emit('joinRoom', {
-                roomId: action.room.id,
-                clientName: state.clientName
+                roomId: action.roomId,
             });
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
@@ -362,7 +360,9 @@ export const reducer = (
                 draftState.updateStatus = Status.Running;
             });
         case ActionType.CreateUserAndAddToRoomSuccess:
-            socket.emit('joinRoom', action.roomId);
+            socket.emit('joinRoom', { 
+                roomId: action.roomId,
+            });
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.user = action.user;
@@ -432,7 +432,6 @@ export const reducer = (
         case ActionType.RemoveUserFromRoomSuccess:
             socket.emit('leaveRoom', {
                 roomId: action.pastRoomId,
-                clientName: state.clientName
             });
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
@@ -799,3 +798,4 @@ export const closedBrowserUserList = (api: VideoRoomApi, roomId: number): any =>
         });
     };
 }
+
