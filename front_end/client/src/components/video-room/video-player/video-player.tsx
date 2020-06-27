@@ -7,7 +7,7 @@ import { store } from '../../../store';
 import { VideoRoomState } from '../../../store/video-room/video-room';
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { ApiContext } from '../..';
-import { Room } from '../../../api/video-room-types';
+import { Room, Player } from '../../../api/video-room-types';
 import { socket } from "../../../App"
 
 import './video-player.css';
@@ -17,7 +17,7 @@ import useStyles from '../../styles';
 
 interface Prop {
     currentRoom: Room;
-    url: string;
+    player: Player;
     sendUrlToServer: Function
 }
 
@@ -278,16 +278,16 @@ const VideoPlayer = (props: Prop) => {
     }
 
 
-const mapStateToProps = (state: VideoRoomState) => {
+const mapStateToProps = state => {
     return {
-        currentRoom: state.currentRoom,
-        url: state.url,
+        currentRoom: state.room.currentRoom,
+        player: state.player.player
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        sendUrlToServer: (url: string) => dispatch({type: ActionType.SendUrlToServer, url: url})
+        sendUrlToServer: (url: string, roomId: number) => dispatch({type: ActionType.SendUrlToServer, url: url})
     }
 }
 
