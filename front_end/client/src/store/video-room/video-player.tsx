@@ -12,15 +12,15 @@ export interface VideoPlayerState {
 }
 
 const initialState: VideoPlayerState = {
-    videoUrl: null,
-    videoState: "PAUSED",
-    videoTime: 0,
-    videoLength: 0
+    player: null
 };
 
 interface SendUrlToServerAction {
     type: ActionType.SendUrlToServer;
     url: string;
+    roomId: number;
+    userId: number;
+    userName: String;
 }
 
 interface LoadVideoAction {
@@ -53,12 +53,12 @@ export const reducer = (
         case ActionType.SendUrlToServer:
             socket.emit('sendUrlToServer', {
                 url: action.url,
-                currentRoomId: action.id,
-                clientId: state.user.id,
-                clientName: state.user.name
+                currentRoomId: action.roomId,
+                clientId: action.userId,
+                clientName: action.userName
             });
             return produce(state, draftState => {
-                draftState.videoUrl = action.url
+                draftState.player.videoUrl = action.url
             });
         case ActionType.LoadVideo:
             return produce(state, draftState => {

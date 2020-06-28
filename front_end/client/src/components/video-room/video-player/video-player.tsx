@@ -7,7 +7,7 @@ import { store } from '../../../store';
 import { VideoRoomState } from '../../../store/video-room/video-room';
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { ApiContext } from '../..';
-import { Room, Player } from '../../../api/video-room-types';
+import { Room, Player, User } from '../../../api/video-room-types';
 import { socket } from "../../../App"
 
 import './video-player.css';
@@ -18,6 +18,7 @@ import useStyles from '../../styles';
 interface Prop {
     currentRoom: Room;
     player: Player;
+    user: User;
     sendUrlToServer: Function
 }
 
@@ -37,14 +38,15 @@ const VideoPlayer = (props: Prop) => {
     const [seeking, setSeeking] = useState(false)
 
     const loadButton = () => {
-        socket.emit('sendUrlToServer', {
-            url: url,
-            currentRoomId: props.currentRoom.id,
-            clientId: props.currentRoom.id,
-            clientName: props.currentRoom.name
-        });
+        props.sendUrlToServer(
+            url,
+            props.currentRoom.id,
+            props.user.id,
+            props.user.name
+        )
+
         // By default, set the video_state to paused after loading
-        api.updateRoom(
+/*         api.updateRoom(
             props.currentRoom.id,
             props.currentRoom.name,
             props.currentRoom.video_id,
@@ -52,7 +54,7 @@ const VideoPlayer = (props: Prop) => {
             "PAUSED",
             0,
             0
-        )
+        )*/
     }
 
     const getAndSendRoomState = (api: VideoRoomApi, roomId: number) => {
@@ -281,13 +283,19 @@ const VideoPlayer = (props: Prop) => {
 const mapStateToProps = state => {
     return {
         currentRoom: state.room.currentRoom,
-        player: state.player.player
+        player: state.player.player,
+        user: state.room.user
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        sendUrlToServer: (url: string, roomId: number) => dispatch({type: ActionType.SendUrlToServer, url: url})
+        sendUrlToServer: (
+            url: string,
+            roomId: number,
+            userId: number,
+            userName: string
+        ) => dispatch({type: ActionType.SendUrlToServer, url: url, roomId: roomId, userId: userId, userName: userName})
     }
 }
 
