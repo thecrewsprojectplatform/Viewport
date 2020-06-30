@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Room } from "../api/video-room-types";
-import { RoomList } from '../components/join-create-room/room-list';
 import { RoomListItem } from '../components/join-create-room/room-list-item';
 import ListItem from '@material-ui/core/ListItem';
 
@@ -24,24 +23,24 @@ describe('Roomlist Item component', () => {
         const wrapper = shallow(
             <RoomListItem
                 currentRoom={roomDetail}
-                onJoinClick={mockClick} 
+                onJoinClick={mockClick}
             />
         )
-        expect(wrapper.exists()).toBe(true);  
+        expect(wrapper.exists()).toBe(true);
     })
 
     test('Should test onJoinRoomClick', () => {
-        const fakeEvent = { preventDefault: () => console.log('preventDefault') };
+        const fakeEvent = { preventDefault: () => jest.fn() };
         const mockClick = jest.fn();
         const wrapper = shallow(
             <RoomListItem
                 currentRoom={roomDetail}
-                onJoinClick={mockClick} 
+                onJoinClick={mockClick}
             />
-        )
+        );
         expect(mockClick).toHaveBeenCalledTimes(0);
         const onClick = wrapper.find(ListItem);
-        onClick.simulate('click', fakeEvent)
+        onClick.simulate('click', fakeEvent);
         expect(mockClick).toHaveBeenCalledTimes(1);
     })
 

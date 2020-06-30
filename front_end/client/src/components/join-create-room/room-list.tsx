@@ -64,7 +64,6 @@ export const RoomList = (props: Prop) => {
             <CssBaseline />
             <div className="Room-list">
                 <CreateRoomInput
-                    currentRoom={props.currentRoom}
                     createNewRoomClick={createNewRoomClick}
                     setNewRoomName={setNewRoomName}
                     newRoomName={newRoomName}
