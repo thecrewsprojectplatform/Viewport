@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import { ChatMessageItem } from "../components/video-room/chat-app/chat-message-item";
 
 const props = {
@@ -9,7 +9,7 @@ const props = {
   }
 
 const setup = () => {
-    return shallow(<ChatMessageItem 
+    return shallow(<ChatMessageItem
         {...props}
     />)
 };

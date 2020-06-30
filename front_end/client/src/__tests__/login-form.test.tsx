@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import { LoginForm } from '../components/login/login-form';
-import { Button } from '@material-ui/core';
 
 jest.mock('../App.tsx', () => "root")
 
