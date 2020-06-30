@@ -4,7 +4,7 @@ import { Room } from "../api/video-room-types";
 import { RoomListItem } from '../components/join-create-room/room-list-item';
 import ListItem from '@material-ui/core/ListItem';
 
-jest.mock('../App.tsx', () => "root")
+jest.mock('../App.tsx', () => "root");
 
 const roomDetail: Room = {
     id: 1,
@@ -25,7 +25,7 @@ describe('Roomlist Item component', () => {
                 currentRoom={roomDetail}
                 onJoinClick={mockClick}
             />
-        )
+        );
         expect(wrapper.exists()).toBe(true);
     })
 

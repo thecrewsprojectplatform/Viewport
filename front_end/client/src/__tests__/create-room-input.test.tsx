@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { CreateRoomInput } from '../components/join-create-room/create-room-input';
 import { TextField } from '@material-ui/core';
 
-jest.mock('../App.tsx', () => "root")
+jest.mock('../App.tsx', () => "root");
 
 describe('CreateRoomInput component', () => {
 

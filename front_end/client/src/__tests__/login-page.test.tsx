@@ -4,7 +4,7 @@ import { User } from "../api/video-room-types";
 import { LoginPage } from '../components/login/login-page';
 import { LoginForm } from '../components/login/login-form';
 
-jest.mock('../App.tsx', () => "root")
+jest.mock('../App.tsx', () => "root");
 
 const users: User = {
     id: 1,
@@ -13,12 +13,12 @@ const users: User = {
 
 const props = {
     currentUser: users
-}
+};
 
 const setup = () => {
     return shallow(
         <LoginPage {...props} />
-    )
+    );
 };
 
 const wrapper = setup();

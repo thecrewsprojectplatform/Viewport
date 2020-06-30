@@ -7,41 +7,41 @@ import { ChatMessageInput } from '../components/video-room/chat-app/chat-message
 
 //const mockStore = configureStore([]);
 
-jest.mock('../App.tsx', () => "root")
+jest.mock('../App.tsx', () => "root");
 
 const messageHist: MessageDetail = {
-  chat_message: 'test',
-  chat_username: 'test user',
-  message_time: '1:11',
+    chat_message: 'test',
+    chat_username: 'test user',
+    message_time: '1:11',
 };
 
 const props = {
-  clientMessage: messageHist.chat_message,
-  clientName: messageHist.chat_username,
-  msgTime: messageHist.message_time,
-  messageHistory:[messageHist, messageHist]
-}
+    clientMessage: messageHist.chat_message,
+    clientName: messageHist.chat_username,
+    msgTime: messageHist.message_time,
+    messageHistory:[messageHist, messageHist]
+};
 
 const setup = () => {
-  return shallow(
-    <ChatApp {...props}/>
-  )
+    return shallow(
+        <ChatApp {...props}/>
+    );
 };
 
 const wrapper = setup();
 
 describe('Chat App component', () => {
 
-  test('Should render without errors', () => {
-    expect(wrapper.exists()).toBe(true);
-  });
+    test('Should render without errors', () => {
+        expect(wrapper.exists()).toBe(true);
+    });
 
-  test('Should render correct number of messages', () => {
-    expect(wrapper.at(0).find(ChatMessageItem)).toHaveLength(2)
-  });
+    test('Should render correct number of messages', () => {
+        expect(wrapper.at(0).find(ChatMessageItem)).toHaveLength(2);
+    });
 
-  test('Should find ChatMessageInput', () => {
-    expect(wrapper.find(ChatMessageInput)).toHaveLength(1)
-  });
+    test('Should find ChatMessageInput', () => {
+        expect(wrapper.find(ChatMessageInput)).toHaveLength(1);
+    });
 
 })

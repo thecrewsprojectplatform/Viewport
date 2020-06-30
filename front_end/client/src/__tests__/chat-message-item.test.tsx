@@ -6,12 +6,12 @@ const props = {
     clientMessage: 'hello',
     clientName: 'tester1',
     msgTime: '1:11',
-  }
+};
 
 const setup = () => {
-    return shallow(<ChatMessageItem
-        {...props}
-    />)
+    return shallow(
+        <ChatMessageItem {...props}/>
+    );
 };
 
 const wrapper = setup();
