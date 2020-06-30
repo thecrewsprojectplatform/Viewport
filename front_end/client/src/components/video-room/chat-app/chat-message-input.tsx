@@ -23,7 +23,6 @@ export const ChatMessageInput = (props: Prop) => {
 
     const handleChange = (event) => {
         props.setMessage(event)
-        console.log('handleChange has been triggered')
     }
 
     return (
