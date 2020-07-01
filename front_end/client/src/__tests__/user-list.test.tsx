@@ -25,7 +25,7 @@ const setup = () => {
 
 const wrapper = setup();
 
-describe('Userlist component', () => {
+describe('Userlist Main component', () => {
 
     test('Should render without errors', () => {
         expect(wrapper.exists()).toBe(true);

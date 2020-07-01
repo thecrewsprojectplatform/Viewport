@@ -28,7 +28,7 @@ const setup = () => {
 
 const wrapper = setup();
 
-describe('Chat App component', () => {
+describe('Chat App Main component', () => {
 
     test('Should render without errors', () => {
         expect(wrapper.exists()).toBe(true);

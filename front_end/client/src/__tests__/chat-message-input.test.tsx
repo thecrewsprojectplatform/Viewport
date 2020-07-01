@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { ChatMessageInput } from '../components/video-room/chat-app/chat-message-input';
 import TextField from '@material-ui/core/TextField';
 
-describe('ChatMessageInput component', () => {
+describe('Chat Message Input component', () => {
 
     let wrapper;
     let mockClick;

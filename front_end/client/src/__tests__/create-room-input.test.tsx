@@ -1,33 +1,37 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { shallow } from 'enzyme';
 import { CreateRoomInput } from '../components/join-create-room/create-room-input';
 import { TextField } from '@material-ui/core';
 
-jest.mock('../App.tsx', () => "root");
-
 describe('CreateRoomInput component', () => {
 
-    test('Should render without errors', () => {
-        const wrapper = shallow(
+    let wrapper;
+    let mockSubmit;
+    let mockChange;
+
+    beforeEach(() => {
+        jest.mock('../App.tsx', () => "root")
+        mockSubmit = jest.fn();
+        mockChange = jest.fn();
+        wrapper = shallow(
             <CreateRoomInput
-                createNewRoomClick= {jest.fn()}
-                setNewRoomName= {jest.fn()}
+                createNewRoomClick= {mockSubmit}
+                setNewRoomName= {mockChange}
                 newRoomName= 'testing'
             />
-        );
+        )
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks
+    })
+
+    test('Should render without errors', () => {
         expect(wrapper.exists()).toBe(true);
     })
 
     test('Should test submit', () => {
         const fakeEvent = { preventDefault: () => jest.fn() };
-        const mockSubmit = jest.fn();
-        const wrapper = shallow(
-            <CreateRoomInput
-                createNewRoomClick= {mockSubmit}
-                setNewRoomName= {jest.fn()}
-                newRoomName= 'testing'
-            />
-        );
         expect(mockSubmit).toHaveBeenCalledTimes(0);
         const submit = wrapper.find('form');
         submit.simulate('submit', fakeEvent);
@@ -37,14 +41,6 @@ describe('CreateRoomInput component', () => {
     test('Should test handleChange', () => {
         const fakeEvent = { preventDefault: () => jest.fn(),
                             target: { value: 'test value' } };
-        const mockChange = jest.fn();
-        const wrapper = shallow(
-            <CreateRoomInput
-                createNewRoomClick= {jest.fn()}
-                setNewRoomName= {mockChange}
-                newRoomName= 'testing'
-            />
-        );
         expect(mockChange).toHaveBeenCalledTimes(0);
         const submit = wrapper.find(TextField);
         submit.simulate('change', fakeEvent);
