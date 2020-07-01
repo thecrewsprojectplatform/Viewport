@@ -62,7 +62,7 @@ export const reducer = (
             });
         case ActionType.LoadVideo:
             return produce(state, draftState => {
-                draftState.videoUrl = action.url;
+                draftState.player.videoUrl = action.url;
             });
         case ActionType.ControlVideo:
             return produce(state, draftState => {

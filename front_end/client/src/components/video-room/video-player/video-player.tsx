@@ -14,12 +14,12 @@ import './video-player.css';
 import { Button, TextField, InputAdornment, IconButton, Slider } from '@material-ui/core';
 import SearchIcon from "@material-ui/icons/Search";
 import useStyles from '../../styles';
+import SearchBar from './search-bar';
 
 interface Prop {
     currentRoom: Room;
     player: Player;
     user: User;
-    sendUrlToServer: Function
 }
 
 /**
@@ -33,29 +33,10 @@ const VideoPlayer = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
 
     const [player, setPlayer] = useState(null)
-    const [url, setUrl] = useState(null)
 
     const [seeking, setSeeking] = useState(false)
 
-    const loadButton = () => {
-        props.sendUrlToServer(
-            url,
-            props.currentRoom.id,
-            props.user.id,
-            props.user.name
-        )
 
-        // By default, set the video_state to paused after loading
-/*         api.updateRoom(
-            props.currentRoom.id,
-            props.currentRoom.name,
-            props.currentRoom.video_id,
-            props.url,
-            "PAUSED",
-            0,
-            0
-        )*/
-    }
 
     const getAndSendRoomState = (api: VideoRoomApi, roomId: number) => {
         api.getRoom(props.currentRoom.id).then(room => {
@@ -104,21 +85,7 @@ const VideoPlayer = (props: Prop) => {
         return false
     }
 
-    /**
-     * Check if the url entered is valid and return wether or not to display an error message
-     */
-    const displayError = () => {
-        if (ReactPlayer.canPlay(url)) {
-            return false
-        }
-        return true
-    }
 
-    const handleEnter = (event): void => {
-        if ((event.key === 'Enter') && (url !== "")) {
-            loadButton()
-        }
-    };
 
     /**
      * Updates the api on what part the video is at, by default, updates every second
@@ -215,27 +182,8 @@ const VideoPlayer = (props: Prop) => {
             <div className={classes.videoPlayer}>
                 <div>
                     <div>
-                        <TextField  
-                            error={displayError()}
-                            variant='filled'
-                            type='text' 
-                            placeholder='Enter URL'
-                            onChange={event => setUrl(event.target.value)}
-                            onKeyDown={handleEnter}
-                            className={classes.searchBar}
-
-                            InputProps={{
-                                style: {
-                                    height: 40,
-                                },
-                                endAdornment: (
-                                     <InputAdornment position="end">
-                                        <IconButton onClick={loadButton}>
-                                            <SearchIcon />
-                                        </IconButton>
-                                    </InputAdornment>
-                               )
-                            }}
+                        <SearchBar 
+                            room={props.currentRoom}
                         />
                     </div>
                     <div className='player-wrapper'>
