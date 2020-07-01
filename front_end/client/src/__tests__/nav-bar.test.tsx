@@ -12,8 +12,8 @@ describe('NavBar component', () => {
         jest.mock('../App.tsx', () => "root")
         mockClick = jest.fn();
         wrapper = shallow(
-            <NavBar 
-                buttonName= 'test button' 
+            <NavBar
+                buttonName= 'test button'
                 buttonOnClick= {mockClick}
             />
         )
@@ -24,7 +24,7 @@ describe('NavBar component', () => {
     })
 
     test('Should render without errors', () => {
-        expect(wrapper.exists()).toBe(true);  
+        expect(wrapper.exists()).toBe(true);
     })
 
     test('Should test logout click', () => {

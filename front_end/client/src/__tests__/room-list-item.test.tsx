@@ -25,7 +25,7 @@ describe('Roomlist Item component', () => {
         wrapper = shallow(
             <RoomListItem
                 currentRoom={roomDetail}
-                onJoinClick={mockClick} 
+                onJoinClick={mockClick}
             />
         )
     })
@@ -35,7 +35,7 @@ describe('Roomlist Item component', () => {
     })
 
     test('Should render without errors', () => {
-        expect(wrapper.exists()).toBe(true);  
+        expect(wrapper.exists()).toBe(true);
     })
 
     test('Should test onJoinRoomClick', () => {

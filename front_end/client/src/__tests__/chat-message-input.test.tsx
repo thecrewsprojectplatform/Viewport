@@ -15,9 +15,9 @@ describe('ChatMessageInput component', () => {
         mockMessage = jest.fn();
         wrapper = shallow(
             <ChatMessageInput
-                sendMessageClick={mockClick}
-                setMessage={mockMessage}
-                msg={'test message'}
+                sendMessageClick= {mockClick}
+                setMessage= {mockMessage}
+                msg= {'test message'}
             />
         )
     })
@@ -27,7 +27,7 @@ describe('ChatMessageInput component', () => {
     })
 
     test('Should render without errors', () => {
-        expect(wrapper.exists()).toBe(true);  
+        expect(wrapper.exists()).toBe(true);
     })
 
     test('Should test sendMessageClick', () => {
@@ -41,7 +41,7 @@ describe('ChatMessageInput component', () => {
     })
 
     test('Should test handleChange when message is typed', () => {
-        const fakeEvent = { 
+        const fakeEvent = {
             preventDefault: () => {},
             target: { value: 'test message'}
         };
@@ -49,7 +49,7 @@ describe('ChatMessageInput component', () => {
 
         const onClick = wrapper.find(TextField);
         onClick.simulate('change', fakeEvent)
-        
+
         expect(mockMessage).toBeCalledWith('test message')
     })
 })

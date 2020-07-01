@@ -5,7 +5,7 @@ import { RoomList } from '../components/join-create-room/room-list';
 import { RoomListItem } from '../components/join-create-room/room-list-item';
 import { CreateRoomInput } from '../components/join-create-room/create-room-input';
 
-jest.mock('../App.tsx', () => "root")
+jest.mock('../App.tsx', () => "root");
 
 const roomDetail: Room = {
     id: 1,
@@ -22,38 +22,39 @@ enum Status {
     Running="RUNNING",
     Succeeded="SUCCEEDED",
     Failed="FAILED",
-}
+};
+
 const props = {
     currentRoom: roomDetail,
     availableRooms: [roomDetail, roomDetail],
     user: { id: 1, name:'tester' },
-    updateStatus: Status.NotStarted, 
-}
+    updateStatus: Status.NotStarted,
+};
 
 const setup = () => {
     return shallow(
         <RoomList {...props} />
-    )
+    );
 };
-  
+
 const wrapper = setup();
 
 describe('Room list component', () => {
+
     test('Should render without errors', () => {
-        expect(wrapper.exists()).toBe(true);  
+        expect(wrapper.exists()).toBe(true);
     })
 
     test('Should render createRoomInput', () => {
-        expect(wrapper.find(CreateRoomInput).exists()).toBeTruthy()
+        expect(wrapper.find(CreateRoomInput).exists()).toBeTruthy();
     })
 
     test('should render RoomListItem', () => {
-        expect(wrapper.find(RoomListItem).exists()).toBeTruthy()
+        expect(wrapper.find(RoomListItem).exists()).toBeTruthy();
     });
 
     test('Should test correct number of roomlist displayed', () => {
-        expect(wrapper.at(0).find(RoomListItem)).toHaveLength(2)
+        expect(wrapper.at(0).find(RoomListItem)).toHaveLength(2);
     })
-
 
 })

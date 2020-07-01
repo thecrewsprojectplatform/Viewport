@@ -18,9 +18,9 @@ describe('Userlist Item component', () => {
         mockClick = jest.fn();
         wrapper = shallow(
             <UserListItem
-                user={users}
-                isCurrentUser={true}
-                onEditClick={mockClick}
+                user= {users}
+                isCurrentUser= {true}
+                onEditClick= {mockClick}
             />
         )
     })
@@ -30,7 +30,7 @@ describe('Userlist Item component', () => {
     })
 
     test('Should render without errors', () => {
-        expect(wrapper.exists()).toBe(true);  
+        expect(wrapper.exists()).toBe(true);
     })
 
     test('Should test onEditClick', () => {
