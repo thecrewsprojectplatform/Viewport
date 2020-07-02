@@ -79,6 +79,10 @@ export const reducer = (
     }
 };
 
+/**
+ * Updates the video url tied to the video player for client(s)
+ * @param url the Url of a  video
+ */
 export const loadVideo = (url: string): any => {
     return (dispatch): any => {
         dispatch({
@@ -88,6 +92,10 @@ export const loadVideo = (url: string): any => {
     }
 }
 
+/**
+ * Updates the room state for client(s)
+ * @param room the current room state
+ */
 export const controlVideo = (room: Room): any => {
     return (dispatch): any => {
         dispatch({
@@ -95,4 +103,30 @@ export const controlVideo = (room: Room): any => {
             room: room
         })
     }
+}
+
+/**
+ * This updates whether or not the video is playing
+ */
+export const updateVideoState = (
+        api: VideoRoomApi,
+        roomId: number,
+        name: string,
+        videoId: string,
+        videoUrl: string,
+        videoState: string,
+        videoTime: number,
+        videoLength: number
+    ) => {
+        api.updateRoom(
+            roomId,
+            name,
+            videoId, 
+            videoUrl,
+            videoState,
+            videoTime,
+            videoLength
+        ).then(() => {
+            getAndSendRoomState(api, props.currentRoom.id)
+        })
 }

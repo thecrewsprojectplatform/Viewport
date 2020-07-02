@@ -64,28 +64,6 @@ const VideoPlayer = (props: Prop) => {
         })
     }
 
-    /** Play/Pause button does the following 3 things:
-     *  1) updates the video_state in the api, 
-     *  2) reads the new video_state, 
-     *  3) sends the new video_state to all clients      
-    */
-    const handlePlayPause = () => {
-        if (props.currentRoom.video_state === null || props.currentRoom.video_state === "PAUSED") {
-            handleOnPlay()
-        } else if (props.currentRoom.video_state === "PLAYING") {
-            handleOnPause()
-        }
-    }
-
-    // Check if the video is playing or paused
-    const checkVideoState = () => {
-        if (props.currentRoom) {
-            return props.currentRoom.video_state === null || props.currentRoom.video_state === "PAUSED" ? false : true
-        }
-        return false
-    }
-
-
 
     /**
      * Updates the api on what part the video is at, by default, updates every second
@@ -183,7 +161,8 @@ const VideoPlayer = (props: Prop) => {
                 <div>
                     <div>
                         <SearchBar 
-                            room={props.currentRoom}
+                            currentRoom={props.currentRoom}
+                            user={props.user}
                         />
                     </div>
                     <div className='player-wrapper'>
