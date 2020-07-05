@@ -1,22 +1,26 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import { createUser } from "../../store/video-room/video-room";
+import { createUser, Status, resetUpdateStatus } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
-import { TextField, CssBaseline, Button } from "@material-ui/core";
+import { CssBaseline } from "@material-ui/core";
 import useStyles from "../styles";
 import { User } from "../../api/video-room-types";
 import { LoginForm } from "./login-form";
+import { NotificationState } from "../../store/notifications/notifications";
+import { BaseAlert } from "../common/base-alert";
 
 /**
  * Represents the required properties of the LoginPage.
  */
 export interface Prop {
     currentUser: User;
+    updateStatus: Status;
+    notificationState: NotificationState;
 }
 
 /**
@@ -39,14 +43,24 @@ export const LoginPage = (props: Prop) => {
     }
 
     const handleSubmit = (event): void => {
-        store.dispatch(createUser(api, newUserName));
-        history.push("/rooms")
+        store.dispatch(createUser(api, newUserName)).then(() => {
+            console.log("going into then")
+            history.push("/rooms")
+        }).catch(() => {
+
+        });
         event.preventDefault();
     }
 
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
+            <BaseAlert
+                displayNotification={props.notificationState.displayNotification}
+                notificationType={props.notificationState.notificationType}
+                notificationHeader={props.notificationState.notificationHeader}
+                notificationBody={props.notificationState.notificationBody}
+            />
             <div className={classes.login}>
                 <Typography variant="h4" component="h1" align="center" gutterBottom>
                     Multimedia Platform
@@ -67,8 +81,11 @@ export const LoginPage = (props: Prop) => {
  * @param {Object} state The current state of the LoginPage.
  */
 const mapStateToProps = state => {
+    console.log(state)
     return {
-        currentUser: state.user,
+        currentUser: state.videoRoom.user,
+        updateStatus: state.videoRoom.updateStatus,
+        notificationState: state.notifications,
     }
 }
 
