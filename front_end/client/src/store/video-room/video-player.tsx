@@ -1,11 +1,14 @@
+import { useContext } from 'react'
 import { ActionType } from './actionType'
 import produce from 'immer'
 import { VideoRoomApi } from "../../api/video-room-api";
 import { Room, Player } from "../../api/video-room-types";
 import { socket } from "../../App"
+import { ApiContext } from '../../components/index';
 
 
 const VIDEO_SYNC_MAX_DIFFERENCE = 3  // in seconds
+const api = useContext<VideoRoomApi>(ApiContext)
 
 export interface VideoPlayerState {
     player: Player
@@ -28,6 +31,11 @@ interface LoadVideoAction {
     url: string;
 }
 
+interface SendPlayPauseAction {
+    type: ActionType.SendPlayPause;
+    videoState: string;
+}
+
 interface ControlVideoAction {
     type: ActionType.ControlVideo;
     room: Room;
@@ -37,11 +45,13 @@ interface ControlVideoAction {
 export interface Actions {
     SendUrlToServerAction: SendUrlToServerAction
     LoadVideoAction: LoadVideoAction
+    SendPlayPauseAction: SendPlayPauseAction
     ControlVideoAction: ControlVideoAction
 }
 
 type Action =   SendUrlToServerAction |
                 LoadVideoAction |
+                SendPlayPauseAction |
                 ControlVideoAction;
 
 
@@ -64,6 +74,16 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.player.videoUrl = action.url;
             });
+        case ActionType.SendPlayPause:
+            updateVideoState(
+                draftState.currentRoom.id,
+                draftState.currentRoom.name,
+                "",
+                draftState.player.videoUrl,
+                action.videoState,
+                draftState.player.videoTime,
+                drarftState.player.videoLength
+            )
         case ActionType.ControlVideo:
             return produce(state, draftState => {
                 const video_length = action.room.video_length
@@ -105,11 +125,19 @@ export const controlVideo = (room: Room): any => {
     }
 }
 
+const getAndSendRoomState = (api: VideoRoomApi, roomId: number) => {
+    api.getRoom(roomId).then(room => {
+        socket.emit('getRoomStateToServer', {
+            currentRoomId: roomId,
+            room: room
+        })
+    })
+}
+
 /**
  * This updates whether or not the video is playing
  */
 export const updateVideoState = (
-        api: VideoRoomApi,
         roomId: number,
         name: string,
         videoId: string,
@@ -127,6 +155,6 @@ export const updateVideoState = (
             videoTime,
             videoLength
         ).then(() => {
-            getAndSendRoomState(api, props.currentRoom.id)
+            getAndSendRoomState(api, roomId)
         })
 }
