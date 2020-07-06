@@ -3,53 +3,53 @@ import { shallow } from 'enzyme';
 import { ChatMessageInput } from '../components/video-room/chat-app/chat-message-input';
 import TextField from '@material-ui/core/TextField';
 
-jest.mock('../App.tsx', () => "root");
+describe('Chat Message Input component', () => {
 
-describe('ChatMessageInput component', () => {
+    let wrapper;
+    let mockClick;
+    let mockMessage;
 
-    test('Should render without errors', () => {
-        const mockClick = jest.fn();
-        const mockMessage = jest.fn();
-        const wrapper = shallow(
+    beforeEach(() => {
+        jest.mock('../App.tsx', () => "root")
+        mockClick = jest.fn();
+        mockMessage = jest.fn();
+        wrapper = shallow(
             <ChatMessageInput
                 sendMessageClick= {mockClick}
                 setMessage= {mockMessage}
                 msg= {'test message'}
             />
-        );
+        )
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks
+    })
+
+    test('Should render without errors', () => {
         expect(wrapper.exists()).toBe(true);
     })
 
     test('Should test sendMessageClick', () => {
-        const fakeEvent = { preventDefault: () => jest.fn() };
-        const mockClick = jest.fn();
-        const wrapper = shallow(
-            <ChatMessageInput
-                sendMessageClick= {mockClick}
-                setMessage= {jest.fn()}
-                msg= {'test message'}
-            />
-        );
+        const fakeEvent = { preventDefault: () => {} };
         expect(mockClick).toHaveBeenCalledTimes(0);
-        const submit = wrapper.find('form');
-        submit.simulate('submit', fakeEvent);
+
+        const onClick = wrapper.find('form');
+        onClick.simulate('submit', fakeEvent)
+
         expect(mockClick).toHaveBeenCalledTimes(1);
     })
 
     test('Should test handleChange when message is typed', () => {
-        const fakeEvent = { preventDefault: () => jest.fn(),
-                            target: { value: 'test value' } };
-        const mockChange = jest.fn();
-        const wrapper = shallow(
-            <ChatMessageInput
-                sendMessageClick= {jest.fn()}
-                setMessage= {mockChange}
-                msg= 'testing'
-            />
-        );
-        expect(mockChange).toHaveBeenCalledTimes(0);
-        const submit = wrapper.find(TextField);
-        submit.simulate('change', fakeEvent);
-        expect(mockChange).toHaveBeenCalledTimes(1);
+        const fakeEvent = {
+            preventDefault: () => {},
+            target: { value: 'test message'}
+        };
+        expect(mockMessage).toHaveBeenCalledTimes(0);
+
+        const onClick = wrapper.find(TextField);
+        onClick.simulate('change', fakeEvent)
+
+        expect(mockMessage).toBeCalledWith('test message')
     })
 })

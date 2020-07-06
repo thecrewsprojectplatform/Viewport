@@ -16,7 +16,7 @@ const setup = () => {
 
 const wrapper = setup();
 
-describe('Chat Message component', () => {
+describe('Chat Message Item component', () => {
 
     test('Should render without errors', () => {
         expect(wrapper.exists()).toBe(true);
