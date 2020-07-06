@@ -52,8 +52,7 @@ interface SendControlAction {
 
 interface ControlVideoAction {
     type: ActionType.ControlVideo;
-    room: Room;
-    video_length: number;
+    roomApi: any;
 }
 
 interface SetSeekingAction {
@@ -124,12 +123,10 @@ export const reducer = (
             });
         case ActionType.ControlVideo:
             return produce(state, draftState => {
-                const video_length = action.room.video_length
-                if (draftState.player.videoState !== action.room.video_state ||
-                    Math.abs(draftState.currentRoom.video_time - action.room.video_time) * video_length > VIDEO_SYNC_MAX_DIFFERENCE) {
-                        draftState.currentRoom = action.room;
-                } else {
-                    //draftState.currentRoom.video_state = action.room.video_state
+                const video_length = action.roomApi.video_length
+                if (draftState.player.videoState !== action.roomApi.video_state ||
+                    Math.abs(draftState.player.videoTime - action.roomApi.video_time) * video_length > VIDEO_SYNC_MAX_DIFFERENCE) {
+                        draftState.player.videoTime = action.roomApi.videoState;
                 }
             });
         case ActionType.SetSeeking:
