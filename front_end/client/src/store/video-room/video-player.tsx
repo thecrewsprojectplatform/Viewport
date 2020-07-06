@@ -12,10 +12,17 @@ const api = useContext<VideoRoomApi>(ApiContext)
 
 export interface VideoPlayerState {
     player: Player
+    seeking: boolean
 }
 
 const initialState: VideoPlayerState = {
-    player: null
+    player: {
+        videoUrl: "",
+        videoState: "PAUSED",
+        videoTime: 0,
+        videoLength: 0
+    },
+    seeking: false
 };
 
 interface SendUrlToServerAction {
@@ -33,7 +40,14 @@ interface LoadVideoAction {
 
 interface SendPlayPauseAction {
     type: ActionType.SendPlayPause;
+    currentRoom: Room;
     videoState: string;
+}
+
+interface SendControlAction {
+    type: ActionType.SendControl;
+    currentRoom: Room;
+    videoTime : number;
 }
 
 interface ControlVideoAction {
@@ -42,17 +56,25 @@ interface ControlVideoAction {
     video_length: number;
 }
 
+interface SetSeekingAction {
+    type: ActionType.SetSeeking;
+    seeking: boolean
+}
+
 export interface Actions {
     SendUrlToServerAction: SendUrlToServerAction
     LoadVideoAction: LoadVideoAction
     SendPlayPauseAction: SendPlayPauseAction
+    SendControlAction: SendControlAction
     ControlVideoAction: ControlVideoAction
 }
 
 type Action =   SendUrlToServerAction |
                 LoadVideoAction |
                 SendPlayPauseAction |
-                ControlVideoAction;
+                SendControlAction |
+                ControlVideoAction |
+                SetSeekingAction;
 
 
 export const reducer = ( 
@@ -68,34 +90,52 @@ export const reducer = (
                 clientName: action.userName
             });
             return produce(state, draftState => {
-                draftState.player.videoUrl = action.url
+                draftState.player.videoUrl = action.url;
             });
         case ActionType.LoadVideo:
             return produce(state, draftState => {
                 draftState.player.videoUrl = action.url;
             });
         case ActionType.SendPlayPause:
-            updateVideoState(
-                draftState.currentRoom.id,
-                draftState.currentRoom.name,
-                "",
-                draftState.player.videoUrl,
-                action.videoState,
-                draftState.player.videoTime,
-                drarftState.player.videoLength
-            )
+            return produce(state, draftState => {
+                updateVideoState(
+                    action.currentRoom.id,
+                    action.currentRoom.name,
+                    "",
+                    draftState.player.videoUrl,
+                    action.videoState,
+                    draftState.player.videoTime,
+                    draftState.player.videoLength
+                )
+                draftState.player.videoState = action.videoState;
+            });
+        case ActionType.SendControl:
+            return produce(state, draftState => {
+                updateVideoState(
+                    action.currentRoom.id,
+                    action.currentRoom.name,
+                    "",
+                    draftState.player.videoUrl,
+                    draftState.player.videoState,
+                    action.videoTime,
+                    draftState.player.videoLength
+                )
+                draftState.player.videoTime = action.videoTime;
+            });
         case ActionType.ControlVideo:
             return produce(state, draftState => {
                 const video_length = action.room.video_length
-                if (draftState.currentRoom.video_state !== action.room.video_state ||
+                if (draftState.player.videoState !== action.room.video_state ||
                     Math.abs(draftState.currentRoom.video_time - action.room.video_time) * video_length > VIDEO_SYNC_MAX_DIFFERENCE) {
                         draftState.currentRoom = action.room;
                 } else {
                     //draftState.currentRoom.video_state = action.room.video_state
                 }
             });
-        default:
-            return state
+        case ActionType.SetSeeking:
+            return produce(state, draftState => {
+                draftState.seeking = action.seeking;
+            });
     }
 };
 
@@ -116,7 +156,7 @@ export const loadVideo = (url: string): any => {
  * Updates the room state for client(s)
  * @param room the current room state
  */
-export const controlVideo = (room: Room): any => {
+export const controlVideo = (room: any): any => {
     return (dispatch): any => {
         dispatch({
             type: ActionType.ControlVideo,

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import {connect } from 'react-redux';
+import { connect } from 'react-redux';
 import ReactPlayer from 'react-player'
 
 import { ActionType } from '../../../store/video-room/actionType';
@@ -16,11 +16,13 @@ import SearchIcon from "@material-ui/icons/Search";
 import useStyles from '../../styles';
 import SearchBar from './search-bar';
 import PlayButton from './play-button';
+import VideoController from './video-controller'
 
 interface Prop {
     currentRoom: Room;
     player: Player;
     user: User;
+    seeking: boolean;
 }
 
 /**
@@ -33,70 +35,28 @@ const VideoPlayer = (props: Prop) => {
     const classes = useStyles();
     const api = useContext<VideoRoomApi>(ApiContext)
 
-    const [player, setPlayer] = useState(null)
-
-    const [seeking, setSeeking] = useState(false)
+    const [reactPlayer, setReactPlayer] = useState(null)
 
     /**
      * Updates the api on what part the video is at, by default, updates every second
      * @param state the state of the video
      */
     const handleProgress = state => {
-        if (!seeking) {
+        if (!props.seeking) {
             api.updateRoom(
                 props.currentRoom.id,
                 props.currentRoom.name,
-                props.currentRoom.video_id, 
-                props.currentRoom.video_url,
-                props.currentRoom.video_state,
+                "", 
+                props.player.videoUrl,
+                props.player.videoState,
                 state.played,
-                props.currentRoom.video_length
+                props.player.videoLength
             )
         }
     }
 
-    /**
-     * Takes care of video time selection
-     * @param event 
-     * @param newTime what part of the video to go to, by percentage, where 1 represents the end of the video
-     */
-    const handleSeekChange = (event, newTime) => {
-        setSeeking(true)
-        api.updateRoom(
-            props.currentRoom.id,
-            props.currentRoom.name,
-            props.currentRoom.video_id,
-            props.currentRoom.video_url, 
-            props.currentRoom.video_state,
-            newTime,
-            props.currentRoom.video_length
-        ).then(() => {
-            getAndSendRoomState(api, props.currentRoom.id)
-        })
-    }
-
-    /**
-     * Formats the slider value that gets displayed
-     * @param value the original slider value
-     */
-    const formatSliderLabel = (value) => {
-        if (player) {
-            return Math.trunc(player.getDuration() * value)
-        }
-        console.log('player not found')
-    }
-
-    const getAndSetVideoTime = () => {
-        if (props.currentRoom && player != null) {
-            player.seekTo(props.currentRoom.video_time)
-            return props.currentRoom.video_time
-        } else {
-            return 0
-        }
-    }
-
     const ref = player => {
-        setPlayer(player)
+        setReactPlayer(player)
     }
 
     
@@ -113,7 +73,7 @@ const VideoPlayer = (props: Prop) => {
                     <ReactPlayer
                         ref={ref}
                         className='react-player'
-                        url={props.url}
+                        url={props.player.videoUrl}
                         width='100%'
                         height='100%'
                         controls={false}
@@ -124,27 +84,16 @@ const VideoPlayer = (props: Prop) => {
                                     disablekb: 1}
                             }
                         }}
-                        playing={checkVideoState()}
+                        playing={props.player?.videoState === "PAUSED" ? false : true}
                         onProgress={handleProgress}
                         //onPlay={handleOnPlay}
                         //onPause={handleOnPause}
                     />
                 </div>
-                <PlayButton
-                    player={props.player}
-                    currentRoom={props.currentRoom}
-                />
-
-                <Slider 
-                    value={getAndSetVideoTime()}
-                    onChange={handleSeekChange}
-                    min={0.0}
-                    max={1.0}
-                    step={0.0000001}
-                    aria-labelledby="continous-slider"
-                    valueLabelDisplay="auto"
-                    valueLabelFormat={value => <div>{formatSliderLabel(value)} </div>}
-                />
+                <PlayButton />
+                
+                <VideoController reactPlayer={reactPlayer}/>
+                
 
             </div>
         </div>
@@ -156,18 +105,14 @@ const mapStateToProps = state => {
     return {
         currentRoom: state.room.currentRoom,
         player: state.player.player,
-        user: state.room.user
+        user: state.room.user,
+        seeking: state.player.seeking
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        sendUrlToServer: (
-            url: string,
-            roomId: number,
-            userId: number,
-            userName: string
-        ) => dispatch({type: ActionType.SendUrlToServer, url: url, roomId: roomId, userId: userId, userName: userName})
+        
     }
 }
 

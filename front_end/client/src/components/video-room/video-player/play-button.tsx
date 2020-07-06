@@ -4,9 +4,10 @@ import { Player, Room } from '../../../api/video-room-types';
 
 import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { updateVideoState } from '../../../store/video-room/video-player';
+import { ActionType } from '../../../store/video-room/actionType';
 
 interface Prop {
+    sendPlayPause: Function
     player: Player
     currentRoom: Room
 }
@@ -27,40 +28,10 @@ const PlayButton = (props: Prop) => {
     */
    const handlePlayPause = () => {
         if (props.player?.videoState || props.player.videoState === "PAUSED") {
-            handleOnPlay()
+            props.sendPlayPause(props.currentRoom, "PLAYING")
         } else if (props.player.videoState === "PLAYING") {
-            handleOnPause()
+            props.sendPlayPause(props.currentRoom, "PAUSED")
         }
-    }
-
-    /**
-     * Handles what happens when the play button gets pressed
-     */
-    const handleOnPlay = () => {
-        updateVideoState("PLAYING")
-    }
-
-    /**
-     * Handles what happens when the pause button gets pressed
-     * 
-     * Here we are updating our props to match with that of the server
-     * and then pausing the video for everyone at that time stamp
-     */
-    const handleOnPause = () => {
-        api.getRoom(props.currentRoom.id).then(room => {
-            updateVideoState("PAUSED")
-            api.updateRoom(
-                props.currentRoom.id,
-                props.currentRoom.name,
-                props.currentRoom.video_id,
-                props.currentRoom.video_url,
-                "PAUSED",
-                room.video_time,
-                props.currentRoom.video_length
-            ).then(() => {
-                getAndSendRoomState(api, props.currentRoom.id)
-            })
-        })
     }
 
     return (
@@ -71,11 +42,19 @@ const PlayButton = (props: Prop) => {
 }
 
 const mapStateToProps = state => {
-
+    return {
+        currentRoom: state.room.currentRoom,
+        player: state.player.player
+    }
 }
 
 const mapDispatchToProps = dispatch => {
-
+    return {
+        sendPlayPause: (
+            currentRoom: Room,
+            videoState: string            
+        ) => dispatch({type: ActionType.SendPlayPause, currentRoom: currentRoom, videoState: videoState})
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayButton);
