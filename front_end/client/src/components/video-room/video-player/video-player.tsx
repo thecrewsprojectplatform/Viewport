@@ -2,17 +2,11 @@ import React, { useState, useContext } from 'react';
 import { connect } from 'react-redux';
 import ReactPlayer from 'react-player'
 
-import { ActionType } from '../../../store/video-room/actionType';
-import { store } from '../../../store';
-import { VideoRoomState } from '../../../store/video-room/video-room';
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { ApiContext } from '../..';
 import { Room, Player, User } from '../../../api/video-room-types';
-import { socket } from "../../../App"
 
 import './video-player.css';
-import { Button, TextField, InputAdornment, IconButton, Slider } from '@material-ui/core';
-import SearchIcon from "@material-ui/icons/Search";
 import useStyles from '../../styles';
 import SearchBar from './search-bar';
 import PlayButton from './play-button';
@@ -38,7 +32,7 @@ const VideoPlayer = (props: Prop) => {
     const [reactPlayer, setReactPlayer] = useState(null)
 
     /**
-     * Updates the api on what part the video is at, by default, updates every second
+     * Updates the api on what part the video is at; by default, updates every second
      * @param state the state of the video
      */
     const handleProgress = state => {
@@ -62,13 +56,9 @@ const VideoPlayer = (props: Prop) => {
     
     return (
         <div className={classes.videoPlayer}>
-            <div>
-                <div>
-                    <SearchBar 
-                        currentRoom={props.currentRoom}
-                        user={props.user}
-                    />
-                </div>
+            <div>                
+                <SearchBar />
+                
                 <div className='player-wrapper'>
                     <ReactPlayer
                         ref={ref}

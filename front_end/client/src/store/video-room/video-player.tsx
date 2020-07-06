@@ -8,7 +8,6 @@ import { ApiContext } from '../../components/index';
 
 
 const VIDEO_SYNC_MAX_DIFFERENCE = 3  // in seconds
-const api = useContext<VideoRoomApi>(ApiContext)
 
 export interface VideoPlayerState {
     player: Player
@@ -40,12 +39,14 @@ interface LoadVideoAction {
 
 interface SendPlayPauseAction {
     type: ActionType.SendPlayPause;
+    api: VideoRoomApi;
     currentRoom: Room;
     videoState: string;
 }
 
 interface SendControlAction {
     type: ActionType.SendControl;
+    api: VideoRoomApi;
     currentRoom: Room;
     videoTime : number;
 }
@@ -98,6 +99,7 @@ export const reducer = (
         case ActionType.SendPlayPause:
             return produce(state, draftState => {
                 updateVideoState(
+                    action.api,
                     action.currentRoom.id,
                     action.currentRoom.name,
                     "",
@@ -111,6 +113,7 @@ export const reducer = (
         case ActionType.SendControl:
             return produce(state, draftState => {
                 updateVideoState(
+                    action.api,
                     action.currentRoom.id,
                     action.currentRoom.name,
                     "",
@@ -133,6 +136,8 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.seeking = action.seeking;
             });
+        default:
+            return state;        
     }
 };
 
@@ -174,7 +179,8 @@ const getAndSendRoomState = (api: VideoRoomApi, roomId: number) => {
 /**
  * This updates whether or not the video is playing
  */
-export const updateVideoState = (
+const updateVideoState = (
+        api: VideoRoomApi,
         roomId: number,
         name: string,
         videoId: string,
@@ -183,6 +189,7 @@ export const updateVideoState = (
         videoTime: number,
         videoLength: number
     ) => {
+        
         api.updateRoom(
             roomId,
             name,

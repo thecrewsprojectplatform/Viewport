@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import { Player, Room } from '../../../api/video-room-types';
+import { VideoRoomApi } from '../../../api/video-room-api';
+import { ApiContext } from '../..';
 
 import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
@@ -13,6 +15,8 @@ interface Prop {
 }
 
 const PlayButton = (props: Prop) => {
+    const api = useContext<VideoRoomApi>(ApiContext)
+
     // Check if the video is playing or paused
     const checkVideoState = () => {
         if (props.player) {
@@ -51,9 +55,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         sendPlayPause: (
+            api: VideoRoomApi,
             currentRoom: Room,
             videoState: string            
-        ) => dispatch({type: ActionType.SendPlayPause, currentRoom: currentRoom, videoState: videoState})
+        ) => dispatch({type: ActionType.SendPlayPause, api: api, currentRoom: currentRoom, videoState: videoState})
     }
 }
 

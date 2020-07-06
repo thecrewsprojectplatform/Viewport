@@ -20,7 +20,7 @@ export class VideoRoomApi {
         });
     }
 
-    async getRoom(roomId: number): Promise<Room> {
+    async getRoom(roomId: number): Promise<any> {
         return axios.get(this.BASE_URL + "/rooms/" + roomId).then(response => {
             return response.data;
         })

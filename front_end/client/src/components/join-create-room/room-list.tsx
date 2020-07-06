@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { connect } from "react-redux";
-import { createRoomAndAddUserToRoomAction, addUserToRoomAction, Status, VideoRoomState, getRoomsAction, loadVideo } from '../../store/video-room/video-room';
+import { createRoomAndAddUserToRoomAction, addUserToRoomAction, Status, VideoRoomState, getRoomsAction } from '../../store/video-room/video-room';
+import { loadVideo } from '../../store/video-room/video-player'
 import { useHistory } from "react-router-dom";
 import { RoomListItem } from './room-list-item';
 import { store } from '../../store';
@@ -53,8 +54,8 @@ const RoomList = (props: Prop) => {
 
     const onJoinRoomClick = (roomId: number): void => {
         store.dispatch(addUserToRoomAction(api, roomId, props.user.id, props.availableRooms));
-        api.getRoom(roomId).then(room => {
-            store.dispatch(loadVideo(room.video_url))
+        api.getRoom(roomId).then(roomApi => {
+            store.dispatch(loadVideo(roomApi.video_url))
         })
         history.push(`/rooms/${roomId}`)
     }

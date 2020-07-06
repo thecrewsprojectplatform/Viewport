@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import ReactPlayer from 'react-player'
 
 import { ActionType } from '../../../store/video-room/actionType';
-import { Room, Player, User } from '../../../api/video-room-types';
+import { Room, User } from '../../../api/video-room-types';
 
 import { TextField, InputAdornment, IconButton } from '@material-ui/core'
 import SearchIcon from "@material-ui/icons/Search";
@@ -82,6 +82,12 @@ const SearchBar = (props: Prop) => {
         </div>
     );
 }
+const mapStateToProps = state => {
+    return {
+        currentRoom: state.room.currentRoom,
+        user: state.room.user
+    }
+}
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -94,4 +100,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(SearchBar);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

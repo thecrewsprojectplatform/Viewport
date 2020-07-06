@@ -1,5 +1,6 @@
 import io from "socket.io-client";
-import { sendMessageToAllClients, loadVideo, controlVideo } from "../../../store/video-room/video-room";
+import { sendMessageToAllClients, } from "../../../store/video-room/video-room";
+import {loadVideo, controlVideo } from "../../../store/video-room/video-player"
 import { store } from "../../../store";
 import { removeRoom, closedBrowserUserList, Actions } from "../../../store/video-room/video-room";
 import { VideoRoomApi } from "../../../api/video-room-api";

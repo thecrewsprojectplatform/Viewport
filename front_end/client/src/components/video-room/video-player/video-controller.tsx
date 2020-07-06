@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { connect } from 'react-redux'
+
 import { Room, Player } from '../../../api/video-room-types';
+import { VideoRoomApi } from '../../../api/video-room-api';
+import { ApiContext } from '../..';
 import { ActionType } from '../../../store/video-room/actionType';
 
 
@@ -15,6 +18,8 @@ interface Prop {
 }
 
 const VideoController = (props: Prop) => {
+    const api = useContext<VideoRoomApi>(ApiContext)
+
     const getAndSetVideoTime = () => {
         if (props.currentRoom && props.reactPlayer != null) {
             props.reactPlayer.seekTo(props.player.videoTime)
@@ -74,9 +79,10 @@ const mapDispatchToProps = dispatch => {
             seeking: boolean
         ) => dispatch({type: ActionType.SetSeeking, seeking: seeking}),
         sendControl: (
+            api: VideoRoomApi,
             currentRoom: Room,
             videoTime: number
-        ) => dispatch({type: ActionType.SendPlayPause, currentRoom: currentRoom, videoTime: videoTime})
+        ) => dispatch({type: ActionType.SendPlayPause, api: api, currentRoom: currentRoom, videoTime: videoTime})
     }
 }
 
