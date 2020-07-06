@@ -5,6 +5,7 @@ import { store } from "../../../store";
 import { removeRoom, closedBrowserUserList, Actions } from "../../../store/video-room/video-room";
 import { VideoRoomApi } from "../../../api/video-room-api";
 import { ActionType } from "../../../store/video-room/actionType";
+import { useState } from "react";
 
 const socket = io();
 
@@ -12,7 +13,10 @@ const socket = io();
  * Represents the socket communication that is received on the clientside.
  * All of the socket communications that the clients receive should be on this page
 */
+
 const configureSocket = (dispatch, api: VideoRoomApi) => {
+  let msgTime;
+  const newUserAlertMessage = '';
 
   socket.on('connect', () => {
     console.log('connected');
@@ -28,6 +32,16 @@ const configureSocket = (dispatch, api: VideoRoomApi) => {
 
   socket.on('sendRoomStateToAllClients', data => {
     store.dispatch(controlVideo(data.room))
+  })
+
+  socket.on('userJoinedRoom', data => {
+    msgTime = 'true'
+    store.dispatch(sendMessageToAllClients(newUserAlertMessage, data.userName, msgTime))
+  })
+
+  socket.on('userLeftRoom', data => {
+    msgTime = 'false'
+    store.dispatch(sendMessageToAllClients(newUserAlertMessage, data.userName, msgTime))
   })
 
   socket.on('clientDisconnectedUpdateUserList', data => {

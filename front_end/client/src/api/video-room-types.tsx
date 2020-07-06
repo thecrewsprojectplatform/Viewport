@@ -33,3 +33,12 @@ export interface MessageDetail {
     chat_username: string;
     message_time: string;
 }
+
+/**
+ * Represents the require properties of an Announcement Message
+ */
+
+export interface AnnouncementMessage {
+    chat_message: string;
+    message_time: string;
+}

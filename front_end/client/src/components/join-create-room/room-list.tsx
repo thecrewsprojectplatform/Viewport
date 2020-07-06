@@ -4,6 +4,7 @@ import { createRoomAndAddUserToRoomAction, addUserToRoomAction, Status, VideoRoo
 import { loadVideo } from '../../store/video-room/video-player'
 import { useHistory } from "react-router-dom";
 import { RoomListItem } from './room-list-item';
+import { CreateRoomInput } from './create-room-input';
 import { store } from '../../store';
 import { ApiContext } from '..';
 import { Room, User } from '../../api/video-room-types';
@@ -23,15 +24,15 @@ export interface Prop {
 
 /**
  * Represents a list of rooms currently available.
- * 
- * @param {Object} props The properties of a RoomList. 
+ *
+ * @param {Object} props The properties of a RoomList.
  *                 Requires an array of Room objects which
  *                 contains the id and name of a room, the current
  *                 User, and an updateStatus that holds the current
  *                 state of the web application.
  * @returns {JSX.Element} The JSX representing the RoomList.
  */
-const RoomList = (props: Prop) => {
+export const RoomList = (props: Prop) => {
     const classes = useStyles();
     const [newRoomName, setNewRoomName] = useState("");
     const api = useContext<VideoRoomApi>(ApiContext);
@@ -47,9 +48,8 @@ const RoomList = (props: Prop) => {
         }
     }, [props.currentRoom]);
 
-    const createNewRoomClick = (event): void => {
+    const createNewRoomClick = (): void => {
         store.dispatch(createRoomAndAddUserToRoomAction(api, newRoomName, props.user.id));
-        event.preventDefault();
     }
 
     const onJoinRoomClick = (roomId: number): void => {
@@ -59,35 +59,23 @@ const RoomList = (props: Prop) => {
         })
         history.push(`/rooms/${roomId}`)
     }
- 
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className="Room-list">
-                <form className={classes.form} onSubmit={createNewRoomClick} autoComplete="off">
-                        <TextField 
-                            variant="outlined"
-                            margin="normal"
-                            fullWidth
-                            id="EditUserModal"
-                            label="Create New Room"
-                            name="EditUserModal"
-                            autoComplete="off"
-                            autoFocus
-                            required
-                        
-                            type="text" 
-                            onChange={(event) => setNewRoomName(event.target.value)}
-                            value={newRoomName}
-                        />
-                </form>
+                <CreateRoomInput
+                    createNewRoomClick={createNewRoomClick}
+                    setNewRoomName={setNewRoomName}
+                    newRoomName={newRoomName}
+                />
                 Available Rooms:
                 <List>
                 {
                     (() => {
                         return props.availableRooms.map((room) => {
                             return (
-                                <RoomListItem 
+                                <RoomListItem
                                     key={room.id}
                                     currentRoom={room}
                                     onJoinClick={onJoinRoomClick}
@@ -105,7 +93,7 @@ const RoomList = (props: Prop) => {
 
 /**
  * Used to connect the state of the overall front end to the RoomList.
- * 
+ *
  * @param {Object} state The current state of the RoomList.
  */
 const mapStateToProps = (state: VideoRoomState) => {
