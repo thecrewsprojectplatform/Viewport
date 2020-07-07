@@ -1,15 +1,18 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, {  useContext, useEffect, useState } from 'react';
 import { connect } from "react-redux";
-import { createRoomAndAddUserToRoomAction, addUserToRoomAction, Status, VideoRoomState, getRoomsAction, loadVideo } from '../../store/video-room/video-room';
 import { useHistory } from "react-router-dom";
-import { RoomListItem } from './room-list-item';
-import { CreateRoomInput } from './create-room-input';
-import { store } from '../../store';
-import { ApiContext } from '..';
+
+import { CssBaseline, Container, List } from '@material-ui/core';
+
 import { Room, User } from '../../api/video-room-types';
 import { VideoRoomApi } from '../../api/video-room-api';
-import { TextField, CssBaseline, Container, List } from '@material-ui/core';
+import { store } from '../../store';
+import { loadVideo } from '../../store/video-room/video-player'
+import { addUserToRoomAction, createRoomAndAddUserToRoomAction, getRoomsAction, Status  } from '../../store/video-room/video-room';
+import { ApiContext } from '..';
 import useStyles from '../styles';
+import { CreateRoomInput } from './create-room-input';
+import { RoomListItem } from './room-list-item';
 
 /**
  * Represents the required properties of the UserList.
@@ -53,8 +56,8 @@ export const RoomList = (props: Prop) => {
 
     const onJoinRoomClick = (roomId: number): void => {
         store.dispatch(addUserToRoomAction(api, roomId, props.user.id, props.availableRooms));
-        api.getRoom(roomId).then(room => {
-            store.dispatch(loadVideo(room.video_url))
+        api.getRoom(roomId).then(roomApi => {
+            store.dispatch(loadVideo(roomApi.video_url))
         })
         history.push(`/rooms/${roomId}`)
     }

@@ -1,12 +1,11 @@
 import { ActionType } from "./actionType";
 import { ActionType as NotifcationActionType } from "../notifications/actionType";
 import { produce } from "immer";
+
 import { VideoRoomApi } from "../../api/video-room-api";
 import { User, Room, MessageDetail } from "../../api/video-room-types";
 import { socket } from "../../App"
 import { ShowErrorNotification } from "../notifications/notifications";
-
-const VIDEO_SYNC_MAX_DIFFERENCE = 3
 
 export enum Status {
     NotStarted="NOT_STARTED",
@@ -23,9 +22,6 @@ export interface VideoRoomState {
     pastRoomId: number;
     user: User;
     users: User[];
-    url: string;
-    video_id: string;
-    video_length: number;
     clientMessage: string;
     clientName: string;
     msgTime: string;
@@ -78,22 +74,6 @@ interface SendInitialClientMessageAction {
     type: ActionType.SendInitialClientMessage;
     clientMessage: string;
     msgTime: string;
-}
-
-interface SendUrlToServerAction {
-    type: ActionType.SendUrlToServer;
-    url: string;
-}
-
-interface LoadVideoAction {
-    type: ActionType.LoadVideo;
-    url: string;
-}
-
-interface ControlVideoAction {
-    type: ActionType.ControlVideo;
-    room: Room;
-    video_length: number;
 }
 
 interface CreateRoomAndAddUserToRoomAction {
@@ -222,9 +202,6 @@ export interface Actions {
     AddUserToRoomFailAction: AddUserToRoomFailAction
     SendToAllClientsAction: SendToAllClientsAction
     SendInitialClientMessageAction: SendInitialClientMessageAction
-    SendUrlToServerAction: SendUrlToServerAction
-    LoadVideoAction: LoadVideoAction
-    ControlVideoAction: ControlVideoAction
     CreateRoomAndAddUserToRoomAction: CreateRoomAndAddUserToRoomAction
     CreateRoomAndAddUserToRoomSuccessAction: CreateRoomAndAddUserToRoomSuccessAction
     CreateRoomAndAddUserToRoomFailAction: CreateUserAndAddToRoomFailAction
@@ -261,9 +238,6 @@ type Action =   SetVidoRoomUsersAction |
                 AddUserToRoomFailAction |
                 SendToAllClientsAction |
                 SendInitialClientMessageAction |
-                SendUrlToServerAction |
-                LoadVideoAction |
-                ControlVideoAction |
                 CreateRoomAndAddUserToRoomAction |
                 CreateRoomAndAddUserToRoomSuccessAction |
                 CreateRoomAndAddUserToRoomFailAction |
@@ -299,9 +273,6 @@ export const reducer = (
         pastRoomId: null,
         user: null,
         users: [],
-        url: null,
-        video_id: null,
-        video_length: 0,
         clientMessage: null,
         clientName: null,
         msgTime: null,
@@ -473,28 +444,6 @@ export const reducer = (
                     chat_username: action.clientName,
                     message_time: action.msgTime
                 }];
-            });
-        case ActionType.SendUrlToServer:
-            socket.emit('sendUrlToServer', {
-                url: action.url,
-                currentRoomId: state.currentRoom.id,
-                clientId: state.user.id,
-                clientName: state.user.name
-            });
-            return state;
-        case ActionType.LoadVideo:
-            return produce(state, draftState => {
-                draftState.url = action.url;
-            });
-        case ActionType.ControlVideo:
-            return produce(state, draftState => {
-                const video_length = action.room.video_length
-                if (draftState.currentRoom.video_state !== action.room.video_state ||
-                    Math.abs(draftState.currentRoom.video_time - action.room.video_time) * video_length > VIDEO_SYNC_MAX_DIFFERENCE) {
-                        draftState.currentRoom = action.room;
-                } else {
-                    //draftState.currentRoom.video_state = action.room.video_state
-                }
             });
         case ActionType.RemoveUserAfterBrowserClose:
             return produce(state, draftState => {
@@ -817,45 +766,6 @@ export const sendMessageToServer = (message: string, msgTime: string): any => {
             clientMessage: message,
             msgTime: msgTime
         })
-    }
-}
-
-export const sendUrlToServer = (url: string): any => {
-    return (dispatch): any => {
-        dispatch({
-            type: ActionType.SendUrlToServer,
-            url: url
-        })
-    }
-}
-
-export const loadVideo = (url: string): any => {
-    return (dispatch): any => {
-        dispatch({
-            type: ActionType.LoadVideo,
-            url: url
-        })
-    }
-}
-
-export const controlVideo = (room: Room): any => {
-    return (dispatch): any => {
-        dispatch({
-            type: ActionType.ControlVideo,
-            room: room
-        })
-    }
-}
-
-export const getAndSendRoomState = (api: VideoRoomApi, roomId: number): any => {
-    return (dispatch): any => {
-        api.getRoom(roomId).then(room => {
-            socket.emit('getRoomStateToServer', {
-                currentRoomId: roomId,
-                room: room
-            })
-        })
-
     }
 }
 

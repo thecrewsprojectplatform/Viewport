@@ -4,11 +4,16 @@
 export interface Room {
     id: number;
     name: string;
-    video_id: string;
-    video_url: string;
-    video_state: string;
-    video_time: number;
-    video_length: number;
+}
+
+/**
+ * Represents the required properties of a VideoPlayer
+ */
+export interface Player {
+    videoUrl: string;
+    videoState: string;
+    videoTime: number;
+    videoLength: number;
 }
 
 /**

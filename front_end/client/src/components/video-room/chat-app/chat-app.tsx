@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import { VideoRoomState, sendMessageToServer } from '../../../store/video-room/video-room';
 import { connect } from "react-redux";
-import { ChatMessageItem } from "./chat-message-item";
-import { store } from "../../../store";
+import { Typography } from "@material-ui/core";
+
 import { MessageDetail } from "../../../api/video-room-types";
-import { TextField, Typography } from "@material-ui/core";
+import { store } from "../../../store";
+import { sendMessageToServer } from '../../../store/video-room/video-room';
 import useStyles from "../../styles";
 import { ChatMessageInput } from "./chat-message-input";
+import { ChatMessageItem } from "./chat-message-item";
 
 /**
  * Represents the required properties of the ChatApp.

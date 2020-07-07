@@ -1,5 +1,5 @@
-import { Room, User } from "./video-room-types";
 import axios from "axios";
+import { Room, User } from "./video-room-types";
 
 export class VideoRoomApi {
     BASE_URL: string
@@ -20,7 +20,7 @@ export class VideoRoomApi {
         });
     }
 
-    async getRoom(roomId: number): Promise<Room> {
+    async getRoom(roomId: number): Promise<any> {
         return axios.get(this.BASE_URL + "/rooms/" + roomId).then(response => {
             return response.data;
         })
@@ -32,14 +32,14 @@ export class VideoRoomApi {
         });
     }
 
-    async updateRoom(roomId: number, name: string, video_id: string, video_url: string, video_state: string, video_time: number, video_length: number): Promise<void> {
+    async updateRoom(roomId: number, name: string, videoId: string, videoUrl: string, videoState: string, videoTime: number, videoLength: number): Promise<void> {
         return axios.put(this.BASE_URL + "/rooms/" + roomId, {
             "name": name,
-            "video_id": video_id,
-            "video_url": video_url,
-            "video_state": video_state,
-            "video_time": video_time,
-            "video_length": video_length
+            "video_id": videoId,
+            "video_url": videoUrl,
+            "video_state": videoState,
+            "video_time": videoTime,
+            "video_length": videoLength
         }).then(response => {
             //console.log("room updated succesfully")
             //console.log(response.data)

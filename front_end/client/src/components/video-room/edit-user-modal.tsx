@@ -1,12 +1,13 @@
 import React, { useContext, useState } from "react";
-import { BaseModal } from "../common/base-modal";
 import { TextField, Button } from "@material-ui/core";
+
 import { User } from "../../api/video-room-types";
-import { ApiContext } from "..";
-import useStyles from "../styles";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
 import { editUserName } from "../../store/video-room/video-room";
+import { ApiContext } from "..";
+import { BaseModal } from "../common/base-modal";
+import useStyles from "../styles";
 
 export interface Prop {
     currentUser: User;

@@ -1,18 +1,20 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { CssBaseline } from "@material-ui/core";
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import { createUser, Status, resetUpdateStatus } from "../../store/video-room/video-room";
-import { ApiContext } from "..";
+
 import { VideoRoomApi } from "../../api/video-room-api";
-import { store } from "../../store";
-import { CssBaseline } from "@material-ui/core";
-import useStyles from "../styles";
 import { User } from "../../api/video-room-types";
-import { LoginForm } from "./login-form";
+import { store } from "../../store";
 import { NotificationState } from "../../store/notifications/notifications";
+import { createUser, Status } from "../../store/video-room/video-room";
+import { ApiContext } from "..";
 import { BaseAlert } from "../common/base-alert";
+import useStyles from "../styles";
+import { LoginForm } from "./login-form";
+
 
 /**
  * Represents the required properties of the LoginPage.

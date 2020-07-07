@@ -1,8 +1,9 @@
 import React from 'react';
-import { User } from "../../../api/video-room-types";
-import { UserListItem } from './user-list-item';
 import { List, Typography } from '@material-ui/core';
+
+import { User } from "../../../api/video-room-types";
 import useStyles from '../../styles';
+import { UserListItem } from './user-list-item';
 
 /**
  * Represents the required properties of the UserList.

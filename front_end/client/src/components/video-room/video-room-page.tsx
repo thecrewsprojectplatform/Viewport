@@ -1,19 +1,21 @@
-import React, { useEffect, useLayoutEffect, useContext, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { match } from "react-router-dom";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getRoomUsers, VideoRoomState, removeUserFromRoom, removeRoom, getRoomsAction, createUserAndAddToRoom } from "../../store/video-room/video-room";
-import { ApiContext } from "..";
-import { VideoRoomApi } from "../../api/video-room-api";
-import { store } from "../../store";
-import { UserList } from "./user-list/user-list";
-import { Room, User } from "../../api/video-room-types";
-import { ChatAppR } from "./chat-app/chat-app"
-import VideoPlayer from "./video-player/video-player"
-import NavBar from "../nav-bar";
 import { Container, CssBaseline } from "@material-ui/core";
+
+import { VideoRoomApi } from "../../api/video-room-api";
+import { Room, User } from "../../api/video-room-types";
+import { store } from "../../store";
+import { loadVideo } from '../../store/video-room/video-player'
+import { createUserAndAddToRoom, getRoomsAction, getRoomUsers, removeRoom, removeUserFromRoom } from "../../store/video-room/video-room";
+import { ApiContext } from "..";
+import NavBar from "../nav-bar";
 import useStyles from "../styles";
+import { ChatAppR } from "./chat-app/chat-app"
 import { EditUserModal } from "./edit-user-modal";
+import { UserList } from "./user-list/user-list";
+import VideoPlayer from "./video-player/video-player"
 
 /**
  * Represents the required properties of the VideoRoomPage.
@@ -61,6 +63,9 @@ export const VideoRoomPage = (props: Prop) => {
     useEffect(() => {
         if (props.currentRoom) {
             store.dispatch(getRoomUsers(api, props.currentRoom.id));
+            api.getRoom(props.currentRoom.id).then(roomApi => {
+                store.dispatch(loadVideo(roomApi.video_url))
+            })
         }
     }, [props.currentRoom])
 

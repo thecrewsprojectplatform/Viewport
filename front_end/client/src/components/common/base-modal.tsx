@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
-import { makeStyles } from '@material-ui/core/styles';
 import { Modal } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles';
+
 
 export interface Prop {
     title: string;
