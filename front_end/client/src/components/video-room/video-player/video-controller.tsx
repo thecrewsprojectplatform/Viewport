@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { Room, Player } from '../../../api/video-room-types';
@@ -21,16 +21,11 @@ interface Prop {
 const VideoController = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
 
-    const getAndSetVideoTime = () =>  {
-        if (props.currentRoom) {
-            api.getRoom(props.currentRoom.id).then(room => {
-                if (room.video_url !== "" && props.reactPlayer) {
-                    props.reactPlayer.seekTo(props.player.videoTime)
-                }
-            })
+    useEffect(() => {
+        if (props.reactPlayer) {
+            props.reactPlayer.seekTo(props.player.videoTime)
         }
-        return props.player.videoTime
-    }
+    }, [props.player.videoTime])
 
     /**
      * Takes care of video time selection
@@ -57,7 +52,7 @@ const VideoController = (props: Prop) => {
 
     return (
         <Slider 
-            value={getAndSetVideoTime()}
+            value={props.player.videoTime}
             onChange={handleSeekChange}
             min={0.0}
             max={1.0}

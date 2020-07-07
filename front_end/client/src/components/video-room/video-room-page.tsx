@@ -6,6 +6,7 @@ import { getRoomUsers, VideoRoomState, removeUserFromRoom, removeRoom, getRoomsA
 import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
+import { loadVideo } from '../../store/video-room/video-player'
 import { UserList } from "./user-list/user-list";
 import { Room, User } from "../../api/video-room-types";
 import { ChatAppR } from "./chat-app/chat-app"
@@ -61,6 +62,9 @@ const VideoRoomPage = (props: Prop) => {
     useEffect(() => {
         if (props.currentRoom) {
             store.dispatch(getRoomUsers(api, props.currentRoom.id));
+            api.getRoom(props.currentRoom.id).then(roomApi => {
+                store.dispatch(loadVideo(roomApi.video_url))
+            })
         }
     }, [props.currentRoom])
 
