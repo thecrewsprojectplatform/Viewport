@@ -118,11 +118,11 @@ export const VideoRoomPage = (props: Prop) => {
  */
 const mapStateToProps = state => {
     return {
-        currentRoom: state.room.currentRoom,
-        roomList: state.room.roomList,
-        currentUser: state.room.user,
-        users: state.room.users,
-        updateStatus: state.room.updateStatus,
+        currentRoom: state.videoRoom.currentRoom,
+        roomList: state.videoRoom.roomList,
+        currentUser: state.videoRoom.user,
+        users: state.videoRoom.users,
+        updateStatus: state.videoRoom.updateStatus,
     }
 }
 

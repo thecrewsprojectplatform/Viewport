@@ -64,7 +64,7 @@ const VideoController = (props: Prop) => {
 
 const mapStateToProps = state => {
     return {
-        currentRoom: state.room.currentRoom,
+        currentRoom: state.videoRoom.currentRoom,
         player: state.player.player,
         seeking: state.player.seeking
     }

@@ -100,10 +100,10 @@ export const RoomList = (props: Prop) => {
  */
 const mapStateToProps = state => {
     return {
-        availableRooms: state.room.roomList,
-        currentRoom: state.room.currentRoom,
-        user: state.room.user,
-        updateStatus: state.room.updateStatus,
+        availableRooms: state.videoRoom.roomList,
+        currentRoom: state.videoRoom.currentRoom,
+        user: state.videoRoom.user,
+        updateStatus: state.videoRoom.updateStatus,
     }
 }
 

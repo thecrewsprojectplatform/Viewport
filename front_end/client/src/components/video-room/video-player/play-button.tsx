@@ -48,7 +48,7 @@ const PlayButton = (props: Prop) => {
 
 const mapStateToProps = state => {
     return {
-        currentRoom: state.room.currentRoom,
+        currentRoom: state.videoRoom.currentRoom,
         player: state.player.player
     }
 }

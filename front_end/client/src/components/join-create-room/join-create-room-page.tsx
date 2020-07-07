@@ -7,7 +7,9 @@ import { VideoRoomApi } from "../../api/video-room-api";
 import { store } from "../../store";
 import { User, Room } from "../../api/video-room-types";
 import { RoomListR } from "./room-list";
+import { NotificationState } from "../../store/notifications/notifications";
 import NavBar from "../nav-bar";
+import { BaseAlert } from "../common/base-alert";
 
 /**
  * Represents the required properties of the JoinCreateRoomPage.
@@ -17,6 +19,7 @@ export interface Prop {
     roomList: Room[];
     currentUser: User;
     updateStatus: Status;
+    notificationState: NotificationState;
 }
 
 /**
@@ -35,8 +38,11 @@ export const JoinCreateRoomPage = (props: Prop) => {
     const history = useHistory();
 
     const logoutClick = (): void => {
-        store.dispatch(removeUser(api, props.currentUser.id));
-        history.push("/");
+        store.dispatch(removeUser(api, props.currentUser.id)).then(() => {
+            history.push("/");
+        }).catch(() => {
+
+        });
     }
 
     useEffect(() => {
@@ -48,6 +54,12 @@ export const JoinCreateRoomPage = (props: Prop) => {
             <NavBar
                 buttonName="Logout"
                 buttonOnClick={logoutClick}
+            />
+            <BaseAlert
+                displayNotification={props.notificationState.displayNotification}
+                notificationType={props.notificationState.notificationType}
+                notificationHeader={props.notificationState.notificationHeader}
+                notificationBody={props.notificationState.notificationBody}
             />
             <RoomListR />
         </div>
@@ -61,10 +73,11 @@ export const JoinCreateRoomPage = (props: Prop) => {
  */
 const mapStateToProps = state => {
     return {
-        users: state.room.users,
-        roomList: state.room.roomList,
-        currentUser: state.room.user,
-        updateStatus: state.room.updateStatus,
+        users: state.videoRoom.users,
+        roomList: state.videoRoom.roomList,
+        currentUser: state.videoRoom.user,
+        updateStatus: state.videoRoom.updateStatus,
+        notificationState: state.notifications,
     }
 }
 

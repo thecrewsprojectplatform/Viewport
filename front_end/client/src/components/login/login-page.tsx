@@ -8,16 +8,21 @@ import Typography from '@material-ui/core/Typography';
 import { VideoRoomApi } from "../../api/video-room-api";
 import { User } from "../../api/video-room-types";
 import { store } from "../../store";
-import { createUser } from "../../store/video-room/video-room";
+import { NotificationState } from "../../store/notifications/notifications";
+import { createUser, Status } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
+import { BaseAlert } from "../common/base-alert";
 import useStyles from "../styles";
 import { LoginForm } from "./login-form";
+
 
 /**
  * Represents the required properties of the LoginPage.
  */
 export interface Prop {
     currentUser: User;
+    updateStatus: Status;
+    notificationState: NotificationState;
 }
 
 /**
@@ -40,14 +45,24 @@ export const LoginPage = (props: Prop) => {
     }
 
     const handleSubmit = (event): void => {
-        store.dispatch(createUser(api, newUserName));
-        history.push("/rooms")
+        store.dispatch(createUser(api, newUserName)).then(() => {
+            console.log("going into then")
+            history.push("/rooms")
+        }).catch(() => {
+
+        });
         event.preventDefault();
     }
 
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
+            <BaseAlert
+                displayNotification={props.notificationState.displayNotification}
+                notificationType={props.notificationState.notificationType}
+                notificationHeader={props.notificationState.notificationHeader}
+                notificationBody={props.notificationState.notificationBody}
+            />
             <div className={classes.login}>
                 <Typography variant="h4" component="h1" align="center" gutterBottom>
                     Multimedia Platform
@@ -68,8 +83,11 @@ export const LoginPage = (props: Prop) => {
  * @param {Object} state The current state of the LoginPage.
  */
 const mapStateToProps = state => {
+    console.log(state)
     return {
-        currentUser: state.room.user,
+        currentUser: state.videoRoom.user,
+        updateStatus: state.videoRoom.updateStatus,
+        notificationState: state.notifications,
     }
 }
 

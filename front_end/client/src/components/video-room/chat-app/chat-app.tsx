@@ -73,10 +73,10 @@ export const ChatApp = (props: Prop) => {
 
 const mapStateToProps = state => {
     return {
-        clientMessage: state.room.clientMessage,
-        clientName: state.room.clientName,
-        msgTime: state.room.msgTime,
-        messageHistory: state.room.messageHistory
+        clientMessage: state.videoRoom.clientMessage,
+        clientName: state.videoRoom.clientName,
+        msgTime: state.videoRoom.msgTime,
+        messageHistory: state.videoRoom.messageHistory
     }
 }
 

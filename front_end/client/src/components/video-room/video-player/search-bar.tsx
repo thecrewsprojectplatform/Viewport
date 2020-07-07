@@ -79,8 +79,8 @@ const SearchBar = (props: Prop) => {
 }
 const mapStateToProps = state => {
     return {
-        currentRoom: state.room.currentRoom,
-        user: state.room.user
+        currentRoom: state.videoRoom.currentRoom,
+        user: state.videoRoom.user
     }
 }
 
