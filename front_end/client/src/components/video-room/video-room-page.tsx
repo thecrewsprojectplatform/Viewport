@@ -37,7 +37,7 @@ export interface Prop {
  *                 the current users in the room.
  * @returns {JSX.Element} The JSX representing the video room page.
  */
-const VideoRoomPage = (props: Prop) => {
+export const VideoRoomPage = (props: Prop) => {
     const classes = useStyles();
     const api = useContext<VideoRoomApi>(ApiContext);
     const history = useHistory();

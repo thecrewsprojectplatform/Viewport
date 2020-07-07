@@ -39,7 +39,7 @@ const setup = () => {
 
 const wrapper = setup();
 
-describe('Room list component', () => {
+describe('Roomlist Main component', () => {
 
     test('Should render without errors', () => {
         expect(wrapper.exists()).toBe(true);

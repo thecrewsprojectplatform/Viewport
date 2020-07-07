@@ -5,9 +5,7 @@ import { ChatApp } from "../components/video-room/chat-app/chat-app";
 import { MessageDetail } from "../api/video-room-types";
 import { ChatMessageInput } from '../components/video-room/chat-app/chat-message-input';
 
-//const mockStore = configureStore([]);
-
-jest.mock('../App.tsx', () => "root");
+jest.mock('../App.tsx', () => "root")
 
 const messageHist: MessageDetail = {
     chat_message: 'test',
@@ -30,7 +28,7 @@ const setup = () => {
 
 const wrapper = setup();
 
-describe('Chat App component', () => {
+describe('Chat App Main component', () => {
 
     test('Should render without errors', () => {
         expect(wrapper.exists()).toBe(true);
