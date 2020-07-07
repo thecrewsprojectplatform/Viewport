@@ -96,12 +96,12 @@ export const RoomList = (props: Prop) => {
  *
  * @param {Object} state The current state of the RoomList.
  */
-const mapStateToProps = (state: VideoRoomState) => {
+const mapStateToProps = state => {
     return {
-        availableRooms: state.roomList,
-        currentRoom: state.currentRoom,
-        user: state.user,
-        updateStatus: state.updateStatus,
+        availableRooms: state.room.roomList,
+        currentRoom: state.room.currentRoom,
+        user: state.room.user,
+        updateStatus: state.room.updateStatus,
     }
 }
 

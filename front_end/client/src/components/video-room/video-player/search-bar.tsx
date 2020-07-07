@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { connect } from 'react-redux'
 import ReactPlayer from 'react-player'
 
+import { VideoRoomApi } from '../../../api/video-room-api';
+import { ApiContext } from '../..';
 import { ActionType } from '../../../store/video-room/actionType';
 import { Room, User } from '../../../api/video-room-types';
 
@@ -11,13 +13,16 @@ import useStyles from '../../styles';
 
 interface Prop {
     sendUrlToServer: Function
+    sendControl: Function
     currentRoom: Room
     user: User
 }
 
 const SearchBar = (props: Prop) => {
+    const api = useContext<VideoRoomApi>(ApiContext)
+
     const classes = useStyles();
-    const [url, setUrl] = useState(null)
+    const [url, setUrl] = useState("")
 
     /**
      * Check if the url entered is valid and return wether or not to display an error message
@@ -34,25 +39,16 @@ const SearchBar = (props: Prop) => {
             loadButton()
         }
     };
-
+        
+    // By default, set the video_state to paused after loading
     const loadButton = () => {
         props.sendUrlToServer(
+            api,
+            props.currentRoom,
             url,
-            props.currentRoom.id,
             props.user.id,
             props.user.name
         )
-
-        // By default, set the video_state to paused after loading
-/*         api.updateRoom(
-            props.currentRoom.id,
-            props.currentRoom.name,
-            props.currentRoom.video_id,
-            props.url,
-            "PAUSED",
-            0,
-            0
-        )*/
     }
 
     return (
@@ -92,11 +88,18 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         sendUrlToServer: (
-            url: string,
-            roomId: number,
+            api: VideoRoomApi,
+            currentRoom: Room,
+            url: string,            
             userId: number,
             userName: string
-        ) => dispatch({type: ActionType.SendUrlToServer, url: url, roomId: roomId, userId: userId, userName: userName})
+        ) => dispatch({type: ActionType.SendUrlToServer, api: api, currentRoom: currentRoom, url: url, userId: userId, userName: userName}),
+        sendControl: (
+            api: VideoRoomApi,
+            currentRoom: Room,
+            videoState: number,
+            videoTime: number
+        ) => dispatch({type: ActionType.SendControl, api: api, currentRoom: currentRoom, videoState: videoState, videoTime: videoTime})
     }
 }
 

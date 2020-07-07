@@ -14,19 +14,22 @@ interface Prop {
     sendControl: Function
     currentRoom: Room
     player: Player
+    seeking: boolean
     reactPlayer: any
 }
 
 const VideoController = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
 
-    const getAndSetVideoTime = () => {
-        if (props.currentRoom && props.reactPlayer != null) {
-            props.reactPlayer.seekTo(props.player.videoTime)
-            return props.player.videoTime
-        } else {
-            return 0
+    const getAndSetVideoTime = () =>  {
+        if (props.currentRoom) {
+            api.getRoom(props.currentRoom.id).then(room => {
+                if (room.video_url !== "" && props.reactPlayer) {
+                    props.reactPlayer.seekTo(props.player.videoTime)
+                }
+            })
         }
+        return props.player.videoTime
     }
 
     /**
@@ -36,7 +39,7 @@ const VideoController = (props: Prop) => {
      */
     const handleSeekChange = (event, newTime) => {
         props.setSeeking(true)
-        props.sendControl(props.currentRoom, newTime)
+        props.sendControl(api, props.currentRoom, props.player.videoState, newTime)
         props.setSeeking(false)
     }
 
@@ -69,7 +72,8 @@ const VideoController = (props: Prop) => {
 const mapStateToProps = state => {
     return {
         currentRoom: state.room.currentRoom,
-        player: state.player.player
+        player: state.player.player,
+        seeking: state.player.seeking
     }
 }
 
@@ -81,8 +85,9 @@ const mapDispatchToProps = dispatch => {
         sendControl: (
             api: VideoRoomApi,
             currentRoom: Room,
+            videoState: number,
             videoTime: number
-        ) => dispatch({type: ActionType.SendPlayPause, api: api, currentRoom: currentRoom, videoTime: videoTime})
+        ) => dispatch({type: ActionType.SendControl, api: api, currentRoom: currentRoom, videoState: videoState, videoTime: videoTime})
     }
 }
 

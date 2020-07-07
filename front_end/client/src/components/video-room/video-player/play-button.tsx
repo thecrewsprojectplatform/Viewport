@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { ActionType } from '../../../store/video-room/actionType';
 
 interface Prop {
-    sendPlayPause: Function
+    sendControl: Function
     player: Player
     currentRoom: Room
 }
@@ -31,10 +31,12 @@ const PlayButton = (props: Prop) => {
      *  3) sends the new video_state to all clients      
     */
    const handlePlayPause = () => {
-        if (props.player?.videoState || props.player.videoState === "PAUSED") {
-            props.sendPlayPause(props.currentRoom, "PLAYING")
+        if (props.player?.videoState === null || props.player.videoState === "PAUSED") {
+            props.sendControl(api, props.currentRoom, "PLAYING", props.player.videoTime)
         } else if (props.player.videoState === "PLAYING") {
-            props.sendPlayPause(props.currentRoom, "PAUSED")
+            api.getRoom(props.currentRoom.id).then(room => {
+                props.sendControl(api, props.currentRoom, "PAUSED", room.video_time)
+            })
         }
     }
 
@@ -54,11 +56,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        sendPlayPause: (
+        sendControl: (
             api: VideoRoomApi,
             currentRoom: Room,
-            videoState: string            
-        ) => dispatch({type: ActionType.SendPlayPause, api: api, currentRoom: currentRoom, videoState: videoState})
+            videoState: string,
+            videoTime: number            
+        ) => dispatch({type: ActionType.SendControl, api: api, currentRoom: currentRoom, videoState: videoState, videoTime: videoTime})
     }
 }
 

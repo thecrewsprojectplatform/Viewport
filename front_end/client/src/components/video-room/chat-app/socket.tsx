@@ -30,7 +30,7 @@ const configureSocket = (dispatch, api: VideoRoomApi) => {
     store.dispatch(loadVideo(data.url))
   });
 
-  socket.on('sendRoomStateToAllClients', data => {
+  socket.on('sendControlsToAllClients', data => {
     store.dispatch(controlVideo(data.room))
   })
 

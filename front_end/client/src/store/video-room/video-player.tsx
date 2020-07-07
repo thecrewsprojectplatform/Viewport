@@ -1,13 +1,8 @@
-import { useContext } from 'react'
 import { ActionType } from './actionType'
 import produce from 'immer'
 import { VideoRoomApi } from "../../api/video-room-api";
 import { Room, Player } from "../../api/video-room-types";
 import { socket } from "../../App"
-import { ApiContext } from '../../components/index';
-
-
-const VIDEO_SYNC_MAX_DIFFERENCE = 3  // in seconds
 
 export interface VideoPlayerState {
     player: Player
@@ -26,8 +21,9 @@ const initialState: VideoPlayerState = {
 
 interface SendUrlToServerAction {
     type: ActionType.SendUrlToServer;
+    api: VideoRoomApi;
+    currentRoom: Room;
     url: string;
-    roomId: number;
     userId: number;
     userName: String;
 }
@@ -37,18 +33,12 @@ interface LoadVideoAction {
     url: string;
 }
 
-interface SendPlayPauseAction {
-    type: ActionType.SendPlayPause;
-    api: VideoRoomApi;
-    currentRoom: Room;
-    videoState: string;
-}
-
 interface SendControlAction {
     type: ActionType.SendControl;
     api: VideoRoomApi;
     currentRoom: Room;
-    videoTime : number;
+    videoState: string;
+    videoTime: number;
 }
 
 interface ControlVideoAction {
@@ -64,14 +54,12 @@ interface SetSeekingAction {
 export interface Actions {
     SendUrlToServerAction: SendUrlToServerAction
     LoadVideoAction: LoadVideoAction
-    SendPlayPauseAction: SendPlayPauseAction
     SendControlAction: SendControlAction
     ControlVideoAction: ControlVideoAction
 }
 
 type Action =   SendUrlToServerAction |
                 LoadVideoAction |
-                SendPlayPauseAction |
                 SendControlAction |
                 ControlVideoAction |
                 SetSeekingAction;
@@ -85,30 +73,26 @@ export const reducer = (
         case ActionType.SendUrlToServer:
             socket.emit('sendUrlToServer', {
                 url: action.url,
-                currentRoomId: action.roomId,
+                currentRoomId: action.currentRoom.id,
                 clientId: action.userId,
                 clientName: action.userName
             });
-            return produce(state, draftState => {
-                draftState.player.videoUrl = action.url;
-            });
-        case ActionType.LoadVideo:
-            return produce(state, draftState => {
-                draftState.player.videoUrl = action.url;
-            });
-        case ActionType.SendPlayPause:
             return produce(state, draftState => {
                 updateVideoState(
                     action.api,
                     action.currentRoom.id,
                     action.currentRoom.name,
                     "",
-                    draftState.player.videoUrl,
-                    action.videoState,
-                    draftState.player.videoTime,
-                    draftState.player.videoLength
+                    action.url,
+                    "PAUSED",
+                    0,
+                    0
                 )
-                draftState.player.videoState = action.videoState;
+                draftState.player.videoUrl = action.url;
+            });
+        case ActionType.LoadVideo:
+            return produce(state, draftState => {
+                draftState.player.videoUrl = action.url;
             });
         case ActionType.SendControl:
             return produce(state, draftState => {
@@ -118,19 +102,17 @@ export const reducer = (
                     action.currentRoom.name,
                     "",
                     draftState.player.videoUrl,
-                    draftState.player.videoState,
+                    action.videoState,
                     action.videoTime,
                     draftState.player.videoLength
                 )
+                draftState.player.videoState = action.videoState;
                 draftState.player.videoTime = action.videoTime;
             });
         case ActionType.ControlVideo:
             return produce(state, draftState => {
-                const video_length = action.roomApi.video_length
-                if (draftState.player.videoState !== action.roomApi.video_state ||
-                    Math.abs(draftState.player.videoTime - action.roomApi.video_time) * video_length > VIDEO_SYNC_MAX_DIFFERENCE) {
-                        draftState.player.videoTime = action.roomApi.videoState;
-                }
+                draftState.player.videoTime = action.roomApi.video_time
+                draftState.player.videoState = action.roomApi.video_state
             });
         case ActionType.SetSeeking:
             return produce(state, draftState => {
@@ -162,14 +144,14 @@ export const controlVideo = (room: any): any => {
     return (dispatch): any => {
         dispatch({
             type: ActionType.ControlVideo,
-            room: room
+            roomApi: room
         })
     }
 }
 
 const getAndSendRoomState = (api: VideoRoomApi, roomId: number) => {
     api.getRoom(roomId).then(room => {
-        socket.emit('getRoomStateToServer', {
+        socket.emit('sendControlsToServer', {
             currentRoomId: roomId,
             room: room
         })
@@ -189,7 +171,6 @@ const updateVideoState = (
         videoTime: number,
         videoLength: number
     ) => {
-        
         api.updateRoom(
             roomId,
             name,

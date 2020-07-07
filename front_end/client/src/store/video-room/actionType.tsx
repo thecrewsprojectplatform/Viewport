@@ -9,7 +9,6 @@ export enum ActionType {
     SendInitialClientMessage = "CLIENT_SENT_A_MESSAGE",
     SendMessageToAllClients = "SERVER_SENDS_A_MESSAGE_TO_ALL_CLIENTS",
     SendUrlToServer = "CLIENT_SENDS_URL_TO_SERVER",
-    SendPlayPause = "CLIENT_SENDS_PLAY_PAUSE_TO_SERVER",
     LoadVideo = "LOAD_VIDEO",
     SendControl = "SEND_CONTROL",
     ControlVideo = "CONTROL_VIDEO",

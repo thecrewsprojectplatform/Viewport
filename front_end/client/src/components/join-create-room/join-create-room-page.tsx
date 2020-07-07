@@ -59,12 +59,12 @@ export const JoinCreateRoomPage = (props: Prop) => {
  *
  * @param {Object} state The current state of the JoinCreateRoomPage.
  */
-const mapStateToProps = (state: VideoRoomState) => {
+const mapStateToProps = state => {
     return {
-        users: state.users,
-        roomList: state.roomList,
-        currentUser: state.user,
-        updateStatus: state.updateStatus,
+        users: state.room.users,
+        roomList: state.room.roomList,
+        currentUser: state.room.user,
+        updateStatus: state.room.updateStatus,
     }
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import ReactPlayer from 'react-player'
 
@@ -36,6 +36,7 @@ const VideoPlayer = (props: Prop) => {
      * @param state the state of the video
      */
     const handleProgress = state => {
+        console.log(props.player.videoState)
         if (!props.seeking) {
             api.updateRoom(
                 props.currentRoom.id,
@@ -48,11 +49,6 @@ const VideoPlayer = (props: Prop) => {
             )
         }
     }
-
-    const ref = player => {
-        setReactPlayer(player)
-    }
-
     
     return (
         <div className={classes.videoPlayer}>
@@ -61,7 +57,7 @@ const VideoPlayer = (props: Prop) => {
                 
                 <div className='player-wrapper'>
                     <ReactPlayer
-                        ref={ref}
+                        ref={setReactPlayer}
                         className='react-player'
                         url={props.player.videoUrl}
                         width='100%'
@@ -82,7 +78,9 @@ const VideoPlayer = (props: Prop) => {
                 </div>
                 <PlayButton />
                 
-                <VideoController reactPlayer={reactPlayer}/>
+                <VideoController 
+                    reactPlayer={reactPlayer}
+                />
                 
 
             </div>
