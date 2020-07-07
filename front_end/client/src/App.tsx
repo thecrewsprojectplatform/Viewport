@@ -1,10 +1,11 @@
 import React from 'react';
-import { BrowserRouter  as Router, Route } from "react-router-dom";
 import { Provider } from 'react-redux';
-import { store } from "./store";
-import { BasePageRouterR } from "./components";
-import { VideoRoomApi } from "./api/video-room-api";
+import { BrowserRouter  as Router, Route } from "react-router-dom";
+
 import configureSocket from '../src/components/video-room/chat-app/socket'
+import { VideoRoomApi } from "./api/video-room-api";
+import { BasePageRouterR } from "./components";
+import { store } from "./store";
 
 export const socket = configureSocket(store.dispatch, new VideoRoomApi)
 

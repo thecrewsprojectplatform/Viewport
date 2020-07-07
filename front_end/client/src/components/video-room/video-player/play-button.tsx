@@ -1,12 +1,11 @@
 import React, { useContext } from 'react'
+import { connect } from 'react-redux';
+import { Button } from '@material-ui/core';
 
 import { Player, Room } from '../../../api/video-room-types';
 import { VideoRoomApi } from '../../../api/video-room-api';
-import { ApiContext } from '../..';
-
-import { Button } from '@material-ui/core';
-import { connect } from 'react-redux';
 import { ActionType } from '../../../store/video-room/actionType';
+import { ApiContext } from '../..';
 
 interface Prop {
     sendControl: Function
@@ -65,4 +64,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PlayButton);
+export const PlayButtonR = connect(mapStateToProps, mapDispatchToProps)(PlayButton);

@@ -1,11 +1,10 @@
 import io from "socket.io-client";
-import { sendMessageToAllClients, } from "../../../store/video-room/video-room";
-import {loadVideo, controlVideo } from "../../../store/video-room/video-player"
-import { store } from "../../../store";
-import { removeRoom, closedBrowserUserList, Actions } from "../../../store/video-room/video-room";
+
 import { VideoRoomApi } from "../../../api/video-room-api";
+import { store } from "../../../store";
 import { ActionType } from "../../../store/video-room/actionType";
-import { useState } from "react";
+import { controlVideo, loadVideo } from "../../../store/video-room/video-player"
+import { Actions, closedBrowserUserList, removeRoom, sendMessageToAllClients, } from "../../../store/video-room/video-room";
 
 const socket = io();
 

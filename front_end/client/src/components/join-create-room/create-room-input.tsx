@@ -1,5 +1,4 @@
 import React from "react";
-import { Room } from "../../api/video-room-types";
 import { TextField } from '@material-ui/core';
 import useStyles from '../styles';
 

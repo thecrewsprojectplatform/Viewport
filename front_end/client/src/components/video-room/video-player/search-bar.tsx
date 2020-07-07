@@ -1,14 +1,13 @@
 import React, { useContext, useState } from 'react'
 import { connect } from 'react-redux'
+import { TextField, InputAdornment, IconButton } from '@material-ui/core'
+import SearchIcon from "@material-ui/icons/Search";
 import ReactPlayer from 'react-player'
 
 import { VideoRoomApi } from '../../../api/video-room-api';
-import { ApiContext } from '../..';
-import { ActionType } from '../../../store/video-room/actionType';
 import { Room, User } from '../../../api/video-room-types';
-
-import { TextField, InputAdornment, IconButton } from '@material-ui/core'
-import SearchIcon from "@material-ui/icons/Search";
+import { ActionType } from '../../../store/video-room/actionType';
+import { ApiContext } from '../..';
 import useStyles from '../../styles';
 
 interface Prop {
@@ -103,4 +102,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
+export const SearchBarR = connect(mapStateToProps, mapDispatchToProps)(SearchBar);

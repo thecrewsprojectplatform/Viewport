@@ -1,8 +1,9 @@
-import { ActionType } from "./actionType";
 import { produce } from "immer";
+
 import { VideoRoomApi } from "../../api/video-room-api";
 import { User, Room, MessageDetail } from "../../api/video-room-types";
 import { socket } from "../../App"
+import { ActionType } from "./actionType";
 
 export enum Status {
     NotStarted="NOT_STARTED",

@@ -1,8 +1,9 @@
-import { ActionType } from './actionType'
 import produce from 'immer'
+
 import { VideoRoomApi } from "../../api/video-room-api";
 import { Room, Player } from "../../api/video-room-types";
 import { socket } from "../../App"
+import { ActionType } from './actionType'
 
 export interface VideoPlayerState {
     player: Player
@@ -158,9 +159,6 @@ const getAndSendRoomState = (api: VideoRoomApi, roomId: number) => {
     })
 }
 
-/**
- * This updates whether or not the video is playing
- */
 const updateVideoState = (
         api: VideoRoomApi,
         roomId: number,

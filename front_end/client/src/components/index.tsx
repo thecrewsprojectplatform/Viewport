@@ -1,10 +1,12 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router-dom";
+
 import { VideoRoomApi } from "../api/video-room-api";
-import { VideoRoomPageR } from "./video-room/video-room-page";
 import { JoinCreateRoomPageR } from "./join-create-room/join-create-room-page";
 import { LoginPageR } from "./login/login-page";
+import { VideoRoomPageR } from "./video-room/video-room-page";
+
 
 /**
  * Represents the required properties of the BasePageRouter.

@@ -1,5 +1,5 @@
-import { Room, User } from "./video-room-types";
 import axios from "axios";
+import { Room, User } from "./video-room-types";
 
 export class VideoRoomApi {
     BASE_URL: string

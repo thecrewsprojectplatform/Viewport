@@ -1,16 +1,15 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useContext, useState } from 'react';
 import { connect } from 'react-redux';
 import ReactPlayer from 'react-player'
 
 import { VideoRoomApi } from '../../../api/video-room-api';
+import { Player, Room, User } from '../../../api/video-room-types';
 import { ApiContext } from '../..';
-import { Room, Player, User } from '../../../api/video-room-types';
-
-import './video-player.css';
 import useStyles from '../../styles';
-import SearchBar from './search-bar';
-import PlayButton from './play-button';
-import VideoController from './video-controller'
+import { PlayButtonR } from './play-button';
+import { SearchBarR } from './search-bar';
+import { VideoControllerR } from './video-controller'
+import './video-player.css';
 
 interface Prop {
     currentRoom: Room;
@@ -22,8 +21,8 @@ interface Prop {
 /**
  * Creates a video player with the following attributes:
  *      Input field for loading videos from an url
- *      play/pause button
- *      Progress bar (currently disabled)
+ *      Play/Pause button
+ *      Video Controller
  */
 const VideoPlayer = (props: Prop) => {
     const classes = useStyles();
@@ -53,7 +52,7 @@ const VideoPlayer = (props: Prop) => {
     return (
         <div className={classes.videoPlayer}>
             <div>                
-                <SearchBar />
+                <SearchBarR />
                 
                 <div className='player-wrapper'>
                     <ReactPlayer
@@ -72,15 +71,11 @@ const VideoPlayer = (props: Prop) => {
                         }}
                         playing={props.player?.videoState === "PAUSED" ? false : true}
                         onProgress={handleProgress}
-                        //onPlay={handleOnPlay}
-                        //onPause={handleOnPause}
                     />
                 </div>
-                <PlayButton />
+                <PlayButtonR />
                 
-                <VideoController 
-                    reactPlayer={reactPlayer}
-                />
+                <VideoControllerR reactPlayer={reactPlayer}/>
                 
 
             </div>
@@ -98,10 +93,4 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(VideoPlayer);
+export default connect(mapStateToProps)(VideoPlayer);

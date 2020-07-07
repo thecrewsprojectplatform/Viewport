@@ -1,13 +1,11 @@
 import React, { useContext, useEffect } from 'react'
 import { connect } from 'react-redux'
-
-import { Room, Player } from '../../../api/video-room-types';
-import { VideoRoomApi } from '../../../api/video-room-api';
-import { ApiContext } from '../..';
-import { ActionType } from '../../../store/video-room/actionType';
-
-
 import { Slider } from '@material-ui/core';
+
+import { Player, Room } from '../../../api/video-room-types';
+import { VideoRoomApi } from '../../../api/video-room-api';
+import { ActionType } from '../../../store/video-room/actionType';
+import { ApiContext } from '../..';
 
 interface Prop {
     setSeeking: Function
@@ -86,4 +84,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(VideoController);
+export const VideoControllerR = connect(mapStateToProps, mapDispatchToProps)(VideoController);

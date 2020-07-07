@@ -1,7 +1,8 @@
 import React, { Fragment } from "react";
+import { Avatar,  IconButton, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText } from "@material-ui/core";
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircle';
 import EditIcon from '@material-ui/icons/Edit';
-import { ListItem, ListItemText, ListItemAvatar, Avatar, ListItemIcon, ListItemSecondaryAction, IconButton } from "@material-ui/core";
+
 import { User } from "../../../api/video-room-types";
 import useStyles from "../../styles";
 
