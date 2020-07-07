@@ -259,10 +259,10 @@ const VideoPlayer = (props: Prop) => {
     }
 
 
-const mapStateToProps = (state: VideoRoomState) => {
+const mapStateToProps = state => {
     return {
-        currentRoom: state.currentRoom,
-        url: state.url,
+        currentRoom: state.videoRoom.currentRoom,
+        url: state.videoRoom.url,
     }
 }
 

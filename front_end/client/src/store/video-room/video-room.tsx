@@ -1,8 +1,10 @@
 import { ActionType } from "./actionType";
+import { ActionType as NotifcationActionType } from "../notifications/actionType";
 import { produce } from "immer";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { User, Room, MessageDetail } from "../../api/video-room-types";
 import { socket } from "../../App"
+import { ShowErrorNotification } from "../notifications/notifications";
 
 const VIDEO_SYNC_MAX_DIFFERENCE = 3
 
@@ -206,6 +208,10 @@ interface RemoveUserAfterBrowserCloseFailAction {
     type: ActionType.RemoveUserAfterBrowserCloseFail;
 }
 
+interface ResetUpdateStatusAction {
+    type: ActionType.ResetUpdateStatus;
+}
+
 export interface Actions {
     SetVidoRoomUsersAction: SetVidoRoomUsersAction
     GetRoomsAction: GetRoomsAction
@@ -243,6 +249,7 @@ export interface Actions {
     EditUserNameAction: EditUserNameAction
     EditUserNameSuccessAction: EditUserNameSuccessAction
     EditUserNameFailAction: EditUserNameFailAction
+    ResetUpdateStatusAction: ResetUpdateStatusAction
 }
 
 type Action =   SetVidoRoomUsersAction |
@@ -280,7 +287,8 @@ type Action =   SetVidoRoomUsersAction |
                 RemoveUserAfterBrowserCloseFailAction |
                 EditUserNameAction |
                 EditUserNameSuccessAction |
-                EditUserNameFailAction;
+                EditUserNameFailAction |
+                ResetUpdateStatusAction;
 
 export const reducer = (
     state: VideoRoomState = {
@@ -500,6 +508,10 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Failed;
             });
+        case ActionType.ResetUpdateStatus:
+            return produce(state, draftState => {
+                draftState.updateStatus = Status.NotStarted;
+            })
         default:
             return state;
     }
@@ -518,6 +530,11 @@ export const getRoomsAction = (api: VideoRoomApi): any => {
             dispatch({
                 type: ActionType.GetRoomsFail
             } as GetRoomsFailAction);
+            dispatch({
+                type: NotifcationActionType.ShowErrorNotification,
+                header: "Failed to get available rooms",
+                body: err.toString()
+            } as ShowErrorNotification)
         });
     };
 };
@@ -537,6 +554,11 @@ export const addUserToRoomAction = (api: VideoRoomApi, roomId: number, userId: n
             dispatch({
                 type: ActionType.AddUserToRoomFail
             } as AddUserToRoomFailAction);
+            dispatch({
+                type: NotifcationActionType.ShowErrorNotification,
+                header: "Failed to get add user to room",
+                body: err.toString()
+            } as ShowErrorNotification)
         });
     };
 };
@@ -553,11 +575,25 @@ export const createRoomAndAddUserToRoomAction = (api: VideoRoomApi, roomName: st
                     room: room,
                     roomId: room.id,
                 } as CreateRoomAndAddUserToRoomSuccessAction);
+            }).catch(err => {
+                dispatch({
+                    type: ActionType.CreateRoomAndAddUserToRoomFail
+                } as CreateRoomAndAddUserToRoomFailAction);
+                dispatch({
+                    type: NotifcationActionType.ShowErrorNotification,
+                    header: "Failed to add user to room",
+                    body: err.toString()
+                } as ShowErrorNotification)
             })
         }).catch(err => {
             dispatch({
                 type: ActionType.CreateRoomAndAddUserToRoomFail
             } as CreateRoomAndAddUserToRoomFailAction);
+            dispatch({
+                type: NotifcationActionType.ShowErrorNotification,
+                header: "Failed to get create room",
+                body: err.toString()
+            } as ShowErrorNotification)
         }).finally(() => {
             api.getRooms().then(roomsList => {
                 socket.emit('updateRoomsToServerRoomList', {
@@ -579,7 +615,11 @@ export const getRoomUsers = (api: VideoRoomApi, roomId: number): any => {
                 clientList: users
             })
         }).catch(err => {
-            console.log("Failed to get the list of users in room");
+            dispatch({
+                type: NotifcationActionType.ShowErrorNotification,
+                header: "Failed to get users in room",
+                body: err.toString()
+            } as ShowErrorNotification)
         });
     };
 };
@@ -596,11 +636,22 @@ export const createUserAndAddToRoom = (api: VideoRoomApi, roomId: number, userNa
                     user: user,
                     roomId: roomId,
                 } as CreateUserAndAddToRoomSuccessAction);
+            }).catch(err => {
+                dispatch({
+                    type: NotifcationActionType.ShowErrorNotification,
+                    header: "Failed to add user to room",
+                    body: err.toString()
+                } as ShowErrorNotification)
             })
         }).catch(err => {
             dispatch({
                 type: ActionType.CreateUserAndAddToRoomFail
             } as CreateUserAndAddToRoomFailAction);
+            dispatch({
+                type: NotifcationActionType.ShowErrorNotification,
+                header: "Failed to create user",
+                body: err.toString()
+            } as ShowErrorNotification)
         });
     };
 };
@@ -610,7 +661,7 @@ export const createUser = (api: VideoRoomApi, userName: string): any => {
         dispatch({
             type: ActionType.CreateUser,
         } as CreateUserAction);
-        api.createUser(userName).then(user => {
+        return api.createUser(userName).then(user => {
             socket.emit('getCurrentUser', {
                 currentUser: user
             });
@@ -622,6 +673,12 @@ export const createUser = (api: VideoRoomApi, userName: string): any => {
             dispatch({
                 type: ActionType.CreateUserFail
             } as CreateUserFailAction);
+            dispatch({
+                type: NotifcationActionType.ShowErrorNotification,
+                header: "Failed to create user",
+                body: err.toString()
+            } as ShowErrorNotification)
+            throw err;
         });
     };
 };
@@ -643,6 +700,11 @@ export const editUserName = (api: VideoRoomApi, userId: number, newUserName: str
             dispatch({
                 type: ActionType.EditUserNameFail
             } as EditUserNameFailAction);
+            dispatch({
+                type: NotifcationActionType.ShowErrorNotification,
+                header: "Failed to change user name",
+                body: err.toString()
+            } as ShowErrorNotification)
         });
     };
 };
@@ -652,7 +714,7 @@ export const removeUser = (api: VideoRoomApi, userId: number): any => {
         dispatch({
             type: ActionType.RemoveUser,
         } as RemoveUserAction);
-        api.removeUser(userId).then(response => {
+        return api.removeUser(userId).then(response => {
             dispatch({
                 type: ActionType.RemoveUserSuccess,
                 user: null,
@@ -661,6 +723,12 @@ export const removeUser = (api: VideoRoomApi, userId: number): any => {
             dispatch({
                 type: ActionType.RemoveUserFail
             } as RemoveUserFailAction);
+            dispatch({
+                type: NotifcationActionType.ShowErrorNotification,
+                header: "Failed to remove user",
+                body: err.toString()
+            } as ShowErrorNotification)
+            throw err;
         });
     };
 };
@@ -678,6 +746,11 @@ export const removeRoom = (api: VideoRoomApi, roomId: number): any => {
             dispatch({
                 type: ActionType.RemoveRoomFail
             } as RemoveRoomFailAction);
+            dispatch({
+                type: NotifcationActionType.ShowErrorNotification,
+                header: "Failed to remove room",
+                body: err.toString()
+            } as ShowErrorNotification)
         }).finally(() => {
             api.getRooms().then(roomsList => {
                 socket.emit('updateRoomsToServerRoomList', {
@@ -706,6 +779,11 @@ export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: nu
             dispatch({
                 type: ActionType.RemoveUserFromRoomFail
             } as RemoveUserFromRoomFailAction);
+            dispatch({
+                type: NotifcationActionType.ShowErrorNotification,
+                header: "Failed to remove user from room",
+                body: err.toString()
+            } as ShowErrorNotification)
         }).finally(() => {
             api.getUsersInRoom(roomId).then(users => {
                 socket.emit('updateUserToServerUserList', {
@@ -799,3 +877,10 @@ export const closedBrowserUserList = (api: VideoRoomApi, roomId: number): any =>
     };
 }
 
+export const resetUpdateStatus = (): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.ResetUpdateStatus
+        } as ResetUpdateStatusAction);
+    }
+}
