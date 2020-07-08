@@ -26,23 +26,21 @@ export const ChatMessageInput = (props: Prop) => {
     }
 
     return (
-        <div>
-            <form className={classes.form} onSubmit={handleClick} autoComplete="off">
+        <div className={classes.typingSection}>
+            <form className={classes.formControl} onSubmit={handleClick} autoComplete="off">
                 <TextField
                     type="text"
                     placeholder="Send a message..."
                     id="messageSender"
                     variant="outlined"
-                    className={classes.formControl}
                     InputProps={{
-                        className: classes.formControl
+                        className: classes.textField
                     }}
                     InputLabelProps={{
                         shrink: true
                     }}
-
-                    value={props.msg}
                     onChange={event => handleChange(event.target.value)}
+                    value={props.msg}
                 />
             </form>
         </div>

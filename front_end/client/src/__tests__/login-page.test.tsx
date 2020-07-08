@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import { User } from "../api/video-room-types";
 import { LoginPage } from '../components/login/login-page';
 import { LoginForm } from '../components/login/login-form';
+import { NotificationState, NotificationType } from '../store/notifications/notifications';
 
 jest.mock('../App.tsx', () => "root");
 
@@ -11,8 +12,24 @@ const users: User = {
     name: 'tester',
 };
 
+enum Status {
+    NotStarted="NOT_STARTED",
+    Running="RUNNING",
+    Succeeded="SUCCEEDED",
+    Failed="FAILED",
+};
+
+const notificationState: NotificationState = {
+    displayNotification: true,
+    notificationType: NotificationType.Successs,
+    notificationHeader: "Testing",
+    notificationBody: "Testing"
+};
+
 const props = {
-    currentUser: users
+    currentUser: users,
+    updateStatus: Status.NotStarted,
+    notificationState: notificationState,
 };
 
 const setup = () => {
