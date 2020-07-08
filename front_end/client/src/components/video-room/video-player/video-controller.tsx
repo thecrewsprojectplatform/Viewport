@@ -23,7 +23,7 @@ const VideoController = (props: Prop) => {
         if (props.reactPlayer) {
             props.reactPlayer.seekTo(props.player.videoTime)
         }
-    }, [props.player.videoTime])
+    }, [props.player.videoTime, props.reactPlayer])
 
     /**
      * Takes care of video time selection

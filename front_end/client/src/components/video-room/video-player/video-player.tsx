@@ -35,7 +35,6 @@ const VideoPlayer = (props: Prop) => {
      * @param state the state of the video
      */
     const handleProgress = state => {
-        console.log(props.player.videoState)
         if (!props.seeking) {
             api.updateRoom(
                 props.currentRoom.id,
