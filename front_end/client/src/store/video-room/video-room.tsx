@@ -579,6 +579,9 @@ export const createUserAndAddToRoom = (api: VideoRoomApi, roomId: number, userNa
             type: ActionType.CreateUserAndAddToRoom,
         } as CreateUserAndAddToRoomAction);
         api.createUser(userName).then(user => {
+            socket.emit('getCurrentUser', {
+                currentUser: user
+            });
             api.addUserToRoom(roomId, user.id).then(response => {
                 dispatch({
                     type: ActionType.CreateUserAndAddToRoomSuccess,
@@ -601,7 +604,14 @@ export const createUserAndAddToRoom = (api: VideoRoomApi, roomId: number, userNa
                 header: "Failed to create user",
                 body: err.toString()
             } as ShowErrorNotification)
-        });
+        }).finally(() => {
+            api.getUsersInRoom(roomId).then(users => {
+                socket.emit('updateUserToServerUserList', {
+                    currentRoomId: roomId,
+                    clientList: users
+                });
+            });
+        });;
     };
 };
 
