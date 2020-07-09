@@ -60,13 +60,11 @@ export const ChatApp = (props: Prop) => {
                 }
                 <div ref={messagesEndRef} />
             </div>
-            <div>
-                <ChatMessageInput
-                    sendMessageClick={sendMessageClick}
-                    setMessage={setMessage}
-                    msg={msg}
-                />
-            </div>
+            <ChatMessageInput
+                sendMessageClick={sendMessageClick}
+                setMessage={setMessage}
+                msg={msg}
+            />
         </div>
     )
 }

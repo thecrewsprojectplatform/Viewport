@@ -26,17 +26,17 @@ const useStyles = makeStyles((theme) => ({
         flexBasis: 0,
         flexGrow: 3,
         maxWidth: '25%',
-        height: 'calc(120vh - 300px)',
+        height: 'calc(125vh - 300px)',
         border: '1px solid #E0E0E0',
         borderRadius: '10px',
         overflow: 'hidden',
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
     },
     chatHeader: {
-        paddingTop: theme.spacing(2),
+        paddingTop: theme.spacing(1.5),
         paddingLeft: theme.spacing(1),
         borderBottom: '1px solid #E0E0E0',
-        height: '6%',
+        height: '5%',
         background: '#E3E3E3',
         fontSize: '80%',
     },
@@ -51,14 +51,18 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: '3%'
     },
     typingSection: {
-        height: '4%',
+        height: '5%',
+        paddingLeft: '3%',
+        paddingRight: '3%'
     },
     formControl: {
         width: '100%',
-        height: '90%',
         fontSize: '90%',
         paddingLeft: '3%',
         paddingRight: '3%',
+    },
+    textField: {
+        height: 25,
     },
     videoPlayer: {
         flexGrow: 10,

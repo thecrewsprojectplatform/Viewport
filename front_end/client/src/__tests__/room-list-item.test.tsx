@@ -7,11 +7,6 @@ import ListItem from '@material-ui/core/ListItem';
 const roomDetail: Room = {
     id: 1,
     name: 'tester',
-    video_id: 'test id',
-    video_url: 'test.com',
-    video_state: 'test state',
-    video_time: 1,
-    video_length: 1
 };
 
 describe('Roomlist Item component', () => {

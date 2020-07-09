@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import { JoinCreateRoomPage } from "../components/join-create-room/join-create-room-page";
 import NavBar from "../components/nav-bar";
 import { RoomListR } from '../components/join-create-room/room-list';
+import { NotificationState, NotificationType } from '../store/notifications/notifications';
 
 jest.mock('../App.tsx', () => "root");
 
@@ -13,11 +14,19 @@ enum Status {
     Failed="FAILED",
 };
 
+const notificationState: NotificationState = {
+    displayNotification: true,
+    notificationType: NotificationType.Successs,
+    notificationHeader: "Testing",
+    notificationBody: "Testing"
+};
+
 const props = {
     users: [],
     roomList: [],
     currentUser: { id: 1, name:'tester' },
     updateStatus: Status.NotStarted,
+    notificationState: notificationState,
 };
 
 const setup = () => {
