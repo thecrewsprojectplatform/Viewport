@@ -642,7 +642,7 @@ export const createUser = (api: VideoRoomApi, userName: string): any => {
     };
 };
 
-export const editUserName = (api: VideoRoomApi, userId: number, newUserName: string): any => {
+export const editUserName = (api: VideoRoomApi, userId: number, roomId: number, newUserName: string): any => {
     return (dispatch): any => {
         dispatch({
             type: ActionType.EditUserName,
@@ -664,6 +664,13 @@ export const editUserName = (api: VideoRoomApi, userId: number, newUserName: str
                 header: "Failed to change user name",
                 body: err.toString()
             } as ShowErrorNotification)
+        }).finally(() => {
+            api.getUsersInRoom(roomId).then(users => {
+                socket.emit('updateUserToServerUserList', {
+                    currentRoomId: roomId,
+                    clientList: users
+                });
+            });
         });
     };
 };

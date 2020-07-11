@@ -24,7 +24,7 @@ interface Prop {
  *      Play/Pause button
  *      Video Controller
  */
-const VideoPlayer = (props: Prop) => {
+export const VideoPlayer = (props: Prop) => {
     const classes = useStyles();
     const api = useContext<VideoRoomApi>(ApiContext)
 
