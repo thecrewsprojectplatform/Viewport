@@ -13,7 +13,7 @@ import { ApiContext } from "..";
 import NavBar from "../nav-bar";
 import useStyles from "../styles";
 import { ChatAppR } from "./chat-app/chat-app"
-import { EditUserModal } from "./edit-user-modal";
+import { EditUserModal } from "./user-list/edit-user-modal";
 import { UserList } from "./user-list/user-list";
 import VideoPlayer from "./video-player/video-player"
 
@@ -95,6 +95,7 @@ export const VideoRoomPage = (props: Prop) => {
                     {
                         showEditUserModal &&
                         <EditUserModal
+                            currentRoom={props.currentRoom}
                             currentUser={props.currentUser}
                             onClose={() => {setShowEditUserModal(false)}}
                         />

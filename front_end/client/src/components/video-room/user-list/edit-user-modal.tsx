@@ -1,15 +1,16 @@
 import React, { useContext, useState } from "react";
 import { TextField, Button } from "@material-ui/core";
 
-import { User } from "../../api/video-room-types";
-import { VideoRoomApi } from "../../api/video-room-api";
-import { store } from "../../store";
-import { editUserName } from "../../store/video-room/video-room";
-import { ApiContext } from "..";
-import { BaseModal } from "../common/base-modal";
-import useStyles from "../styles";
+import { User, Room } from "../../../api/video-room-types";
+import { VideoRoomApi } from "../../../api/video-room-api";
+import { store } from "../../../store";
+import { editUserName } from "../../../store/video-room/video-room";
+import { ApiContext } from "../..";
+import { BaseModal } from "../../common/base-modal";
+import useStyles from "../../styles";
 
 export interface Prop {
+    currentRoom: Room;
     currentUser: User;
     onClose: () => void;
 }
@@ -24,7 +25,7 @@ export const EditUserModal = (props: Prop) => {
     }
 
     const handleSubmit = (event): void => {
-        store.dispatch(editUserName(api, props.currentUser.id, newUserName));
+        store.dispatch(editUserName(api, props.currentUser.id, props.currentRoom.id, newUserName));
         event.preventDefault();
     }
     return <BaseModal
