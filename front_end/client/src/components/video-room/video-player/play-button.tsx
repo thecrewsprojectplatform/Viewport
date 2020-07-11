@@ -14,7 +14,7 @@ interface Prop {
     currentRoom: Room
 }
 
-const PlayButton = (props: Prop) => {
+export const PlayButton = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
 
     // Check if the video is playing or paused
@@ -26,9 +26,9 @@ const PlayButton = (props: Prop) => {
     }
 
     /** Play/Pause button does the following 3 things:
-     *  1) updates the video_state in the api, 
-     *  2) reads the new video_state, 
-     *  3) sends the new video_state to all clients      
+     *  1) updates the video_state in the api,
+     *  2) reads the new video_state,
+     *  3) sends the new video_state to all clients
     */
    const handlePlayPause = () => {
         if (props.player?.videoState === null || props.player.videoState === "PAUSED") {
@@ -41,7 +41,7 @@ const PlayButton = (props: Prop) => {
     }
 
     return (
-        <Button variant='contained' 
+        <Button variant='contained'
             onClick={handlePlayPause}>{checkVideoState() ? <Pause/> : <PlayArrowRounded/>}
         </Button>
     );
@@ -60,7 +60,7 @@ const mapDispatchToProps = dispatch => {
             api: VideoRoomApi,
             currentRoom: Room,
             videoState: string,
-            videoTime: number            
+            videoTime: number
         ) => dispatch({type: ActionType.SendControl, api: api, currentRoom: currentRoom, videoState: videoState, videoTime: videoTime})
     }
 }
