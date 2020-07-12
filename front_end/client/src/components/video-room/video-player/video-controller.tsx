@@ -16,7 +16,7 @@ interface Prop {
     reactPlayer: any
 }
 
-const VideoController = (props: Prop) => {
+export const VideoController = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
 
     useEffect(() => {
@@ -27,7 +27,7 @@ const VideoController = (props: Prop) => {
 
     /**
      * Takes care of video time selection
-     * @param event 
+     * @param event
      * @param newTime what part of the video to go to, by percentage, where 1 represents the end of the video
      */
     const handleSeekChange = (event, newTime) => {
@@ -49,7 +49,7 @@ const VideoController = (props: Prop) => {
     }
 
     return (
-        <Slider 
+        <Slider
             value={props.player.videoTime}
             onChange={handleSeekChange}
             min={0.0}
