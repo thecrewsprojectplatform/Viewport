@@ -17,7 +17,7 @@ interface Prop {
     user: User
 }
 
-const SearchBar = (props: Prop) => {
+export const SearchBar = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
 
     const classes = useStyles();
@@ -37,8 +37,8 @@ const SearchBar = (props: Prop) => {
         if ((event.key === 'Enter') && (url !== "")) {
             loadButton()
         }
-    };
-        
+    }
+
     // By default, set the video_state to paused after loading
     const loadButton = () => {
         props.sendUrlToServer(
@@ -52,10 +52,10 @@ const SearchBar = (props: Prop) => {
 
     return (
         <div>
-            <TextField  
+            <TextField
                 error={displayError()}
                 variant='filled'
-                type='text' 
+                type='text'
                 placeholder='Enter URL'
                 onChange={event => setUrl(event.target.value)}
                 onKeyDown={handleEnter}
@@ -89,7 +89,7 @@ const mapDispatchToProps = dispatch => {
         sendUrlToServer: (
             api: VideoRoomApi,
             currentRoom: Room,
-            url: string,            
+            url: string,
             userId: number,
             userName: string
         ) => dispatch({type: ActionType.SendUrlToServer, api: api, currentRoom: currentRoom, url: url, userId: userId, userName: userName}),
