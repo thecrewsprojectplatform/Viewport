@@ -1,10 +1,16 @@
 # The Crew Project I 
 
 ### Project Members
-**Andrew Hoang** 
-**Eric Pan**
-**Michael Nguyen**
-**Sung Hyun Ahn**
+* **Andrew Hoang**
+* **Eric Pan**
+* **Michael Nguyen**
+* **Sung Hyun Ahn**
+
+
+
+
+
+
 
 
 # ------ Frontend Setup ------
@@ -47,6 +53,13 @@ To start the test, navigate to the 'client' directory and run:
 ```
 npm test
 ```
+
+
+
+
+
+
+
 
 # ------ Backend Setup ------
 
