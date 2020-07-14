@@ -24,6 +24,7 @@ Need to add what features there are in this project
 clips of the project goes here
 
 <br></br>
+<br></br>
 
 # ------ Frontend Setup ------
 
@@ -72,7 +73,6 @@ npm test
 ```
 
 
-<br></br>
 <br></br>
 <br></br>
 
