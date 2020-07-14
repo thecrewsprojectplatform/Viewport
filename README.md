@@ -22,6 +22,7 @@ Need to add what features there are in this project
 
 ## Demo
 ![Login and Room List](https://j.gifs.com/OMnL6g.gif)
+![Video Player](https://j.gifs.com/zvJQYr.gif)
 
 <br></br>
 <br></br>
