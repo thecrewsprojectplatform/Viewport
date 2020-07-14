@@ -17,8 +17,8 @@ interface Prop {
 
 /**
  * Represents a user of our application.
- * 
- * @param {Object} props The properties of a User. 
+ *
+ * @param {Object} props The properties of a User.
  *                 Requires a User which holds an userId
  *                 and a username.
  * @returns {JSX.Element} The JSX representing the RoomList.
@@ -37,7 +37,7 @@ export const UserListItem = (props: Prop) => {
                                 <AccountCircleOutlinedIcon />
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary={props.user.name}/>
+                        <ListItemText primary={props.user.name} classes={{ primary: classes.userName }}/>
                         <ListItemSecondaryAction>
                             <IconButton edge="end">
                                 <EditIcon onClick={props.onEditClick} />
@@ -45,7 +45,7 @@ export const UserListItem = (props: Prop) => {
                         </ListItemSecondaryAction>
                     </Fragment>
                 ) : (
-                    <ListItemText primary={props.user.name} className={classes.userName} inset />
+                    <ListItemText primary={props.user.name} classes={{ primary: classes.userName}} inset />
                 )
             }
         </ListItem>
