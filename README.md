@@ -1,16 +1,27 @@
-# The Crew Project I 
+# The Crew Project I - Project Name Goes here
 
-### Project Members
+## Project Description
+Project description goes here
+Need to add what features there are in this project
+
+## The Project Members
 * [**Andrew Hoang**](https://github.com/Andrew03)
 * [**Eric Pan**](https://github.com/ericpan0207)
 * [**Michael Nguyen**](https://github.com/michan4)
 * [**Sung Hyun Ahn**](https://github.com/sahn1998)
 
-
-<br></br>
-<br></br>
 <br></br>
 
+## Project Code Base
+**Front-End:** ReactJS/Typescript
+**Back-End:** Python 
+
+<br></br>
+
+## Demo
+clips of the project goes here
+
+<br></br>
 
 # ------ Frontend Setup ------
 
