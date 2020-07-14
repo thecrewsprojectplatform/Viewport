@@ -28,7 +28,7 @@ Make sure that npm install is initiated in both:
 For Enzyme (Testing), you may need to run: 
 npm i --save-dev enzyme enzyme-adapter-react-16
 
-### Running the Frontend Client Application
+## Running the Frontend Client Application
 To start the client application, navigate to the 'client' directory and run:
 
 ```
@@ -39,7 +39,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.
 
 
-### Running the SocketIO Server
+## Running the SocketIO Server
 From this directory, run
 
 '''
