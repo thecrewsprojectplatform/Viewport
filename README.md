@@ -77,6 +77,8 @@ To create the database for the first time, run:
 python create_new_db.py
 ```
 
+<br></br>
+
 ## Running the Tests
 To run the backend tests, run:
 ```
