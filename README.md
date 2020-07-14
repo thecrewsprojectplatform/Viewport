@@ -1,7 +1,7 @@
 # The Crew Project I - Project Name Goes here
 
 ## Project Description
-Project description goes here
+Project description goes here  
 Need to add what features there are in this project
 
 <br></br>
