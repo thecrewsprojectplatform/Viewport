@@ -1,10 +1,10 @@
 # The Crew Project I 
 
 ### Project Members
-* **Andrew Hoang**  
-* **Eric Pan**  
-* **Michael Nguyen**  
-* **Sung Hyun Ahn**  
+* [**Andrew Hoang**](https://github.com/Andrew03)
+* [**Eric Pan**](https://github.com/ericpan0207)
+* [**Michael Nguyen**](https://github.com/michan4)
+* [**Sung Hyun Ahn**](https://github.com/sahn1998)
 
 
 <br></br>
