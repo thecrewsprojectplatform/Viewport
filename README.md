@@ -21,7 +21,7 @@ Need to add what features there are in this project
 <br></br>
 
 ## Demo
-clips of the project goes here
+![Login and Room List](https://j.gifs.com/OMnL6g.gif)
 
 <br></br>
 <br></br>
