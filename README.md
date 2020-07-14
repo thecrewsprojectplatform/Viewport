@@ -15,8 +15,8 @@ Need to add what features there are in this project
 <br></br>
 
 ## Project Code Base
-**Front-End:** ReactJS/Typescript
-**Back-End:** Python 
+<p> **Front-End:** ReactJS/Typescript </p>
+<p> **Back-End:** Python </p>
 
 <br></br>
 
