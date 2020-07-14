@@ -34,13 +34,14 @@ export const ChatMessageInput = (props: Prop) => {
                     id="messageSender"
                     variant="outlined"
                     InputProps={{
-                        className: classes.textField
+                        className: classes.textField,
                     }}
                     InputLabelProps={{
                         shrink: true
                     }}
                     onChange={event => handleChange(event.target.value)}
                     value={props.msg}
+                    fullWidth
                 />
             </form>
         </div>
