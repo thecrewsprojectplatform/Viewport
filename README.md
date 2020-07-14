@@ -7,13 +7,11 @@
 * **Sung Hyun Ahn**  
 
 
-
-
-
-
-
 <br></br>
 <br></br>
+<br></br>
+
+
 # ------ Frontend Setup ------
 
 ## Setup
@@ -56,10 +54,9 @@ npm test
 ```
 
 
-
-
-
-
+<br></br>
+<br></br>
+<br></br>
 
 
 # ------ Backend Setup ------
