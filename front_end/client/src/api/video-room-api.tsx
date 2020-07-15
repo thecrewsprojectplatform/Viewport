@@ -32,14 +32,15 @@ export class VideoRoomApi {
         });
     }
 
-    async updateRoom(roomId: number, name: string, videoId: string, videoUrl: string, videoState: string, videoTime: number, videoLength: number): Promise<void> {
+    async updateRoom(roomId: number, name: string, videoId: string, videoUrl: string, videoState: string, videoTime: number, videoLength: number, videoVolume: number): Promise<void> {
         return axios.put(this.BASE_URL + "/rooms/" + roomId, {
             "name": name,
             "video_id": videoId,
             "video_url": videoUrl,
             "video_state": videoState,
             "video_time": videoTime,
-            "video_length": videoLength
+            "video_length": videoLength,
+            "video_volume": videoVolume
         }).then(response => {
             //console.log("room updated succesfully")
             //console.log(response.data)

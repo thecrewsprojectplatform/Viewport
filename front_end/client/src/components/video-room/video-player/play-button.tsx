@@ -32,10 +32,10 @@ export const PlayButton = (props: Prop) => {
     */
    const handlePlayPause = () => {
         if (props.player?.videoState === null || props.player.videoState === "PAUSED") {
-            props.sendControl(api, props.currentRoom, "PLAYING", props.player.videoTime)
+            props.sendControl(api, props.currentRoom, "PLAYING", props.player.videoTime, props.player.videoVolume)
         } else if (props.player.videoState === "PLAYING") {
             api.getRoom(props.currentRoom.id).then(room => {
-                props.sendControl(api, props.currentRoom, "PAUSED", room.video_time)
+                props.sendControl(api, props.currentRoom, "PAUSED", room.video_time, props.player.videoVolume)
             })
         }
     }
@@ -59,9 +59,10 @@ const mapDispatchToProps = dispatch => {
         sendControl: (
             api: VideoRoomApi,
             currentRoom: Room,
-            videoState: string,
-            videoTime: number
-        ) => dispatch({type: ActionType.SendControl, api: api, currentRoom: currentRoom, videoState: videoState, videoTime: videoTime})
+            videoState: number,
+            videoTime: number,
+            videoVolume: number
+        ) => dispatch({type: ActionType.SendControl, api: api, currentRoom: currentRoom, videoState: videoState, videoTime: videoTime, videoVolume: videoVolume})
     }
 }
 

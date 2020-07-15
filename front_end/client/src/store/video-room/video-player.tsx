@@ -15,7 +15,8 @@ const initialState: VideoPlayerState = {
         videoUrl: "",
         videoState: "PAUSED",
         videoTime: 0,
-        videoLength: 0
+        videoLength: 0,
+        videoVolume: 0.5
     },
     seeking: false
 };
@@ -40,6 +41,7 @@ interface SendControlAction {
     currentRoom: Room;
     videoState: string;
     videoTime: number;
+    videoVolume: number;
 }
 
 interface ControlVideoAction {
@@ -87,7 +89,8 @@ export const reducer = (
                     action.url,
                     "PAUSED",
                     0,
-                    0
+                    0,
+                    0.5
                 )
                 draftState.player.videoUrl = action.url;
             });
@@ -105,15 +108,18 @@ export const reducer = (
                     draftState.player.videoUrl,
                     action.videoState,
                     action.videoTime,
-                    draftState.player.videoLength
+                    draftState.player.videoLength,
+                    action.videoVolume
                 )
                 draftState.player.videoState = action.videoState;
                 draftState.player.videoTime = action.videoTime;
+                draftState.player.videoVolume = action.videoVolume;
             });
         case ActionType.ControlVideo:
             return produce(state, draftState => {
                 draftState.player.videoTime = action.roomApi.video_time
                 draftState.player.videoState = action.roomApi.video_state
+                draftState.player.videoVolume = action.roomApi.video_volume
             });
         case ActionType.SetSeeking:
             return produce(state, draftState => {
@@ -167,7 +173,8 @@ const updateVideoState = (
         videoUrl: string,
         videoState: string,
         videoTime: number,
-        videoLength: number
+        videoLength: number,
+        videoVolume: number
     ) => {
         api.updateRoom(
             roomId,
@@ -176,7 +183,8 @@ const updateVideoState = (
             videoUrl,
             videoState,
             videoTime,
-            videoLength
+            videoLength,
+            videoVolume
         ).then(() => {
             getAndSendRoomState(api, roomId)
         })

@@ -9,6 +9,7 @@ import useStyles from '../../styles';
 import { PlayButtonR } from './play-button';
 import { SearchBarR } from './search-bar';
 import { VideoControllerR } from './video-controller'
+import { VolumeControllerR } from './volume-controller'
 import './video-player.css';
 
 interface Prop {
@@ -43,7 +44,8 @@ export const VideoPlayer = (props: Prop) => {
                 props.player.videoUrl,
                 props.player.videoState,
                 state.played,
-                props.player.videoLength
+                props.player.videoLength,
+                props.player.videoVolume
             )
         }
     }
@@ -70,11 +72,13 @@ export const VideoPlayer = (props: Prop) => {
                         }}
                         playing={props.player?.videoState === "PAUSED" ? false : true}
                         onProgress={handleProgress}
+                        volume={props.player.videoVolume}
                     />
                 </div>
                 <PlayButtonR />
                 
                 <VideoControllerR reactPlayer={reactPlayer}/>
+                <VolumeControllerR />
                 
 
             </div>

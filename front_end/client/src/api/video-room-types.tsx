@@ -14,6 +14,7 @@ export interface Player {
     videoState: string;
     videoTime: number;
     videoLength: number;
+    videoVolume: number;
 }
 
 /**
