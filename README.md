@@ -4,7 +4,7 @@
 The Crew Project I is a web-application project where you can concurrently watch videos and chat with others.<br>
 **React-player package** has been used for effective video player communication.<br>
 **Socket.io** has been used for nearly all client-server communications including userlist, roomlist, live-chat box, and video synchronization.<br>
-We also have included the capability to join the server room via link for efficiency.
+We also have included the capability to join the server room via url link for efficiency.
 
 <br></br>
 
