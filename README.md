@@ -1,8 +1,16 @@
 # The Crew Project I - Project Name Goes here
 
 ## Project Description
-Project description goes here  
-Need to add what features there are in this project
+Watch videos concurrently with others
+
+## Features
+* Synchronized Video Playback
+  * Video Loading
+  * Video Scrolling
+  * Play/Pause
+* Live Chat Box
+* User List
+* Room Creation/Selection
 
 <br></br>
 
