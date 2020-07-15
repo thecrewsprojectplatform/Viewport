@@ -3,6 +3,8 @@
 ## Project Description
 Watch videos concurrently with others
 
+<br></br>
+
 ## Features
 * Synchronized Video Playback
   * Video Loading
