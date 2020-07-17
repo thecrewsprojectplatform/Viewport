@@ -41,12 +41,23 @@ interface SendControlAction {
     currentRoom: Room;
     videoState: string;
     videoTime: number;
-    videoVolume: number;
 }
 
 interface ControlVideoAction {
     type: ActionType.ControlVideo;
     roomApi: any;
+}
+
+interface SendVolumeAction {
+    type: ActionType.SendVolume;
+    api: VideoRoomApi;
+    currentRoom: Room;
+    videoVolume: number;
+}
+
+interface ControlVideoVolumeAction {
+    type: ActionType.ControlVideoVolume;
+    videoVolume: number;
 }
 
 interface SetSeekingAction {
@@ -59,12 +70,16 @@ export interface Actions {
     LoadVideoAction: LoadVideoAction
     SendControlAction: SendControlAction
     ControlVideoAction: ControlVideoAction
+    SendVolumeAction: SendVolumeAction
+    ControlVideoVolumeAction: ControlVideoVolumeAction
 }
 
 type Action =   SendUrlToServerAction |
                 LoadVideoAction |
                 SendControlAction |
                 ControlVideoAction |
+                SendVolumeAction |
+                ControlVideoVolumeAction |
                 SetSeekingAction;
 
 
@@ -89,10 +104,8 @@ export const reducer = (
                     action.url,
                     "PAUSED",
                     0,
-                    0,
-                    0.5
+                    0
                 )
-                draftState.player.videoUrl = action.url;
             });
         case ActionType.LoadVideo:
             return produce(state, draftState => {
@@ -108,18 +121,25 @@ export const reducer = (
                     draftState.player.videoUrl,
                     action.videoState,
                     action.videoTime,
-                    draftState.player.videoLength,
-                    action.videoVolume
+                    draftState.player.videoLength
                 )
-                draftState.player.videoState = action.videoState;
-                draftState.player.videoTime = action.videoTime;
-                draftState.player.videoVolume = action.videoVolume;
             });
         case ActionType.ControlVideo:
             return produce(state, draftState => {
                 draftState.player.videoTime = action.roomApi.video_time
                 draftState.player.videoState = action.roomApi.video_state
-                draftState.player.videoVolume = action.roomApi.video_volume
+            });
+        case ActionType.SendVolume:
+            return produce(state, draftState => {
+                updateVolume(
+                    action.api,
+                    action.currentRoom.id,
+                    action.videoVolume
+                )
+            });
+        case ActionType.ControlVideoVolume:
+            return produce(state, draftState => {
+                draftState.player.videoVolume = action.videoVolume
             });
         case ActionType.SetSeeking:
             return produce(state, draftState => {
@@ -173,8 +193,7 @@ const updateVideoState = (
         videoUrl: string,
         videoState: string,
         videoTime: number,
-        videoLength: number,
-        videoVolume: number
+        videoLength: number
     ) => {
         api.updateRoom(
             roomId,
@@ -183,9 +202,32 @@ const updateVideoState = (
             videoUrl,
             videoState,
             videoTime,
-            videoLength,
-            videoVolume
+            videoLength
         ).then(() => {
             getAndSendRoomState(api, roomId)
         })
+}
+
+export const controlVideoVolume = (videoVolume: number): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.ControlVideoVolume,
+            videoVolume: videoVolume
+        })
+    }
+} 
+
+const getAndSendVolume = (api: VideoRoomApi, roomId: number) => {
+    api.getVideoVolume(roomId).then(videoVolume => {
+        socket.emit('sendVideoVolumeToServer', {
+            currentRoomId: roomId,
+            videoVolume: videoVolume
+        })
+    })
+}
+
+const updateVolume = (api: VideoRoomApi, roomId: number, videoVolume: number) => {
+    api.updateVideoVolume(roomId, videoVolume).then(() => {
+        getAndSendVolume(api, roomId)
+    })
 }

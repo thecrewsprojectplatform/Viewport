@@ -56,7 +56,7 @@ io.on('connection', socket => {
   })
 
   /*  SENDING A MESSAGE  */
-socket.on('clientMessageToServer', data => {
+  socket.on('clientMessageToServer', data => {
     console.log('Client has sent a message to the server')
     io.to(data.currentRoomId).emit('serverMessageToAllClients', data);
     console.log('message emitted to clients')
@@ -68,10 +68,14 @@ socket.on('clientMessageToServer', data => {
     console.log('url emitted to clients')
   })
 
-socket.on('sendControlsToServer', data => {
+  socket.on('sendControlsToServer', data => {
     console.log('Client has sent controls to the server')
     io.to(data.currentRoomId).emit('sendControlsToAllClients', data);
     console.log('controls emitted to clients')
+  })
+
+  socket.on('sendVideoVolumeToServer', data => {
+    io.to(data.currentRoomId).emit('sendVideoVolumeToAllClients', data);
   })
 
   /*  UPDATING THE USERLIST OF THE ROOM  */

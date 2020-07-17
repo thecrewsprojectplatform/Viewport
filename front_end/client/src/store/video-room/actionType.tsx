@@ -12,6 +12,8 @@ export enum ActionType {
     LoadVideo = "LOAD_VIDEO",
     SendControl = "SEND_CONTROL",
     ControlVideo = "CONTROL_VIDEO",
+    SendVolume = "SEND_VOLUME",
+    ControlVideoVolume = "CONTROL_VIDEO_VOLUME",
     SetSeeking = "SET_SEEKING",
     CreateRoomAndAddUserToRoom="CREATE_ROOM_AND_ADD_USER_TO_ROOM", 
     CreateRoomAndAddUserToRoomSuccess="CREATE_ROOM_AND_ADD_USER_TO_ROOM_SUCCESS",

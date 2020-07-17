@@ -44,8 +44,7 @@ export const VideoPlayer = (props: Prop) => {
                 props.player.videoUrl,
                 props.player.videoState,
                 state.played,
-                props.player.videoLength,
-                props.player.videoVolume
+                props.player.videoLength
             )
         }
     }

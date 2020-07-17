@@ -81,7 +81,6 @@ class RoomApi(Resource):
         self.reqparse.add_argument("video_state", type=str, required=False, default="PAUSED", location="json")
         self.reqparse.add_argument("video_time", type=float, required=False, default=0, location="json")
         self.reqparse.add_argument("video_length", type=float, required=False, default=0, location="json")
-        self.reqparse.add_argument("video_volume", type=float, required=False, default=0.5, location="json")
         super(RoomApi, self).__init__()
 
     @swagger.operation(
@@ -176,14 +175,6 @@ class RoomApi(Resource):
             {
                 "name": "video_length",
                 "description": "How long the video is, in seconds",
-                "required": False,
-                "allowMultiple": False,
-                "dataType": "float",
-                "paramType": "body"
-            },
-            {
-                "name": "video_volume",
-                "description": "How loud the video is",
                 "required": False,
                 "allowMultiple": False,
                 "dataType": "float",

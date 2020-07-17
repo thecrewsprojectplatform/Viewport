@@ -32,7 +32,7 @@ export const VideoController = (props: Prop) => {
      */
     const handleSeekChange = (event, newTime) => {
         props.setSeeking(true)
-        props.sendControl(api, props.currentRoom, props.player.videoState, newTime, props.player.videoVolume)
+        props.sendControl(api, props.currentRoom, props.player.videoState, newTime)
         props.setSeeking(false)
     }
 
@@ -79,9 +79,8 @@ const mapDispatchToProps = dispatch => {
             api: VideoRoomApi,
             currentRoom: Room,
             videoState: number,
-            videoTime: number,
-            videoVolume: number
-        ) => dispatch({type: ActionType.SendControl, api: api, currentRoom: currentRoom, videoState: videoState, videoTime: videoTime, videoVolume: videoVolume})
+            videoTime: number
+        ) => dispatch({type: ActionType.SendControl, api: api, currentRoom: currentRoom, videoState: videoState, videoTime: videoTime})
     }
 }
 

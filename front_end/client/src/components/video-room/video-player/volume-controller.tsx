@@ -9,6 +9,7 @@ import { ApiContext } from '../..';
 
 interface Prop {
     sendControl: Function
+    sendVolume: Function
     currentRoom: Room
     player: Player
 }
@@ -17,7 +18,8 @@ export const VolumeController = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
 
     const handleSeekChange = (event, newVolume) => {
-        props.sendControl(api, props.currentRoom, props.player.videoState, props.player.videoTime, newVolume)
+        props.sendVolume(api, props.currentRoom, newVolume)
+        //props.sendControl(api, props.currentRoom, props.player.videoState, props.player.videoTime, newVolume)
     }
 
     /**
@@ -51,6 +53,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        sendVolume: (
+            api: VideoRoomApi,
+            currentRoom: Room,
+            videoVolume: number
+        ) => dispatch({type: ActionType.SendVolume, api: api, currentRoom: currentRoom, videoVolume: videoVolume}),
         sendControl: (
             api: VideoRoomApi,
             currentRoom: Room,
