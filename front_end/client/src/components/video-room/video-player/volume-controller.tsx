@@ -1,11 +1,13 @@
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
-import { Slider } from '@material-ui/core';
+import { Grid, Slider } from '@material-ui/core';
+import { VolumeDown, VolumeUp } from '@material-ui/icons';
 
 import { Player, Room } from '../../../api/video-room-types';
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { ActionType } from '../../../store/video-room/actionType';
 import { ApiContext } from '../..';
+
 
 interface Prop {
     sendControl: Function
@@ -27,20 +29,30 @@ export const VolumeController = (props: Prop) => {
      * @param value the original slider value
      */
     const formatSliderLabel = (value) => {
-        return 0
+        return Math.trunc(value * 100) + "%"
     }
 
     return (
-        <Slider
-            value={props.player.videoVolume}
-            onChange={handleSeekChange}
-            min={0.0}
-            max={1.0}
-            step={0.01}
-            aria-labelledby="continous-slider"
-            valueLabelDisplay="auto"
-            //valueLabelFormat={value => <div>{formatSliderLabel(value)} </div>}
-        />
+        <Grid container spacing={2} style={{display: "flex", alignItems: 'center'}}>
+            <Grid item>
+                <VolumeDown fontSize={"small"}/>
+            </Grid>
+            <Grid item xs>
+                <Slider
+                    value={props.player.videoVolume}
+                    onChange={handleSeekChange}
+                    min={0.0}
+                    max={1.0}
+                    step={0.01}
+                    aria-labelledby="continous-slider"
+                    valueLabelDisplay="auto"
+                    valueLabelFormat={value => <div>{formatSliderLabel(value)} </div>}
+                />
+            </Grid>
+            <Grid item>
+                <VolumeUp fontSize={"small"}/>
+            </Grid>
+        </Grid>
     )
 }
 

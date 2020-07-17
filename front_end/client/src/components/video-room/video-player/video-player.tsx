@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { connect } from 'react-redux';
 import ReactPlayer from 'react-player'
+import { Grid } from '@material-ui/core'
 
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { Player, Room, User } from '../../../api/video-room-types';
@@ -74,10 +75,17 @@ export const VideoPlayer = (props: Prop) => {
                         volume={props.player.videoVolume}
                     />
                 </div>
-                <PlayButtonR />
-                
-                <VideoControllerR reactPlayer={reactPlayer}/>
-                <VolumeControllerR />
+                <Grid container spacing={2}>
+                    <Grid item>
+                        <PlayButtonR />
+                    </Grid>
+                    <Grid item xs>
+                        <VideoControllerR reactPlayer={reactPlayer}/>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <VolumeControllerR />
+                    </Grid>
+                </Grid>
                 
 
             </div>
