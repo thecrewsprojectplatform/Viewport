@@ -10,6 +10,8 @@ import { ApiContext } from '../..';
 
 interface Prop {
     sendControl: Function
+    play: Function
+    pause: Function
     player: Player
     currentRoom: Room
 }
@@ -32,11 +34,9 @@ export const PlayButton = (props: Prop) => {
     */
    const handlePlayPause = () => {
         if (props.player?.videoState === null || props.player.videoState === "PAUSED") {
-            props.sendControl(api, props.currentRoom, "PLAYING", props.player.videoTime)
+            props.play()
         } else if (props.player.videoState === "PLAYING") {
-            api.getRoom(props.currentRoom.id).then(room => {
-                props.sendControl(api, props.currentRoom, "PAUSED", room.video_time)
-            })
+            props.pause()
         }
     }
 

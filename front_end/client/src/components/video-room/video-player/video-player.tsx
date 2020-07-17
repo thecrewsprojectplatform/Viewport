@@ -91,7 +91,7 @@ export const VideoPlayer = (props: Prop) => {
                 </div>
                 <Grid container spacing={2}>
                     <Grid item>
-                        <PlayButtonR />
+                        <PlayButtonR play={handleOnScreenPlay} pause={handleOnScreenPause} />
                     </Grid>
                     <Grid item xs>
                         <VideoControllerR reactPlayer={reactPlayer}/>
