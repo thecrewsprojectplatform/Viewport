@@ -4,6 +4,7 @@ import ReactPlayer from 'react-player'
 import { Grid } from '@material-ui/core'
 
 import { VideoRoomApi } from '../../../api/video-room-api';
+import { ActionType } from '../../../store/video-room/actionType';
 import { Player, Room, User } from '../../../api/video-room-types';
 import { ApiContext } from '../..';
 import useStyles from '../../styles';
@@ -14,6 +15,7 @@ import { VolumeControllerR } from './volume-controller'
 import './video-player.css';
 
 interface Prop {
+    sendControl: Function;
     currentRoom: Room;
     player: Player;
     user: User;
@@ -49,6 +51,16 @@ export const VideoPlayer = (props: Prop) => {
             )
         }
     }
+
+    const handleOnScreenPlay = () => {
+        props.sendControl(api, props.currentRoom, "PLAYING", props.player.videoTime)
+    }
+
+    const handleOnScreenPause = () => {
+        api.getRoom(props.currentRoom.id).then(room => {
+            props.sendControl(api, props.currentRoom, "PAUSED", room.video_time)
+        })
+    }
     
     return (
         <div className={classes.videoPlayer}>
@@ -73,6 +85,8 @@ export const VideoPlayer = (props: Prop) => {
                         playing={props.player?.videoState === "PAUSED" ? false : true}
                         onProgress={handleProgress}
                         volume={props.player.videoVolume}
+                        onPlay={handleOnScreenPlay}
+                        onPause={handleOnScreenPause}
                     />
                 </div>
                 <Grid container spacing={2}>
@@ -103,4 +117,15 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(VideoPlayer);
+const mapDispatchToProps = dispatch => {
+    return {
+        sendControl: (
+            api: VideoRoomApi,
+            currentRoom: Room,
+            videoState: number,
+            videoTime: number
+        ) => dispatch({type: ActionType.SendControl, api: api, currentRoom: currentRoom, videoState: videoState, videoTime: videoTime})
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(VideoPlayer);

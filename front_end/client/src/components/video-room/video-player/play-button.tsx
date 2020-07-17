@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { connect } from 'react-redux';
-import { Button, IconButton } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 import { Pause, PlayArrowRounded } from '@material-ui/icons/';
 
 import { Player, Room } from '../../../api/video-room-types';
