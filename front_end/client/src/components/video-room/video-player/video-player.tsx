@@ -26,7 +26,8 @@ interface Prop {
  * Creates a video player with the following attributes:
  *      Input field for loading videos from an url
  *      Play/Pause button
- *      Video Controller
+ *      Video Control
+ *      Volume Control
  */
 export const VideoPlayer = (props: Prop) => {
     const classes = useStyles();
@@ -66,7 +67,6 @@ export const VideoPlayer = (props: Prop) => {
         <div className={classes.videoPlayer}>
             <div>                
                 <SearchBarR />
-                
                 <div className='player-wrapper'>
                     <ReactPlayer
                         ref={setReactPlayer}
@@ -100,8 +100,6 @@ export const VideoPlayer = (props: Prop) => {
                         <VolumeControllerR />
                     </Grid>
                 </Grid>
-                
-
             </div>
         </div>
     );

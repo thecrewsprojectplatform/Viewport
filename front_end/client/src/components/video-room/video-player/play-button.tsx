@@ -5,11 +5,9 @@ import { Pause, PlayArrowRounded } from '@material-ui/icons/';
 
 import { Player, Room } from '../../../api/video-room-types';
 import { VideoRoomApi } from '../../../api/video-room-api';
-import { ActionType } from '../../../store/video-room/actionType';
 import { ApiContext } from '../..';
 
 interface Prop {
-    sendControl: Function
     play: Function
     pause: Function
     player: Player
@@ -58,15 +56,5 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        sendControl: (
-            api: VideoRoomApi,
-            currentRoom: Room,
-            videoState: number,
-            videoTime: number
-        ) => dispatch({type: ActionType.SendControl, api: api, currentRoom: currentRoom, videoState: videoState, videoTime: videoTime})
-    }
-}
 
-export const PlayButtonR = connect(mapStateToProps, mapDispatchToProps)(PlayButton);
+export const PlayButtonR = connect(mapStateToProps)(PlayButton);
