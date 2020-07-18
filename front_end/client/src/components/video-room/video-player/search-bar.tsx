@@ -12,7 +12,6 @@ import useStyles from '../../styles';
 
 interface Prop {
     sendUrlToServer: Function
-    sendControl: Function
     currentRoom: Room
     user: User
 }
@@ -93,12 +92,6 @@ const mapDispatchToProps = dispatch => {
             userId: number,
             userName: string
         ) => dispatch({type: ActionType.SendUrlToServer, api: api, currentRoom: currentRoom, url: url, userId: userId, userName: userName}),
-        sendControl: (
-            api: VideoRoomApi,
-            currentRoom: Room,
-            videoState: number,
-            videoTime: number
-        ) => dispatch({type: ActionType.SendControl, api: api, currentRoom: currentRoom, videoState: videoState, videoTime: videoTime})
     }
 }
 

@@ -42,7 +42,11 @@ export const VideoController = (props: Prop) => {
      */
     const formatSliderLabel = (value) => {
         if (props.reactPlayer) {
-            return Math.trunc(props.reactPlayer.getDuration() * value)
+            const videoTime = Math.trunc(props.reactPlayer.getDuration() * value)
+            const minute = Math.trunc(videoTime / 60)
+            const second = videoTime - minute * 60
+            const secondString = second < 10 ? "0" + second : second
+            return minute + ":" + secondString
         } else {
             console.log('player not found while formatting slider')
         }

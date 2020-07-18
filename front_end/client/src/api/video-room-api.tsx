@@ -39,7 +39,24 @@ export class VideoRoomApi {
             "video_url": videoUrl,
             "video_state": videoState,
             "video_time": videoTime,
-            "video_length": videoLength
+            "video_length": videoLength,
+        }).then(response => {
+            //console.log("room updated succesfully")
+            //console.log(response.data)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    async getVideoVolume(roomId: number): Promise<number> {
+        return axios.get(this.BASE_URL + "/rooms/" + roomId + "/video_volume").then(response => {
+            return response.data;
+        });
+    }
+
+    async updateVideoVolume(roomId: number, videoVolume: number): Promise<void> {
+        return axios.put(this.BASE_URL + "/rooms/" + roomId + "/video_volume", {
+            "video_volume": videoVolume
         }).then(response => {
             //console.log("room updated succesfully")
             //console.log(response.data)

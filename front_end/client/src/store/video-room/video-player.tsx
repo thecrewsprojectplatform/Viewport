@@ -15,7 +15,8 @@ const initialState: VideoPlayerState = {
         videoUrl: "",
         videoState: "PAUSED",
         videoTime: 0,
-        videoLength: 0
+        videoLength: 0,
+        videoVolume: 0.5
     },
     seeking: false
 };
@@ -47,6 +48,18 @@ interface ControlVideoAction {
     roomApi: any;
 }
 
+interface SendVolumeAction {
+    type: ActionType.SendVolume;
+    api: VideoRoomApi;
+    currentRoom: Room;
+    videoVolume: number;
+}
+
+interface ControlVideoVolumeAction {
+    type: ActionType.ControlVideoVolume;
+    videoVolume: number;
+}
+
 interface SetSeekingAction {
     type: ActionType.SetSeeking;
     seeking: boolean
@@ -57,12 +70,16 @@ export interface Actions {
     LoadVideoAction: LoadVideoAction
     SendControlAction: SendControlAction
     ControlVideoAction: ControlVideoAction
+    SendVolumeAction: SendVolumeAction
+    ControlVideoVolumeAction: ControlVideoVolumeAction
 }
 
 type Action =   SendUrlToServerAction |
                 LoadVideoAction |
                 SendControlAction |
                 ControlVideoAction |
+                SendVolumeAction |
+                ControlVideoVolumeAction |
                 SetSeekingAction;
 
 
@@ -89,7 +106,6 @@ export const reducer = (
                     0,
                     0
                 )
-                draftState.player.videoUrl = action.url;
             });
         case ActionType.LoadVideo:
             return produce(state, draftState => {
@@ -107,13 +123,23 @@ export const reducer = (
                     action.videoTime,
                     draftState.player.videoLength
                 )
-                draftState.player.videoState = action.videoState;
-                draftState.player.videoTime = action.videoTime;
             });
         case ActionType.ControlVideo:
             return produce(state, draftState => {
                 draftState.player.videoTime = action.roomApi.video_time
                 draftState.player.videoState = action.roomApi.video_state
+            });
+        case ActionType.SendVolume:
+            return produce(state, draftState => {
+                updateVolume(
+                    action.api,
+                    action.currentRoom.id,
+                    action.videoVolume
+                )
+            });
+        case ActionType.ControlVideoVolume:
+            return produce(state, draftState => {
+                draftState.player.videoVolume = action.videoVolume
             });
         case ActionType.SetSeeking:
             return produce(state, draftState => {
@@ -180,4 +206,28 @@ const updateVideoState = (
         ).then(() => {
             getAndSendRoomState(api, roomId)
         })
+}
+
+export const controlVideoVolume = (videoVolume: number): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.ControlVideoVolume,
+            videoVolume: videoVolume
+        })
+    }
+} 
+
+const getAndSendVolume = (api: VideoRoomApi, roomId: number) => {
+    api.getVideoVolume(roomId).then(videoVolume => {
+        socket.emit('sendVideoVolumeToServer', {
+            currentRoomId: roomId,
+            videoVolume: videoVolume
+        })
+    })
+}
+
+const updateVolume = (api: VideoRoomApi, roomId: number, videoVolume: number) => {
+    api.updateVideoVolume(roomId, videoVolume).then(() => {
+        getAndSendVolume(api, roomId)
+    })
 }

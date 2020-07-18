@@ -1,15 +1,15 @@
 import React, { useContext } from 'react'
 import { connect } from 'react-redux';
-import { Button } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 import { Pause, PlayArrowRounded } from '@material-ui/icons/';
 
 import { Player, Room } from '../../../api/video-room-types';
 import { VideoRoomApi } from '../../../api/video-room-api';
-import { ActionType } from '../../../store/video-room/actionType';
 import { ApiContext } from '../..';
 
 interface Prop {
-    sendControl: Function
+    play: Function
+    pause: Function
     player: Player
     currentRoom: Room
 }
@@ -32,18 +32,20 @@ export const PlayButton = (props: Prop) => {
     */
    const handlePlayPause = () => {
         if (props.player?.videoState === null || props.player.videoState === "PAUSED") {
-            props.sendControl(api, props.currentRoom, "PLAYING", props.player.videoTime)
+            props.play()
         } else if (props.player.videoState === "PLAYING") {
-            api.getRoom(props.currentRoom.id).then(room => {
-                props.sendControl(api, props.currentRoom, "PAUSED", room.video_time)
-            })
+            props.pause()
         }
     }
 
-    return (
-        <Button variant='contained'
-            onClick={handlePlayPause}>{checkVideoState() ? <Pause/> : <PlayArrowRounded/>}
-        </Button>
+    return (<div>
+        <IconButton
+            size={"small"}
+            onClick={handlePlayPause}>{checkVideoState() ? <Pause/> : <PlayArrowRounded color="action"/>}
+        </IconButton>
+        
+    </div>
+       
     );
 }
 
@@ -54,15 +56,5 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        sendControl: (
-            api: VideoRoomApi,
-            currentRoom: Room,
-            videoState: string,
-            videoTime: number
-        ) => dispatch({type: ActionType.SendControl, api: api, currentRoom: currentRoom, videoState: videoState, videoTime: videoTime})
-    }
-}
 
-export const PlayButtonR = connect(mapStateToProps, mapDispatchToProps)(PlayButton);
+export const PlayButtonR = connect(mapStateToProps)(PlayButton);
