@@ -48,6 +48,22 @@ export class VideoRoomApi {
         })
     }
 
+    async getVideoUrl(roomId: number): Promise<string> {
+        return axios.get(this.BASE_URL + "/rooms/" + roomId + "/video_url").then(response => {
+            return response.data;
+        });
+    }
+
+    async updateVideoUrl(roomId: number, videoUrl: string): Promise<void> {
+        return axios.put(this.BASE_URL + "/rooms/" + roomId + "/video_url", {
+            "video_url": videoUrl
+        }).then(response => {
+
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
     async getVideoVolume(roomId: number): Promise<number> {
         return axios.get(this.BASE_URL + "/rooms/" + roomId + "/video_volume").then(response => {
             return response.data;

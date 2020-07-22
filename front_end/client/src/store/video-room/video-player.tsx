@@ -48,13 +48,6 @@ interface ControlVideoAction {
     roomApi: any;
 }
 
-interface SendVolumeAction {
-    type: ActionType.SendVolume;
-    api: VideoRoomApi;
-    currentRoom: Room;
-    videoVolume: number;
-}
-
 interface ControlVideoVolumeAction {
     type: ActionType.ControlVideoVolume;
     videoVolume: number;
@@ -70,7 +63,6 @@ export interface Actions {
     LoadVideoAction: LoadVideoAction
     SendControlAction: SendControlAction
     ControlVideoAction: ControlVideoAction
-    SendVolumeAction: SendVolumeAction
     ControlVideoVolumeAction: ControlVideoVolumeAction
 }
 
@@ -78,7 +70,6 @@ type Action =   SendUrlToServerAction |
                 LoadVideoAction |
                 SendControlAction |
                 ControlVideoAction |
-                SendVolumeAction |
                 ControlVideoVolumeAction |
                 SetSeekingAction;
 
@@ -89,22 +80,11 @@ export const reducer = (
 ): VideoPlayerState => {
     switch (action.type) {
         case ActionType.SendUrlToServer:
-            socket.emit('sendUrlToServer', {
-                url: action.url,
-                currentRoomId: action.currentRoom.id,
-                clientId: action.userId,
-                clientName: action.userName
-            });
             return produce(state, draftState => {
-                updateVideoState(
+                updateVideoUrlForServer(
                     action.api,
                     action.currentRoom.id,
-                    action.currentRoom.name,
-                    "",
-                    action.url,
-                    "PAUSED",
-                    0,
-                    0
+                    action.url
                 )
             });
         case ActionType.LoadVideo:
@@ -128,14 +108,6 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.player.videoTime = action.roomApi.video_time
                 draftState.player.videoState = action.roomApi.video_state
-            });
-        case ActionType.SendVolume:
-            return produce(state, draftState => {
-                updateVolume(
-                    action.api,
-                    action.currentRoom.id,
-                    action.videoVolume
-                )
             });
         case ActionType.ControlVideoVolume:
             return produce(state, draftState => {
@@ -208,26 +180,18 @@ const updateVideoState = (
         })
 }
 
-export const controlVideoVolume = (videoVolume: number): any => {
-    return (dispatch): any => {
-        dispatch({
-            type: ActionType.ControlVideoVolume,
-            videoVolume: videoVolume
-        })
-    }
-} 
 
-const getAndSendVolume = (api: VideoRoomApi, roomId: number) => {
-    api.getVideoVolume(roomId).then(videoVolume => {
-        socket.emit('sendVideoVolumeToServer', {
+const getAndSendUrl = (api: VideoRoomApi, roomId: number) => {
+    api.getVideoUrl(roomId).then(videoUrl => {
+        socket.emit('sendVideoUrlToServer', {
             currentRoomId: roomId,
-            videoVolume: videoVolume
+            videoUrl: videoUrl
         })
     })
 }
 
-const updateVolume = (api: VideoRoomApi, roomId: number, videoVolume: number) => {
-    api.updateVideoVolume(roomId, videoVolume).then(() => {
-        getAndSendVolume(api, roomId)
+const updateVideoUrlForServer = (api: VideoRoomApi, roomId: number, videoUrl: string) => {
+    api.updateVideoUrl(roomId, videoUrl).then(() => {
+        getAndSendUrl(api, roomId)
     })
 }

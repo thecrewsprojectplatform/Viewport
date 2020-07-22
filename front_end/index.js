@@ -74,8 +74,8 @@ io.on('connection', socket => {
     console.log('controls emitted to clients')
   })
 
-  socket.on('sendVideoVolumeToServer', data => {
-    io.to(data.currentRoomId).emit('sendVideoVolumeToAllClients', data);
+  socket.on('sendVideoUrlToServer', data => {
+    io.to(data.currentRoomId).emit('sendVideoUrlToAllClients', data);
   })
 
   /*  UPDATING THE USERLIST OF THE ROOM  */

@@ -6,7 +6,7 @@ from app import db
 class Room(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=False)
-    video_url = db.Column(db.String(64), index=False, unique=False)
+    video_url = db.Column(db.String(64), index=False, unique=False, default="")
     video_time = db.Column(db.Float, index=False, unique=False, default=0)
     video_length = db.Column(db.Float, index=False, unique=False, default=0)
     video_volume = db.Column(db.Float, index=False, unique=False, default=0.5)

@@ -12,6 +12,7 @@ export enum ActionType {
     LoadVideo = "LOAD_VIDEO",
     SendControl = "SEND_CONTROL",
     ControlVideo = "CONTROL_VIDEO",
+    UpdateVideoUrl = "UPDATE_VIDEO_URL",
     SendVolume = "SEND_VOLUME",
     ControlVideoVolume = "CONTROL_VIDEO_VOLUME",
     SetSeeking = "SET_SEEKING",
