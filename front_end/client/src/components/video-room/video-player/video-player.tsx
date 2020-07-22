@@ -44,11 +44,8 @@ export const VideoPlayer = (props: Prop) => {
             api.updateRoom(
                 props.currentRoom.id,
                 props.currentRoom.name,
-                "", 
-                props.player.videoUrl,
                 props.player.videoState,
                 state.played,
-                props.player.videoLength
             )
         }
     }

@@ -97,11 +97,8 @@ export const reducer = (
                     action.api,
                     action.currentRoom.id,
                     action.currentRoom.name,
-                    "",
-                    draftState.player.videoUrl,
                     action.videoState,
-                    action.videoTime,
-                    draftState.player.videoLength
+                    action.videoTime
                 )
             });
         case ActionType.ControlVideo:
@@ -161,20 +158,14 @@ const updateVideoState = (
         api: VideoRoomApi,
         roomId: number,
         name: string,
-        videoId: string,
-        videoUrl: string,
         videoState: string,
         videoTime: number,
-        videoLength: number
     ) => {
         api.updateRoom(
             roomId,
             name,
-            videoId, 
-            videoUrl,
             videoState,
-            videoTime,
-            videoLength
+            videoTime
         ).then(() => {
             getAndSendRoomState(api, roomId)
         })
