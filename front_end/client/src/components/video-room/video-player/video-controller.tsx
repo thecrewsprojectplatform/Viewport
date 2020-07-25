@@ -12,7 +12,7 @@ import { ApiContext } from '../..';
 interface Prop {
     setSeeking: Function
     sendVideoTime: Function
-    updateVideoTime: any
+    updateVideoTime: Function
     currentRoom: Room
     player: Player
     seeking: boolean
@@ -36,11 +36,12 @@ export const VideoController = (props: Prop) => {
      */
     const handleSeekMouseUp = (event, newTime) => {
         props.setSeeking(false)
-        props.sendVideoTime(api, props.currentRoom, newTime)
+       
     }
 
     const handleSeekChange = (event, newTime) => {
         props.setSeeking(true)
+        props.sendVideoTime(api, props.currentRoom, newTime)
         props.updateVideoTime(newTime)
     }
 
