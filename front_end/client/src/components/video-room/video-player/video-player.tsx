@@ -5,8 +5,6 @@ import { Grid } from '@material-ui/core'
 
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { ActionType } from '../../../store/video-room/actionType';
-import { store } from "../../../store";
-import { controlVideoTime } from "../../../store/video-room/video-player"
 import { Player, Room, User } from '../../../api/video-room-types';
 import { ApiContext } from '../..';
 import useStyles from '../../styles';

@@ -5,8 +5,6 @@ import { Slider } from '@material-ui/core';
 import { Player, Room } from '../../../api/video-room-types';
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { ActionType } from '../../../store/video-room/actionType';
-import { store } from "../../../store";
-import { controlVideoTime } from "../../../store/video-room/video-player"
 import { ApiContext } from '../..';
 
 interface Prop {
