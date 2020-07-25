@@ -5,15 +5,19 @@ import { Slider } from '@material-ui/core';
 import { Player, Room } from '../../../api/video-room-types';
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { ActionType } from '../../../store/video-room/actionType';
+import { store } from "../../../store";
+import { controlVideoTime } from "../../../store/video-room/video-player"
 import { ApiContext } from '../..';
 
 interface Prop {
     setSeeking: Function
     sendVideoTime: Function
+    updateVideoTime: any
     currentRoom: Room
     player: Player
     seeking: boolean
     reactPlayer: any
+    sliderVideoTime: number
 }
 
 export const VideoController = (props: Prop) => {
@@ -30,10 +34,14 @@ export const VideoController = (props: Prop) => {
      * @param event
      * @param newTime what part of the video to go to, by percentage, where 1 represents the end of the video
      */
+    const handleSeekMouseUp = (event, newTime) => {
+        props.setSeeking(false)
+        props.sendVideoTime(api, props.currentRoom, newTime)
+    }
+
     const handleSeekChange = (event, newTime) => {
         props.setSeeking(true)
-        props.sendVideoTime(api, props.currentRoom, newTime)
-        props.setSeeking(false)
+        props.updateVideoTime(newTime)
     }
 
     /**
@@ -54,8 +62,9 @@ export const VideoController = (props: Prop) => {
 
     return (
         <Slider
-            value={props.player.videoTime}
+            value={props.sliderVideoTime}
             onChange={handleSeekChange}
+            onChangeCommitted={handleSeekMouseUp}
             min={0.0}
             max={1.0}
             step={0.0000001}

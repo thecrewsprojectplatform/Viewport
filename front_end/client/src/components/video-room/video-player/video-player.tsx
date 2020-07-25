@@ -5,6 +5,8 @@ import { Grid } from '@material-ui/core'
 
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { ActionType } from '../../../store/video-room/actionType';
+import { store } from "../../../store";
+import { controlVideoTime } from "../../../store/video-room/video-player"
 import { Player, Room, User } from '../../../api/video-room-types';
 import { ApiContext } from '../..';
 import useStyles from '../../styles';
@@ -34,6 +36,7 @@ export const VideoPlayer = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
 
     const [reactPlayer, setReactPlayer] = useState(null)
+    const [sliderVideoTime, setSliderVideoTime] = useState(0)
 
     /**
      * Updates the api on what part the video is at; by default, updates every second
@@ -45,7 +48,12 @@ export const VideoPlayer = (props: Prop) => {
                 props.currentRoom.id,
                 state.played,
             )
+            setSliderVideoTime(state.played)
         }
+    }
+
+    const sliderVideoTimeHandler = (newTime) => {
+        setSliderVideoTime(newTime)
     }
 
     const handleOnScreenPlay = () => {
@@ -89,7 +97,10 @@ export const VideoPlayer = (props: Prop) => {
                         <PlayButtonR play={handleOnScreenPlay} pause={handleOnScreenPause} />
                     </Grid>
                     <Grid item xs>
-                        <VideoControllerR reactPlayer={reactPlayer}/>
+                        <VideoControllerR 
+                            sliderVideoTime={sliderVideoTime}
+                            updateVideoTime={sliderVideoTimeHandler}
+                            reactPlayer={reactPlayer}/>
                     </Grid>
                     <Grid item xs={3}>
                         <VolumeControllerR />
