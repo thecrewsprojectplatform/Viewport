@@ -15,7 +15,7 @@ import { VolumeControllerR } from './volume-controller'
 import './video-player.css';
 
 interface Prop {
-    sendControl: Function;
+    sendVideoState: Function;
     currentRoom: Room;
     player: Player;
     user: User;
@@ -41,22 +41,20 @@ export const VideoPlayer = (props: Prop) => {
      */
     const handleProgress = state => {
         if (!props.seeking) {
-            api.updateRoom(
+            api.updateVideoState(
                 props.currentRoom.id,
-                props.currentRoom.name,
-                props.player.videoState,
                 state.played,
             )
         }
     }
 
     const handleOnScreenPlay = () => {
-        props.sendControl(api, props.currentRoom, "PLAYING", props.player.videoTime)
+        props.sendVideoState(api, props.currentRoom, "PLAYING")
     }
 
     const handleOnScreenPause = () => {
         api.getRoom(props.currentRoom.id).then(room => {
-            props.sendControl(api, props.currentRoom, "PAUSED", room.video_time)
+            props.sendVideoState(api, props.currentRoom, "PAUSED")
         })
     }
     
@@ -114,12 +112,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        sendControl: (
+        sendVideoState: (
             api: VideoRoomApi,
             currentRoom: Room,
-            videoState: number,
-            videoTime: number
-        ) => dispatch({type: ActionType.SendControl, api: api, currentRoom: currentRoom, videoState: videoState, videoTime: videoTime})
+            videoState: number
+        ) => dispatch ({type: ActionType.SendVideoState, api: api, currentRoom: currentRoom, videoState: videoState})
     }
 }
 

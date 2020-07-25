@@ -9,7 +9,7 @@ import { ApiContext } from '../..';
 
 interface Prop {
     setSeeking: Function
-    sendControl: Function
+    sendVideoTime: Function
     currentRoom: Room
     player: Player
     seeking: boolean
@@ -32,7 +32,7 @@ export const VideoController = (props: Prop) => {
      */
     const handleSeekChange = (event, newTime) => {
         props.setSeeking(true)
-        props.sendControl(api, props.currentRoom, props.player.videoState, newTime)
+        props.sendVideoTime(api, props.currentRoom, newTime)
         props.setSeeking(false)
     }
 
@@ -48,7 +48,7 @@ export const VideoController = (props: Prop) => {
             const secondString = second < 10 ? "0" + second : second
             return minute + ":" + secondString
         } else {
-            console.log('player not found while formatting slider')
+            //console.log('player not found while formatting slider')
         }
     }
 
@@ -79,12 +79,11 @@ const mapDispatchToProps = dispatch => {
         setSeeking: (
             seeking: boolean
         ) => dispatch({type: ActionType.SetSeeking, seeking: seeking}),
-        sendControl: (
+        sendVideoTime: (
             api: VideoRoomApi,
             currentRoom: Room,
-            videoState: number,
             videoTime: number
-        ) => dispatch({type: ActionType.SendControl, api: api, currentRoom: currentRoom, videoState: videoState, videoTime: videoTime})
+        ) => dispatch ({type: ActionType.SendVideoTime, api: api, currentRoom: currentRoom, videoTime: videoTime}),
     }
 }
 

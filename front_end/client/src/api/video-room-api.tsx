@@ -32,19 +32,6 @@ export class VideoRoomApi {
         });
     }
 
-    async updateRoom(roomId: number, name: string, videoState: string, videoTime: number): Promise<void> {
-        return axios.put(this.BASE_URL + "/rooms/" + roomId, {
-            "name": name,
-            "video_state": videoState,
-            "video_time": videoTime,
-        }).then(response => {
-            //console.log("room updated succesfully")
-            //console.log(response.data)
-        }).catch((err) => {
-            console.log(err)
-        })
-    }
-
     async getVideoState(roomId: number): Promise<string> {
         return axios.get(this.BASE_URL + "/rooms/" + roomId + "/video_state").then(response => {
             return response.data;

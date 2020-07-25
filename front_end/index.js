@@ -62,16 +62,12 @@ io.on('connection', socket => {
     console.log('message emitted to clients')
   })
 
-  socket.on('sendUrlToServer', data => {
-    console.log('Client has sent url to the server')
-    io.to(data.currentRoomId).emit('sendUrlToAllClients', data);
-    console.log('url emitted to clients')
+  socket.on('sendVideoStateToServer', data => {
+    io.to(data.currentRoomId).emit('sendVideoStateToAllClients', data);
   })
 
-  socket.on('sendControlsToServer', data => {
-    console.log('Client has sent controls to the server')
-    io.to(data.currentRoomId).emit('sendControlsToAllClients', data);
-    console.log('controls emitted to clients')
+  socket.on('sendVideoTimeToServer', data => {
+    io.to(data.currentRoomId).emit('sendVideoTimeToAllClients', data);
   })
 
   socket.on('sendVideoUrlToServer', data => {

@@ -77,8 +77,6 @@ class RoomApi(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument("name", type=str, required=True, location="json")
-        self.reqparse.add_argument("video_state", type=str, required=False, default="PAUSED", location="json")
-        self.reqparse.add_argument("video_time", type=float, required=False, default=0, location="json")
         super(RoomApi, self).__init__()
 
     @swagger.operation(
@@ -137,23 +135,7 @@ class RoomApi(Resource):
                 "allowMultiple": False,
                 "dataType": "string",
                 "paramType": "body"
-            },
-            {
-                "name": "video_state",
-                "description": "Whether the video is playing or not, valid values: ['PLAYING', 'PAUSED']",
-                "required": False,
-                "allowMultiple": False,
-                "dataType": "string",
-                "paramType": "body"
-            },
-            {
-                "name": "video_time",
-                "description": "How much of the video has been played, by percentage where 1 = 100%",
-                "required": False,
-                "allowMultiple": False,
-                "dataType": "float",
-                "paramType": "body"
-            },
+            }
         ],
         responseMessages=[
             {
