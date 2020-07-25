@@ -1,9 +1,9 @@
-# The Crew Project I - Project Name Goes here
+# Viewport
 
 ## Project Description
-The Crew Project I is a web-application project where you can concurrently watch videos and chat with others.<br>
+Viewport is a web-application project where you can concurrently watch videos and chat with others.<br>
 --------<br>
-**React-player package** has been used for effective video player communication.<br>
+[**react-player**](https://github.com/CookPete/react-player) has been used for effective video player communication.<br>
 **Socket.io** has been used for nearly all client-server communications including userlist, roomlist, live-chat box, and video synchronization.<br>
 --------<br>
 We also have included the capability to join the server room via url link for efficiency.
@@ -18,6 +18,21 @@ We also have included the capability to join the server room via url link for ef
 * Live Chat Box
 * User List
 * Room Creation/Selection
+
+## Supported Media
+These are dependent on [react-player](https://github.com/CookPete/react-player) at the moment
+* Youtube
+* Facebook
+* SoundCloud tracks
+* Streamable
+* Vimeo
+* Wistia
+* Twitch
+* DailyMotion
+* Vidyard
+
+Check react-player for latest updates
+
 
 <br></br>
 
