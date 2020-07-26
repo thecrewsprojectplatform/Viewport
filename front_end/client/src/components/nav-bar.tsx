@@ -19,7 +19,7 @@ const NavBar = (props: Prop) => {
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" className={classes.title}>
-                        {props.title || "Multimedia Platform"}
+                        {props.title || "Viewport"}
                     </Typography>
                     <Button color="inherit" onClick={props.buttonOnClick}>{props.buttonName}</Button>
                 </Toolbar>

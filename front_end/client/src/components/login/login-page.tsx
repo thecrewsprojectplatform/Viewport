@@ -28,7 +28,7 @@ export interface Prop {
 /**
  * Represents the login page. Users input their username in a textbox and
  * go to the join/create room page.
- * 
+ *
  * @param {Object} props An object representing the require properties of
  *                 the login page. Contains a setPage function.
  * @returns {JSX.Element} The JSX representing the login page.
@@ -64,8 +64,8 @@ export const LoginPage = (props: Prop) => {
                 notificationBody={props.notificationState.notificationBody}
             />
             <div className={classes.login}>
-                <Typography variant="h4" component="h1" align="center" gutterBottom>
-                    Multimedia Platform
+                <Typography variant="h2" component="h1" align="center" gutterBottom>
+                    Viewport
                 </Typography>
                 <LoginForm
                     newUserName={newUserName}
@@ -79,7 +79,7 @@ export const LoginPage = (props: Prop) => {
 
 /**
  * Used to connect the state of the overall front end to the LoginPage.
- * 
+ *
  * @param {Object} state The current state of the LoginPage.
  */
 const mapStateToProps = state => {
