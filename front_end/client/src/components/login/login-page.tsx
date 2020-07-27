@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 import { CssBaseline } from "@material-ui/core";
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-
 import { VideoRoomApi } from "../../api/video-room-api";
 import { User } from "../../api/video-room-types";
 import { store } from "../../store";
@@ -63,8 +62,8 @@ export const LoginPage = (props: Prop) => {
                 notificationHeader={props.notificationState.notificationHeader}
                 notificationBody={props.notificationState.notificationBody}
             />
-            <div className={classes.login}>
-                <Typography variant="h2" component="h1" align="center" gutterBottom>
+            <div id="login">
+                <Typography variant="h1" component="h1" align="center">
                     Viewport
                 </Typography>
                 <LoginForm

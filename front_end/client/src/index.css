@@ -1,69 +1,21 @@
-* {
-    box-sizing: border-box;
-  }
+/*
+This is the CSS file for styling the layout of the front end, separate from the
+styling for individual Material UI components.
+*/
 
-  body {
-    font-family: Arial, Helvetica, sans-serif;
+#login {
+  margin-top: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
 
-    /*
-    background-color: #232533;
-    color: #5e5f66;
-    */
-  }
+#login form {
+  margin-top: 5vh;
+  width: 80%;
+}
 
-  /* Style the header */
-  .App-header {
-    padding: 1%;
-    text-align: left;
-    font-size: 100%;
-  }
-
-  /* Container for flexboxes */
-  .row {
-    display: -webkit-flex;
-    display: flex;
-
-    padding: 1%;
-  }
-
-  /* UserList */
-  .User-list {
-     -webkit-flex: 1;
-     -ms-flex: 1;
-     flex: 1;
-
-     text-align: left;
-  }
-
-  .User-input {
-    font-size: 20%;
-    width: 55%;
-  }
-
-  .User {
-    text-align: left;
-    padding: 2%;
-  }
-
-  .Remove-button {
-    text-align: left;
-    float: right;
-  }
-
-  .User-name {
-    text-align: right;
-  }
-
-  /* Video Section */
-  .Video-section {
-    flex-grow: 3;
-    text-align: center;
-  }
-
-  /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
-  @media (max-width: 600px) {
-    .row {
-      -webkit-flex-direction: column;
-      flex-direction: column;
-    }
-  }
+#login .button {
+  margin-top: 2vh;
+}
