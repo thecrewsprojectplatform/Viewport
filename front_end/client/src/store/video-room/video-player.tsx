@@ -21,6 +21,31 @@ const initialState: VideoPlayerState = {
     seeking: false
 };
 
+interface ControlVideoStateAction {
+    type: ActionType.ControlVideoState;
+    videoState: string;
+}
+
+interface ControlVideoTimeAction {
+    type: ActionType.ControlVideoTime;
+    videoTime: number;
+}
+
+interface ControlVideoVolumeAction {
+    type: ActionType.ControlVideoVolume;
+    videoVolume: number;
+}
+
+interface LoadVideoAction {
+    type: ActionType.LoadVideo;
+    url: string;
+}
+
+interface SetSeekingAction {
+    type: ActionType.SetSeeking;
+    seeking: boolean
+}
+
 interface SendUrlToServerAction {
     type: ActionType.SendUrlToServer;
     api: VideoRoomApi;
@@ -29,121 +54,88 @@ interface SendUrlToServerAction {
     userId: number;
     userName: String;
 }
-
-interface LoadVideoAction {
-    type: ActionType.LoadVideo;
-    url: string;
-}
-
-interface SendControlAction {
-    type: ActionType.SendControl;
+interface SendVideoStateAction {
+    type: ActionType.SendVideoState;
     api: VideoRoomApi;
     currentRoom: Room;
     videoState: string;
+}
+
+interface SendVideoTimeAction {
+    type: ActionType.SendVideoTime;
+    api: VideoRoomApi;
+    currentRoom: Room;
     videoTime: number;
 }
 
-interface ControlVideoAction {
-    type: ActionType.ControlVideo;
-    roomApi: any;
-}
-
-interface SendVolumeAction {
-    type: ActionType.SendVolume;
-    api: VideoRoomApi;
-    currentRoom: Room;
-    videoVolume: number;
-}
-
-interface ControlVideoVolumeAction {
-    type: ActionType.ControlVideoVolume;
-    videoVolume: number;
-}
-
-interface SetSeekingAction {
-    type: ActionType.SetSeeking;
-    seeking: boolean
-}
-
 export interface Actions {
-    SendUrlToServerAction: SendUrlToServerAction
-    LoadVideoAction: LoadVideoAction
-    SendControlAction: SendControlAction
-    ControlVideoAction: ControlVideoAction
-    SendVolumeAction: SendVolumeAction
+    ControlVideoStateAction: ControlVideoStateAction
+    ControlVideoTimeAction: ControlVideoTimeAction
     ControlVideoVolumeAction: ControlVideoVolumeAction
+    LoadVideoAction: LoadVideoAction
+    SetSeekingAction: SetSeekingAction
+    SendUrlToServerAction: SendUrlToServerAction
+    SendVideoStateAction: SendVideoStateAction
+    SendVideoTimeAction: SendVideoTimeAction
 }
 
-type Action =   SendUrlToServerAction |
-                LoadVideoAction |
-                SendControlAction |
-                ControlVideoAction |
-                SendVolumeAction |
+type Action =   ControlVideoStateAction |
+                ControlVideoTimeAction |
                 ControlVideoVolumeAction |
-                SetSeekingAction;
-
+                SendUrlToServerAction |
+                LoadVideoAction |
+                SetSeekingAction |
+                SendVideoStateAction |
+                SendVideoTimeAction;
 
 export const reducer = ( 
     state: VideoPlayerState = initialState,
     action: Action
 ): VideoPlayerState => {
     switch (action.type) {
-        case ActionType.SendUrlToServer:
-            socket.emit('sendUrlToServer', {
-                url: action.url,
-                currentRoomId: action.currentRoom.id,
-                clientId: action.userId,
-                clientName: action.userName
-            });
+        case ActionType.ControlVideoState:
             return produce(state, draftState => {
-                updateVideoState(
-                    action.api,
-                    action.currentRoom.id,
-                    action.currentRoom.name,
-                    "",
-                    action.url,
-                    "PAUSED",
-                    0,
-                    0
-                )
-            });
-        case ActionType.LoadVideo:
+                draftState.player.videoState = action.videoState
+            })
+        case ActionType.ControlVideoTime:
             return produce(state, draftState => {
-                draftState.player.videoUrl = action.url;
-            });
-        case ActionType.SendControl:
-            return produce(state, draftState => {
-                updateVideoState(
-                    action.api,
-                    action.currentRoom.id,
-                    action.currentRoom.name,
-                    "",
-                    draftState.player.videoUrl,
-                    action.videoState,
-                    action.videoTime,
-                    draftState.player.videoLength
-                )
-            });
-        case ActionType.ControlVideo:
-            return produce(state, draftState => {
-                draftState.player.videoTime = action.roomApi.video_time
-                draftState.player.videoState = action.roomApi.video_state
-            });
-        case ActionType.SendVolume:
-            return produce(state, draftState => {
-                updateVolume(
-                    action.api,
-                    action.currentRoom.id,
-                    action.videoVolume
-                )
-            });
+                draftState.player.videoTime = action.videoTime
+            })
         case ActionType.ControlVideoVolume:
             return produce(state, draftState => {
                 draftState.player.videoVolume = action.videoVolume
-            });
+            })
+        case ActionType.LoadVideo:
+            return produce(state, draftState => {
+                draftState.player.videoUrl = action.url;
+        });
         case ActionType.SetSeeking:
             return produce(state, draftState => {
                 draftState.seeking = action.seeking;
+            });
+        case ActionType.SendUrlToServer:
+            return produce(state, draftState => {
+                updateVideoUrlForServer(
+                    action.api,
+                    action.currentRoom.id,
+                    action.url
+                )
+            });
+        case ActionType.SendVideoState:
+            return produce(state, draftState => {
+                updateVideoStateForServer(
+                    action.api,
+                    action.currentRoom.id,
+                    action.videoState
+                )
+            });
+        case ActionType.SendVideoTime:
+            return produce(state, draftState => {
+                updateVideoTimeForServer(
+                    action.api,
+                    action.currentRoom.id,
+                    action.videoTime
+                )
             });
         default:
             return state;        
@@ -163,71 +155,74 @@ export const loadVideo = (url: string): any => {
     }
 }
 
-/**
- * Updates the room state for client(s)
- * @param room the current room state
- */
-export const controlVideo = (room: any): any => {
+export const controlVideoState = (videoState: string): any => {
     return (dispatch): any => {
         dispatch({
-            type: ActionType.ControlVideo,
-            roomApi: room
+            type: ActionType.ControlVideoState,
+            videoState: videoState
         })
     }
 }
 
-const getAndSendRoomState = (api: VideoRoomApi, roomId: number) => {
-    api.getRoom(roomId).then(room => {
-        socket.emit('sendControlsToServer', {
+export const controlVideoTime = (videoTime: number): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.ControlVideoTime,
+            videoTime: videoTime
+        })
+    }
+}
+
+const getAndSendVideoState = (api: VideoRoomApi, roomId: number) => {
+    api.getVideoState(roomId).then(videoState => {
+        socket.emit('sendVideoStateToServer', {
             currentRoomId: roomId,
-            room: room
+            videoState: videoState
         })
     })
 }
 
-const updateVideoState = (
+const getAndSendVideoTime = (api: VideoRoomApi, roomId: number) => {
+    api.getVideoTime(roomId).then(videoTime => {
+        socket.emit('sendVideoTimeToServer', {
+            currentRoomId: roomId,
+            videoTime: videoTime
+        })
+    })
+}
+
+const getAndSendUrl = (api: VideoRoomApi, roomId: number) => {
+    api.getVideoUrl(roomId).then(videoUrl => {
+        socket.emit('sendVideoUrlToServer', {
+            currentRoomId: roomId,
+            videoUrl: videoUrl
+        })
+    })
+}
+
+const updateVideoStateForServer = (
+        api: VideoRoomApi, 
+        roomId: number, 
+        videoState: string
+    ) => {
+        api.updateVideoState(roomId, videoState).then(() => {
+            getAndSendVideoState(api, roomId)
+        })
+
+}
+
+const updateVideoTimeForServer = (
         api: VideoRoomApi,
         roomId: number,
-        name: string,
-        videoId: string,
-        videoUrl: string,
-        videoState: string,
-        videoTime: number,
-        videoLength: number
+        videoTime: number    
     ) => {
-        api.updateRoom(
-            roomId,
-            name,
-            videoId, 
-            videoUrl,
-            videoState,
-            videoTime,
-            videoLength
-        ).then(() => {
-            getAndSendRoomState(api, roomId)
+        api.updateVideoTime(roomId, videoTime).then(() => {
+            getAndSendVideoTime(api, roomId)
         })
 }
 
-export const controlVideoVolume = (videoVolume: number): any => {
-    return (dispatch): any => {
-        dispatch({
-            type: ActionType.ControlVideoVolume,
-            videoVolume: videoVolume
-        })
-    }
-} 
-
-const getAndSendVolume = (api: VideoRoomApi, roomId: number) => {
-    api.getVideoVolume(roomId).then(videoVolume => {
-        socket.emit('sendVideoVolumeToServer', {
-            currentRoomId: roomId,
-            videoVolume: videoVolume
-        })
-    })
-}
-
-const updateVolume = (api: VideoRoomApi, roomId: number, videoVolume: number) => {
-    api.updateVideoVolume(roomId, videoVolume).then(() => {
-        getAndSendVolume(api, roomId)
+const updateVideoUrlForServer = (api: VideoRoomApi, roomId: number, videoUrl: string) => {
+    api.updateVideoUrl(roomId, videoUrl).then(() => {
+        getAndSendUrl(api, roomId)
     })
 }

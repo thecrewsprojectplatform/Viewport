@@ -9,11 +9,13 @@ import { ApiContext } from '../..';
 
 interface Prop {
     setSeeking: Function
-    sendControl: Function
+    sendVideoTime: Function
+    updateVideoTime: Function
     currentRoom: Room
     player: Player
     seeking: boolean
     reactPlayer: any
+    sliderVideoTime: number
 }
 
 export const VideoController = (props: Prop) => {
@@ -30,10 +32,15 @@ export const VideoController = (props: Prop) => {
      * @param event
      * @param newTime what part of the video to go to, by percentage, where 1 represents the end of the video
      */
+    const handleSeekMouseUp = (event, newTime) => {
+        props.setSeeking(false)
+       
+    }
+
     const handleSeekChange = (event, newTime) => {
         props.setSeeking(true)
-        props.sendControl(api, props.currentRoom, props.player.videoState, newTime)
-        props.setSeeking(false)
+        props.sendVideoTime(api, props.currentRoom, newTime)
+        props.updateVideoTime(newTime)
     }
 
     /**
@@ -48,14 +55,15 @@ export const VideoController = (props: Prop) => {
             const secondString = second < 10 ? "0" + second : second
             return minute + ":" + secondString
         } else {
-            console.log('player not found while formatting slider')
+            //console.log('player not found while formatting slider')
         }
     }
 
     return (
         <Slider
-            value={props.player.videoTime}
+            value={props.sliderVideoTime}
             onChange={handleSeekChange}
+            onChangeCommitted={handleSeekMouseUp}
             min={0.0}
             max={1.0}
             step={0.0000001}
@@ -79,12 +87,11 @@ const mapDispatchToProps = dispatch => {
         setSeeking: (
             seeking: boolean
         ) => dispatch({type: ActionType.SetSeeking, seeking: seeking}),
-        sendControl: (
+        sendVideoTime: (
             api: VideoRoomApi,
             currentRoom: Room,
-            videoState: number,
             videoTime: number
-        ) => dispatch({type: ActionType.SendControl, api: api, currentRoom: currentRoom, videoState: videoState, videoTime: videoTime})
+        ) => dispatch ({type: ActionType.SendVideoTime, api: api, currentRoom: currentRoom, videoTime: videoTime}),
     }
 }
 
