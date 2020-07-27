@@ -12,10 +12,24 @@ styling for individual Material UI components.
 }
 
 #login form {
-  margin-top: 5vh;
+  margin-top: 8vh;
   width: 80%;
 }
 
 #login .button {
   margin-top: 2vh;
+}
+
+#join-create-room form {
+  width: 100%;
+  margin-bottom: 3vh;
+}
+
+#room-list p {
+  margin-top: 0vh;
+  margin-bottom: 0vh;
+}
+
+.nav-bar {
+  margin-bottom: 5vh;
 }

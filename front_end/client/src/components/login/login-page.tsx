@@ -11,7 +11,6 @@ import { NotificationState } from "../../store/notifications/notifications";
 import { createUser, Status } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
 import { BaseAlert } from "../common/base-alert";
-import useStyles from "../styles";
 import { LoginForm } from "./login-form";
 
 
@@ -34,7 +33,6 @@ export interface Prop {
  */
 
 export const LoginPage = (props: Prop) => {
-    const classes = useStyles();
     const [newUserName, setNewUserName] = useState(props.currentUser ? props.currentUser.name : "");
     const api = useContext<VideoRoomApi>(ApiContext);
     const history = useHistory();

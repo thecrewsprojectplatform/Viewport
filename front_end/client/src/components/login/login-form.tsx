@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { TextField, Button } from '@material-ui/core';
-import useStyles from '../styles';
 
 /**
  * Represents the required properties of the User.
@@ -21,7 +20,6 @@ interface Prop {
  * @returns {JSX.Element} The JSX representing the RoomList.
  */
 export const LoginForm = (props: Prop) => {
-    const classes = useStyles();
 
     const handleSubmit = (event): void => {
         props.handleSubmit(event);

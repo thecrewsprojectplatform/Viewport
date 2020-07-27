@@ -15,7 +15,7 @@ const NavBar = (props: Prop) => {
     const classes = useStyles();
 
     return(
-        <div>
+        <div className="nav-bar">
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" className={classes.title}>
