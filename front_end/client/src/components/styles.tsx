@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
         flexFlow: 'row wrap',
         justifyContent: 'space-evenly',
     },
+    joinRoom: {
+        flex: 1
+    },
     chatApp: {
         display: 'flex',
         flexDirection: 'column',

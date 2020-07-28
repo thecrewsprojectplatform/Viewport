@@ -2,7 +2,8 @@ import React, {  useContext, useEffect, useState } from 'react';
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import { CssBaseline, Container, List } from '@material-ui/core';
+import { CssBaseline, Container, List, Grid } from '@material-ui/core';
+
 
 import { Room, User } from '../../api/video-room-types';
 import { VideoRoomApi } from '../../api/video-room-api';
@@ -66,28 +67,28 @@ export const RoomList = (props: Prop) => {
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className="Room-list">
-                <CreateRoomInput
-                    createNewRoomClick={createNewRoomClick}
-                    setNewRoomName={setNewRoomName}
-                    newRoomName={newRoomName}
-                />
-                Available Rooms:
-                <List>
-                {
-                    (() => {
-                        return props.availableRooms.map((room) => {
-                            return (
-                                <RoomListItem
-                                    key={room.id}
-                                    currentRoom={room}
-                                    onJoinClick={onJoinRoomClick}
-                                />
-                            )
-                        })
+                    <CreateRoomInput
+                        createNewRoomClick={createNewRoomClick}
+                        setNewRoomName={setNewRoomName}
+                        newRoomName={newRoomName}
+                    />
+                    Available Rooms:
+                    <List>
+                    {
+                        (() => {
+                            return props.availableRooms.map((room) => {
+                                return (
+                                    <RoomListItem
+                                        key={room.id}
+                                        currentRoom={room}
+                                        onJoinClick={onJoinRoomClick}
+                                    />
+                                )
+                            })
 
-                    })()
-                }
-                </List>
+                        })()
+                    }
+                    </List>
             </div>
         </Container>
     )
