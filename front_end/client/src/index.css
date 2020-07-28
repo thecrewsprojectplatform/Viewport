@@ -3,6 +3,7 @@ This is the CSS file for styling the layout of the front end, separate from the
 styling for individual Material UI components.
 */
 
+/* ---------- Login Page ---------- */
 #login {
   margin-top: 20vh;
   display: flex;
@@ -20,6 +21,7 @@ styling for individual Material UI components.
   margin-top: 2vh;
 }
 
+/* Join Create Room Page */
 #join-create-room form {
   width: 100%;
   margin-bottom: 3vh;
@@ -30,6 +32,7 @@ styling for individual Material UI components.
   margin-bottom: 0vh;
 }
 
+/* ---------- Video Room Page ---------- */
 #video-room-content {
   height: 80vh;
   width: 100%;
@@ -101,6 +104,7 @@ styling for individual Material UI components.
   margin-right: auto;
 }
 
+/* ---------- Various classes ---------- */
 .search-bar {
   height: 40px;
 }
