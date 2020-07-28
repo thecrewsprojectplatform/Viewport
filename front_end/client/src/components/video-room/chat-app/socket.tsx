@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import { VideoRoomApi } from "../../../api/video-room-api";
 import { store } from "../../../store";
 import { ActionType } from "../../../store/video-room/actionType";
-import { controlVideo, controlVideoVolume, loadVideo } from "../../../store/video-room/video-player"
+import { controlVideoState, controlVideoTime, loadVideo } from "../../../store/video-room/video-player"
 import { Actions, closedBrowserUserList, removeRoom, sendMessageToAllClients, } from "../../../store/video-room/video-room";
 
 const socket = io();
@@ -25,17 +25,17 @@ const configureSocket = (dispatch, api: VideoRoomApi) => {
     store.dispatch(sendMessageToAllClients(data.clientMessage, data.clientName, data.msgTime))
   });
 
-  socket.on('sendUrlToAllClients', data => {
-    store.dispatch(loadVideo(data.url))
+  socket.on('sendVideoStateToAllClients', data => {
+    store.dispatch(controlVideoState(data.videoState))
+  })
+
+  socket.on('sendVideoTimeToAllClients', data => {
+    store.dispatch(controlVideoTime(data.videoTime))
+  })
+
+  socket.on('sendVideoUrlToAllClients', data => {
+    store.dispatch(loadVideo(data.videoUrl))
   });
-
-  socket.on('sendControlsToAllClients', data => {
-    store.dispatch(controlVideo(data.room))
-  })
-
-  socket.on('sendVideoVolumeToAllClients', data => {
-    store.dispatch(controlVideoVolume(data.videoVolume))
-  })
 
   socket.on('userJoinedRoom', data => {
     msgTime = 'true'

@@ -1,26 +1,19 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Grid, Slider } from '@material-ui/core';
 import { VolumeDown, VolumeUp } from '@material-ui/icons';
-import { Player, Room } from '../../../api/video-room-types';
-import { VideoRoomApi } from '../../../api/video-room-api';
+import { Player } from '../../../api/video-room-types';
 import { ActionType } from '../../../store/video-room/actionType';
-import { ApiContext } from '../..';
-
 
 interface Prop {
-    sendControl: Function
-    sendVolume: Function
-    currentRoom: Room
+    controlVideoVolume: Function
     player: Player
 }
 
 export const VolumeController = (props: Prop) => {
-    const api = useContext<VideoRoomApi>(ApiContext)
 
     const handleSeekChange = (event, newVolume) => {
-        props.sendVolume(api, props.currentRoom, newVolume)
-        //props.sendControl(api, props.currentRoom, props.player.videoState, props.player.videoTime, newVolume)
+        props.controlVideoVolume(newVolume)
     }
 
     /**
@@ -57,25 +50,15 @@ export const VolumeController = (props: Prop) => {
 
 const mapStateToProps = state => {
     return {
-        currentRoom: state.videoRoom.currentRoom,
         player: state.player.player
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        sendVolume: (
-            api: VideoRoomApi,
-            currentRoom: Room,
+        controlVideoVolume: (
             videoVolume: number
-        ) => dispatch({type: ActionType.SendVolume, api: api, currentRoom: currentRoom, videoVolume: videoVolume}),
-        sendControl: (
-            api: VideoRoomApi,
-            currentRoom: Room,
-            videoState: number,
-            videoTime: number,
-            videoVolume: number
-        ) => dispatch({type: ActionType.SendControl, api: api, currentRoom: currentRoom, videoState: videoState, videoTime: videoTime, videoVolume: videoVolume})
+        ) => dispatch({type: ActionType.ControlVideoVolume, videoVolume: videoVolume})
     }
 }
 
