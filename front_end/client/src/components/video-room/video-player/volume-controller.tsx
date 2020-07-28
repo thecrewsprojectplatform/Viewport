@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Grid, Slider } from '@material-ui/core';
 import { VolumeDown, VolumeUp } from '@material-ui/icons';
-
 import { Player } from '../../../api/video-room-types';
 import { ActionType } from '../../../store/video-room/actionType';
 

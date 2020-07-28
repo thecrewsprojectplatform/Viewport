@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { connect } from 'react-redux';
 import { IconButton } from '@material-ui/core';
 import { Pause, PlayArrowRounded } from '@material-ui/icons/';
-
 import { Player, Room } from '../../../api/video-room-types';
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { ApiContext } from '../..';
@@ -43,9 +42,9 @@ export const PlayButton = (props: Prop) => {
             size={"small"}
             onClick={handlePlayPause}>{checkVideoState() ? <Pause/> : <PlayArrowRounded color="action"/>}
         </IconButton>
-        
+
     </div>
-       
+
     );
 }
 

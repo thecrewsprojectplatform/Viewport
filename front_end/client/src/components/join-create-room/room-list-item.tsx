@@ -12,8 +12,8 @@ interface Prop {
 
 /**
  * Represents a room in our application.
- * 
- * @param {Object} props The properties of a Room. 
+ *
+ * @param {Object} props The properties of a Room.
  *                 Requires a Room which holds an roomId
  *                 and a room name. Also holds an onJoinClick
  *                 function that allows users to join the room.
@@ -24,7 +24,7 @@ export const RoomListItem = (props: Prop) => {
         props.onJoinClick(props.currentRoom.id)
         event.preventDefault();
     }
-    
+
     return (
         <ListItem button onClick={handleClick} key={props.currentRoom.id}>
             <ListItemText primary={props.currentRoom.name} />

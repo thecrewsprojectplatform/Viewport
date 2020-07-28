@@ -3,7 +3,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar'
 import { Button } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography'
-import useStyles from './styles';
 
 export interface Prop {
     title?: string;
@@ -12,14 +11,12 @@ export interface Prop {
 }
 
 const NavBar = (props: Prop) => {
-    const classes = useStyles();
-
     return(
-        <div>
+        <div className="nav-bar">
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
-                        {props.title || "Multimedia Platform"}
+                    <Typography variant="h6" className="title">
+                        {props.title || "Viewport"}
                     </Typography>
                     <Button color="inherit" onClick={props.buttonOnClick}>{props.buttonName}</Button>
                 </Toolbar>

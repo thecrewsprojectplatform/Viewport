@@ -1,17 +1,13 @@
 import React, {  useContext, useEffect, useState } from 'react';
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-
-import { CssBaseline, Container, List, Grid } from '@material-ui/core';
-
-
+import { CssBaseline, Container, List } from '@material-ui/core';
 import { Room, User } from '../../api/video-room-types';
 import { VideoRoomApi } from '../../api/video-room-api';
 import { store } from '../../store';
 import { loadVideo } from '../../store/video-room/video-player'
 import { addUserToRoomAction, createRoomAndAddUserToRoomAction, getRoomsAction, Status  } from '../../store/video-room/video-room';
 import { ApiContext } from '..';
-import useStyles from '../styles';
 import { CreateRoomInput } from './create-room-input';
 import { RoomListItem } from './room-list-item';
 
@@ -36,7 +32,6 @@ export interface Prop {
  * @returns {JSX.Element} The JSX representing the RoomList.
  */
 export const RoomList = (props: Prop) => {
-    const classes = useStyles();
     const [newRoomName, setNewRoomName] = useState("");
     const api = useContext<VideoRoomApi>(ApiContext);
     const history = useHistory();
@@ -66,25 +61,25 @@ export const RoomList = (props: Prop) => {
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
-            <div className="Room-list">
-                    <CreateRoomInput
-                        createNewRoomClick={createNewRoomClick}
-                        setNewRoomName={setNewRoomName}
-                        newRoomName={newRoomName}
-                    />
-                    Available Rooms:
-                    <List>
-                    {
-                        (() => {
-                            return props.availableRooms.map((room) => {
-                                return (
-                                    <RoomListItem
-                                        key={room.id}
-                                        currentRoom={room}
-                                        onJoinClick={onJoinRoomClick}
-                                    />
-                                )
-                            })
+            <div id="room-list">
+                <CreateRoomInput
+                    createNewRoomClick={createNewRoomClick}
+                    setNewRoomName={setNewRoomName}
+                    newRoomName={newRoomName}
+                />
+                <p>Available Rooms:</p>
+                <List>
+                {
+                    (() => {
+                        return props.availableRooms.map((room) => {
+                            return (
+                                <RoomListItem
+                                    key={room.id}
+                                    currentRoom={room}
+                                    onJoinClick={onJoinRoomClick}
+                                />
+                            )
+                        })
 
                         })()
                     }
