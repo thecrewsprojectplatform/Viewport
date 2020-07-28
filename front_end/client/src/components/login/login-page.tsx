@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 import { CssBaseline } from "@material-ui/core";
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-
 import { VideoRoomApi } from "../../api/video-room-api";
 import { User } from "../../api/video-room-types";
 import { store } from "../../store";
@@ -12,7 +11,6 @@ import { NotificationState } from "../../store/notifications/notifications";
 import { createUser, Status } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
 import { BaseAlert } from "../common/base-alert";
-import useStyles from "../styles";
 import { LoginForm } from "./login-form";
 
 
@@ -28,14 +26,13 @@ export interface Prop {
 /**
  * Represents the login page. Users input their username in a textbox and
  * go to the join/create room page.
- * 
+ *
  * @param {Object} props An object representing the require properties of
  *                 the login page. Contains a setPage function.
  * @returns {JSX.Element} The JSX representing the login page.
  */
 
 export const LoginPage = (props: Prop) => {
-    const classes = useStyles();
     const [newUserName, setNewUserName] = useState(props.currentUser ? props.currentUser.name : "");
     const api = useContext<VideoRoomApi>(ApiContext);
     const history = useHistory();
@@ -63,9 +60,9 @@ export const LoginPage = (props: Prop) => {
                 notificationHeader={props.notificationState.notificationHeader}
                 notificationBody={props.notificationState.notificationBody}
             />
-            <div className={classes.login}>
-                <Typography variant="h4" component="h1" align="center" gutterBottom>
-                    Multimedia Platform
+            <div id="login">
+                <Typography variant="h1" component="h1" align="center">
+                    Viewport
                 </Typography>
                 <LoginForm
                     newUserName={newUserName}
@@ -79,7 +76,7 @@ export const LoginPage = (props: Prop) => {
 
 /**
  * Used to connect the state of the overall front end to the LoginPage.
- * 
+ *
  * @param {Object} state The current state of the LoginPage.
  */
 const mapStateToProps = state => {

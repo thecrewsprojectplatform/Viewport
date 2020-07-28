@@ -3,12 +3,10 @@ import { connect } from 'react-redux'
 import { TextField, InputAdornment, IconButton } from '@material-ui/core'
 import SearchIcon from "@material-ui/icons/Search";
 import ReactPlayer from 'react-player'
-
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { Room, User } from '../../../api/video-room-types';
 import { ActionType } from '../../../store/video-room/actionType';
 import { ApiContext } from '../..';
-import useStyles from '../../styles';
 
 interface Prop {
     sendUrlToServer: Function
@@ -18,8 +16,6 @@ interface Prop {
 
 export const SearchBar = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
-
-    const classes = useStyles();
     const [url, setUrl] = useState("")
 
     /**
@@ -50,7 +46,7 @@ export const SearchBar = (props: Prop) => {
     }
 
     return (
-        <div>
+        <div id="url-section">
             <TextField
                 error={displayError()}
                 variant='filled'
@@ -58,19 +54,16 @@ export const SearchBar = (props: Prop) => {
                 placeholder='Enter URL'
                 onChange={event => setUrl(event.target.value)}
                 onKeyDown={handleEnter}
-                className={classes.searchBar}
-
+                fullWidth
                 InputProps={{
-                    style: {
-                        height: 40,
-                    },
+                    className: "search-bar",
                     endAdornment: (
                         <InputAdornment position="end">
                             <IconButton onClick={loadButton}>
                                 <SearchIcon />
                             </IconButton>
                         </InputAdornment>
-                )
+                    ),
                 }}
             />
         </div>

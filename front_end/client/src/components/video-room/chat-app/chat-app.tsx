@@ -1,11 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import { Typography } from "@material-ui/core";
-
 import { MessageDetail } from "../../../api/video-room-types";
 import { store } from "../../../store";
 import { sendMessageToServer } from '../../../store/video-room/video-room';
-import useStyles from "../../styles";
 import { ChatMessageInput } from "./chat-message-input";
 import { ChatMessageItem } from "./chat-message-item";
 
@@ -20,7 +18,6 @@ export interface Prop {
 }
 
 export const ChatApp = (props: Prop) => {
-    const classes = useStyles();
     const [msg, setMessage] = useState("");
     const msgTime = new Date().toLocaleTimeString('en-US');
     const messagesEndRef = useRef(null);
@@ -39,11 +36,11 @@ export const ChatApp = (props: Prop) => {
     useEffect(scrollToBottom, [props.messageHistory]);
 
     return(
-        <div className={classes.chatApp}>
-            <Typography className={classes.chatHeader}>
+        <div id="chat-app">
+            <Typography className="header">
                 ROOM CHAT
             </Typography>
-            <div className={classes.displayMessage}>
+            <div className="content">
                 {
                     props.messageHistory && props.messageHistory.length !== 0 &&
                     (() => {

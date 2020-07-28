@@ -1,13 +1,11 @@
 import React, { useContext, useState } from "react";
 import { TextField, Button } from "@material-ui/core";
-
 import { User, Room } from "../../../api/video-room-types";
 import { VideoRoomApi } from "../../../api/video-room-api";
 import { store } from "../../../store";
 import { editUserName } from "../../../store/video-room/video-room";
 import { ApiContext } from "../..";
 import { BaseModal } from "../../common/base-modal";
-import useStyles from "../../styles";
 
 export interface Prop {
     currentRoom: Room;
@@ -16,7 +14,6 @@ export interface Prop {
 }
 
 export const EditUserModal = (props: Prop) => {
-    const classes = useStyles();
     const [newUserName, setNewUserName] = useState(props.currentUser.name);
     const api = useContext<VideoRoomApi>(ApiContext);
 
@@ -32,11 +29,10 @@ export const EditUserModal = (props: Prop) => {
         title="Edit User Name"
         onClose={props.onClose}
         body={
-            <div>
-                <form className={classes.form} onSubmit={handleSubmit} autoComplete="off">
-                    <TextField 
+            <div id="edit-user-modal">
+                <form onSubmit={handleSubmit} autoComplete="off">
+                    <TextField
                         variant="outlined"
-                        margin="normal"
                         required
                         fullWidth
                         id="username"
@@ -44,8 +40,7 @@ export const EditUserModal = (props: Prop) => {
                         name="username"
                         autoComplete="off"
                         autoFocus
-                    
-                        type="text" 
+                        type="text"
                         onChange={handleChange}
                         value={newUserName}
                     />
@@ -54,7 +49,7 @@ export const EditUserModal = (props: Prop) => {
                         fullWidth
                         variant="contained"
                         color="primary"
-                        className={classes.submit}
+                        className="button"
                     >
                         Change Name
                     </Button>

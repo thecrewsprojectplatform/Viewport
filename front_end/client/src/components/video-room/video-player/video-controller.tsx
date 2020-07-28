@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Slider } from '@material-ui/core';
-
 import { Player, Room } from '../../../api/video-room-types';
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { ActionType } from '../../../store/video-room/actionType';

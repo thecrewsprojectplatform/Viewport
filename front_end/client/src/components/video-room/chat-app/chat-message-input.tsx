@@ -1,6 +1,5 @@
 import React from "react";
 import { TextField } from "@material-ui/core";
-import useStyles from "../../styles";
 
 ///// THIS FILE IS CURRENTLY NOT BEING USED, BUT WILL BE USED SOON /////
 
@@ -14,7 +13,6 @@ interface Prop {
 }
 
 export const ChatMessageInput = (props: Prop) => {
-    const classes = useStyles();
 
     const handleClick = (event): void => {
         props.sendMessageClick()
@@ -26,15 +24,15 @@ export const ChatMessageInput = (props: Prop) => {
     }
 
     return (
-        <div className={classes.typingSection}>
-            <form className={classes.formControl} onSubmit={handleClick} autoComplete="off">
+        <div id="typing-section">
+            <form onSubmit={handleClick} autoComplete="off">
                 <TextField
                     type="text"
                     placeholder="Send a message..."
                     id="messageSender"
                     variant="outlined"
                     InputProps={{
-                        className: classes.textField,
+                        className: "chat-input",
                     }}
                     InputLabelProps={{
                         shrink: true

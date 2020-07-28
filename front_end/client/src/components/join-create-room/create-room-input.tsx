@@ -1,6 +1,5 @@
 import React from "react";
 import { TextField } from '@material-ui/core';
-import useStyles from '../styles';
 
 /**
  * Represents the required properties of creating a Room.
@@ -12,7 +11,6 @@ interface Prop {
 }
 
 export const CreateRoomInput = (props: Prop) => {
-    const classes = useStyles();
 
     const handleClick = (event): void => {
         props.createNewRoomClick()
@@ -25,10 +23,9 @@ export const CreateRoomInput = (props: Prop) => {
 
     return (
         <div>
-            <form className={classes.form} onSubmit={handleClick} autoComplete="off">
+            <form onSubmit={handleClick} autoComplete="off">
                 <TextField
                     variant="outlined"
-                    margin="normal"
                     fullWidth
                     id="EditUserModal"
                     label="Create New Room"
@@ -36,7 +33,6 @@ export const CreateRoomInput = (props: Prop) => {
                     autoComplete="off"
                     autoFocus
                     required
-
                     type="text"
                     onChange={(event) => handleChange(event.target.value)}
                     value={props.newRoomName}
