@@ -80,31 +80,6 @@ const useStyles = makeStyles((theme) => ({
     searchBar: {
         width: '70%'
     },
-    userList: {
-        display: 'block',
-        flex: 'none',
-        height: '50vh',
-        width: '200px',
-        marginBottom: '3%',
-        border: '1px solid #E0E0E0',
-        borderRadius: '10px',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
-        overflowX: 'scroll',
-    },
-    userListHeader: {
-        display: 'flex',
-        alignItems: 'flex-end',
-        paddingLeft: theme.spacing(1),
-        height: theme.spacing(3.5),
-        background: '#E3E3E3',
-        borderBottom: '1px solid #E0E0E0',
-        fontSize: '100%',
-    },
-    userListContent: {
-        background: '#F9F9F9',
-        overflowY: 'scroll',
-        height: '90%',
-    },
     userName: {
         minWidth: 0,
         textOverflow: 'ellipsis',
@@ -113,12 +88,6 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '80%%',
         marginLeft: '1%',
         marginRight: '1%',
-    },
-    user: {
-        overflow: 'hidden',
-        minWidth: 0,
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
