@@ -2,17 +2,14 @@ import React, { useContext, useState } from 'react';
 import { connect } from 'react-redux';
 import ReactPlayer from 'react-player'
 import { Grid } from '@material-ui/core'
-
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { ActionType } from '../../../store/video-room/actionType';
 import { Player, Room, User } from '../../../api/video-room-types';
 import { ApiContext } from '../..';
-import useStyles from '../../styles';
 import { PlayButtonR } from './play-button';
 import { SearchBarR } from './search-bar';
 import { VideoControllerR } from './video-controller'
 import { VolumeControllerR } from './volume-controller'
-import './video-player.css';
 
 interface Prop {
     sendControl: Function;
@@ -30,7 +27,6 @@ interface Prop {
  *      Volume Control
  */
 export const VideoPlayer = (props: Prop) => {
-    const classes = useStyles();
     const api = useContext<VideoRoomApi>(ApiContext)
 
     const [reactPlayer, setReactPlayer] = useState(null)
@@ -44,7 +40,7 @@ export const VideoPlayer = (props: Prop) => {
             api.updateRoom(
                 props.currentRoom.id,
                 props.currentRoom.name,
-                "", 
+                "",
                 props.player.videoUrl,
                 props.player.videoState,
                 state.played,
@@ -62,10 +58,10 @@ export const VideoPlayer = (props: Prop) => {
             props.sendControl(api, props.currentRoom, "PAUSED", room.video_time)
         })
     }
-    
+
     return (
-        <div className={classes.videoPlayer}>
-            <div>                
+        <div id="video-player">
+            <div>
                 <SearchBarR />
                 <div className='player-wrapper'>
                     <ReactPlayer
@@ -77,7 +73,7 @@ export const VideoPlayer = (props: Prop) => {
                         controls={false}
                         config={{
                             youtube: {
-                                playerVars: { 
+                                playerVars: {
                                     rel : 0,
                                     disablekb: 1}
                             }

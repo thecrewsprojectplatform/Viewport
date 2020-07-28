@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import { Grid, Slider } from '@material-ui/core';
 import { VolumeDown, VolumeUp } from '@material-ui/icons';
-
 import { Player, Room } from '../../../api/video-room-types';
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { ActionType } from '../../../store/video-room/actionType';

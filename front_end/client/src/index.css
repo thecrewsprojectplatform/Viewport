@@ -87,6 +87,39 @@ styling for individual Material UI components.
   height: 30px
 }
 
+#video-player {
+  margin-left: 1%;
+  margin-right: 1%;
+  text-align: center;
+  flex: 1;
+  flex-basis: 60%;
+}
+
+#url-section {
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.search-bar {
+  height: 40px;
+}
+
+.player-wrapper {
+  position: relative;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+}
+
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0%;
+  padding-top: .5625%;
+  padding-bottom: .5625%;
+  padding-left: 1%;
+  padding-right: 1%;
+}
+
 .header {
   height: 30px;
   padding-left: 12px;
@@ -110,4 +143,8 @@ styling for individual Material UI components.
 
 .nav-bar {
   margin-bottom: 5vh;
+}
+
+.title {
+  flex-grow: 1;
 }
