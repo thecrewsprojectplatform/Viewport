@@ -49,18 +49,17 @@ styling for individual Material UI components.
   height: 50vh;
   width: 200px;
   margin-bottom: 3%;
-  border: 1px solid #E0E0E0;
-  border-radius: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   display: block;
   flex: none;
-  overflow-x: scroll;
+}
+
+#user-list > .content {
+  height: calc(50vh - 30px);
 }
 
 #chat-app {
   height: 80vh;
-  border: 1px solid #E0E0E0;
-  border-radius: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   display: flex;
   flex-direction: column;
@@ -69,7 +68,7 @@ styling for individual Material UI components.
 }
 
 #chat-app > .content {
-  padding-top: 1%;
+  height: calc(80vh - 30px - 38px);
   padding-left: 7px;
   padding-right: 7px;
   word-wrap: break-word;
@@ -79,15 +78,16 @@ styling for individual Material UI components.
 }
 
 #typing-section {
-  height: 30px;
+  height: 38px;
   padding-left: 7px;
   padding-right: 7px;
-  margin-bottom: 5px;
   flex: none;
 }
 
 #typing-section .chat-input {
-  height: 30px
+  height: 30px;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 #video-player {
@@ -128,13 +128,11 @@ styling for individual Material UI components.
   height: 30px;
   padding-left: 12px;
   background: #E3E3E3;
-  border-bottom: 1px solid #E0E0E0;
   display: flex;
   align-items: flex-end;
 }
 
 .content {
-  height: 90%;
   background: #F9F9F9;
   overflow-y: scroll;
 }
@@ -155,4 +153,41 @@ styling for individual Material UI components.
 
 .menu-button {
   margin-right: 2px;
+
+/* ---------- Material UI classes ---------- */
+
+/* ---------- Dark Mode styling ---------- */
+
+@media (prefers-color-scheme: dark) {
+  #typing-section, .content {
+    background: #1F2024;
+  }
+
+  .header {
+    background: #434343;
+  }
+
+  .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(255, 255, 255, 0.7);
+  }
+
+  .MuiFormLabel-root.Mui-focused {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .MuiButton-containedPrimary {
+    background-color: #3C3C3C;
+  }
+
+  .MuiButton-containedPrimary:hover {
+    background-color: #313131;
+  }
+
+  .MuiAppBar-colorPrimary {
+    background-color: #424242;
+  }
+
+  .MuiSlider-root {
+    color: #FFFFFF;
+  }
 }
