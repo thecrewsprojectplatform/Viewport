@@ -51,9 +51,9 @@ const VidRoomNavBar = (props: Prop) => {
             <AppBar position="static">
                 <Toolbar>
 
-                    <IconButton edge="start" className="menu-button" color="inherit" aria-label="menu">
+                    <IconButton edge="start" className="menu-toggler" color="inherit" aria-label="menu">
                         <MenuIcon onClick={() => toggleDrawer(true)} />
-                        <Drawer anchor="left" open={navBar} onClose={() => toggleDrawer(false)}>
+                        <Drawer className="menu" anchor="left" open={navBar} onClose={() => toggleDrawer(false)}>
                             <List>
                                 {toggleList.map((toggle) => {
 

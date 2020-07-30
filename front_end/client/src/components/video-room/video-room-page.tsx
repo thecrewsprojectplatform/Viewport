@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState, useRef } from "react";
 import { match } from "react-router-dom";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -39,8 +39,8 @@ export const VideoRoomPage = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
     const history = useHistory();
     const [showEditUserModal, setShowEditUserModal] = useState(false);
-    const [showChatApp, setShowChatApp] = useState(false);
-    const [showUserList, setShowUserList] = useState(false);
+    const toggleChatRef = useRef(null);
+    const toggleListRef = useRef(null);
     const [leaveRoom, setLeaveRoom] = useState(false);
 
     useEffect(() => {
@@ -50,20 +50,20 @@ export const VideoRoomPage = (props: Prop) => {
     }, [props.users]);
 
     const toggleChat = () => {
-        var x = document.getElementById("chat-app");
-        if (x.style.display === "none") {
-          x.style.display = "block";
+        var toggleChatApp = document.getElementById("chat-app");
+        if (toggleChatApp.style.display === "none") {
+            toggleChatApp.style.display = "block";
         } else {
-          x.style.display = "none";
+            toggleChatApp.style.display = "none";
         }
     }
 
     const toggleUserList = () => {
-        var x = document.getElementById("user-list");
-        if (x.style.display === "none") {
-          x.style.display = "block";
+        var toggleUserListApp = document.getElementById("user-list");
+        if (toggleUserListApp.style.display === "none") {
+            toggleUserListApp.style.display = "block";
         } else {
-          x.style.display = "none";
+            toggleUserListApp.style.display = "none";
         }
     }
 
@@ -123,6 +123,7 @@ export const VideoRoomPage = (props: Prop) => {
                         users={props.users}
                         currentUser={props.currentUser}
                         onEditClick={() => {setShowEditUserModal(true)}}
+                        userListRef={() => toggleListRef}
                     />
                     <VideoPlayer />
                     <ChatAppR />
