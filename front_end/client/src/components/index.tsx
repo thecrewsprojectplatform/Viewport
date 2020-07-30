@@ -5,6 +5,7 @@ import { VideoRoomApi } from "../api/video-room-api";
 import { JoinCreateRoomPageR } from "./join-create-room/join-create-room-page";
 import { LoginPageR } from "./login/login-page";
 import { VideoRoomPageR } from "./video-room/video-room-page";
+import { useMediaQuery, createMuiTheme, ThemeProvider, CssBaseline } from "@material-ui/core";
 
 /**
  * Represents the required properties of the BasePageRouter.
@@ -23,6 +24,17 @@ export const ApiContext = React.createContext(null);
  * @returns {JSX.Element} The JSX representing the BasePage.
  */
 const BasePageRouter = (props: Prop) => {
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+    const theme = React.useMemo(
+        () =>
+        createMuiTheme({
+            palette: {
+            type: prefersDarkMode ? 'dark' : 'light',
+            },
+        }),
+        [prefersDarkMode],
+    );
+
     const [api, setApi] = useState(null as VideoRoomApi);
     const [showPage, setShowPage] = useState(false);
 
@@ -45,11 +57,14 @@ const BasePageRouter = (props: Prop) => {
         // provider is saying anyone can access this thing
         // value = setting the thing people can access
         <ApiContext.Provider value={api}>
-            <Switch>
-                <Route path="/rooms/:videoRoomId" component={VideoRoomPageR} />
-                <Route path="/rooms" component={JoinCreateRoomPageR} />
-                <Route path="/" component={LoginPageR} />
-            </Switch>
+            <ThemeProvider theme={theme}>
+            <CssBaseline/>
+                <Switch>
+                    <Route path="/rooms/:videoRoomId" component={VideoRoomPageR} />
+                    <Route path="/rooms" component={JoinCreateRoomPageR} />
+                    <Route path="/" component={LoginPageR} />
+                </Switch>
+            </ThemeProvider>
         </ApiContext.Provider>
     )
 }
