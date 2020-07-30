@@ -9,11 +9,11 @@ import { store } from "../../store";
 import { loadVideo } from '../../store/video-room/video-player'
 import { createUserAndAddToRoom, getRoomsAction, getRoomUsers, removeRoom, removeUserFromRoom } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
-import NavBar from "../nav-bar";
 import { ChatAppR } from "./chat-app/chat-app"
 import { EditUserModal } from "./user-list/edit-user-modal";
 import { UserList } from "./user-list/user-list";
 import VideoPlayer from "./video-player/video-player"
+import VidRoomNavBar from "./video-room-nav-bar";
 
 /**
  * Represents the required properties of the VideoRoomPage.
@@ -39,6 +39,8 @@ export const VideoRoomPage = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
     const history = useHistory();
     const [showEditUserModal, setShowEditUserModal] = useState(false);
+    const [showChatApp, setShowChatApp] = useState(false);
+    const [showUserList, setShowUserList] = useState(false);
     const [leaveRoom, setLeaveRoom] = useState(false);
 
     useEffect(() => {
@@ -46,6 +48,14 @@ export const VideoRoomPage = (props: Prop) => {
             history.push("/rooms");
         }
     }, [props.users]);
+
+    const toggleChat = () => {
+
+    }
+
+    const toggleUserList = () => {
+
+    }
 
     const exitRoomClick = (): void => {
         if (props.users.length === 1) {
@@ -82,10 +92,12 @@ export const VideoRoomPage = (props: Prop) => {
 
     return (
         <div id="video-room">
-            <NavBar
+            <VidRoomNavBar
                 title={!props.currentRoom ? "" : props.currentRoom.name}
                 buttonName={"Exit Room"}
                 buttonOnClick={exitRoomClick}
+                toggleChatOnClick={toggleChat}
+                toggleListOnClick={toggleUserList}
             />
             <Container id="video-room-content" maxWidth='xl'>
                 <CssBaseline />

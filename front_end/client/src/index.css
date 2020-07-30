@@ -152,3 +152,7 @@ styling for individual Material UI components.
 .title {
   flex-grow: 1;
 }
+
+.menu-button {
+  margin-right: 2px;
+}
