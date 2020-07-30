@@ -5,6 +5,7 @@ import configureSocket from '../src/components/video-room/chat-app/socket'
 import { VideoRoomApi } from "./api/video-room-api";
 import { BasePageRouterR } from "./components";
 import { store } from "./store";
+import { StylesProvider } from '@material-ui/core';
 
 export const socket = configureSocket(store.dispatch, new VideoRoomApi)
 
@@ -19,11 +20,13 @@ class App extends React.Component {
    */
   render() {
     return (
-      <Provider store={store}>
-        <Router>
-          <Route path="/" component={BasePageRouterR} />
-        </Router>
-      </Provider>
+      <StylesProvider injectFirst>
+        <Provider store={store}>
+          <Router>
+            <Route path="/" component={BasePageRouterR} />
+          </Router>
+        </Provider>
+      </StylesProvider>
     );
   }
 }

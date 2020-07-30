@@ -20,6 +20,7 @@ const players: Player = {
     videoState: 'test state',
     videoTime: 1,
     videoLength: 2,
+    videoVolume: 0,
 }
 
 const props = {
@@ -30,8 +31,16 @@ const props = {
 };
 
 const setup = () => {
+    let mockFn = jest.fn();
+
     return shallow(
-        <VideoPlayer {...props} />
+        <VideoPlayer
+            sendVideoState={mockFn}
+            currentRoom={props.currentRoom}
+            player={props.player}
+            user={props.user}
+            seeking={props.seeking}
+        />
     );
 };
 
@@ -43,14 +52,14 @@ describe('Video Room Page component', () => {
         expect(wrapper.exists()).toBe(true);
     })
 
-    
+
     test('Should contain PlayButton', () => {
         expect(wrapper.find(PlayButtonR).exists()).toBeTruthy();
     })
 
-        
+
     test('Should contain VideoController', () => {
         expect(wrapper.find(VideoControllerR).exists()).toBeTruthy();
     })
-    
+
 })

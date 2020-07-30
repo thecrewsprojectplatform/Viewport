@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { shallow, mount } from 'enzyme';
 import { Room, User } from '../api/video-room-types';
 import { SearchBar } from '../components/video-room/video-player/search-bar';
-import { TextField } from '@material-ui/core';
 
 const room: Room = {
     id: 0,
@@ -25,7 +24,6 @@ describe('SearchBar component', () => {
         wrapper = shallow(
             <SearchBar
                 sendUrlToServer={mockClick}
-                sendControl={mockClick}
                 currentRoom={room}
                 user={user}
             />
