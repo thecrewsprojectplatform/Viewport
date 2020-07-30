@@ -9,6 +9,7 @@ const player: Player = {
   videoState: null,
   videoTime: 0,
   videoLength: 0,
+  videoVolume: 0,
 }
 
 const room: Room = {
@@ -21,19 +22,23 @@ describe('VideoController component', () => {
     let wrapper;
     let mockClick1;
     let mockClick2;
+    let mockClick3;
 
     beforeEach(() => {
         jest.mock('../App.tsx', () => "root")
         mockClick1 = jest.fn();
         mockClick2 = jest.fn();
+        mockClick3 = jest.fn();
         wrapper = shallow(
             <VideoController
                 setSeeking={mockClick1}
-                sendControl={mockClick2}
+                sendVideoTime={mockClick2}
+                updateVideoTime={mockClick3}
                 currentRoom={room}
                 player={player}
                 seeking={true}
                 reactPlayer={null}
+                sliderVideoTime={0}
             />
         )
     })
@@ -53,9 +58,11 @@ describe('VideoController component', () => {
       };
       expect(mockClick1).toHaveBeenCalledTimes(0);
       expect(mockClick2).toHaveBeenCalledTimes(0);
+      expect(mockClick3).toHaveBeenCalledTimes(0);
       const input = wrapper.find(Slider);
       input.simulate('change', fakeEvent);
-      expect(mockClick1).toHaveBeenCalledTimes(2);
+      expect(mockClick1).toHaveBeenCalledTimes(1);
       expect(mockClick2).toHaveBeenCalledTimes(1);
+      expect(mockClick3).toHaveBeenCalledTimes(1);
   })
 })

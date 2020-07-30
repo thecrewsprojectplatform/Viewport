@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 import { PlayButton } from '../components/video-room/video-player/play-button';
 import { Player, Room } from '../api/video-room-types';
-import { Button } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 
 const player: Player = {
     videoUrl: 'testing',
     videoState: null,
     videoTime: 0,
     videoLength: 0,
+    videoVolume: 0,
 }
 
 const room: Room = {
@@ -31,7 +32,8 @@ describe('PlayButton component', () => {
         mockClick = jest.fn();
         wrapper = shallow(
             <PlayButton
-                sendControl={mockClick}
+                pause={mockClick}
+                play={mockClick}
                 player={props.player}
                 currentRoom={props.currentRoom}
             />
@@ -50,7 +52,7 @@ describe('PlayButton component', () => {
         const fakeEvent = { preventDefault: () => {} };
         expect(mockClick).toHaveBeenCalledTimes(0);
 
-        const onClick = wrapper.find(Button);
+        const onClick = wrapper.find(IconButton);
         onClick.simulate('click', fakeEvent)
 
         expect(mockClick).toHaveBeenCalledTimes(1);
