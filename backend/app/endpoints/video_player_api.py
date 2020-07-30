@@ -93,6 +93,8 @@ class VideoStateApi(Resource):
         if room is None:
             raise LookupError("Room not found")
         for k, v in args.items():
+            if k == "video_state" and v not in Room.valid_video_states:
+                raise BadRequest()
             setattr(room, k, v)
         db.session.commit()
         return room.to_json()
