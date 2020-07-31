@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Room, User } from "./video-room-types";
+import { Room, User, Video } from "./video-room-types";
 
 export class VideoRoomApi {
     BASE_URL: string
@@ -30,6 +30,29 @@ export class VideoRoomApi {
         return axios.delete(this.BASE_URL + "/rooms/" + roomId).then(response => {
             return response.data;
         });
+    }
+
+    async createPlaylist(roomId: number, userId: number, video_url: string): Promise<Video> {
+        return axios.post(this.BASE_URL + "/rooms/" + roomId +  "/playlist", {
+            "user_id": userId,
+            "video_url": video_url
+        }).then(response => {
+            return response.data;
+        })
+    }
+
+    async getPlaylist(roomId: number): Promise<Video[]> {
+        return axios.get(this.BASE_URL + "/rooms/" + roomId + "/playlist").then(response => {
+            return response.data;
+        })
+    }
+
+    async removePlaylist(roomId: number, video_url: string): Promise<void> {
+        return axios.delete(this.BASE_URL + "/rooms/" + roomId + "/playlist", {
+            "video_url": video_url
+        }).then(response => {
+            return response.data;
+        })
     }
 
     async getVideoState(roomId: number): Promise<string> {
