@@ -10,7 +10,6 @@ export interface Prop {
     users: User[];
     currentUser: User;
     onEditClick: () => void;
-    userListRef: () => void;
 }
 
 /**
