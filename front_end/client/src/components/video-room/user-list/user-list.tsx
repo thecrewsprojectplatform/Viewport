@@ -26,7 +26,7 @@ export interface Prop {
  */
 export const UserList = (props: Prop) => {
     return (
-        <div id="user-list" >
+        <div id="user-list">
             <Typography className="header">
                 ACTIVE USERS
             </Typography>
