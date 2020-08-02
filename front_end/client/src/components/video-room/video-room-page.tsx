@@ -12,7 +12,7 @@ import { ApiContext } from "..";
 import { ChatAppR } from "./chat-app/chat-app"
 import { EditUserModal } from "./user-list/edit-user-modal";
 import { UserList } from "./user-list/user-list";
-import VideoPlayer from "./video-player/video-player"
+import { VideoPlayerR } from "./video-player/video-player"
 import VidRoomNavBar from "./video-room-nav-bar";
 
 /**
@@ -123,9 +123,8 @@ export const VideoRoomPage = (props: Prop) => {
                         users={props.users}
                         currentUser={props.currentUser}
                         onEditClick={() => {setShowEditUserModal(true)}}
-                        userListRef={() => toggleListRef}
                     />
-                    <VideoPlayer />
+                    <VideoPlayerR />
                     <ChatAppR />
             </Container>
         </div>
