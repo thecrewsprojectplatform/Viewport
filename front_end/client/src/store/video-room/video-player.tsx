@@ -1,13 +1,14 @@
 import produce from 'immer'
 
 import { VideoRoomApi } from "../../api/video-room-api";
-import { Room, Player } from "../../api/video-room-types";
+import { Room, Player, Video } from "../../api/video-room-types";
 import { socket } from "../../App"
 import { ActionType } from './actionType'
 
 export interface VideoPlayerState {
     player: Player
     seeking: boolean
+    playlist: Video[]
 }
 
 const initialState: VideoPlayerState = {
@@ -18,7 +19,8 @@ const initialState: VideoPlayerState = {
         videoLength: 0,
         videoVolume: 0.5
     },
-    seeking: false
+    seeking: false,
+    playlist: null
 };
 
 interface ControlVideoStateAction {

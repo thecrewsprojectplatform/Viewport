@@ -13,7 +13,7 @@ import NavBar from "../nav-bar";
 import { ChatAppR } from "./chat-app/chat-app"
 import { EditUserModal } from "./user-list/edit-user-modal";
 import { UserList } from "./user-list/user-list";
-import VideoPlayer from "./video-player/video-player"
+import { VideoPlayerR } from "./video-player/video-player"
 
 /**
  * Represents the required properties of the VideoRoomPage.
@@ -102,7 +102,7 @@ export const VideoRoomPage = (props: Prop) => {
                         currentUser={props.currentUser}
                         onEditClick={() => {setShowEditUserModal(true)}}
                     />
-                    <VideoPlayer />
+                    <VideoPlayerR />
                     <ChatAppR />
             </Container>
         </div>
