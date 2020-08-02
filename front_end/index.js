@@ -8,6 +8,11 @@ const app = express();
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "client/build")));
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
