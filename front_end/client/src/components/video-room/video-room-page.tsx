@@ -123,7 +123,6 @@ export const VideoRoomPage = (props: Prop) => {
                         users={props.users}
                         currentUser={props.currentUser}
                         onEditClick={() => {setShowEditUserModal(true)}}
-                        userListRef={() => toggleListRef}
                     />
                     <VideoPlayer />
                     <ChatAppR />
