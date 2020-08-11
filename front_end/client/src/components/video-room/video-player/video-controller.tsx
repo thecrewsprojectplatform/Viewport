@@ -33,7 +33,6 @@ export const VideoController = (props: Prop) => {
      */
     const handleSeekMouseUp = (event, newTime) => {
         props.setSeeking(false)
-       
     }
 
     const handleSeekChange = (event, newTime) => {

@@ -49,18 +49,17 @@ styling for individual Material UI components.
   height: 50vh;
   width: 200px;
   margin-bottom: 3%;
-  border: 1px solid #E0E0E0;
-  border-radius: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   display: block;
   flex: none;
-  overflow-x: scroll;
+}
+
+#user-list > .content {
+  height: calc(50vh - 30px);
 }
 
 #chat-app {
   height: 80vh;
-  border: 1px solid #E0E0E0;
-  border-radius: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   display: flex;
   flex-direction: column;
@@ -69,7 +68,7 @@ styling for individual Material UI components.
 }
 
 #chat-app > .content {
-  padding-top: 1%;
+  height: calc(80vh - 30px - 38px);
   padding-left: 7px;
   padding-right: 7px;
   word-wrap: break-word;
@@ -79,15 +78,16 @@ styling for individual Material UI components.
 }
 
 #typing-section {
-  height: 30px;
+  height: 38px;
   padding-left: 7px;
   padding-right: 7px;
-  margin-bottom: 5px;
   flex: none;
 }
 
 #typing-section .chat-input {
-  height: 30px
+  height: 30px;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 #video-player {
@@ -103,6 +103,89 @@ styling for individual Material UI components.
   margin-left: auto;
   margin-right: auto;
 }
+
+/* ---------- Video-Room-Navigation-Bar ---------- To be completed
+ 
+.menu__toggler {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 999;
+  height: 28px;
+  width: 28px;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.menu__toggler span,
+.menu__toggler span::before,
+.menu__toggler span::after {
+  position: absolute;
+  content: '';
+  width: 28px;
+  height: 2.5px;
+  background: #fafafa;
+  border-radius: 20px;
+  transition: 500ms cubic-bezier(0.77, 0, 0.175, 1);
+}
+.menu__toggler span::before {
+  top: -8px;
+}
+.menu__toggler span::after {
+  top: 8px;
+}
+.menu__toggler.active > span {
+  background: transparent;
+}
+.menu__toggler.active > span::before, .menu__toggler.active > span::after {
+  background: #005c9c;
+  top: 0px;
+}
+.menu__toggler.active > span::before {
+  -webkit-transform: rotate(-225deg);
+          transform: rotate(-225deg);
+}
+.menu__toggler.active > span::after {
+  -webkit-transform: rotate(225deg);
+          transform: rotate(225deg);
+}
+
+.menu {
+  position: absolute;
+  left: -30%;
+  z-index: 998;
+  color: #005c9c;
+  background: rgba(250, 250, 250, 0.7);
+  -webkit-clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+          clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+  width: 30%;
+  height: 100%;
+  padding: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: 300ms left cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+@media only screen and (max-width: 600px) {
+  .menu {
+    width: 250px;
+    left: -250px;
+    padding: 50px;
+  }
+}
+
+.menu.active {
+  left: 0;
+}
+
+.menu p {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+*/
 
 /* ---------- Various classes ---------- */
 .search-bar {
@@ -128,13 +211,11 @@ styling for individual Material UI components.
   height: 30px;
   padding-left: 12px;
   background: #E3E3E3;
-  border-bottom: 1px solid #E0E0E0;
   display: flex;
   align-items: flex-end;
 }
 
 .content {
-  height: 90%;
   background: #F9F9F9;
   overflow-y: scroll;
 }
@@ -151,4 +232,42 @@ styling for individual Material UI components.
 
 .title {
   flex-grow: 1;
+}
+
+/* ---------- Material UI classes ---------- */
+
+/* ---------- Dark Mode styling ---------- */
+
+@media (prefers-color-scheme: dark) {
+  #typing-section, .content {
+    background: #1F2024;
+  }
+
+  .header {
+    background: #434343;
+  }
+
+  .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(255, 255, 255, 0.7);
+  }
+
+  .MuiFormLabel-root.Mui-focused {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .MuiButton-containedPrimary {
+    background-color: #3C3C3C;
+  }
+
+  .MuiButton-containedPrimary:hover {
+    background-color: #313131;
+  }
+
+  .MuiAppBar-colorPrimary {
+    background-color: #424242;
+  }
+
+  .MuiSlider-root {
+    color: #FFFFFF;
+  }
 }

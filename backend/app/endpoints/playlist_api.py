@@ -13,7 +13,7 @@ class PlaylistApi(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument("room_id", type=int, required=True, location="json")
         self.reqparse.add_argument("user_id", type=int, required=True, location="json")
-        self.reqparse.add_argument("video_url", type=str, required=False, , location="json")
+        self.reqparse.add_argument("video_url", type=str, required=False, location="json")
         super(VideoStateApi, self).__init__()
 
     @swagger.operation(

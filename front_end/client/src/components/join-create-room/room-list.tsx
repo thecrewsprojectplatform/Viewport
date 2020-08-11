@@ -81,9 +81,9 @@ export const RoomList = (props: Prop) => {
                             )
                         })
 
-                    })()
-                }
-                </List>
+                        })()
+                    }
+                    </List>
             </div>
         </Container>
     )

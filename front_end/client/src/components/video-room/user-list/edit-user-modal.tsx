@@ -25,6 +25,7 @@ export const EditUserModal = (props: Prop) => {
         store.dispatch(editUserName(api, props.currentUser.id, props.currentRoom.id, newUserName));
         event.preventDefault();
     }
+    
     return <BaseModal
         title="Edit User Name"
         onClose={props.onClose}
