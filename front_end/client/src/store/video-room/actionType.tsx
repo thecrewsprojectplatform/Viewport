@@ -18,6 +18,11 @@ export enum ActionType {
     SendVideoTime = "SEND_VIDEO_TIME",
     SendUrlToServer = "CLIENT_SENDS_URL_TO_SERVER",
     UpdateVideoUrl = "UPDATE_VIDEO_URL",
+    // Playlist Types
+    AddVideo = "ADD_VIDEO_TO_PLAYLIST",
+    RemoveVideo = "REMOVE_VIDEO_FROM_PLAYLIST",
+    GetVideo = "GET_VIDEOS_FROM_PLAYLIST",
+    UpdatePlaylist = "UPDATE_PLAYLIST",
     //
     CreateRoomAndAddUserToRoom="CREATE_ROOM_AND_ADD_USER_TO_ROOM", 
     CreateRoomAndAddUserToRoomSuccess="CREATE_ROOM_AND_ADD_USER_TO_ROOM_SUCCESS",
