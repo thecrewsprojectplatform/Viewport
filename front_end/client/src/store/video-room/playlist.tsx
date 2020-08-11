@@ -6,11 +6,11 @@ import { socket } from "../../App";
 import { ActionType } from "./actionType"
 
 export interface PlaylistState {
-    playlist: Video[]
+    videos: Video[]
 }
 
 const initialState: PlaylistState = {
-    playlist: [],
+    videos: [],
 }
 
 interface AddVideoAction {
@@ -30,7 +30,7 @@ interface RemoveVideoAction {
 
 interface UpdatePlaylistAction {
     type: ActionType.UpdatePlaylist;
-    playlist: Video[];
+    video: Video;
 }
 
 export interface Actions {
@@ -50,6 +50,7 @@ export const reducer = (
     switch(action.type) {
         case ActionType.AddVideo:
             return produce(state, draftState => {
+                console.log("inside reducer" + action.roomId)
                 addVideo(
                     action.api,
                     action.roomId,
@@ -57,38 +58,41 @@ export const reducer = (
                     action.url
                 )
             });
-        case ActionType.RemoveVideo:
-            return produce(state, draftState => {
-                removeVideo(
-                    action.api,
-                    action.roomId,
-                    action.url
-                )
-            });
+        // case ActionType.RemoveVideo:
+        //     return produce(state, draftState => {
+        //         removeVideo(
+        //             action.api,
+        //             action.roomId,
+        //             action.url
+        //         )
+        //     });
         case ActionType.UpdatePlaylist:
             return produce(state, draftState => {
-                draftState.playlist = action.playlist;
+                console.log('updating playlist')
+                console.log(action.video)
+                console.log(draftState.videos)
+                draftState.videos.push(action.video);
+                console.log(draftState.videos)
             });
         default:
             return state;
     }
 };
 
-export const updatePlaylist = (playlist: Video[]): any => {
+export const updatePlaylist = (video: Video): any => {
     return (dispatch): any => {
         dispatch({
             type: ActionType.UpdatePlaylist,
-            playlist: playlist
+            video: video
         })
     }
 }
 
-const getAndSendPlaylist = (api: VideoRoomApi, roomId: number) => {
-    api.getPlaylist(roomId).then(playlist => {
-        socket.emit('sendPlaylistToServer', {
-            currentRoomId: roomId,
-            playlist: playlist
-        })
+const getAndSendVideo = (roomId: number, video: Video) => {
+    console.log('emit to clients')
+    socket.emit('sendVideoToServer', {
+        currentRoomId:  roomId,
+        video: video
     })
 }
 
@@ -98,17 +102,18 @@ const addVideo = (
         userId: number,
         videoUrl: string
     ) => {
-        api.createPlaylist(roomId, userId, videoUrl).then(() => {
-            getAndSendPlaylist(api, roomId)
+        api.createPlaylist(roomId, userId, videoUrl).then(response => {
+            console.log(response)
+            getAndSendVideo(roomId, response)
         })
 }
 
-const removeVideo = (
-        api: VideoRoomApi,
-        roomId: number,
-        videoUrl: string
-    ) => {
-        api.removePlaylist(roomId, videoUrl).then(() => {
-            getAndSendPlaylist(api, roomId)
-        })
-    }
+// const removeVideo = (
+//         api: VideoRoomApi,
+//         roomId: number,
+//         videoUrl: string
+//     ) => {
+//         api.removePlaylist(roomId, videoUrl).then(() => {
+//             getAndSendVideo(api, roomId)
+//         })
+//     }

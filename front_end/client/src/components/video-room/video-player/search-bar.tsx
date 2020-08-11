@@ -10,6 +10,7 @@ import { ApiContext } from '../..';
 
 interface Prop {
     sendUrlToServer: Function
+    addToPlaylist: Function
     currentRoom: Room
     user: User
 }
@@ -36,13 +37,20 @@ export const SearchBar = (props: Prop) => {
 
     // By default, set the video_state to paused after loading
     const loadButton = () => {
-        props.sendUrlToServer(
+        console.log(props.currentRoom.id)
+        props.addToPlaylist(
             api,
-            props.currentRoom,
-            url,
+            props.currentRoom.id,
             props.user.id,
-            props.user.name
+            url
         )
+        // props.sendUrlToServer(
+        //     api,
+        //     props.currentRoom,
+        //     url,
+        //     props.user.id,
+        //     props.user.name
+        // )
     }
 
     return (
@@ -85,6 +93,12 @@ const mapDispatchToProps = dispatch => {
             userId: number,
             userName: string
         ) => dispatch({type: ActionType.SendUrlToServer, api: api, currentRoom: currentRoom, url: url, userId: userId, userName: userName}),
+        addToPlaylist: (
+            api: VideoRoomApi,
+            roomId: number,
+            userId: number,
+            url: string
+        ) => dispatch({type: ActionType.AddVideo, api:api, roomId: roomId, userId: userId, url: url})
     }
 }
 

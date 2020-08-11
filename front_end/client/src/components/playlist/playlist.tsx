@@ -1,32 +1,37 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import { List } from '@material-ui/core';
 
-import { Video } from '../../api/video-room-types';
+import { Video, Player } from '../../api/video-room-types';
 import { PlaylistItem } from './playlist-item';
-import { connect } from 'react-redux';
+
 
 interface Prop {
     playlist: Video[];
-    currentVideo: Video;
+    //currentVideo: Video;
 }
 
 export const Playlist = (props: Prop) => {
     return (
         <div>
-            <List>
-                {props.playlist.map((video) => {
-                    return (
-                        <PlaylistItem video={video}/>
-                    );
-                })}
-            </List>
+            {props.playlist ? 
+                <List>
+                    {props.playlist.map((video) => {
+                        return (
+                            <PlaylistItem video={video}/>
+                        );
+                    })}
+                </List>
+            : null
+            }
         </div>
     );
 }
 
 const mapStateToProps = state => {
     return {
-        playlist: state.player.playlist
+        playlist: state.playlist.videos,
     }
 }
 

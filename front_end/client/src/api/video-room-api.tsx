@@ -33,10 +33,12 @@ export class VideoRoomApi {
     }
 
     async createPlaylist(roomId: number, userId: number, video_url: string): Promise<Video> {
+        console.log("here" + roomId)
         return axios.post(this.BASE_URL + "/rooms/" + roomId +  "/playlist", {
             "user_id": userId,
             "video_url": video_url
         }).then(response => {
+            console.log(response.data)
             return response.data;
         })
     }

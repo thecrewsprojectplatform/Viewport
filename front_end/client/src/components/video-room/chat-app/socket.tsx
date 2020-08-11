@@ -3,6 +3,7 @@ import io from "socket.io-client";
 import { VideoRoomApi } from "../../../api/video-room-api";
 import { store } from "../../../store";
 import { ActionType } from "../../../store/video-room/actionType";
+import { updatePlaylist } from "../../../store/video-room/playlist";
 import { controlVideoState, controlVideoTime, loadVideo } from "../../../store/video-room/video-player"
 import { Actions, closedBrowserUserList, removeRoom, sendMessageToAllClients, } from "../../../store/video-room/video-room";
 
@@ -36,6 +37,12 @@ const configureSocket = (dispatch, api: VideoRoomApi) => {
   socket.on('sendVideoUrlToAllClients', data => {
     store.dispatch(loadVideo(data.videoUrl))
   });
+
+  socket.on('sendVideoToAllClients', data => {
+    console.log(data)
+    console.log(data.video)
+    store.dispatch(updatePlaylist(data.video))
+  })
 
   socket.on('userJoinedRoom', data => {
     msgTime = 'true'

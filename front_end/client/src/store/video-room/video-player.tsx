@@ -8,7 +8,6 @@ import { ActionType } from './actionType'
 export interface VideoPlayerState {
     player: Player
     seeking: boolean
-    playlist: Video[]
 }
 
 const initialState: VideoPlayerState = {
@@ -20,7 +19,6 @@ const initialState: VideoPlayerState = {
         videoVolume: 0.5
     },
     seeking: false,
-    playlist: null
 };
 
 interface ControlVideoStateAction {

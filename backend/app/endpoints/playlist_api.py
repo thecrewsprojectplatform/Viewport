@@ -11,10 +11,9 @@ from app.endpoints.utils import create_400_error, create_404_error, create_500_e
 class PlaylistApi(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument("room_id", type=int, required=True, location="json")
-        self.reqparse.add_argument("user_id", type=int, required=True, location="json")
+        self.reqparse.add_argument("user_id", type=int, required=False, location="json")
         self.reqparse.add_argument("video_url", type=str, required=False, location="json")
-        super(VideoStateApi, self).__init__()
+        super(PlaylistApi, self).__init__()
 
     @swagger.operation(
         notes="Returns the playlist of the room",
@@ -43,16 +42,16 @@ class PlaylistApi(Resource):
     )
     def get(self, room_id):
         try:
+            print('here')
             return jsonify(self.__get_playlist(room_id))
         except LookupError:
             return create_404_error()
         except:
             return create_500_error()
     def __get_playlist(self, room_id):
-        playlist = Playlist.query.get(room_id)
+        playlist = Playlist.query.filter_by(room_id=room_id).all()
         if playlist is None:
             raise LookupError("Room not found")
-
         return [video.to_json() for video in playlist]
 
     @swagger.operation(
@@ -97,10 +96,10 @@ class PlaylistApi(Resource):
             }
         ]
     )
-    def post(self, room_id, video):
+    def post(self, room_id):
         try:
             args = self.reqparse.parse_args()
-            return(jsonify(self.__add_video_to_playlist(args["user_id"], room_id, args["video_url"])))
+            return(jsonify(self.__add_video_to_playlist(room_id, args["user_id"], args["video_url"])))
         except BadRequest:
             return create_400_error()
         except LookupError:
@@ -108,7 +107,7 @@ class PlaylistApi(Resource):
         except:
             return create_500_error()
 
-    def __add_video_to_playlist(self, room_id, video):
+    def __add_video_to_playlist(self, room_id, user_id, video):
         if Room.query.get(room_id) is None:
             raise LookupError("Room not found")
         elif User.query.get(user_id) is None:
@@ -116,7 +115,8 @@ class PlaylistApi(Resource):
         playlist = Playlist(room_id=room_id, user_id=user_id, video_url=video)
         db.session.add(playlist)
         db.session.commit()
-        return playlist.video_url.to_json()
+
+        return playlist.video_url
 
     @swagger.operation(
         notes="Removes a video from the playlist",
