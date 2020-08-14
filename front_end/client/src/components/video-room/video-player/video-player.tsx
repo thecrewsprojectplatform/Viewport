@@ -12,6 +12,7 @@ import { SearchBarR } from './search-bar';
 import { VideoControllerR } from './video-controller'
 import { VolumeControllerR } from './volume-controller'
 
+
 interface Prop {
     sendVideoState: Function;
     currentRoom: Room;

@@ -20,9 +20,10 @@ export enum ActionType {
     UpdateVideoUrl = "UPDATE_VIDEO_URL",
     // Playlist Types
     AddVideo = "ADD_VIDEO_TO_PLAYLIST",
-    RemoveVideo = "REMOVE_VIDEO_FROM_PLAYLIST",
+    DeleteVideo = "REMOVE_VIDEO_FROM_PLAYLIST",
     GetVideo = "GET_VIDEOS_FROM_PLAYLIST",
-    UpdatePlaylist = "UPDATE_PLAYLIST",
+    AddToPlaylist = "ADD_TO_PLAYLIST",
+    DeleteFromPlaylist = "DELETE_FROM_PLAYLIST",
     //
     CreateRoomAndAddUserToRoom="CREATE_ROOM_AND_ADD_USER_TO_ROOM", 
     CreateRoomAndAddUserToRoomSuccess="CREATE_ROOM_AND_ADD_USER_TO_ROOM_SUCCESS",

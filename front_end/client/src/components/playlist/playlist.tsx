@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { List } from '@material-ui/core';
 
 import { Video, Player } from '../../api/video-room-types';
-import { PlaylistItem } from './playlist-item';
+import { PlaylistItemR } from './playlist-item';
 
 
 interface Prop {
@@ -19,7 +19,7 @@ export const Playlist = (props: Prop) => {
                 <List>
                     {props.playlist.map((video) => {
                         return (
-                            <PlaylistItem video={video}/>
+                            <PlaylistItemR video={video}/>
                         );
                     })}
                 </List>

@@ -80,9 +80,7 @@ io.on('connection', socket => {
   })
 
   socket.on('sendVideoToServer', data => {
-    console.log('sendingto clients')
     io.to(data.currentRoomId).emit('sendVideoToAllClients', data);
-    console.log('sent to clients')
   })
 
   /*  UPDATING THE USERLIST OF THE ROOM  */

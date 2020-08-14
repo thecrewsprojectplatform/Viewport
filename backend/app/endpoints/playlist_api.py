@@ -152,13 +152,15 @@ class PlaylistApi(Resource):
     )
     def delete(self, room_id, video_url):
         try:
-            self.__remove_video_from_playlist(room_id, args["video_url"])
+            print(video_url)
+            print(args["video_url"])
+            self.__delete_video_from_playlist(room_id, args["video_url"])
             return jsonify(success=True)
         except LookupError:
             return create_404_error()
         except:
             return create_500_error()
-    def __remove_video_from_playlist(self, room_id, video_url):
+    def __delete_video_from_playlist(self, room_id, video_url):
         video = Playlist.query.filter_by(room_id=room_id, video_url=video_url)
         if video is None:
             raise LookupError("Video not found")

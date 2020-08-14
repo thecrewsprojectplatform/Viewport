@@ -18,30 +18,37 @@ interface AddVideoAction {
     api: VideoRoomApi;
     roomId: number;
     userId: number;
-    url: string;
+    video: Video;
 }
 
-interface RemoveVideoAction {
-    type: ActionType.RemoveVideo;
+interface DeleteVideoAction {
+    type: ActionType.DeleteVideo;
     api: VideoRoomApi;
     roomId: number;
-    url: string;
+    video: Video;
 }
 
-interface UpdatePlaylistAction {
-    type: ActionType.UpdatePlaylist;
+interface AddToPlaylistAction {
+    type: ActionType.AddToPlaylist;
+    video: Video;
+}
+
+interface DeleteFromPlaylistAction {
+    type: ActionType.DeleteFromPlaylist;
     video: Video;
 }
 
 export interface Actions {
     AddVideoAction: AddVideoAction
-    RemoveVideoAction: RemoveVideoAction
-    UpdatePlaylistAction: UpdatePlaylistAction
+    RemoveVideoAction: DeleteVideoAction
+    AddToPlaylistAction: AddToPlaylistAction
+    DeleteFromPlaylistAction: DeleteFromPlaylistAction
 }
 
 type Action = AddVideoAction |
-              RemoveVideoAction |
-              UpdatePlaylistAction;
+              DeleteVideoAction |
+              AddToPlaylistAction |
+              DeleteFromPlaylistAction;
 
 export const reducer = (
     state: PlaylistState = initialState,
@@ -50,49 +57,57 @@ export const reducer = (
     switch(action.type) {
         case ActionType.AddVideo:
             return produce(state, draftState => {
-                console.log("inside reducer" + action.roomId)
                 addVideo(
                     action.api,
                     action.roomId,
                     action.userId,
-                    action.url
+                    action.video
                 )
             });
-        // case ActionType.RemoveVideo:
-        //     return produce(state, draftState => {
-        //         removeVideo(
-        //             action.api,
-        //             action.roomId,
-        //             action.url
-        //         )
-        //     });
-        case ActionType.UpdatePlaylist:
+        case ActionType.DeleteVideo:
             return produce(state, draftState => {
-                console.log('updating playlist')
-                console.log(action.video)
-                console.log(draftState.videos)
+                removeVideo(
+                    action.api,
+                    action.roomId,
+                    action.video
+                )
+            });
+        case ActionType.AddToPlaylist:
+            return produce(state, draftState => {
                 draftState.videos.push(action.video);
-                console.log(draftState.videos)
+            });
+        case ActionType.DeleteFromPlaylist:
+            return produce(state, draftState => {
+                draftState.videos.splice(draftState.videos.findIndex(video => video.url === action.video.url), 1);
             });
         default:
             return state;
     }
 };
 
-export const updatePlaylist = (video: Video): any => {
+export const addToPlaylist = (video: Video): any => {
     return (dispatch): any => {
         dispatch({
-            type: ActionType.UpdatePlaylist,
+            type: ActionType.AddToPlaylist,
             video: video
         })
     }
 }
 
-const getAndSendVideo = (roomId: number, video: Video) => {
-    console.log('emit to clients')
+export const deleteFromPlaylist = (video: Video): any => {
+    return (dispatch): any => {
+        dispatch({
+            type: ActionType.DeleteFromPlaylist,
+            video: video
+        })
+    }
+}
+
+const getAndSendVideo = (roomId: number, video: Video, option: string) => {
     socket.emit('sendVideoToServer', {
         currentRoomId:  roomId,
-        video: video
+        video: video,
+        option: option
     })
 }
 
@@ -100,20 +115,19 @@ const addVideo = (
         api: VideoRoomApi,
         roomId: number,
         userId: number,
-        videoUrl: string
+        video: Video
     ) => {
-        api.createPlaylist(roomId, userId, videoUrl).then(response => {
-            console.log(response)
-            getAndSendVideo(roomId, response)
+        api.createPlaylist(roomId, userId, video.url).then(response => {
+            getAndSendVideo(roomId, response, "ADD")
         })
 }
 
-// const removeVideo = (
-//         api: VideoRoomApi,
-//         roomId: number,
-//         videoUrl: string
-//     ) => {
-//         api.removePlaylist(roomId, videoUrl).then(() => {
-//             getAndSendVideo(api, roomId)
-//         })
-//     }
+const removeVideo = (
+        api: VideoRoomApi,
+        roomId: number,
+        video: Video
+    ) => {
+        api.removePlaylist(roomId, video.url).then(() => {
+            getAndSendVideo(roomId, video, "DELETE")
+        })
+    }

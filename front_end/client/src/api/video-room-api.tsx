@@ -50,9 +50,7 @@ export class VideoRoomApi {
     }
 
     async removePlaylist(roomId: number, video_url: string): Promise<void> {
-        return axios.delete(this.BASE_URL + "/rooms/" + roomId + "/playlist", {
-            data: {"video_url": video_url}
-        }).then(response => {
+        return axios.delete(this.BASE_URL + "/rooms/" + roomId + "/playlist/" + video_url).then(response => {
             return response.data;
         })
     }

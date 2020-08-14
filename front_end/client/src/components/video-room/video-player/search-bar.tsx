@@ -4,13 +4,13 @@ import { TextField, InputAdornment, IconButton } from '@material-ui/core'
 import SearchIcon from "@material-ui/icons/Search";
 import ReactPlayer from 'react-player'
 import { VideoRoomApi } from '../../../api/video-room-api';
-import { Room, User } from '../../../api/video-room-types';
+import { Room, User, Video } from '../../../api/video-room-types';
 import { ActionType } from '../../../store/video-room/actionType';
 import { ApiContext } from '../..';
 
 interface Prop {
     sendUrlToServer: Function
-    addToPlaylist: Function
+    addVideo: Function
     currentRoom: Room
     user: User
 }
@@ -37,12 +37,14 @@ export const SearchBar = (props: Prop) => {
 
     // By default, set the video_state to paused after loading
     const loadButton = () => {
-        console.log(props.currentRoom.id)
-        props.addToPlaylist(
+        const video: Video = {
+            url: url
+        }
+        props.addVideo(
             api,
             props.currentRoom.id,
             props.user.id,
-            url
+            video
         )
         // props.sendUrlToServer(
         //     api,
@@ -93,12 +95,12 @@ const mapDispatchToProps = dispatch => {
             userId: number,
             userName: string
         ) => dispatch({type: ActionType.SendUrlToServer, api: api, currentRoom: currentRoom, url: url, userId: userId, userName: userName}),
-        addToPlaylist: (
+        addVideo: (
             api: VideoRoomApi,
             roomId: number,
             userId: number,
-            url: string
-        ) => dispatch({type: ActionType.AddVideo, api:api, roomId: roomId, userId: userId, url: url})
+            video: Video
+        ) => dispatch({type: ActionType.AddVideo, api:api, roomId: roomId, userId: userId, video: video})
     }
 }
 
