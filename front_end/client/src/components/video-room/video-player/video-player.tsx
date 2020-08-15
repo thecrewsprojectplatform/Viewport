@@ -10,10 +10,10 @@ import { PlayButtonR } from './play-button';
 import { SearchBarR } from './search-bar';
 import { VideoControllerR } from './video-controller'
 import { VolumeControllerR } from './volume-controller'
-import { GogoanimeApi } from '../../../api/gogoanime-api';
 
 interface Prop {
     sendVideoState: Function;
+    sendVideoTime: Function;
     currentRoom: Room;
     player: Player;
     user: User;
@@ -29,30 +29,9 @@ interface Prop {
  */
 export const VideoPlayer = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
-    const gogoapi = new GogoanimeApi
     
     const [reactPlayer, setReactPlayer] = useState(null)
     const [sliderVideoTime, setSliderVideoTime] = useState(0)
-
-    const testApi = () => {
-        gogoapi.getAnimeIframeUrl('kanojo-okarishimasu-episode-6').then((res) => {
-            console.log(res)
-            const servers = res.anime[0].servers
-            servers.forEach(link => {
-                if (link.name === "Gogo server") {
-                    console.log(link.iframe)
-                    gogoapi.getAnimeDirectLink(link.iframe).then((res) => {
-                        console.log(res)
-                        const videoLinks = res.videos
-                        const animeUrl = videoLinks[videoLinks.length - 1]
-                        console.log(animeUrl.url)
-                    })
-                }
-            });
-        }).catch(err => {
-            console.log('invalid tag')
-        })
-    }
 
     /**
      * Updates the api on what part the video is at; by default, updates every second
@@ -60,7 +39,7 @@ export const VideoPlayer = (props: Prop) => {
      */
     const handleProgress = state => {
         if (!props.seeking) {
-            api.updateVideoState(
+            api.updateVideoTime(
                 props.currentRoom.id,
                 state.played,
             )
@@ -79,6 +58,7 @@ export const VideoPlayer = (props: Prop) => {
     const handleOnScreenPause = () => {
         api.getRoom(props.currentRoom.id).then(room => {
             props.sendVideoState(api, props.currentRoom, "PAUSED")
+            props.sendVideoTime(api, props.currentRoom, room.video_time)
         })
     }
 
@@ -86,7 +66,6 @@ export const VideoPlayer = (props: Prop) => {
         <div id="video-player">
             <div>
                 <SearchBarR />
-                <Button onClick={testApi}> testApi </Button>
                 <div className='player-wrapper'>
                     <ReactPlayer
                         ref={setReactPlayer}
@@ -144,7 +123,12 @@ const mapDispatchToProps = dispatch => {
             api: VideoRoomApi,
             currentRoom: Room,
             videoState: number
-        ) => dispatch ({type: ActionType.SendVideoState, api: api, currentRoom: currentRoom, videoState: videoState})
+        ) => dispatch ({type: ActionType.SendVideoState, api: api, currentRoom: currentRoom, videoState: videoState}),
+        sendVideoTime: (
+            api: VideoRoomApi,
+            currentRoom: Room,
+            videoTime: number
+        ) => dispatch ({type: ActionType.SendVideoTime, api: api, currentRoom: currentRoom, videoTime: videoTime}),
     }
 }
 
