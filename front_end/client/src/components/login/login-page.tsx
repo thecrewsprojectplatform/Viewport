@@ -43,7 +43,7 @@ export const LoginPage = (props: Prop) => {
 
     const handleSubmit = (event): void => {
         store.dispatch(createUser(api, newUserName)).then(() => {
-            console.log("going into then")
+            //console.log("going into then")
             history.push("/rooms")
         }).catch(() => {
 
@@ -80,7 +80,7 @@ export const LoginPage = (props: Prop) => {
  * @param {Object} state The current state of the LoginPage.
  */
 const mapStateToProps = state => {
-    console.log(state)
+    //console.log(state)
     return {
         currentUser: state.videoRoom.user,
         updateStatus: state.videoRoom.updateStatus,

@@ -49,6 +49,8 @@ export const VideoPlayer = (props: Prop) => {
                     })
                 }
             });
+        }).catch(err => {
+            console.log('invalid tag')
         })
     }
 
