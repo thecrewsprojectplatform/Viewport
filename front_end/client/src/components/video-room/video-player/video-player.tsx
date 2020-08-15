@@ -35,7 +35,7 @@ export const VideoPlayer = (props: Prop) => {
     const [sliderVideoTime, setSliderVideoTime] = useState(0)
 
     const testApi = () => {
-        gogoapi.getAnimeIframeUrl('shingeki-no-kyojin-season-2-episode-10').then((res) => {
+        gogoapi.getAnimeIframeUrl('kanojo-okarishimasu-episode-6').then((res) => {
             console.log(res)
             const servers = res.anime[0].servers
             servers.forEach(link => {
