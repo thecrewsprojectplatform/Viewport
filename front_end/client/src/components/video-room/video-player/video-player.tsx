@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { connect } from 'react-redux';
 import ReactPlayer from 'react-player'
-import { Grid } from '@material-ui/core'
+import { Grid, Button } from '@material-ui/core'
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { ActionType } from '../../../store/video-room/actionType';
 import { Player, Room, User } from '../../../api/video-room-types';
@@ -13,6 +13,7 @@ import { VolumeControllerR } from './volume-controller'
 
 interface Prop {
     sendVideoState: Function;
+    sendVideoTime: Function;
     currentRoom: Room;
     player: Player;
     user: User;
@@ -28,7 +29,7 @@ interface Prop {
  */
 export const VideoPlayer = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
-
+    
     const [reactPlayer, setReactPlayer] = useState(null)
     const [sliderVideoTime, setSliderVideoTime] = useState(0)
 
@@ -38,7 +39,7 @@ export const VideoPlayer = (props: Prop) => {
      */
     const handleProgress = state => {
         if (!props.seeking) {
-            api.updateVideoState(
+            api.updateVideoTime(
                 props.currentRoom.id,
                 state.played,
             )
@@ -57,6 +58,7 @@ export const VideoPlayer = (props: Prop) => {
     const handleOnScreenPause = () => {
         api.getRoom(props.currentRoom.id).then(room => {
             props.sendVideoState(api, props.currentRoom, "PAUSED")
+            props.sendVideoTime(api, props.currentRoom, room.video_time)
         })
     }
 
@@ -121,7 +123,12 @@ const mapDispatchToProps = dispatch => {
             api: VideoRoomApi,
             currentRoom: Room,
             videoState: number
-        ) => dispatch ({type: ActionType.SendVideoState, api: api, currentRoom: currentRoom, videoState: videoState})
+        ) => dispatch ({type: ActionType.SendVideoState, api: api, currentRoom: currentRoom, videoState: videoState}),
+        sendVideoTime: (
+            api: VideoRoomApi,
+            currentRoom: Room,
+            videoTime: number
+        ) => dispatch ({type: ActionType.SendVideoTime, api: api, currentRoom: currentRoom, videoTime: videoTime}),
     }
 }
 
