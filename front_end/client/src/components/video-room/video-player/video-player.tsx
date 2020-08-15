@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { connect } from 'react-redux';
 import ReactPlayer from 'react-player'
-import { Grid } from '@material-ui/core'
+import { Grid, Button } from '@material-ui/core'
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { ActionType } from '../../../store/video-room/actionType';
 import { Player, Room, User } from '../../../api/video-room-types';
@@ -10,6 +10,7 @@ import { PlayButtonR } from './play-button';
 import { SearchBarR } from './search-bar';
 import { VideoControllerR } from './video-controller'
 import { VolumeControllerR } from './volume-controller'
+import { GogoanimeApi } from '../../../api/gogoanime-api';
 
 interface Prop {
     sendVideoState: Function;
@@ -28,9 +29,28 @@ interface Prop {
  */
 export const VideoPlayer = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
-
+    const gogoapi = new GogoanimeApi
+    
     const [reactPlayer, setReactPlayer] = useState(null)
     const [sliderVideoTime, setSliderVideoTime] = useState(0)
+
+    const testApi = () => {
+        gogoapi.getAnimeIframeUrl('shingeki-no-kyojin-season-2-episode-10').then((res) => {
+            console.log(res)
+            const servers = res.anime[0].servers
+            servers.forEach(link => {
+                if (link.name === "Gogo server") {
+                    console.log(link.iframe)
+                    gogoapi.getAnimeDirectLink(link.iframe).then((res) => {
+                        console.log(res)
+                        const videoLinks = res.videos
+                        const animeUrl = videoLinks[videoLinks.length - 1]
+                        console.log(animeUrl.url)
+                    })
+                }
+            });
+        })
+    }
 
     /**
      * Updates the api on what part the video is at; by default, updates every second
@@ -64,6 +84,7 @@ export const VideoPlayer = (props: Prop) => {
         <div id="video-player">
             <div>
                 <SearchBarR />
+                <Button onClick={testApi}> testApi </Button>
                 <div className='player-wrapper'>
                     <ReactPlayer
                         ref={setReactPlayer}
