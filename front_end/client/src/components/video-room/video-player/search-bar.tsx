@@ -81,15 +81,18 @@ export const SearchBar = (props: Prop) => {
 
     // By default, set the video_state to paused after loading
     const loadButton = () => {
-        const video: Video = {
-            url: url
+        if (url) {
+            const video: Video = {
+                url: url
+            }
+            props.addVideo(
+                api,
+                props.currentRoom.id,
+                props.user.id,
+                video
+            )
         }
-        props.addVideo(
-            api,
-            props.currentRoom.id,
-            props.user.id,
-            video
-        )
+
         // props.sendUrlToServer(
         //     api,
         //     props.currentRoom,

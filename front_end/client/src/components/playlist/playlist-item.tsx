@@ -21,6 +21,7 @@ const PlaylistItem = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
 
     const deleteFromPlaylist = () => {
+        console.log('deleting: ' + props.video)
         props.deleteVideo(
             api,
             props.currentRoom.id,
