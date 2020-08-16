@@ -5,8 +5,10 @@ import SearchIcon from "@material-ui/icons/Search";
 import ReactPlayer from 'react-player'
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { Room, User, Video } from '../../../api/video-room-types';
+import { GogoanimeApi } from '../../../api/gogoanime-api';
 import { ActionType } from '../../../store/video-room/actionType';
 import { ApiContext } from '../..';
+
 
 interface Prop {
     sendUrlToServer: Function
@@ -17,7 +19,49 @@ interface Prop {
 
 export const SearchBar = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
+    const gogoapi = new GogoanimeApi
     const [url, setUrl] = useState("")
+
+    const isValidUrl = (url: string) => {
+        var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+          '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+          '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+          '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+          '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+        return !!pattern.test(url);
+      }
+
+    const updateUrl = (event) => {
+        if (isValidUrl(event.target.value)) {
+            const newUrl = new URL(event.target.value);
+            const gogoanime = "gogoanime"
+            if (newUrl.hostname.includes(gogoanime)) {
+                getVideoLink(newUrl.pathname.split('/')[1])
+     
+            } else {
+                setUrl(newUrl.href)
+            }
+        }
+    }
+
+    const getVideoLink = (id: string) => {
+        gogoapi.getAnimeIframeUrl(id).then((response) => {
+            response.anime[0].servers.forEach(link => {
+                if (link.name === "Gogo server") {
+                    gogoapi.getAnimeDirectLink(link.iframe).then((response) => {
+                        const streamingLinks = response.videos
+                        const hdLink = streamingLinks[streamingLinks.length - 1]
+                        setUrl(hdLink.url)
+                    }).catch(err => {
+                        console.log('server error, please try again later')
+                    })
+                }
+            })
+        }).catch(err => {
+            console.log('invalid anime id')
+        })
+    }
 
     /**
      * Check if the url entered is valid and return wether or not to display an error message
@@ -62,7 +106,7 @@ export const SearchBar = (props: Prop) => {
                 variant='filled'
                 type='text'
                 placeholder='Enter URL'
-                onChange={event => setUrl(event.target.value)}
+                onChange={event => updateUrl(event)}
                 onKeyDown={handleEnter}
                 fullWidth
                 InputProps={{
