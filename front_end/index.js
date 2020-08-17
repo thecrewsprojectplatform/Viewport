@@ -1,12 +1,15 @@
 const express = require("express");
 const socket = require('socket.io');
 const path = require('path');
+const cors = require('cors');
 
 //setting up the express app by invoking the express function
 const app = express();
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "client/build")));
+
+app.use(cors());
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');

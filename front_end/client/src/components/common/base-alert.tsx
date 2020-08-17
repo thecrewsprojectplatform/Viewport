@@ -22,10 +22,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const BaseAlert = (props: Prop) => {
-    console.log("updated")
+    //console.log("updated")
     const classes = useStyles();
     if (props.displayNotification === true) {
-        console.log("displaying")
+        //console.log("displaying")
         return <div className={classes.root}>
             <Alert severity={props.notificationType === NotificationType.Failure ? "error" : "success"}>
                 <AlertTitle>{props.notificationHeader}</AlertTitle>
