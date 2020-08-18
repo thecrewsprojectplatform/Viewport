@@ -102,7 +102,7 @@ class VideoStateApi(Resource):
 class VideoTimeApi(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument("video_time", type=str, required=False, default=0, location="json")
+        self.reqparse.add_argument("video_time", type=float, required=False, default=0, location="json")
         super(VideoTimeApi, self).__init__()
 
     @swagger.operation(

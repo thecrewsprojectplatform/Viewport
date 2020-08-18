@@ -128,7 +128,7 @@ const removeVideo = (
         video: Video
     ) => {
         console.log('trying to remove video from server')
-        api.removePlaylist(roomId, video.url).then(() => {
+        api.removePlaylist(roomId, 1).then(() => {
             getAndSendVideo(roomId, video, "DELETE")
         })
     }
