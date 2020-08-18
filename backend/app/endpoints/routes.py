@@ -15,7 +15,7 @@ def initialize_routes(api):
     api.add_resource(VideoListApi, "/videos")
     api.add_resource(VideoApi, "/videos/<int:video_id>")
     api.add_resource(CreatePlaylistApi, "/rooms/<int:room_id>/playlist")
-    api.add_resource(PlaylistApi, "/rooms/<int:room_id>/playlist/<int:video_url>")
+    api.add_resource(PlaylistApi, "/rooms/<int:room_id>/playlist/<int:video_id>")
     api.add_resource(VideoStateApi, "/rooms/<int:room_id>/video_state")
     api.add_resource(VideoTimeApi, "/rooms/<int:room_id>/video_time")
     api.add_resource(VideoUrlApi, "/rooms/<int:room_id>/video_url")
