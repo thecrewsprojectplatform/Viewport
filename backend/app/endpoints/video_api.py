@@ -126,7 +126,7 @@ class VideoApi(Resource):
             return create_404_error()
         except:
             return create_500_error()
-    def __delete_user(self, video_id):
+    def __delete_video(self, video_id):
         video = Video.query.get(video_id)
         if video is None:
             raise LookupError("Video not found")

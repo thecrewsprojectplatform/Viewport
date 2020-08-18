@@ -59,13 +59,6 @@ class RoomApiTest(TestCase):
         put_response = self.client.put(f"/rooms/0", json=updated_room)
         self.assert404(put_response)
 
-    # def test_put_invalid_video_state(self):
-    #     """Tests PUT at /rooms with an invalid video_state"""
-    #     updated_room = {"name": "Updated Room", "video_id": "Random ID", "video_state": "BAD_STATE"}
-    #     post_response = self.client.post("/rooms", json=self.test_room)
-    #     put_response = self.client.put(f"/rooms/{post_response.json['id']}", json=updated_room)
-    #     self.assert400(put_response)
-
     def test_delete(self):
         """Tests DELETE at /rooms"""
         post_response = self.client.post("/rooms", json=self.test_room)

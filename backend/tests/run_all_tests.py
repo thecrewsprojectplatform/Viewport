@@ -8,6 +8,7 @@ os.sys.path.insert(0, parent_dir)
 from tests.user_api_test import UserApiTest
 from tests.room_api_test import RoomApiTest
 from tests.room_user_api_test import RoomUserApiTest
+from tests.video_api_test import VideoApiTest
 from tests.video_player_api_test import VideoPlayerApiTest
 
 if __name__ == "__main__":
@@ -17,6 +18,7 @@ if __name__ == "__main__":
     suite.addTest(unittest.makeSuite(RoomApiTest))
     suite.addTest(unittest.makeSuite(RoomUserApiTest))
     suite.addTest(unittest.makeSuite(VideoPlayerApiTest))
+    suite.addTest(unittest.makeSuite(VideoApiTest))
     runner = unittest.TextTestRunner(verbosity=2)
     results = runner.run(suite)
     print(results)
