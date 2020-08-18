@@ -12,11 +12,20 @@ class VideoListApi(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument("url", type=str, required=True, location="json")
+        self.reqparse.add_argument("user_id", type=int, required=True, location="json")
         super(VideoListApi, self).__init__()
 
     @swagger.operation(
         notes="Creates a new video",
         parameters=[
+            {
+                "name": "user_id",
+                "description": "ID of the user that created the video",
+                "required": True,
+                "allowMultiple": False,
+                "dataType": "int",
+                "paramType": "body"
+            },
             {
                 "name": "url",
                 "description": "Url of the video",
@@ -42,13 +51,13 @@ class VideoListApi(Resource):
     def post(self):
         try:
             args = self.reqparse.parse_args()
-            return jsonify(self.__create_video(args["url"]))
+            return jsonify(self.__create_video(args["user_id"], args["url"]))
         except BadRequest:
             return create_400_error()
         except:
             return create_500_error()
-    def __create_video(self, url):
-        video = Video(url=url)
+    def __create_video(self, user_id, url):
+        video = Video(user_id=user_id, url=url)
         db.session.add(video)
         db.session.commit()
         return video.to_json()

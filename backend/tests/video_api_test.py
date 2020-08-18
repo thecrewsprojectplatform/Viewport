@@ -8,12 +8,16 @@ from app import create_app, db
 
 class VideoApiTest(TestCase):
     test_video = {"url": "test_url"}
+    test_user = {"name": "Test Users"}
 
     def create_app(self):
         return create_app(for_testing=True)
     
     def setUp(self):
         db.create_all()
+        user_post = self.client.post("/users", json=self.test_user)
+        self.test_user_id = user_post.json["id"]
+        self.test_video['user_id'] = self.test_user_id
 
     def tearDown(self):
         db.session.remove()
