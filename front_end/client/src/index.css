@@ -33,61 +33,8 @@ styling for individual Material UI components.
 }
 
 /* ---------- Video Room Page ---------- */
-#video-room-content {
-  height: 80vh;
-  width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-evenly;
-}
-
 #edit-user-modal .button {
   margin-top: 3vh;
-}
-
-#user-list {
-  height: 50vh;
-  width: 200px;
-  margin-bottom: 3%;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  display: block;
-  flex: none;
-}
-
-#user-list > .content {
-  height: calc(50vh - 30px);
-}
-
-#chat-app {
-  height: 80vh;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  flex-basis: 20%;
-}
-
-#chat-app > .content {
-  height: calc(80vh - 30px - 38px);
-  padding-left: 7px;
-  padding-right: 7px;
-  word-wrap: break-word;
-  word-break: break-all;
-  overflow-wrap: break-word;
-  flex: auto;
-}
-
-#typing-section {
-  height: 38px;
-  padding-left: 7px;
-  padding-right: 7px;
-  flex: none;
-}
-
-#typing-section .chat-input {
-  height: 30px;
-  margin-top: auto;
-  margin-bottom: auto;
 }
 
 #video-player {
@@ -218,12 +165,6 @@ styling for individual Material UI components.
 .content {
   background: #F9F9F9;
   overflow-y: scroll;
-}
-
-.user-name span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .nav-bar {

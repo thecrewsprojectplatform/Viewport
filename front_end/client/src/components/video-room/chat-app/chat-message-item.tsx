@@ -1,6 +1,5 @@
 import React from "react";
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import "./chat-app.scss";
 
 export interface Prop {
     clientMessage: string;
@@ -8,44 +7,33 @@ export interface Prop {
     msgTime: string;
 }
 
-const theme = createMuiTheme({
-    typography: {
-      subtitle1: {
-        fontSize: 10,
-      }
-    }
-});
-
 export const ChatMessageItem = (props: Prop) => {
-    if (props.msgTime === 'true') {
+    if (props.msgTime === "true") {
         return (
-            <div className="message-container">
-                <span className = "name-message">
+            <div className="chat-message-bubble-system">
+                <span className="system-message">
                     {props.clientName + " has joined the room"}
                 </span>
             </div>
         )
-    } else if (props.msgTime === 'false') {
+    } else if (props.msgTime === "false") {
         return (
-            <div className="message-container">
-                <span className = "name-message">
+            <div className="chat-message-bubble-system">
+                <span className="system-message">
                     {props.clientName + " has left the room"}
                 </span>
             </div>
         )
     } else {
         return (
-            <div className="message-container">
-                <span className = "name-message">
+            <div className="chat-message-bubble-user">
+                <span className="chat-message">
                     {props.clientName + ": " + props.clientMessage}
                 </span>
-                <br>
-                </br>
-                <ThemeProvider theme={theme}>
-                    <Typography className = "message=time" variant="subtitle1">
+                <br/>
+                <span className="chat-message-time">
                         {"Sent at " + props.msgTime}
-                    </Typography>
-                </ThemeProvider>
+                </span>
             </div>
         )
     }

@@ -1,0 +1,43 @@
+.user-list {
+    height: 50vh;
+    width: 200px;
+    margin-bottom: 3%;
+    border-radius: 7px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    display: flex;
+    flex-direction: column;
+
+    .user-list-header {
+        height: 35px;
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+        color:#fff;
+        background: #040303;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .user-list-content {
+        height: calc(50vh - 30px);
+        color:#fff;
+        border-radius: 7px;
+        background-color:black;
+        background-image:
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+        radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+        background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
+        background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+        overflow-y: scroll;
+    }
+}
+
+.user {
+    .user-name span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}

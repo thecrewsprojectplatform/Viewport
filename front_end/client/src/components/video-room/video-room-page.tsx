@@ -14,6 +14,7 @@ import { EditUserModal } from "./user-list/edit-user-modal";
 import { UserList } from "./user-list/user-list";
 import { VideoPlayerR } from "./video-player/video-player"
 import VidRoomNavBar from "./video-room-nav-bar";
+import "./video-room.scss";
 
 /**
  * Represents the required properties of the VideoRoomPage.
@@ -69,10 +70,10 @@ export const VideoRoomPage = (props: Prop) => {
 
     const exitRoomClick = (): void => {
         if (props.users.length === 1) {
-            store.dispatch(removeUserFromRoom(api, props.currentRoom.id, props.currentUser.id));
+            store.dispatch(removeUserFromRoom(api, props.currentRoom.id, props.currentUser.id, props.users));
             store.dispatch(removeRoom(api, props.currentRoom.id));
         } else {
-            store.dispatch(removeUserFromRoom(api, props.currentRoom.id, props.currentUser.id));
+            store.dispatch(removeUserFromRoom(api, props.currentRoom.id, props.currentUser.id, props.users));
         }
         setLeaveRoom(true);
     }
@@ -101,7 +102,7 @@ export const VideoRoomPage = (props: Prop) => {
     }, [props.currentUser]);
 
     return (
-        <div id="video-room">
+        <div className="video-room">
             <VidRoomNavBar
                 title={!props.currentRoom ? "" : props.currentRoom.name}
                 buttonName={"Exit Room"}
@@ -109,7 +110,7 @@ export const VideoRoomPage = (props: Prop) => {
                 toggleChatOnClick={toggleChat}
                 toggleListOnClick={toggleUserList}
             />
-            <Container id="video-room-content" maxWidth='xl'>
+            <Container className="video-room-content" maxWidth='xl'>
                 <CssBaseline />
                     {
                         showEditUserModal &&

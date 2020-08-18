@@ -3,6 +3,7 @@ import { Avatar,  IconButton, ListItem, ListItemAvatar, ListItemSecondaryAction,
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import { User } from "../../../api/video-room-types";
+import "./user-list.scss";
 
 /**
  * Represents the required properties of the User.

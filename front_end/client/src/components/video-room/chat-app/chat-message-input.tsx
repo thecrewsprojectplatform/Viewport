@@ -1,5 +1,6 @@
 import React from "react";
 import { TextField } from "@material-ui/core";
+import "./chat-app.scss";
 
 ///// THIS FILE IS CURRENTLY NOT BEING USED, BUT WILL BE USED SOON /////
 
@@ -24,7 +25,7 @@ export const ChatMessageInput = (props: Prop) => {
     }
 
     return (
-        <div id="typing-section">
+        <div className="chat-message">
             <form onSubmit={handleClick} autoComplete="off">
                 <TextField
                     type="text"
@@ -32,7 +33,7 @@ export const ChatMessageInput = (props: Prop) => {
                     id="messageSender"
                     variant="outlined"
                     InputProps={{
-                        className: "chat-input",
+                        className: "chat-box-tray",
                     }}
                     InputLabelProps={{
                         shrink: true
