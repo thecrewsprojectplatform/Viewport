@@ -17,12 +17,14 @@ describe('SearchBar component', () => {
 
     let wrapper;
     let mockClick;
+    let mockFn = jest.fn();
 
     beforeEach(() => {
         jest.mock('../App.tsx', () => "root")
         mockClick = jest.fn();
         wrapper = shallow(
             <SearchBar
+                addVideo={mockFn}
                 sendUrlToServer={mockClick}
                 currentRoom={room}
                 user={user}

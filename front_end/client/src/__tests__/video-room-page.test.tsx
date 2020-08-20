@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { Room, User } from "../api/video-room-types";
 import { VideoRoomPage } from "../components/video-room/video-room-page";
 import { UserList } from '../components/video-room/user-list/user-list';
-import VideoPlayer from "../components/video-room/video-player/video-player";
+import { VideoPlayerR } from "../components/video-room/video-player/video-player";
 import { ChatAppR } from '../components/video-room/chat-app/chat-app';
 import NavBar from '../components/nav-bar';
 import { EditUserModal } from '../components/video-room/user-list/edit-user-modal';
@@ -51,7 +51,7 @@ describe('Video Room Page component', () => {
 
         
     test('Should contain VideoPlayer', () => {
-        expect(wrapper.find(VideoPlayer).exists()).toBeTruthy();
+        expect(wrapper.find(VideoPlayerR).exists()).toBeTruthy();
     })
 
         

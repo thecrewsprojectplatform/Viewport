@@ -36,6 +36,7 @@ const setup = () => {
     return shallow(
         <VideoPlayer
             sendVideoState={mockFn}
+            sendVideoTime={mockFn}
             currentRoom={props.currentRoom}
             player={props.player}
             user={props.user}
