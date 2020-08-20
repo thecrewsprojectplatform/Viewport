@@ -32,13 +32,67 @@ export class VideoRoomApi {
         });
     }
 
-    async createPlaylist(roomId: number, userId: number, video_url: string): Promise<Video> {
-        console.log("here" + roomId)
-        return axios.post(this.BASE_URL + "/rooms/" + roomId +  "/playlist", {
+    async createUser(name: string): Promise<User> {
+        return axios.post(this.BASE_URL + "/users", {"name": name}).then(response => {
+            return response.data;
+        });
+    }
+
+    async updateUser(userId: number, newName: string): Promise<User> {
+        return axios.put(`${this.BASE_URL}/users/${userId}`, {"name": newName}).then(response => {
+            return response.data;
+        });
+    }
+
+    async addUserToRoom(roomId: number, userId: number): Promise<void> {
+        return axios.post(this.BASE_URL + "/rooms/" + roomId + "/users", {"user_id": userId}).then(response => {
+            return response.data;
+        });
+    }
+
+    async removeUser(userId: number): Promise<void> {
+        return axios.delete(this.BASE_URL + "/users/" + userId).then(response => {
+            return response.data;
+        });
+    } 
+
+    async removeUserFromRoom(roomId: number, userId: number): Promise<void> {
+        return axios.delete(this.BASE_URL + "/rooms/" + roomId + "/users/" + userId).then(response => {
+            return response.data;
+        });
+    }
+
+    async getUsersInRoom(roomId: number): Promise<User[]> {
+        return axios.get(this.BASE_URL + "/rooms/" + roomId + "/users").then(response => {
+            return response.data;
+        });
+    }
+
+    async createVideo(userId: number, url: string): Promise<Video> {
+        return axios.post(this.BASE_URL + "/videos", {
             "user_id": userId,
-            "video_url": video_url
+            "url": url
         }).then(response => {
-            console.log(response.data)
+            return response.data;
+        })
+    }
+
+    async getVideo(videoId: number): Promise<Video> {
+        return axios.get(this.BASE_URL + "/videos/", {params: {"video_id": videoId}}).then(response => {
+            return response.data;
+        })
+    }
+
+    async removeVideo(videoId: number): Promise<void> {
+        return axios.delete(this.BASE_URL + "/videos/", {params: {"video_id": videoId}}).then(response => {
+            return response.data;
+        })
+    }
+
+    async createPlaylist(roomId: number, videoId: number): Promise<number> {
+        return axios.post(this.BASE_URL + "/rooms/" + roomId +  "/playlist", {
+            "video_id": videoId
+        }).then(response => {
             return response.data;
         })
     }
@@ -103,39 +157,5 @@ export class VideoRoomApi {
         })
     }
 
-    async createUser(name: string): Promise<User> {
-        return axios.post(this.BASE_URL + "/users", {"name": name}).then(response => {
-            return response.data;
-        });
-    }
-
-    async updateUser(userId: number, newName: string): Promise<User> {
-        return axios.put(`${this.BASE_URL}/users/${userId}`, {"name": newName}).then(response => {
-            return response.data;
-        });
-    }
-
-    async addUserToRoom(roomId: number, userId: number): Promise<void> {
-        return axios.post(this.BASE_URL + "/rooms/" + roomId + "/users", {"user_id": userId}).then(response => {
-            return response.data;
-        });
-    }
-
-    async removeUser(userId: number): Promise<void> {
-        return axios.delete(this.BASE_URL + "/users/" + userId).then(response => {
-            return response.data;
-        });
-    } 
-
-    async removeUserFromRoom(roomId: number, userId: number): Promise<void> {
-        return axios.delete(this.BASE_URL + "/rooms/" + roomId + "/users/" + userId).then(response => {
-            return response.data;
-        });
-    }
-
-    async getUsersInRoom(roomId: number): Promise<User[]> {
-        return axios.get(this.BASE_URL + "/rooms/" + roomId + "/users").then(response => {
-            return response.data;
-        });
-    }
+    
 }

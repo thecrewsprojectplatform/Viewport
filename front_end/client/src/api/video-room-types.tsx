@@ -44,5 +44,7 @@ export interface User {
 }
 
 export interface Video {
+    id: number;
+    userId: number;
     url: string;
 }
