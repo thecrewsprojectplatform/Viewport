@@ -17,7 +17,6 @@ interface AddVideoAction {
     type: ActionType.AddVideo;
     api: VideoRoomApi;
     roomId: number;
-    userId: number;
     video: Video;
 }
 
@@ -60,7 +59,6 @@ export const reducer = (
                 addVideo(
                     action.api,
                     action.roomId,
-                    action.userId,
                     action.video
                 )
             });
@@ -74,6 +72,7 @@ export const reducer = (
             });
         case ActionType.AddToPlaylist:
             return produce(state, draftState => {
+                console.log(action.video)
                 draftState.videos.push(action.video);
             });
         case ActionType.DeleteFromPlaylist:
@@ -114,12 +113,15 @@ const getAndSendVideo = (roomId: number, video: Video, option: string) => {
 const addVideo = (
         api: VideoRoomApi,
         roomId: number,
-        userId: number,
         video: Video
     ) => {
-        api.createPlaylist(roomId, userId, video.url).then(response => {
-            getAndSendVideo(roomId, response, "ADD")
-        })
+        console.log(video)
+        console.log(video.url)
+        api.createVideo(video.userId, video.url).then((videoResponse: Video) => {
+            api.createPlaylist(roomId, videoResponse.id);
+            getAndSendVideo(roomId, videoResponse, "ADD");
+        });
+        
 }
 
 const removeVideo = (
@@ -127,8 +129,7 @@ const removeVideo = (
         roomId: number,
         video: Video
     ) => {
-        console.log('trying to remove video from server')
-        api.removePlaylist(roomId, 1).then(() => {
-            getAndSendVideo(roomId, video, "DELETE")
-        })
-    }
+        api.removePlaylist(roomId, video.id);
+        api.removeVideo(video.id);
+        getAndSendVideo(roomId, video, "DELETE");
+}

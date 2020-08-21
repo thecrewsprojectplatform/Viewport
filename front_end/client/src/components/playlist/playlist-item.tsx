@@ -32,7 +32,7 @@ const PlaylistItem = (props: Prop) => {
 
     return (
         <ListItem>
-            <ListItemText primary={props.video} />
+            <ListItemText primary={props.video.url} />
             <IconButton edge="end" onClick={deleteFromPlaylist}>
                 <Delete />
             </IconButton>

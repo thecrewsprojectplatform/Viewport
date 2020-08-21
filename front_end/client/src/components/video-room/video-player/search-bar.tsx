@@ -81,14 +81,16 @@ export const SearchBar = (props: Prop) => {
 
     // By default, set the video_state to paused after loading
     const loadButton = () => {
+       
         if (url) {
             const video: Video = {
+                userId: props.user.id,
                 url: url
             }
+            console.log(`loading video: ${video.url}`)
             props.addVideo(
                 api,
                 props.currentRoom.id,
-                props.user.id,
                 video
             )
         }
@@ -145,9 +147,8 @@ const mapDispatchToProps = dispatch => {
         addVideo: (
             api: VideoRoomApi,
             roomId: number,
-            userId: number,
             video: Video
-        ) => dispatch({type: ActionType.AddVideo, api:api, roomId: roomId, userId: userId, video: video})
+        ) => dispatch({type: ActionType.AddVideo, api:api, roomId: roomId, video: video})
     }
 }
 

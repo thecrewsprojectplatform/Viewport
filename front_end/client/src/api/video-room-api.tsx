@@ -78,13 +78,13 @@ export class VideoRoomApi {
     }
 
     async getVideo(videoId: number): Promise<Video> {
-        return axios.get(this.BASE_URL + "/videos/", {params: {"video_id": videoId}}).then(response => {
+        return axios.get(`${this.BASE_URL}/videos/${videoId}`).then(response => {
             return response.data;
         })
     }
 
     async removeVideo(videoId: number): Promise<void> {
-        return axios.delete(this.BASE_URL + "/videos/", {params: {"video_id": videoId}}).then(response => {
+        return axios.delete(this.BASE_URL + "/videos/" + videoId).then(response => {
             return response.data;
         })
     }
