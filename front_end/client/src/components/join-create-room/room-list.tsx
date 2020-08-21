@@ -10,11 +10,14 @@ import { addUserToRoomAction, createRoomAndAddUserToRoomAction, getRoomsAction, 
 import { ApiContext } from '..';
 import { CreateRoomInput } from './create-room-input';
 import { RoomListItem } from './room-list-item';
+import { ActionType } from '../../store/video-room/actionType';
+import { getPlaylistFromServer } from '../../store/video-room/playlist';
 
 /**
  * Represents the required properties of the UserList.
  */
 export interface Prop {
+    getPlaylist: Function;
     currentRoom: Room;
     availableRooms: Room[];
     user: User;
@@ -52,9 +55,10 @@ export const RoomList = (props: Prop) => {
 
     const onJoinRoomClick = (roomId: number): void => {
         store.dispatch(addUserToRoomAction(api, roomId, props.user.id, props.availableRooms));
-        api.getRoom(roomId).then(roomApi => {
-            store.dispatch(loadVideo(roomApi.video_url))
-        })
+        // api.getRoom(roomId).then(roomApi => {
+        //     store.dispatch(loadVideo(roomApi.video_url))
+        // })
+        props.getPlaylist(api, roomId)
         history.push(`/rooms/${roomId}`)
     }
 
@@ -103,4 +107,13 @@ const mapStateToProps = state => {
     }
 }
 
-export const RoomListR = connect(mapStateToProps)(RoomList);
+const mapDispatchToProps = dispatch => {
+    return {
+        getPlaylist: (
+            api: VideoRoomApi,
+            roomId: number,
+        ) => {getPlaylistFromServer(api, roomId, dispatch)}
+    }
+}
+
+export const RoomListR = connect(mapStateToProps, mapDispatchToProps)(RoomList);

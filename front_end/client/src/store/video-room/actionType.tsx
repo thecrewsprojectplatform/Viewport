@@ -24,6 +24,8 @@ export enum ActionType {
     GetVideo = "GET_VIDEOS_FROM_PLAYLIST",
     AddToPlaylist = "ADD_TO_PLAYLIST",
     DeleteFromPlaylist = "DELETE_FROM_PLAYLIST",
+    GetPlaylist = "GET_PLAYLIST",
+    UpdatePlaylist = "UPDATE_PLAYLIST",
     //
     CreateRoomAndAddUserToRoom="CREATE_ROOM_AND_ADD_USER_TO_ROOM", 
     CreateRoomAndAddUserToRoomSuccess="CREATE_ROOM_AND_ADD_USER_TO_ROOM_SUCCESS",

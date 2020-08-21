@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Room, User, Video } from "./video-room-types";
+import { Room, User, Video, PlaylistItem } from "./video-room-types";
 
 export class VideoRoomApi {
     BASE_URL: string
@@ -97,7 +97,7 @@ export class VideoRoomApi {
         })
     }
 
-    async getPlaylist(roomId: number): Promise<Video[]> {
+    async getPlaylist(roomId: number): Promise<PlaylistItem[]> {
         return axios.get(this.BASE_URL + "/rooms/" + roomId + "/playlist").then(response => {
             return response.data;
         })

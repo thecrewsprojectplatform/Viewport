@@ -8,7 +8,7 @@ import { Player, Room, User } from '../../../api/video-room-types';
 import { ApiContext } from '../..';
 import { PlaylistButton } from '../../playlist/playlist-button';
 import { PlayButtonR } from './play-button';
-import { SearchBarR } from './search-bar';
+import { SearchBarR } from '../../playlist/search-bar';
 import { VideoControllerR } from './video-controller'
 import { VolumeControllerR } from './volume-controller'
 
@@ -67,7 +67,6 @@ export const VideoPlayer = (props: Prop) => {
     return (
         <div id="video-player">
             <div>
-                <SearchBarR />
                 <PlaylistButton />
                 <div className='player-wrapper'>
                     <ReactPlayer

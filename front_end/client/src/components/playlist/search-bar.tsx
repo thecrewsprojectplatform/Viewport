@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 import { TextField, InputAdornment, IconButton } from '@material-ui/core'
 import SearchIcon from "@material-ui/icons/Search";
 import ReactPlayer from 'react-player'
-import { VideoRoomApi } from '../../../api/video-room-api';
-import { Room, User, Video } from '../../../api/video-room-types';
-import { GogoanimeApi } from '../../../api/gogoanime-api';
-import { ActionType } from '../../../store/video-room/actionType';
-import { ApiContext } from '../..';
+import { VideoRoomApi } from '../../api/video-room-api';
+import { Room, User, Video } from '../../api/video-room-types';
+import { GogoanimeApi } from '../../api/gogoanime-api';
+import { ActionType } from '../../store/video-room/actionType';
+import { ApiContext } from '../';
 
 
 interface Prop {
@@ -36,7 +36,9 @@ export const SearchBar = (props: Prop) => {
         if (isValidUrl(event.target.value)) {
             const newUrl = new URL(event.target.value);
             const gogoanime = "gogoanime"
+            console.log(event.target.value)
             if (newUrl.hostname.includes(gogoanime)) {
+                console.log('is gogoanime')
                 getVideoLink(newUrl.pathname.split('/')[1])
      
             } else {
@@ -94,14 +96,6 @@ export const SearchBar = (props: Prop) => {
                 video
             )
         }
-
-        // props.sendUrlToServer(
-        //     api,
-        //     props.currentRoom,
-        //     url,
-        //     props.user.id,
-        //     props.user.name
-        // )
     }
 
     return (

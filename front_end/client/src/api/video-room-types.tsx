@@ -48,3 +48,9 @@ export interface Video {
     userId: number;
     url: string;
 }
+
+export interface PlaylistItem {
+    id: number;
+    room_id: number;
+    video_id: number;
+}

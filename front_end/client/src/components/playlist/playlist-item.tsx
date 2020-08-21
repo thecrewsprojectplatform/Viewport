@@ -12,6 +12,7 @@ import { ApiContext } from '..';
 
 interface Prop {
     deleteVideo: Function;
+    sendUrlToServer: Function;
     video: Video;
     currentRoom: Room;
     user: User
@@ -30,9 +31,19 @@ const PlaylistItem = (props: Prop) => {
         )
     }
 
+    const loadVideo = (() => {
+        props.sendUrlToServer(
+            api,
+            props.currentRoom,
+            props.video.url,
+            props.user.id,
+            props.user.name
+        )
+    })
+
     return (
         <ListItem>
-            <ListItemText primary={props.video.url} />
+            <ListItemText onClick={loadVideo} primary={props.video.url} />
             <IconButton edge="end" onClick={deleteFromPlaylist}>
                 <Delete />
             </IconButton>
@@ -54,7 +65,14 @@ const mapDispatchToProps = dispatch => {
             roomId: number,
             userId: number,
             video: Video
-        ) => dispatch({type: ActionType.DeleteVideo, api:api, roomId: roomId, userId: userId, video: video})
+        ) => dispatch({type: ActionType.DeleteVideo, api:api, roomId: roomId, userId: userId, video: video}),
+        sendUrlToServer: (
+            api: VideoRoomApi,
+            currentRoom: Room,
+            url: string,
+            userId: number,
+            userName: string
+        ) => dispatch({type: ActionType.SendUrlToServer, api: api, currentRoom: currentRoom, url: url, userId: userId, userName: userName}),
     }
 }
 

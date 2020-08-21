@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux'
 import { Button, Dialog, DialogTitle } from '@material-ui/core'
 
-import { SearchBarR } from '../video-room/video-player/search-bar';
+import { SearchBarR } from './search-bar';
 import { PlaylistR } from './playlist';
 
 interface Prop {

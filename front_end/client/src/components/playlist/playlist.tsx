@@ -9,10 +9,10 @@ import { PlaylistItemR } from './playlist-item';
 
 interface Prop {
     playlist: Video[];
-    //currentVideo: Video;
 }
 
 export const Playlist = (props: Prop) => {
+
     return (
         <div>
             {props.playlist ? 
