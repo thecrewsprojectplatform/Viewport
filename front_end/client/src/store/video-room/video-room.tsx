@@ -345,7 +345,7 @@ export const reducer = (
             return produce(state, draftState => {
                 draftState.updateStatus = Status.Succeeded;
                 draftState.user = action.user;
-                draftState.currentRoom = state.roomList.find((room) => room.id === action.roomId);
+                draftState.currentRoom = state.roomList.find((room) => room.id == action.roomId);
             });
         case ActionType.CreateUserAndAddToRoomFail:
             return produce(state, draftState => {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect, useState} from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { match } from "react-router-dom";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -6,6 +6,7 @@ import { Container, CssBaseline } from "@material-ui/core";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { Room, User } from "../../api/video-room-types";
 import { store } from "../../store";
+import { getPlaylistFromServer } from "../../store/video-room/playlist";
 import { loadVideo } from '../../store/video-room/video-player'
 import { createUserAndAddToRoom, getRoomsAction, getRoomUsers, removeRoom, removeUserFromRoom } from "../../store/video-room/video-room";
 import { ApiContext } from "..";
@@ -15,10 +16,12 @@ import { UserList } from "./user-list/user-list";
 import { VideoPlayerR } from "./video-player/video-player"
 import VidRoomNavBar from "./video-room-nav-bar";
 
+
 /**
  * Represents the required properties of the VideoRoomPage.
  */
 export interface Prop {
+    getPlaylist: Function;
     currentRoom: Room;
     roomList: Room[];
     currentUser: User;
@@ -78,6 +81,7 @@ export const VideoRoomPage = (props: Prop) => {
     useEffect(() => {
         if (props.currentRoom) {
             store.dispatch(getRoomUsers(api, props.currentRoom.id));
+            props.getPlaylist(api, props.currentRoom.id)
             api.getRoom(props.currentRoom.id).then(roomApi => {
                 store.dispatch(loadVideo(roomApi.video_url))
             })
@@ -144,4 +148,13 @@ const mapStateToProps = state => {
     }
 }
 
-export const VideoRoomPageR = connect(mapStateToProps)(VideoRoomPage);
+const mapDispatchToProps = dispatch => {
+    return {
+        getPlaylist: (
+            api: VideoRoomApi,
+            roomId: number,
+        ) => {getPlaylistFromServer(api, roomId, dispatch)}
+    }
+}
+
+export const VideoRoomPageR = connect(mapStateToProps, mapDispatchToProps)(VideoRoomPage);
