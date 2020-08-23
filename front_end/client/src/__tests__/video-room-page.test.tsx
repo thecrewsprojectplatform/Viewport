@@ -5,8 +5,7 @@ import { VideoRoomPage } from "../components/video-room/video-room-page";
 import { UserList } from '../components/video-room/user-list/user-list';
 import { VideoPlayerR } from "../components/video-room/video-player/video-player";
 import { ChatAppR } from '../components/video-room/chat-app/chat-app';
-import NavBar from '../components/nav-bar';
-import { EditUserModal } from '../components/video-room/user-list/edit-user-modal';
+import VidRoomNavBar from "../components/video-room/video-room-nav-bar";
 
 jest.mock('../App.tsx', () => "root");
 
@@ -28,8 +27,9 @@ const props = {
 };
 
 const setup = () => {
+    const mockFn = jest.fn();
     return shallow(
-        <VideoRoomPage {...props} />
+        <VideoRoomPage getPlaylist={mockFn} {...props} />
     );
 };
 
@@ -42,7 +42,7 @@ describe('Video Room Page component', () => {
     })
 
     test('Should contain NavBar', () => {
-        expect(wrapper.find(NavBar).exists()).toBeTruthy();
+        expect(wrapper.find(VidRoomNavBar).exists()).toBeTruthy();
     })
 
     test('Should contain UserList', () => {
