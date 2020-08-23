@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar'
-import { Button, IconButton, makeStyles, Drawer, List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core';
+import { Button, IconButton, Drawer, List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import CheckIcon from '@material-ui/icons/Check';
 import Typography from '@material-ui/core/Typography'
-import ToggleButton from '@material-ui/lab/ToggleButton';
 import ChatIcon from '@material-ui/icons/Chat';
 import GroupIcon from '@material-ui/icons/Group';
 
@@ -17,17 +15,8 @@ export interface Prop {
     toggleListOnClick: () => void;
 }
 
-const useStyles = makeStyles({
-    list: {
-      width: 250,
-    },
-    fullList: {
-      width: 'auto',
-    },
-});
 
 const VidRoomNavBar = (props: Prop) => {
-    const classes = useStyles();
     const [navBar, setNavBar] = useState(false);
     const toggleList = [
         {

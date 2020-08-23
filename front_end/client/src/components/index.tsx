@@ -1,11 +1,15 @@
 import React, { useLayoutEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router-dom";
+
+import { useMediaQuery, CssBaseline } from "@material-ui/core";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+
 import { VideoRoomApi } from "../api/video-room-api";
 import { JoinCreateRoomPageR } from "./join-create-room/join-create-room-page";
 import { LoginPageR } from "./login/login-page";
 import { VideoRoomPageR } from "./video-room/video-room-page";
-import { useMediaQuery, createMuiTheme, ThemeProvider, CssBaseline } from "@material-ui/core";
+
 
 /**
  * Represents the required properties of the BasePageRouter.
