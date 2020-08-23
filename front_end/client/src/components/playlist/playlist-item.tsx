@@ -18,11 +18,10 @@ interface Prop {
     user: User
 }
 
-const PlaylistItem = (props: Prop) => {
+export const PlaylistItem = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext)
 
     const deleteFromPlaylist = () => {
-        console.log('deleting: ' + props.video)
         props.deleteVideo(
             api,
             props.currentRoom.id,
@@ -42,8 +41,8 @@ const PlaylistItem = (props: Prop) => {
     })
 
     return (
-        <ListItem>
-            <ListItemText onClick={loadVideo} primary={props.video.url} />
+        <ListItem onClick={loadVideo} >
+            <ListItemText primary={props.video.url} />
             <IconButton edge="end" onClick={deleteFromPlaylist}>
                 <Delete />
             </IconButton>
