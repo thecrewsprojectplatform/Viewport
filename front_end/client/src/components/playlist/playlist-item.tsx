@@ -41,8 +41,8 @@ export const PlaylistItem = (props: Prop) => {
     })
 
     return (
-        <ListItem onClick={loadVideo} >
-            <ListItemText primary={props.video.url} />
+        <ListItem >
+            <ListItemText onClick={loadVideo} primary={props.video.url} />
             <IconButton edge="end" onClick={deleteFromPlaylist}>
                 <Delete />
             </IconButton>

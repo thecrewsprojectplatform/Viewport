@@ -96,7 +96,6 @@ export const reducer = (
 
         case ActionType.UpdatePlaylist:
             return produce(state, draftState => {
-                console.log("playlist updated to " + action.videos)
                 draftState.videos = action.videos;
             })
         default:

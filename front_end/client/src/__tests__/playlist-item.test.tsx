@@ -1,9 +1,8 @@
 import React from 'react';
-import ListItem from '@material-ui/core/ListItem';
 import { shallow } from 'enzyme';
 import { PlaylistItem } from '../components/playlist/playlist-item';
 import { Video, Room, User } from '../api/video-room-types';
-import { IconButton } from '@material-ui/core';
+import { IconButton, ListItemText } from '@material-ui/core';
 
 const video: Video = {
     userId: 1,
@@ -50,7 +49,7 @@ describe('Playlist Item component', () => {
     test('Should test url text click', () => {
         expect(mockSendUrl).toHaveBeenCalledTimes(0);
 
-        const onClick = wrapper.find(ListItem);
+        const onClick = wrapper.find(ListItemText);
         onClick.simulate('click')
 
         expect(mockSendUrl).toHaveBeenCalledTimes(1);

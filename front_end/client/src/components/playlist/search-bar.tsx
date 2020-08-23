@@ -36,9 +36,7 @@ export const SearchBar = (props: Prop) => {
         if (isValidUrl(event.target.value)) {
             const newUrl = new URL(event.target.value);
             const gogoanime = "gogoanime"
-            console.log(event.target.value)
             if (newUrl.hostname.includes(gogoanime)) {
-                console.log('is gogoanime')
                 getVideoLink(newUrl.pathname.split('/')[1])
      
             } else {
@@ -89,7 +87,6 @@ export const SearchBar = (props: Prop) => {
                 userId: props.user.id,
                 url: url
             }
-            console.log(`loading video: ${video.url}`)
             props.addVideo(
                 api,
                 props.currentRoom.id,
