@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState} from "react";
 import { match } from "react-router-dom";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -39,8 +39,6 @@ export const VideoRoomPage = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
     const history = useHistory();
     const [showEditUserModal, setShowEditUserModal] = useState(false);
-    const toggleChatRef = useRef(null);
-    const toggleListRef = useRef(null);
     const [leaveRoom, setLeaveRoom] = useState(false);
 
     useEffect(() => {

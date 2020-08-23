@@ -5,12 +5,10 @@ import { CssBaseline, Container, List } from '@material-ui/core';
 import { Room, User } from '../../api/video-room-types';
 import { VideoRoomApi } from '../../api/video-room-api';
 import { store } from '../../store';
-import { loadVideo } from '../../store/video-room/video-player'
 import { addUserToRoomAction, createRoomAndAddUserToRoomAction, getRoomsAction, Status  } from '../../store/video-room/video-room';
 import { ApiContext } from '..';
 import { CreateRoomInput } from './create-room-input';
 import { RoomListItem } from './room-list-item';
-import { ActionType } from '../../store/video-room/actionType';
 import { getPlaylistFromServer } from '../../store/video-room/playlist';
 
 /**

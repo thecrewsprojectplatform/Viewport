@@ -1,7 +1,7 @@
 import produce from 'immer'
 
 import { VideoRoomApi } from "../../api/video-room-api";
-import { Room, Player, Video } from "../../api/video-room-types";
+import { Room, Player } from "../../api/video-room-types";
 import { socket } from "../../App"
 import { ActionType } from './actionType'
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { List } from '@material-ui/core';
 
-import { Video, Player } from '../../api/video-room-types';
+import { Video } from '../../api/video-room-types';
 import { PlaylistItemR } from './playlist-item';
 
 
