@@ -36,7 +36,7 @@
     "typescript": "^3.9.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-app-rewired start",
     "build": "react-scripts build",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -65,11 +65,14 @@
     "@types/jest": "^25.2.3",
     "@types/socket.io": "^2.1.8",
     "@types/socket.io-client": "^1.4.33",
+    "babel-plugin-import": "^1.13.0",
     "check-prop-types": "^1.1.2",
+    "customize-cra": "^1.0.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "nodemon": "^2.0.4",
     "react-addons-test-utils": "^15.6.2",
+    "react-app-rewired": "^2.1.6",
     "react-test-renderer": "^16.3.2",
     "redux-mock-store": "^1.5.4",
     "ts-jest": "^26.1.0"

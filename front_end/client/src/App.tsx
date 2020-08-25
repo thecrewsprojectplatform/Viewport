@@ -5,7 +5,7 @@ import configureSocket from '../src/components/video-room/chat-app/socket'
 import { VideoRoomApi } from "./api/video-room-api";
 import { BasePageRouterR } from "./components";
 import { store } from "./store";
-import { StylesProvider } from '@material-ui/core';
+import { StylesProvider } from '@material-ui/core/styles';
 
 export const socket = configureSocket(store.dispatch, new VideoRoomApi)
 

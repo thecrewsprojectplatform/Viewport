@@ -1,4 +1,6 @@
-import { createMuiTheme, CssBaseline, ThemeProvider, useMediaQuery } from "@material-ui/core";
+
+import { CssBaseline, useMediaQuery } from "@material-ui/core";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import React, { useLayoutEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router-dom";
