@@ -1,7 +1,8 @@
-import { Button, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import Toolbar from '@material-ui/core/Toolbar'
+import { Button, IconButton, makeStyles, Drawer, List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import Typography from '@material-ui/core/Typography'
 import ChatIcon from '@material-ui/icons/Chat';
 import GroupIcon from '@material-ui/icons/Group';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -73,7 +74,7 @@ const VidRoomNavBar = (props: Prop) => {
                     </Typography>
 
                     <Button color="inherit" onClick={props.buttonOnClick}>{props.buttonName}</Button>
-                
+
                 </Toolbar>
             </AppBar>
         </div>
@@ -94,4 +95,4 @@ export default VidRoomNavBar;
                         >
                             <CheckIcon />
                         </ToggleButton>
-*/ 
+*/

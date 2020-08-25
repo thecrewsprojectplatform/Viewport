@@ -27,8 +27,9 @@ const props = {
 };
 
 const setup = () => {
+    const mockFn = jest.fn()
     return shallow(
-        <RoomList {...props} />
+        <RoomList getPlaylist={mockFn} {...props} />
     );
 };
 

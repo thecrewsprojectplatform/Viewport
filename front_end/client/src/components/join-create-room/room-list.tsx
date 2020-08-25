@@ -5,16 +5,17 @@ import { CssBaseline, Container, List } from '@material-ui/core';
 import { Room, User } from '../../api/video-room-types';
 import { VideoRoomApi } from '../../api/video-room-api';
 import { store } from '../../store';
-import { loadVideo } from '../../store/video-room/video-player'
 import { addUserToRoomAction, createRoomAndAddUserToRoomAction, getRoomsAction, Status  } from '../../store/video-room/video-room';
 import { ApiContext } from '..';
 import { CreateRoomInput } from './create-room-input';
 import { RoomListItem } from './room-list-item';
+import { getPlaylistFromServer } from '../../store/video-room/playlist';
 
 /**
  * Represents the required properties of the UserList.
  */
 export interface Prop {
+    getPlaylist: Function;
     currentRoom: Room;
     availableRooms: Room[];
     user: User;
@@ -52,9 +53,10 @@ export const RoomList = (props: Prop) => {
 
     const onJoinRoomClick = (roomId: number): void => {
         store.dispatch(addUserToRoomAction(api, roomId, props.user.id, props.availableRooms));
-        api.getRoom(roomId).then(roomApi => {
-            store.dispatch(loadVideo(roomApi.video_url))
-        })
+        // api.getRoom(roomId).then(roomApi => {
+        //     store.dispatch(loadVideo(roomApi.video_url))
+        // })
+        props.getPlaylist(api, roomId)
         history.push(`/rooms/${roomId}`)
     }
 
@@ -103,4 +105,13 @@ const mapStateToProps = state => {
     }
 }
 
-export const RoomListR = connect(mapStateToProps)(RoomList);
+const mapDispatchToProps = dispatch => {
+    return {
+        getPlaylist: (
+            api: VideoRoomApi,
+            roomId: number,
+        ) => {getPlaylistFromServer(api, roomId, dispatch)}
+    }
+}
+
+export const RoomListR = connect(mapStateToProps, mapDispatchToProps)(RoomList);

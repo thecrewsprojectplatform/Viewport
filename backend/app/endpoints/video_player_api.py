@@ -93,6 +93,8 @@ class VideoStateApi(Resource):
         if room is None:
             raise LookupError("Room not found")
         for k, v in args.items():
+            if k == "video_state" and v not in Room.valid_video_states:
+                raise BadRequest()
             setattr(room, k, v)
         db.session.commit()
         return room.to_json()
@@ -100,7 +102,7 @@ class VideoStateApi(Resource):
 class VideoTimeApi(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument("video_time", type=str, required=False, default=0, location="json")
+        self.reqparse.add_argument("video_time", type=float, required=False, default=0, location="json")
         super(VideoTimeApi, self).__init__()
 
     @swagger.operation(
