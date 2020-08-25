@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
+import { Button, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar'
-import { Button, IconButton, makeStyles, Drawer, List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import CheckIcon from '@material-ui/icons/Check';
-import Typography from '@material-ui/core/Typography'
-import ToggleButton from '@material-ui/lab/ToggleButton';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import ChatIcon from '@material-ui/icons/Chat';
 import GroupIcon from '@material-ui/icons/Group';
+import MenuIcon from '@material-ui/icons/Menu';
+import React, { useState } from 'react';
 
 export interface Prop {
     title?: string;
@@ -51,8 +49,8 @@ const VidRoomNavBar = (props: Prop) => {
             <AppBar position="static">
                 <Toolbar>
 
-                    <IconButton edge="start" className="menu-toggler" color="inherit" aria-label="menu">
-                        <MenuIcon onClick={() => toggleDrawer(true)} />
+                    <IconButton edge="start" className="menu-toggler" color="inherit" aria-label="menu" onClick={() => toggleDrawer(true)}>
+                        <MenuIcon />
                         <Drawer className="menu" anchor="left" open={navBar} onClose={() => toggleDrawer(false)}>
                             <List>
                                 {toggleList.map((toggle) => {
