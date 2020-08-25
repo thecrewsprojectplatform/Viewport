@@ -3,15 +3,16 @@ import { connect } from 'react-redux'
 import { TextField, InputAdornment, IconButton } from '@material-ui/core'
 import SearchIcon from "@material-ui/icons/Search";
 import ReactPlayer from 'react-player'
-import { VideoRoomApi } from '../../../api/video-room-api';
-import { GogoanimeApi } from '../../../api/gogoanime-api';
-import { Room, User } from '../../../api/video-room-types';
-import { ActionType } from '../../../store/video-room/actionType';
-import { ApiContext } from '../..';
+import { VideoRoomApi } from '../../api/video-room-api';
+import { Room, User, Video } from '../../api/video-room-types';
+import { GogoanimeApi } from '../../api/gogoanime-api';
+import { ActionType } from '../../store/video-room/actionType';
+import { ApiContext } from '../';
 
 
 interface Prop {
     sendUrlToServer: Function
+    addVideo: Function
     currentRoom: Room
     user: User
 }
@@ -80,13 +81,18 @@ export const SearchBar = (props: Prop) => {
 
     // By default, set the video_state to paused after loading
     const loadButton = () => {
-        props.sendUrlToServer(
-            api,
-            props.currentRoom,
-            url,
-            props.user.id,
-            props.user.name
-        )
+       
+        if (url) {
+            const video: Video = {
+                userId: props.user.id,
+                url: url
+            }
+            props.addVideo(
+                api,
+                props.currentRoom.id,
+                video
+            )
+        }
     }
 
     return (
@@ -129,6 +135,11 @@ const mapDispatchToProps = dispatch => {
             userId: number,
             userName: string
         ) => dispatch({type: ActionType.SendUrlToServer, api: api, currentRoom: currentRoom, url: url, userId: userId, userName: userName}),
+        addVideo: (
+            api: VideoRoomApi,
+            roomId: number,
+            video: Video
+        ) => dispatch({type: ActionType.AddVideo, api:api, roomId: roomId, video: video})
     }
 }
 

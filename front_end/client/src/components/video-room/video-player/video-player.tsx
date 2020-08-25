@@ -1,15 +1,16 @@
 import React, { useContext, useState } from 'react';
 import { connect } from 'react-redux';
 import ReactPlayer from 'react-player'
-import { Grid, Button } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { ActionType } from '../../../store/video-room/actionType';
 import { Player, Room, User } from '../../../api/video-room-types';
 import { ApiContext } from '../..';
+import { PlaylistButton } from '../../playlist/playlist-button';
 import { PlayButtonR } from './play-button';
-import { SearchBarR } from './search-bar';
 import { VideoControllerR } from './video-controller'
 import { VolumeControllerR } from './volume-controller'
+
 
 interface Prop {
     sendVideoState: Function;
@@ -65,7 +66,7 @@ export const VideoPlayer = (props: Prop) => {
     return (
         <div id="video-player">
             <div>
-                <SearchBarR />
+                <PlaylistButton />
                 <div className='player-wrapper'>
                     <ReactPlayer
                         ref={setReactPlayer}
