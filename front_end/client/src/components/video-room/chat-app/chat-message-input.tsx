@@ -1,8 +1,6 @@
-import React from "react";
 import { TextField } from "@material-ui/core";
+import React from "react";
 import "./chat-app.scss";
-
-///// THIS FILE IS CURRENTLY NOT BEING USED, BUT WILL BE USED SOON /////
 
 /**
  * Represents the required properties of sending a Chat Message.
@@ -10,19 +8,19 @@ import "./chat-app.scss";
 interface Prop {
     sendMessageClick: () => void;
     setMessage: (message: string) => void;
-    msg: String
+    msg: String;
 }
 
 export const ChatMessageInput = (props: Prop) => {
 
     const handleClick = (event): void => {
-        props.sendMessageClick()
+        props.sendMessageClick();
         event.preventDefault();
-    }
+    };
 
     const handleChange = (event) => {
-        props.setMessage(event)
-    }
+        props.setMessage(event);
+    };
 
     return (
         <div className="chat-message">

@@ -1,5 +1,5 @@
-import React from 'react';
 import { List } from '@material-ui/core';
+import React from 'react';
 import { User } from "../../../api/video-room-types";
 import { UserListItem } from './user-list-item';
 import "./user-list.scss";
@@ -26,7 +26,7 @@ export interface Prop {
  */
 export const UserList = (props: Prop) => {
     return (
-        <div className="user-list">
+        <div className="user-list" id="user-list">
             <div className="user-list-header">
                 USERS
             </div>

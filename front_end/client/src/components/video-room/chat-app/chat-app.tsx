@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { MessageDetail } from "../../../api/video-room-types";
 import { store } from "../../../store";
 import { sendMessageToServer } from '../../../store/video-room/video-room';
+import "./chat-app.scss";
 import { ChatMessageInput } from "./chat-message-input";
 import { ChatMessageItem } from "./chat-message-item";
-import "./chat-app.scss";
 
 /**
  * Represents the required properties of the ChatApp.
@@ -36,7 +36,7 @@ export const ChatApp = (props: Prop) => {
     useEffect(scrollToBottom, [props.messageHistory]);
 
     return(
-        <div className="chat-app">
+        <div className="chat-app" id="chat-app">
             <div className="chat-app-header">
                 CHAT APPLICATION
             </div >

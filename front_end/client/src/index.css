@@ -164,7 +164,7 @@ styling for individual Material UI components.
 
 .content {
   background: #F9F9F9;
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 .nav-bar {
