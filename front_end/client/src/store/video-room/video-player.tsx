@@ -18,7 +18,7 @@ const initialState: VideoPlayerState = {
         videoLength: 0,
         videoVolume: 0.5
     },
-    seeking: false
+    seeking: false,
 };
 
 interface ControlVideoStateAction {

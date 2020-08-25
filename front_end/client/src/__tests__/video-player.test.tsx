@@ -4,6 +4,7 @@ import { Room, User, Player } from "../api/video-room-types";
 import { VideoPlayer } from "../components/video-room/video-player/video-player";
 import { PlayButtonR } from '../components/video-room/video-player/play-button';
 import { VideoControllerR } from '../components/video-room/video-player/video-controller';
+import { PlaylistButton } from '../components/playlist/playlist-button';
 
 const roomDetail: Room = {
     id: 1,
@@ -36,6 +37,7 @@ const setup = () => {
     return shallow(
         <VideoPlayer
             sendVideoState={mockFn}
+            sendVideoTime={mockFn}
             currentRoom={props.currentRoom}
             player={props.player}
             user={props.user}
@@ -50,6 +52,10 @@ describe('Video Room Page component', () => {
 
     test('Should render without errors', () => {
         expect(wrapper.exists()).toBe(true);
+    })
+
+    test('Should contain Playlist Button', () => {
+        expect(wrapper.find(PlaylistButton).exists()).toBeTruthy()
     })
 
 

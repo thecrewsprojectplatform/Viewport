@@ -142,9 +142,6 @@ class RoomApi(Resource):
                 "code": 200,
                 "message": "Updated the room"
             }, {
-                "code": 400,
-                "message": "Bad request",
-            }, {
                 "code": 404,
                 "message": "Resource not found",
             }, {
@@ -156,8 +153,6 @@ class RoomApi(Resource):
     def put(self, room_id):
         try:
             return self.__update_room(room_id, self.reqparse.parse_args())
-        except BadRequest:
-            return create_400_error()
         except LookupError:
             return create_404_error()
         except:
@@ -167,8 +162,6 @@ class RoomApi(Resource):
         if room is None:
             raise LookupError("Room not found")
         for k, v in args.items():
-            if k == "video_state" and v not in Room.valid_video_states:
-                raise BadRequest()
             setattr(room, k, v)
         db.session.commit()
         return room.to_json()
