@@ -52,7 +52,7 @@ styling for individual Material UI components.
 }
 
 /* ---------- Video-Room-Navigation-Bar ---------- To be completed
- 
+
 .menu__toggler {
   position: absolute;
   top: 20px;
@@ -177,38 +177,36 @@ styling for individual Material UI components.
 
 /* ---------- Material UI classes ---------- */
 
-/* ---------- Dark Mode styling ---------- */
+/* ---------- Color Scheme ---------- */
 
-@media (prefers-color-scheme: dark) {
-  #typing-section, .content {
-    background: #1F2024;
-  }
+#typing-section, .content {
+  background: #1F2024;
+}
 
-  .header {
-    background: #434343;
-  }
+.header {
+  background: #434343;
+}
 
-  .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border-color: rgba(255, 255, 255, 0.7);
-  }
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.7);
+}
 
-  .MuiFormLabel-root.Mui-focused {
-    color: rgba(255, 255, 255, 0.7);
-  }
+.MuiFormLabel-root.Mui-focused {
+  color: rgba(255, 255, 255, 0.7);
+}
 
-  .MuiButton-containedPrimary {
-    background-color: #3C3C3C;
-  }
+.MuiButton-containedPrimary {
+  background-color: #3C3C3C;
+}
 
-  .MuiButton-containedPrimary:hover {
-    background-color: #313131;
-  }
+.MuiButton-containedPrimary:hover {
+  background-color: #313131;
+}
 
-  .MuiAppBar-colorPrimary {
-    background-color: #424242;
-  }
+.MuiAppBar-colorPrimary {
+  background-color: #424242;
+}
 
-  .MuiSlider-root {
-    color: #FFFFFF;
-  }
+.MuiSlider-root {
+  color: #FFFFFF;
 }

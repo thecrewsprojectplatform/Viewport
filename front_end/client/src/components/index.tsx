@@ -1,3 +1,4 @@
+import { createMuiTheme, CssBaseline, ThemeProvider, useMediaQuery } from "@material-ui/core";
 import React, { useLayoutEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router-dom";
@@ -5,7 +6,6 @@ import { VideoRoomApi } from "../api/video-room-api";
 import { JoinCreateRoomPageR } from "./join-create-room/join-create-room-page";
 import { LoginPageR } from "./login/login-page";
 import { VideoRoomPageR } from "./video-room/video-room-page";
-import { useMediaQuery, createMuiTheme, ThemeProvider, CssBaseline } from "@material-ui/core";
 
 /**
  * Represents the required properties of the BasePageRouter.
@@ -29,7 +29,7 @@ const BasePageRouter = (props: Prop) => {
         () =>
         createMuiTheme({
             palette: {
-            type: prefersDarkMode ? 'dark' : 'light',
+            type: prefersDarkMode ? 'dark' : 'dark',
             },
         }),
         [prefersDarkMode],
