@@ -48,7 +48,7 @@ const BasePageRouter = (props: Prop) => {
                     <Route path="/rooms/:videoRoomId" component={VideoRoomPageR} />
                     <Route path="/rooms" component={JoinCreateRoomPageR} />
                     <Route path="/" component={LoginPageR} />
-            </Switch>
+                </Switch>
         </ApiContext.Provider>
     )
 }
