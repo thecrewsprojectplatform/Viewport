@@ -1,0 +1,34 @@
+.login {
+    margin-top: 20vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    .login-form {
+        margin-top: 8vh;
+        width: 80%;
+    }
+
+    .login-button {
+        margin-top: 2vh;
+    }
+
+    .login-title {
+        color: #FFFFFF
+    }
+}
+
+.login-background {
+    position:fixed;
+    padding:0;
+    margin:0;
+
+    top:0;
+    left:0;
+
+    width: 100%;
+    height: 100%;
+    background-color: #7ed6df;
+    background-image: linear-gradient(95deg, #7ed6df 0%, #000000 65%);
+}

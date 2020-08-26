@@ -1,7 +1,8 @@
+import { List } from '@material-ui/core';
 import React from 'react';
-import { List, Typography } from '@material-ui/core';
 import { User } from "../../../api/video-room-types";
 import { UserListItem } from './user-list-item';
+import "./user-list.scss";
 
 /**
  * Represents the required properties of the UserList.
@@ -25,11 +26,11 @@ export interface Prop {
  */
 export const UserList = (props: Prop) => {
     return (
-        <div id="user-list">
-            <Typography className="header">
-                ACTIVE USERS
-            </Typography>
-            <List className="content">
+        <div className="user-list" id="user-list">
+            <div className="user-list-header">
+                USERS
+            </div>
+            <List className="user-list-content">
             {
                 props.users && props.users.length !== 0 &&
                 (() => {

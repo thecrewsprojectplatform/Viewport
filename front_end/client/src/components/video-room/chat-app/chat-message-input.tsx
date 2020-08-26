@@ -1,7 +1,6 @@
-import React from "react";
 import { TextField } from "@material-ui/core";
-
-///// THIS FILE IS CURRENTLY NOT BEING USED, BUT WILL BE USED SOON /////
+import React from "react";
+import "./chat-app.scss";
 
 /**
  * Represents the required properties of sending a Chat Message.
@@ -9,22 +8,22 @@ import { TextField } from "@material-ui/core";
 interface Prop {
     sendMessageClick: () => void;
     setMessage: (message: string) => void;
-    msg: String
+    msg: String;
 }
 
 export const ChatMessageInput = (props: Prop) => {
 
     const handleClick = (event): void => {
-        props.sendMessageClick()
+        props.sendMessageClick();
         event.preventDefault();
-    }
+    };
 
     const handleChange = (event) => {
-        props.setMessage(event)
-    }
+        props.setMessage(event);
+    };
 
     return (
-        <div id="typing-section">
+        <div className="chat-message">
             <form onSubmit={handleClick} autoComplete="off">
                 <TextField
                     type="text"
@@ -32,7 +31,7 @@ export const ChatMessageInput = (props: Prop) => {
                     id="messageSender"
                     variant="outlined"
                     InputProps={{
-                        className: "chat-input",
+                        className: "chat-box-tray",
                     }}
                     InputLabelProps={{
                         shrink: true

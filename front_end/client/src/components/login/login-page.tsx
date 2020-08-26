@@ -1,17 +1,18 @@
-import React, { useContext, useState } from "react";
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { CssBaseline } from "@material-ui/core";
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
+import React, { useContext, useState } from "react";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { User } from "../../api/video-room-types";
 import { store } from "../../store";
 import { NotificationState } from "../../store/notifications/notifications";
 import { createUser, Status } from "../../store/video-room/video-room";
-import { ApiContext } from "..";
 import { BaseAlert } from "../common/base-alert";
 import { LoginForm } from "./login-form";
+import "./login.scss";
 
 
 /**
@@ -52,25 +53,27 @@ export const LoginPage = (props: Prop) => {
     }
 
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <BaseAlert
-                displayNotification={props.notificationState.displayNotification}
-                notificationType={props.notificationState.notificationType}
-                notificationHeader={props.notificationState.notificationHeader}
-                notificationBody={props.notificationState.notificationBody}
-            />
-            <div id="login">
-                <Typography variant="h1" component="h1" align="center">
-                    Viewport
-                </Typography>
-                <LoginForm
-                    newUserName={newUserName}
-                    handleChange={handleChange}
-                    handleSubmit={handleSubmit}
+        <div className="login-background">
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <BaseAlert
+                    displayNotification={props.notificationState.displayNotification}
+                    notificationType={props.notificationState.notificationType}
+                    notificationHeader={props.notificationState.notificationHeader}
+                    notificationBody={props.notificationState.notificationBody}
                 />
-            </div>
-        </Container>
+                <div className="login">
+                    <Typography className="login-title" variant="h1" component="h1" align="center">
+                        Viewport
+                    </Typography>
+                    <LoginForm
+                        newUserName={newUserName}
+                        handleChange={handleChange}
+                        handleSubmit={handleSubmit}
+                    />
+                </div>
+            </Container>
+        </div>
     )
 }
 

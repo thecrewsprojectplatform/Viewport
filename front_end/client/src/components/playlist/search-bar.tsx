@@ -1,13 +1,13 @@
-import React, { useContext, useState } from 'react'
-import { connect } from 'react-redux'
-import { TextField, InputAdornment, IconButton } from '@material-ui/core'
+import { IconButton, InputAdornment, TextField } from '@material-ui/core';
 import SearchIcon from "@material-ui/icons/Search";
-import ReactPlayer from 'react-player'
+import React, { useContext, useState } from 'react';
+import ReactPlayer from 'react-player';
+import { connect } from 'react-redux';
+import { ApiContext } from '../';
+import { GogoanimeApi } from '../../api/gogoanime-api';
 import { VideoRoomApi } from '../../api/video-room-api';
 import { Room, User, Video } from '../../api/video-room-types';
-import { GogoanimeApi } from '../../api/gogoanime-api';
 import { ActionType } from '../../store/video-room/actionType';
-import { ApiContext } from '../';
 
 
 interface Prop {
@@ -96,7 +96,7 @@ export const SearchBar = (props: Prop) => {
     }
 
     return (
-        <div id="url-section">
+        <div className="search-bar-url">
             <TextField
                 error={displayError()}
                 variant='filled'

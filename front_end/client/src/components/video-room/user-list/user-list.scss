@@ -1,0 +1,43 @@
+.user-list {
+    height: 80vh;
+    width: 200px;
+    margin-bottom: 3%;
+    border-radius: 7px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    display: flex;
+    flex-direction: column;
+
+    .user-list-header {
+        height: 35px;
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+        color:#000;
+        background: #7ed6df;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .user-list-content {
+        height: calc(80vh - 30px);
+        color:#000;
+        border-radius: 7px;
+        background-color: #0d0a0b;
+        background-image: linear-gradient(350deg, #0d0a0b 20%, #7ed6df 74%);
+        overflow-y: auto;
+    }
+}
+
+.user {
+    .user-name span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+.edit-user-modal {
+    .edit-user-button {
+        margin-top: 3vh;
+    }
+}

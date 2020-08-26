@@ -1,9 +1,9 @@
-import produce from 'immer'
-
+import produce from 'immer';
 import { VideoRoomApi } from "../../api/video-room-api";
 import { PlaylistItem, Video } from "../../api/video-room-types";
 import { socket } from "../../App";
-import { ActionType } from "./actionType"
+import { ActionType } from "./actionType";
+
 
 export interface PlaylistState {
     videos: Video[]

@@ -1,15 +1,16 @@
-import React, { useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
 import { connect } from "react-redux";
-import { getRoomsAction, Status, removeUser } from "../../store/video-room/video-room";
+import { useHistory } from "react-router-dom";
 import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
+import { Room, User } from "../../api/video-room-types";
 import { store } from "../../store";
-import { User, Room } from "../../api/video-room-types";
-import { RoomListR } from "./room-list";
 import { NotificationState } from "../../store/notifications/notifications";
-import NavBar from "../nav-bar";
+import { getRoomsAction, removeUser, Status } from "../../store/video-room/video-room";
 import { BaseAlert } from "../common/base-alert";
+import NavBar from "../nav-bar";
+import "./create-room.scss";
+import { RoomListR } from "./room-list";
 
 /**
  * Represents the required properties of the JoinCreateRoomPage.
@@ -50,7 +51,7 @@ export const JoinCreateRoomPage = (props: Prop) => {
     }, []);
 
     return (
-        <div id="join-create-room">
+        <div className="join-create-room">
             <NavBar
                 buttonName="Logout"
                 buttonOnClick={logoutClick}

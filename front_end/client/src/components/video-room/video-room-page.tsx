@@ -1,20 +1,20 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
-import { match } from "react-router-dom";
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { Container, CssBaseline } from "@material-ui/core";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { connect } from "react-redux";
+import { match, useHistory } from "react-router-dom";
+import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { Room, User } from "../../api/video-room-types";
 import { store } from "../../store";
 import { getPlaylistFromServer } from "../../store/video-room/playlist";
-import { loadVideo } from '../../store/video-room/video-player'
+import { loadVideo } from '../../store/video-room/video-player';
 import { createUserAndAddToRoom, getRoomsAction, getRoomUsers, removeRoom, removeUserFromRoom } from "../../store/video-room/video-room";
-import { ApiContext } from "..";
-import { ChatAppR } from "./chat-app/chat-app"
+import { ChatAppR } from "./chat-app/chat-app";
 import { EditUserModal } from "./user-list/edit-user-modal";
 import { UserList } from "./user-list/user-list";
-import { VideoPlayerR } from "./video-player/video-player"
+import { VideoPlayerR } from "./video-player/video-player";
 import VidRoomNavBar from "./video-room-nav-bar";
+import "./video-room.scss";
 
 
 /**
@@ -70,10 +70,10 @@ export const VideoRoomPage = (props: Prop) => {
 
     const exitRoomClick = (): void => {
         if (props.users.length === 1) {
-            store.dispatch(removeUserFromRoom(api, props.currentRoom.id, props.currentUser.id));
+            store.dispatch(removeUserFromRoom(api, props.currentRoom.id, props.currentUser.id, props.users));
             store.dispatch(removeRoom(api, props.currentRoom.id));
         } else {
-            store.dispatch(removeUserFromRoom(api, props.currentRoom.id, props.currentUser.id));
+            store.dispatch(removeUserFromRoom(api, props.currentRoom.id, props.currentUser.id, props.users));
         }
         setLeaveRoom(true);
     }
@@ -103,7 +103,7 @@ export const VideoRoomPage = (props: Prop) => {
     }, [props.currentUser]);
 
     return (
-        <div id="video-room">
+        <div className="video-room">
             <VidRoomNavBar
                 title={!props.currentRoom ? "" : props.currentRoom.name}
                 buttonName={"Exit Room"}
@@ -111,7 +111,7 @@ export const VideoRoomPage = (props: Prop) => {
                 toggleChatOnClick={toggleChat}
                 toggleListOnClick={toggleUserList}
             />
-            <Container id="video-room-content" maxWidth='xl'>
+            <Container className="video-room-content" maxWidth='xl'>
                 <CssBaseline />
                     {
                         showEditUserModal &&

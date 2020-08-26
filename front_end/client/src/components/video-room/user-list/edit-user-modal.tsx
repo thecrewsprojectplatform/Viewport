@@ -1,11 +1,12 @@
+import { Button, TextField } from "@material-ui/core";
 import React, { useContext, useState } from "react";
-import { TextField, Button } from "@material-ui/core";
-import { User, Room } from "../../../api/video-room-types";
+import { ApiContext } from "../..";
 import { VideoRoomApi } from "../../../api/video-room-api";
+import { Room, User } from "../../../api/video-room-types";
 import { store } from "../../../store";
 import { editUserName } from "../../../store/video-room/video-room";
-import { ApiContext } from "../..";
 import { BaseModal } from "../../common/base-modal";
+import "./user-list.scss";
 
 export interface Prop {
     currentRoom: Room;
@@ -30,7 +31,7 @@ export const EditUserModal = (props: Prop) => {
         title="Edit User Name"
         onClose={props.onClose}
         body={
-            <div id="edit-user-modal">
+            <div className="edit-user-modal">
                 <form onSubmit={handleSubmit} autoComplete="off">
                     <TextField
                         variant="outlined"
@@ -50,7 +51,7 @@ export const EditUserModal = (props: Prop) => {
                         fullWidth
                         variant="contained"
                         color="primary"
-                        className="button"
+                        className="edit-user-button"
                     >
                         Change Name
                     </Button>

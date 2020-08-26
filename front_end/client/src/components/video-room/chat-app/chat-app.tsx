@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
-import { Typography } from "@material-ui/core";
 import { MessageDetail } from "../../../api/video-room-types";
 import { store } from "../../../store";
 import { sendMessageToServer } from '../../../store/video-room/video-room';
+import "./chat-app.scss";
 import { ChatMessageInput } from "./chat-message-input";
 import { ChatMessageItem } from "./chat-message-item";
 
@@ -19,13 +19,13 @@ export interface Prop {
 
 export const ChatApp = (props: Prop) => {
     const [msg, setMessage] = useState("");
-    const msgTime = new Date().toLocaleTimeString('en-US');
+    const msgTime = new Date().toLocaleTimeString("en-US");
     const messagesEndRef = useRef(null);
 
     const sendMessageClick = (): void => {
         if (msg !== "") {
             store.dispatch(sendMessageToServer(msg, msgTime))
-            setMessage('')
+            setMessage("")
         }
     };
 
@@ -36,11 +36,11 @@ export const ChatApp = (props: Prop) => {
     useEffect(scrollToBottom, [props.messageHistory]);
 
     return(
-        <div id="chat-app">
-            <Typography className="header">
-                ROOM CHAT
-            </Typography>
-            <div className="content">
+        <div className="chat-app" id="chat-app">
+            <div className="chat-app-header">
+                CHAT APPLICATION
+            </div >
+            <div className="chat-app-content">
                 {
                     props.messageHistory && props.messageHistory.length !== 0 &&
                     (() => {

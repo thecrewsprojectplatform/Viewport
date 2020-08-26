@@ -727,7 +727,7 @@ export const removeRoom = (api: VideoRoomApi, roomId: number): any => {
     };
 };
 
-export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: number): any => {
+export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: number, users: User[]): any => {
     return (dispatch): any => {
         dispatch({
             type: ActionType.RemoveUserFromRoom,
