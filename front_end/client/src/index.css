@@ -30,6 +30,10 @@ styling for individual Material UI components.
   color:#D5D5D5;
 }
 
+.MuiIconButton-coloInherit {
+  background-color: #1BA098;
+}
+
 /*Button Background*/
 .MuiButton-containedPrimary {
   background-color: #1BA098;
@@ -60,6 +64,16 @@ styling for individual Material UI components.
   color: #ffffff;
 }
 
+.MuiDrawer-paper {
+  width: 15%;
+  justify-content: center;
+  background-color: #0d0a0b;
+  color: #ffffff;
+}
+
+.MuiListItemIcon-root {
+  color: #ffffff;
+}
 
 .MuiSlider-root {
   color: #FFFFFF;

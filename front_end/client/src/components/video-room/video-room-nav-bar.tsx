@@ -40,11 +40,10 @@ const VidRoomNavBar = (props: Prop) => {
         <div className="video-nav-bar">
             <AppBar position="static">
                 <Toolbar>
-
-                    <IconButton edge="start" className="menu-toggler" color="inherit" aria-label="menu">
+                    <IconButton edge="start" className="menu-toggler" color="inherit">
                         <MenuIcon onClick={() => toggleDrawer(true)}/>
                         <Drawer className="video-menu" anchor="left" open={navBar} onClose={() => toggleDrawer(false)}>
-                            <List>
+                            <List className="menu-toggle-buttons">
                                 {toggleList.map((toggle) => {
 
                                     const { text, icon, onClick } = toggle;
