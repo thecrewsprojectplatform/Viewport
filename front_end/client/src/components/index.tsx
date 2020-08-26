@@ -43,14 +43,12 @@ const BasePageRouter = (props: Prop) => {
 
     return (
         <ApiContext.Provider value={api}>
-            <div className="background">
-                <CssBaseline/>
-                    <Switch>
-                        <Route path="/rooms/:videoRoomId" component={VideoRoomPageR} />
-                        <Route path="/rooms" component={JoinCreateRoomPageR} />
-                        <Route path="/" component={LoginPageR} />
-                </Switch>
-            </div>
+            <CssBaseline/>
+                <Switch>
+                    <Route path="/rooms/:videoRoomId" component={VideoRoomPageR} />
+                    <Route path="/rooms" component={JoinCreateRoomPageR} />
+                    <Route path="/" component={LoginPageR} />
+            </Switch>
         </ApiContext.Provider>
     )
 }

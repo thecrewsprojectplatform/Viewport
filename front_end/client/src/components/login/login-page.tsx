@@ -53,25 +53,27 @@ export const LoginPage = (props: Prop) => {
     }
 
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <BaseAlert
-                displayNotification={props.notificationState.displayNotification}
-                notificationType={props.notificationState.notificationType}
-                notificationHeader={props.notificationState.notificationHeader}
-                notificationBody={props.notificationState.notificationBody}
-            />
-            <div className="login">
-                <Typography className="login-title" variant="h1" component="h1" align="center">
-                    Viewport
-                </Typography>
-                <LoginForm
-                    newUserName={newUserName}
-                    handleChange={handleChange}
-                    handleSubmit={handleSubmit}
+        <div className="login-background">
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <BaseAlert
+                    displayNotification={props.notificationState.displayNotification}
+                    notificationType={props.notificationState.notificationType}
+                    notificationHeader={props.notificationState.notificationHeader}
+                    notificationBody={props.notificationState.notificationBody}
                 />
-            </div>
-        </Container>
+                <div className="login">
+                    <Typography className="login-title" variant="h1" component="h1" align="center">
+                        Viewport
+                    </Typography>
+                    <LoginForm
+                        newUserName={newUserName}
+                        handleChange={handleChange}
+                        handleSubmit={handleSubmit}
+                    />
+                </div>
+            </Container>
+        </div>
     )
 }
 

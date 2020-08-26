@@ -51,7 +51,7 @@ export const JoinCreateRoomPage = (props: Prop) => {
     }, []);
 
     return (
-        <div>
+        <div className="join-create-room">
             <NavBar
                 buttonName="Logout"
                 buttonOnClick={logoutClick}

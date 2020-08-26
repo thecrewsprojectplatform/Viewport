@@ -4,8 +4,26 @@ styling for individual Material UI components.
 */
 
 /* ---------- Color Scheme ---------- */
+
+.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: #D5D5D5;
+}
+
+:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline{
+  border-color: #ffffff;
+}
+
 .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
   border-color: #D5D5D5;
+}
+
+/* Text Color within the Text Box */
+.MuiOutlinedInput-input {
+  color: #ffffff;
+}
+
+.MuiInputLabel-outlined {
+  color:#D5D5D5;
 }
 
 .MuiFormLabel-root.Mui-focused {
@@ -24,22 +42,10 @@ styling for individual Material UI components.
 
 /*AppBar Background*/
 .MuiAppBar-colorPrimary {
-  background-color: #051622;
+  background-color: #7ed6df;
+  background-image: linear-gradient(35deg, #7ed6df 0%, #000000 74%);
 }
 
 .MuiSlider-root {
   color: #FFFFFF;
-}
-
-.background {
-  position:fixed;
-  padding:0;
-  margin:0;
-
-  top:0;
-  left:0;
-
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(0.25turn,#051622, #1BA098, #051622);
 }
