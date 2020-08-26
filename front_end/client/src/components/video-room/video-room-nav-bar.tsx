@@ -16,17 +16,8 @@ export interface Prop {
     toggleListOnClick: () => void;
 }
 
-const useStyles = makeStyles({
-    list: {
-      width: 250,
-    },
-    fullList: {
-      width: 'auto',
-    },
-});
 
 const VidRoomNavBar = (props: Prop) => {
-    const classes = useStyles();
     const [navBar, setNavBar] = useState(false);
     const toggleList = [
         {
