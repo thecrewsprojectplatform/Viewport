@@ -1,15 +1,16 @@
+import { Grid } from '@material-ui/core';
 import React, { useContext, useState } from 'react';
+import ReactPlayer from 'react-player';
 import { connect } from 'react-redux';
-import ReactPlayer from 'react-player'
-import { Grid } from '@material-ui/core'
-import { VideoRoomApi } from '../../../api/video-room-api';
-import { ActionType } from '../../../store/video-room/actionType';
-import { Player, Room, User } from '../../../api/video-room-types';
 import { ApiContext } from '../..';
+import { VideoRoomApi } from '../../../api/video-room-api';
+import { Player, Room, User } from '../../../api/video-room-types';
+import { ActionType } from '../../../store/video-room/actionType';
 import { PlaylistButton } from '../../playlist/playlist-button';
 import { PlayButtonR } from './play-button';
-import { VideoControllerR } from './video-controller'
-import { VolumeControllerR } from './volume-controller'
+import { VideoControllerR } from './video-controller';
+import "./video-player.scss";
+import { VolumeControllerR } from './volume-controller';
 
 
 interface Prop {
@@ -64,7 +65,7 @@ export const VideoPlayer = (props: Prop) => {
     }
 
     return (
-        <div id="video-player">
+        <div className="video-player">
             <div>
                 <PlaylistButton />
                 <div className='player-wrapper'>

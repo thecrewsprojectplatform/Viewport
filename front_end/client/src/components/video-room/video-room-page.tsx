@@ -1,7 +1,3 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
-import { match } from "react-router-dom";
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { Container, CssBaseline } from "@material-ui/core";
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { connect } from "react-redux";
@@ -10,6 +6,7 @@ import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { Room, User } from "../../api/video-room-types";
 import { store } from "../../store";
+import { getPlaylistFromServer } from "../../store/video-room/playlist";
 import { loadVideo } from '../../store/video-room/video-player';
 import { createUserAndAddToRoom, getRoomsAction, getRoomUsers, removeRoom, removeUserFromRoom } from "../../store/video-room/video-room";
 import { ChatAppR } from "./chat-app/chat-app";

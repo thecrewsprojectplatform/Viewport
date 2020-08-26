@@ -1,5 +1,6 @@
-import React from "react";
 import { TextField } from '@material-ui/core';
+import React from "react";
+import "./create-room.scss";
 
 /**
  * Represents the required properties of creating a Room.
@@ -23,7 +24,7 @@ export const CreateRoomInput = (props: Prop) => {
 
     return (
         <div>
-            <form onSubmit={handleClick} autoComplete="off">
+            <form className="create-room-input-form" onSubmit={handleClick} autoComplete="off">
                 <TextField
                     variant="outlined"
                     fullWidth

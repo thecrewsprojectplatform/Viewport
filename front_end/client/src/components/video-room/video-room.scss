@@ -6,3 +6,25 @@
         flex-flow: row wrap;
     }
 }
+
+.video-nav-bar {
+    margin-bottom: 5vh;
+    display: flex;
+
+    .video-nav-bar-button {
+        background-color: #0C4152;
+        &:hover {
+            background-color: #1781A5;
+        }
+        position: absolute;
+        right: 25px;
+    }
+
+    .video-nav-bar-title {
+        flex: 1 0 auto;
+        text-align:center;
+        font-size: 26px;
+        color: #DEB992
+    }
+
+}

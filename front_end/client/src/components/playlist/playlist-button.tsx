@@ -1,11 +1,12 @@
+import { Button, Dialog, DialogTitle } from '@material-ui/core';
 import React, { useState } from 'react';
-import { connect } from 'react-redux'
-import { Button, Dialog, DialogTitle } from '@material-ui/core'
-
-import { SearchBarR } from './search-bar';
+import { connect } from 'react-redux';
 import { PlaylistR } from './playlist';
+import "./playlist.scss";
+import { SearchBarR } from './search-bar';
 
 interface Prop {
+    
 }
 
 export const PlaylistButton = (props: Prop) => {
@@ -21,7 +22,7 @@ export const PlaylistButton = (props: Prop) => {
 
     return (
         <div>
-            <Button onClick={handleClickOpen}>
+            <Button className="playlist-button" onClick={handleClickOpen}>
                 Playlist
             </Button>
             <Dialog onClose={handleClose} open={open} >

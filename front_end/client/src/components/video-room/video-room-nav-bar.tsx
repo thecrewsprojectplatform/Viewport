@@ -1,12 +1,12 @@
+import { Button, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar'
-import { Button, IconButton, makeStyles, Drawer, List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import Typography from '@material-ui/core/Typography'
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import ChatIcon from '@material-ui/icons/Chat';
 import GroupIcon from '@material-ui/icons/Group';
 import MenuIcon from '@material-ui/icons/Menu';
 import React, { useState } from 'react';
+import "./video-room.scss";
 
 export interface Prop {
     title?: string;
@@ -46,12 +46,12 @@ const VidRoomNavBar = (props: Prop) => {
     }
 
     return(
-        <div className="nav-bar">
+        <div className="video-nav-bar">
             <AppBar position="static">
                 <Toolbar>
 
-                    <IconButton edge="start" className="menu-toggler" color="inherit" aria-label="menu" onClick={() => toggleDrawer(true)}>
-                        <MenuIcon />
+                    <IconButton edge="start" className="menu-toggler" color="inherit" aria-label="menu">
+                        <MenuIcon onClick={() => toggleDrawer(true)}/>
                         <Drawer className="menu" anchor="left" open={navBar} onClose={() => toggleDrawer(false)}>
                             <List>
                                 {toggleList.map((toggle) => {
@@ -69,11 +69,11 @@ const VidRoomNavBar = (props: Prop) => {
                         </Drawer>
                     </IconButton>
 
-                    <Typography variant="h6" className="title">
+                    <Typography variant="h6" className="video-nav-bar-title">
                         {props.title || "Viewport"}
                     </Typography>
 
-                    <Button color="inherit" onClick={props.buttonOnClick}>{props.buttonName}</Button>
+                    <Button className="video-nav-bar-button" color="inherit" onClick={props.buttonOnClick}>{props.buttonName}</Button>
 
                 </Toolbar>
             </AppBar>

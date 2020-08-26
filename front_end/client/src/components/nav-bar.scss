@@ -1,0 +1,19 @@
+.nav-bar {
+    margin-bottom: 5vh;
+    display: flex;
+
+    .nav-bar-button {
+        background-color: #0C4152;
+        &:hover {
+            background-color: #1781A5;
+        }
+    }
+
+    .nav-bar-title {
+        flex: 1 0 auto;
+        text-align:center;
+        font-size: 26px;
+        color: #DEB992
+    }
+
+}

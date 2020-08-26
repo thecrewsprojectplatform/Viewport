@@ -1,8 +1,9 @@
-import React from 'react'
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar'
 import { Button } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography'
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import React from 'react';
+import "./nav-bar.scss";
 
 export interface Prop {
     title?: string;
@@ -15,10 +16,10 @@ const NavBar = (props: Prop) => {
         <div className="nav-bar">
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h6" className="title">
+                    <Typography className="nav-bar-title" variant="h6">
                         {props.title || "Viewport"}
                     </Typography>
-                    <Button color="inherit" onClick={props.buttonOnClick}>{props.buttonName}</Button>
+                    <Button className="nav-bar-button" color="inherit" onClick={props.buttonOnClick}>{props.buttonName}</Button>
                 </Toolbar>
             </AppBar>
         </div>

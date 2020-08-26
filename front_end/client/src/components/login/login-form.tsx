@@ -1,5 +1,6 @@
+import { Button, TextField } from '@material-ui/core';
 import React from "react";
-import { TextField, Button } from '@material-ui/core';
+import "./login.scss";
 
 /**
  * Represents the required properties of the User.
@@ -31,7 +32,7 @@ export const LoginForm = (props: Prop) => {
     }
 
     return (
-        <form onSubmit={handleSubmit} autoComplete="off">
+        <form className="login-form" onSubmit={handleSubmit} autoComplete="off">
             <TextField
                 variant="outlined"
                 required
@@ -50,7 +51,7 @@ export const LoginForm = (props: Prop) => {
                 fullWidth
                 variant="contained"
                 color="primary"
-                className="button"
+                className="login-button"
             >
                 Sign In
             </Button>
