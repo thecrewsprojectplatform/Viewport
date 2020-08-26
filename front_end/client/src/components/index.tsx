@@ -1,4 +1,4 @@
-import { createMuiTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
+import { CssBaseline } from "@material-ui/core";
 import React, { useLayoutEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router-dom";
@@ -24,16 +24,6 @@ export const ApiContext = React.createContext(null);
  * @returns {JSX.Element} The JSX representing the BasePage.
  */
 const BasePageRouter = (props: Prop) => {
-
-    const darkTheme = createMuiTheme({
-        palette: {
-          type: 'dark',
-          background: {
-            default: "#051622"
-          },
-        },
-    });
-
     const [api, setApi] = useState(null as VideoRoomApi);
     const [showPage, setShowPage] = useState(false);
 
@@ -53,14 +43,14 @@ const BasePageRouter = (props: Prop) => {
 
     return (
         <ApiContext.Provider value={api}>
-            <ThemeProvider theme={darkTheme}>
-            <CssBaseline/>
-                <Switch>
-                    <Route path="/rooms/:videoRoomId" component={VideoRoomPageR} />
-                    <Route path="/rooms" component={JoinCreateRoomPageR} />
-                    <Route path="/" component={LoginPageR} />
+            <div className="background">
+                <CssBaseline/>
+                    <Switch>
+                        <Route path="/rooms/:videoRoomId" component={VideoRoomPageR} />
+                        <Route path="/rooms" component={JoinCreateRoomPageR} />
+                        <Route path="/" component={LoginPageR} />
                 </Switch>
-            </ThemeProvider>
+            </div>
         </ApiContext.Provider>
     )
 }
