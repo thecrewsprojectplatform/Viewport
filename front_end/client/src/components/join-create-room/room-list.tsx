@@ -1,4 +1,4 @@
-import { Container, CssBaseline, List } from '@material-ui/core';
+import { Container, CssBaseline, Grid } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -8,9 +8,9 @@ import { Room, User } from '../../api/video-room-types';
 import { store } from '../../store';
 import { getPlaylistFromServer } from '../../store/video-room/playlist';
 import { addUserToRoomAction, createRoomAndAddUserToRoomAction, getRoomsAction, Status } from '../../store/video-room/video-room';
+import { AvailableRoomList } from './available-room-list';
 import { CreateRoomInput } from './create-room-input';
 import "./create-room.scss";
-import { RoomListItem } from './room-list-item';
 
 /**
  * Represents the required properties of the UserList.
@@ -62,33 +62,24 @@ export const RoomList = (props: Prop) => {
     }
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Grid className="room-list" container spacing={3}>
             <CssBaseline />
-            <div>
-                <CreateRoomInput
-                    createNewRoomClick={createNewRoomClick}
-                    setNewRoomName={setNewRoomName}
-                    newRoomName={newRoomName}
-                />
-                <p className="room-list-title">Available Rooms:</p>
-                <List className="room-list-item">
-                    {
-                        (() => {
-                            return props.availableRooms.map((room) => {
-                                return (
-                                    <RoomListItem
-                                        key={room.id}
-                                        currentRoom={room}
-                                        onJoinClick={onJoinRoomClick}
-                                    />
-                                )
-                            })
-
-                        })()
-                    }
-                </List>
-            </div>
-        </Container>
+                <Grid className="room-list-available" item xs={6} sm={6}>
+                    <AvailableRoomList 
+                        availableRooms={props.availableRooms}
+                        onJoinRoomClick={onJoinRoomClick}
+                    />
+                </Grid>
+                <Grid className="room-list-create" item xs={6} sm={6}>
+                    <Container maxWidth="xs">
+                        <CreateRoomInput
+                            createNewRoomClick={createNewRoomClick}
+                            setNewRoomName={setNewRoomName}
+                            newRoomName={newRoomName}
+                        />
+                    </Container>
+                </Grid>
+        </Grid>
     )
 }
 

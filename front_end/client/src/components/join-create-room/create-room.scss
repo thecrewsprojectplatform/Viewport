@@ -8,19 +8,57 @@
 
     width: 100%;
     height: 100%;
-    background-color: #7ed6df;
-    background-image: linear-gradient(95deg, #7ed6df 0%, #000000 74%);
+    background-color: #000000;
+    background-image: linear-gradient(195deg, #000000 10%, #7ed6df 180%);
 }
 
-.room-list-title {
-    margin-top: 0vh;
-    margin-bottom: 0vh;
-    color: #DEB992;
-    font-size: 20px;
-}
+.room-list {
+    display: "flex";
+    height: 70%;
+    align-items: center;
+    justify-content: center;
 
-.room-list-item {
-    color: #DEB992
+    .room-list-available {
+        height: 100%;
+        display: "flex";
+        position: relative;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .available-room {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 25%;
+        width: 75%;
+        display: "flex";
+        text-align: center;
+    }
+
+    .room-list-title {
+        background-color: #7ed6df;
+        background-image: linear-gradient(315deg, #7ed6df 20%, #000000 120%);
+        width: 50%;
+        height: 100%;
+        color: #000000;
+        font-size: 20px;
+    }
+    
+    .room-list-item {
+        align-items: center;
+        justify-content: center;
+        display: "flex";
+        position: relative;
+        color: #DEB992
+    }
+    
+    .room-list-create {
+        display: "flex";
+        position: relative;
+    }
+
 }
 
 .create-room-input-form {
