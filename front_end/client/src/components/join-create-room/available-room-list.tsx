@@ -25,7 +25,7 @@ export const AvailableRoomList = (props: Prop) => {
             <Button className="room-list-title" onClick={handleClickOpen}>
                 Available Rooms
             </Button>
-            <Dialog onClose={handleClose} open={open} >
+            <Dialog onClose={handleClose} open={open} scroll='body'>
                 <DialogTitle>
                     Available Rooms
                 </DialogTitle>

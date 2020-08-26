@@ -51,6 +51,16 @@ styling for individual Material UI components.
   box-shadow: none;
 }
 
+.MuiDialogContent-root {
+  background-color: #000000;
+}
+
+.MuiDialogTitle-root {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+
 .MuiSlider-root {
   color: #FFFFFF;
 }
