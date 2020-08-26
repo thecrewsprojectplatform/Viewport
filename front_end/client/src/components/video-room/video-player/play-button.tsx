@@ -1,8 +1,9 @@
-import React from 'react'
-import { connect } from 'react-redux';
 import { IconButton } from '@material-ui/core';
 import { Pause, PlayArrowRounded } from '@material-ui/icons/';
+import React from 'react';
+import { connect } from 'react-redux';
 import { Player, Room } from '../../../api/video-room-types';
+import "./video-player.scss";
 
 interface Prop {
     play: Function

@@ -75,6 +75,10 @@ styling for individual Material UI components.
   color: #ffffff;
 }
 
+.MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeSmall {
+  color: #fff
+}
+
 .MuiSlider-root {
   color: #FFFFFF;
 }
