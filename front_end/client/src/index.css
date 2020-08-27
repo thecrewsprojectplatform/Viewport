@@ -30,6 +30,10 @@ styling for individual Material UI components.
   color:#D5D5D5;
 }
 
+.MuiIconButton-coloInherit {
+  background-color: #1BA098;
+}
+
 /*Button Background*/
 .MuiButton-containedPrimary {
   background-color: #1BA098;
@@ -37,13 +41,42 @@ styling for individual Material UI components.
 
 /*Button Hover Background*/
 .MuiButton-containedPrimary:hover {
-  background-color: #1781A5;
+  background-color: #7ed6df;
 }
 
 /*AppBar Background*/
 .MuiAppBar-colorPrimary {
   background-color: #7ed6df;
   background-image: linear-gradient(35deg, #7ed6df 0%, #000000 74%);
+}
+
+.MuiAppBar-root {
+  background: transparent;
+  box-shadow: none;
+}
+
+.MuiDialogContent-root {
+  background-color: #000000;
+}
+
+.MuiDialogTitle-root {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.MuiDrawer-paper {
+  width: 15%;
+  justify-content: center;
+  background-color: #0d0a0b;
+  color: #ffffff;
+}
+
+.MuiListItemIcon-root {
+  color: #ffffff;
+}
+
+.MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeSmall {
+  color: #fff
 }
 
 .MuiSlider-root {

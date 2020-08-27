@@ -1,7 +1,7 @@
-import React from 'react'
-import { connect } from 'react-redux'
 import { Grid, Slider } from '@material-ui/core';
 import { VolumeDown, VolumeUp } from '@material-ui/icons';
+import React from 'react';
+import { connect } from 'react-redux';
 import { Player } from '../../../api/video-room-types';
 import { ActionType } from '../../../store/video-room/actionType';
 
@@ -27,7 +27,7 @@ export const VolumeController = (props: Prop) => {
     return (
         <Grid container spacing={2} style={{display: "flex", alignItems: 'center'}}>
             <Grid item>
-                <VolumeDown fontSize={"small"}/>
+                <VolumeDown className="video-player-buttons" fontSize={"small"}/>
             </Grid>
             <Grid item xs>
                 <Slider
@@ -42,7 +42,7 @@ export const VolumeController = (props: Prop) => {
                 />
             </Grid>
             <Grid item>
-                <VolumeUp fontSize={"small"}/>
+                <VolumeUp className="video-player-buttons" fontSize={"small"}/>
             </Grid>
         </Grid>
     )

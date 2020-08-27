@@ -9,8 +9,9 @@
     width: 100%;
     height: 100%;
     background-color: #7ed6df;
-    background-image: linear-gradient(95deg, #7ed6df 0%, #000000 74%);
-
+    /*background-image: linear-gradient(95deg, #7ed6df 0%, #000000 74%);*/
+    background-image: linear-gradient(95deg, #7ed6df 0%, #000000 50%);
+    
     .video-room-content {
         height: 80vh;
         width: 100%;
@@ -23,6 +24,13 @@
 .video-nav-bar {
     margin-bottom: 5vh;
     display: flex;
+
+    .menu-toggler {
+        background-color: #0C4152;
+        &:hover {
+            background-color: #1781A5;
+        }
+    }
 
     .video-nav-bar-button {
         background-color: #0C4152;
@@ -37,11 +45,16 @@
         flex: 1 0 auto;
         text-align:center;
         font-size: 26px;
-        color: #DEB992
+        color: #FFF
     }
 
     .video-menu {
         background-color: #000;
+    }
+
+    .menu-toggle-buttons {
+        align-items: center;
+        justify-content: center;
     }
 
 }

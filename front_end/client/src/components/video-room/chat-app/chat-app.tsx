@@ -38,7 +38,7 @@ export const ChatApp = (props: Prop) => {
     return(
         <div className="chat-app" id="chat-app">
             <div className="chat-app-header">
-                CHAT APPLICATION
+                CHAT
             </div >
             <div className="chat-app-content">
                 {
