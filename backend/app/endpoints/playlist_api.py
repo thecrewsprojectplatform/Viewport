@@ -6,6 +6,7 @@ from app import db
 from app.database.playlist import Playlist
 from app.database.room import Room
 from app.database.video import Video
+from app.database.common.guid import is_valid_uuid
 from app.endpoints.utils import create_400_error, create_404_error, create_500_error
 
 class CreatePlaylistApi(Resource):
@@ -22,7 +23,7 @@ class CreatePlaylistApi(Resource):
                 "description": "ID of the room to get",
                 "required": True,
                 "allowMultiple": False,
-                "dataType": "int",
+                "dataType": "string",
                 "paramType": "path"
             }, {
                 "name": "video_id",
@@ -61,7 +62,7 @@ class CreatePlaylistApi(Resource):
             return create_500_error()
 
     def __add_video_to_playlist(self, room_id, video_id):
-        if Room.query.get(room_id) is None:
+        if not is_valid_uuid(room_id) or Room.query.get(room_id) is None:
             raise LookupError("Room not found")
         elif Video.query.get(video_id) is None:
             raise LookupError("Video not found")
@@ -79,7 +80,7 @@ class CreatePlaylistApi(Resource):
                 "description": "ID of the room to get",
                 "required": True,
                 "allowMultiple": False,
-                "dataType": "int",
+                "dataType": "string",
                 "paramType": "path"
             },
         ],
@@ -104,7 +105,7 @@ class CreatePlaylistApi(Resource):
         except:
             return create_500_error()
     def __get_playlist(self, room_id):
-        if Room.query.get(room_id) is None:
+        if not is_valid_uuid(room_id) or Room.query.get(room_id) is None:
             raise LookupError("Room not found")
         playlist = Playlist.query.filter_by(room_id=room_id).all()
         return [video.to_json() for video in playlist]
@@ -151,7 +152,7 @@ class PlaylistApi(Resource):
         except:
             return create_500_error()
     def __delete_video_from_playlist(self, room_id, video_id):
-        if Room.query.get(room_id) is None:
+        if not is_valid_uuid(room_id) or Room.query.get(room_id) is None:
             raise LookupError("Room not found")
         video = Playlist.query.filter_by(room_id=room_id, video_id=video_id).first()
         if video is None:
