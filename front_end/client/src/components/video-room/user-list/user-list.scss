@@ -1,5 +1,5 @@
 .user-list {
-    height: 80vh;
+    height: 100%;
     width: 200px;
     margin-left: 0px;
     margin-bottom: 3%;
@@ -21,7 +21,7 @@
     }
 
     .user-list-content {
-        height: calc(80vh - 30px);
+        height: calc(90vh - 30px);
         color:#fff;
         border-bottom-left-radius: 7px;
         border-bottom-right-radius: 7px;
