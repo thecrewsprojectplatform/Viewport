@@ -8,9 +8,9 @@
 
     width: 100%;
     height: 100%;
-    background-color: #7ed6df;
+    background-color: #303030;
     /*background-image: linear-gradient(95deg, #7ed6df 0%, #000000 74%);*/
-    background-image: linear-gradient(95deg, #7ed6df 0%, #000000 50%);
+    /*background-image: linear-gradient(95deg, #7ed6df 0%, #000000 50%);*/
     
     .video-room-content {
         height: 80vh;
@@ -19,6 +19,7 @@
         display: flex;
         flex-flow: row wrap;
     }
+
 }
 
 .video-nav-bar {
