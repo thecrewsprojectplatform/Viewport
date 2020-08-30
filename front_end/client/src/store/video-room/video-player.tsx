@@ -1,9 +1,9 @@
-import produce from 'immer'
-
+import produce from 'immer';
 import { VideoRoomApi } from "../../api/video-room-api";
-import { Room, Player } from "../../api/video-room-types";
-import { socket } from "../../App"
-import { ActionType } from './actionType'
+import { Player, Room } from "../../api/video-room-types";
+import { socket } from "../../App";
+import { ActionType } from './actionType';
+
 
 export interface VideoPlayerState {
     player: Player
@@ -173,7 +173,7 @@ export const controlVideoTime = (videoTime: number): any => {
     }
 }
 
-const getAndSendVideoState = (api: VideoRoomApi, roomId: number) => {
+const getAndSendVideoState = (api: VideoRoomApi, roomId: string) => {
     api.getVideoState(roomId).then(videoState => {
         socket.emit('sendVideoStateToServer', {
             currentRoomId: roomId,
@@ -182,7 +182,7 @@ const getAndSendVideoState = (api: VideoRoomApi, roomId: number) => {
     })
 }
 
-const getAndSendVideoTime = (api: VideoRoomApi, roomId: number) => {
+const getAndSendVideoTime = (api: VideoRoomApi, roomId: string) => {
     api.getVideoTime(roomId).then(videoTime => {
         socket.emit('sendVideoTimeToServer', {
             currentRoomId: roomId,
@@ -191,7 +191,7 @@ const getAndSendVideoTime = (api: VideoRoomApi, roomId: number) => {
     })
 }
 
-const getAndSendUrl = (api: VideoRoomApi, roomId: number) => {
+const getAndSendUrl = (api: VideoRoomApi, roomId: string) => {
     api.getVideoUrl(roomId).then(videoUrl => {
         socket.emit('sendVideoUrlToServer', {
             currentRoomId: roomId,
@@ -202,7 +202,7 @@ const getAndSendUrl = (api: VideoRoomApi, roomId: number) => {
 
 const updateVideoStateForServer = (
         api: VideoRoomApi, 
-        roomId: number, 
+        roomId: string, 
         videoState: string
     ) => {
         api.updateVideoState(roomId, videoState).then(() => {
@@ -213,7 +213,7 @@ const updateVideoStateForServer = (
 
 const updateVideoTimeForServer = (
         api: VideoRoomApi,
-        roomId: number,
+        roomId: string,
         videoTime: number    
     ) => {
         api.updateVideoTime(roomId, videoTime).then(() => {
@@ -221,7 +221,7 @@ const updateVideoTimeForServer = (
         })
 }
 
-const updateVideoUrlForServer = (api: VideoRoomApi, roomId: number, videoUrl: string) => {
+const updateVideoUrlForServer = (api: VideoRoomApi, roomId: string, videoUrl: string) => {
     api.updateVideoUrl(roomId, videoUrl).then(() => {
         getAndSendUrl(api, roomId)
     })

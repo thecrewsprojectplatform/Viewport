@@ -7,6 +7,7 @@ from app import db
 from app.database.room import Room
 from app.database.room_user import RoomUser
 from app.database.user import User
+from app.database.common.guid import is_valid_uuid
 from app.endpoints.utils import create_400_error, create_404_error, create_500_error
 
 class RoomUserListApi(Resource):
@@ -48,7 +49,7 @@ class RoomUserListApi(Resource):
         except:
             return create_500_error()
     def __get_all_users_in_room(self, room_id):
-        if Room.query.get(room_id) is None:
+        if not is_valid_uuid(room_id) or Room.query.get(room_id) is None:
             raise LookupError("Room not found")
         room_users = RoomUser.query.filter_by(room_id=room_id).all()
         users = User.query.filter(User.id.in_([x.user_id for x in room_users])).all()
@@ -104,7 +105,7 @@ class RoomUserListApi(Resource):
         except:
             return create_500_error()
     def __add_user_to_room(self, user_id, room_id):
-        if Room.query.get(room_id) is None:
+        if not is_valid_uuid(room_id) or Room.query.get(room_id) is None:
             raise LookupError("Room not found")
         elif User.query.get(user_id) is None:
             raise LookupError("User not found")
@@ -155,6 +156,8 @@ class RoomUserApi(Resource):
         except:
             return create_500_error()
     def __remove_user_from_room(self, user_id, room_id):
+        if not is_valid_uuid(room_id):
+            raise LookupError("Room not found")
         room_user = RoomUser.query.filter_by(room_id=room_id, user_id=user_id).first()
         if room_user is None:
             raise LookupError("RoomUser not found")

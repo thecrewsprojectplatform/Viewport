@@ -3,11 +3,12 @@ from flask_restful_swagger import swagger
 from app import db
 from app.database.room import Room
 from app.database.video import Video
+from app.database.common.guid import GUID
 
 @swagger.model
 class Playlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    room_id = db.Column(db.Integer, db.ForeignKey(Room.id), index=True, unique=False)
+    room_id = db.Column(GUID(), db.ForeignKey(Room.id), index=True, unique=False)
     video_id = db.Column(db.Integer, db.ForeignKey(Video.id))
     room_relation = db.relationship(Room, foreign_keys=room_id)
     video_relation = db.relationship(Video, foreign_keys=video_id)

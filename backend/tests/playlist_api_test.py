@@ -41,7 +41,7 @@ class PlaylistApiTest(TestCase):
 
     def test_post_invalid_id(self):
         """Tests POST at /rooms/{room_id}/playlist with invalid request body"""
-        response = self.client.post(f"/rooms/{self.test_room_id + 1}/playlist", json=self.test_playlist)
+        response = self.client.post(f"/rooms/0/playlist", json=self.test_playlist)
         self.assert404(response)
 
     def test_post_invalid_request(self):
@@ -58,7 +58,7 @@ class PlaylistApiTest(TestCase):
 
     def test_get_invalid_id(self):
         """Tests GET at /rooms/{room_id}/playlist with invalid room_id"""
-        get_response = self.client.get(f"/rooms/{self.test_room_id + 1}/playlist")
+        get_response = self.client.get("/rooms/0/playlist")
         self.assert404(get_response)
 
     def test_delete(self):
@@ -70,7 +70,7 @@ class PlaylistApiTest(TestCase):
     def test_delete_invalid_room_id(self):
         """Tests DELETE at /rooms/{room_id}/playlist/{video_id}"""
         post_response = self.client.post(f"/rooms/{self.test_room_id}/playlist", json=self.test_playlist)
-        delete_response = self.client.delete(f"/rooms/{self.test_room_id + 1}/playlist/{self.test_video_id}")
+        delete_response = self.client.delete("/rooms/0/playlist/{self.test_video_id}")
         self.assert404(delete_response)
 
     def test_delete_invalid_video_id(self):
@@ -78,3 +78,6 @@ class PlaylistApiTest(TestCase):
         post_response = self.client.post(f"/rooms/{self.test_room_id}/playlist", json=self.test_playlist)
         delete_response = self.client.delete(f"/rooms/{self.test_room_id}/playlist/{self.test_video_id + 1}")
         self.assert404(delete_response)
+
+if __name__ == "__main__":
+    unittest.main()

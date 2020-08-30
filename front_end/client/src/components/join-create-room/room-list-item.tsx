@@ -1,13 +1,13 @@
+import { ListItem, ListItemText } from "@material-ui/core";
 import React from "react";
 import { Room } from "../../api/video-room-types";
-import { ListItem, ListItemText } from "@material-ui/core";
 
 /**
  * Represents the required properties of the User.
  */
 interface Prop {
     currentRoom: Room;
-    onJoinClick: (id: number) => void;
+    onJoinClick: (id: string) => void;
 }
 
 /**

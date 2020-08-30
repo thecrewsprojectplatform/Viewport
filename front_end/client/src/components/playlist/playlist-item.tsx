@@ -1,13 +1,13 @@
+import { IconButton, ListItem, ListItemText } from '@material-ui/core';
+import { Delete } from '@material-ui/icons';
 import React, { useContext } from 'react';
-import { connect } from 'react-redux'
-
-import  { IconButton, ListItem, ListItemText } from '@material-ui/core'
-import { Delete } from '@material-ui/icons'
-
-import { Room, Video, User } from '../../api/video-room-types';
-import { VideoRoomApi } from '../../api/video-room-api';
-import { ActionType } from '../../store/video-room/actionType';
+import { connect } from 'react-redux';
 import { ApiContext } from '..';
+import { VideoRoomApi } from '../../api/video-room-api';
+import { Room, User, Video } from '../../api/video-room-types';
+import { ActionType } from '../../store/video-room/actionType';
+
+
 
 
 interface Prop {
@@ -61,7 +61,7 @@ const mapDispatchToProps = dispatch => {
     return {
         deleteVideo: (
             api: VideoRoomApi,
-            roomId: number,
+            roomId: string,
             userId: number,
             video: Video
         ) => dispatch({type: ActionType.DeleteVideo, api:api, roomId: roomId, userId: userId, video: video}),

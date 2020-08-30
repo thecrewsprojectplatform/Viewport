@@ -8,8 +8,7 @@ import { Room, User } from '../../api/video-room-types';
 import { store } from '../../store';
 import { getPlaylistFromServer } from '../../store/video-room/playlist';
 import { addUserToRoomAction, createRoomAndAddUserToRoomAction, getRoomsAction, Status } from '../../store/video-room/video-room';
-import { AvailableRoomList } from './available-room-list';
-import { CreateRoomInput } from './create-room-input';
+import { BaseInput } from './base-input';
 import "./create-room.scss";
 
 /**
@@ -35,6 +34,7 @@ export interface Prop {
  */
 export const RoomList = (props: Prop) => {
     const [newRoomName, setNewRoomName] = useState("");
+    const [joinRoomId, setJoinRoomId] = useState("");
     const api = useContext<VideoRoomApi>(ApiContext);
     const history = useHistory();
 
@@ -52,7 +52,13 @@ export const RoomList = (props: Prop) => {
         store.dispatch(createRoomAndAddUserToRoomAction(api, newRoomName, props.user.id));
     }
 
-    const onJoinRoomClick = (roomId: number): void => {
+    const joinRoom = () => {
+        store.dispatch(addUserToRoomAction(api, joinRoomId, props.user.id, props.availableRooms));
+        props.getPlaylist(api, joinRoomId)
+        history.push(`/rooms/${joinRoomId}`)
+    }
+
+    const onJoinRoomClick = (roomId: string): void => {
         store.dispatch(addUserToRoomAction(api, roomId, props.user.id, props.availableRooms));
         // api.getRoom(roomId).then(roomApi => {
         //     store.dispatch(loadVideo(roomApi.video_url))
@@ -64,18 +70,23 @@ export const RoomList = (props: Prop) => {
     return (
         <Grid className="room-list" container spacing={3}>
             <CssBaseline />
-                <Grid className="room-list-available" item xs={6} sm={6}>
-                    <AvailableRoomList 
-                        availableRooms={props.availableRooms}
-                        onJoinRoomClick={onJoinRoomClick}
-                    />
+                <Grid className="room-list-create" item xs={6} sm={6}>
+                    <Container maxWidth="xs">
+                        <BaseInput
+                            label="Join an existing room"
+                            onSubmit={joinRoom}
+                            setValue={setJoinRoomId}
+                            value={joinRoomId}
+                        />
+                    </Container>
                 </Grid>
                 <Grid className="room-list-create" item xs={6} sm={6}>
                     <Container maxWidth="xs">
-                        <CreateRoomInput
-                            createNewRoomClick={createNewRoomClick}
-                            setNewRoomName={setNewRoomName}
-                            newRoomName={newRoomName}
+                        <BaseInput
+                            label="Create a new room"
+                            onSubmit={createNewRoomClick}
+                            setValue={setNewRoomName}
+                            value={newRoomName}
                         />
                     </Container>
                 </Grid>
@@ -101,7 +112,7 @@ const mapDispatchToProps = dispatch => {
     return {
         getPlaylist: (
             api: VideoRoomApi,
-            roomId: number,
+            roomId: string,
         ) => {getPlaylistFromServer(api, roomId, dispatch)}
     }
 }

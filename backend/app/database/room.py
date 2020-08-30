@@ -1,10 +1,12 @@
 from flask_restful import fields
 from flask_restful_swagger import swagger
+import uuid
 from app import db
+from app.database.common.guid import GUID
 
 @swagger.model
 class Room(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(GUID(), primary_key=True, default=str(uuid.uuid4()))
     name = db.Column(db.String(64), index=True, unique=False)
     video_url = db.Column(db.String(64), index=False, unique=False, default="")
     video_time = db.Column(db.Float, index=False, unique=False, default=0)
@@ -23,7 +25,7 @@ class Room(db.Model):
 
     def to_json(self):
         return {
-            "id": self.id,
+            "id": str(self.id),
             "name": self.name,
             "video_url": self.video_url,
             "video_state": self.video_state,

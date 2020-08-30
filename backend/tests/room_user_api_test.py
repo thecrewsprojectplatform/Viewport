@@ -37,7 +37,7 @@ class RoomUserApiTest(TestCase):
 
     def test_get_invalid_id(self):
         """Tests GET at /rooms/{room_id}/users with invalid room_id"""
-        get_response = self.client.get(f"/rooms/{self.test_room_id + 1}/users")
+        get_response = self.client.get("/rooms/0/users")
         self.assert404(get_response)
 
     def test_post(self):
@@ -47,7 +47,7 @@ class RoomUserApiTest(TestCase):
 
     def test_post_invalid_id(self):
         """Tests POST at /rooms/{room_id}/users with invalid request body"""
-        response = self.client.post(f"/rooms/{self.test_room_id + 1}/users", json=self.test_room_user)
+        response = self.client.post("/rooms/0/users", json=self.test_room_user)
         self.assert404(response)
 
     def test_post_invalid_request(self):
@@ -65,7 +65,7 @@ class RoomUserApiTest(TestCase):
 
     def test_delete_invalid_room_id(self):
         """Tests DELETE at /rooms/{room_id}/users/{user_id} with invalid room_id"""
-        delete_response = self.client.delete(f"/rooms/{self.test_room_id + 1}/users/0")
+        delete_response = self.client.delete("/rooms/0/users/0")
         self.assert404(delete_response)
 
     def test_delete_invalid_user_id(self):

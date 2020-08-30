@@ -6,7 +6,7 @@ import { RoomListItem } from './room-list-item';
 
 interface Prop {
     availableRooms: Room[];
-    onJoinRoomClick: (roomId: number) => void;
+    onJoinRoomClick: (roomId: string) => void;
 }
 
 export const AvailableRoomList = (props: Prop) => {
