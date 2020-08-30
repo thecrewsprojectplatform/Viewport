@@ -10,8 +10,8 @@ import "./video-room.scss";
 
 export interface Prop {
     title?: string;
-    buttonName: string;
-    buttonOnClick: () => void;
+    onShareClick: () => void;
+    onExitClick: () => void;
     toggleChatOnClick: () => void;
     toggleListOnClick: () => void;
 }
@@ -63,7 +63,8 @@ const VidRoomNavBar = (props: Prop) => {
                         {props.title || "Viewport"}
                     </Typography>
 
-                    <Button className="video-nav-bar-button" color="inherit" onClick={props.buttonOnClick}>{props.buttonName}</Button>
+                    <Button className="video-nav-bar-button" color="inherit" onClick={props.onShareClick}>Share Room</Button>
+                    <Button className="video-nav-bar-button" color="inherit" onClick={props.onExitClick}>Exit Room</Button>
 
                 </Toolbar>
             </AppBar>
@@ -72,17 +73,3 @@ const VidRoomNavBar = (props: Prop) => {
 }
 
 export default VidRoomNavBar;
-
-
-/*
-
-                        <ToggleButton
-                            value="check"
-                            selected={toggle}
-                            onChange={() => {
-                            setToggle(!toggle);
-                            }}
-                        >
-                            <CheckIcon />
-                        </ToggleButton>
-*/

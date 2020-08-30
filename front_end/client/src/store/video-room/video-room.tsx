@@ -1,11 +1,11 @@
-import { ActionType } from "./actionType";
-import { ActionType as NotifcationActionType } from "../notifications/actionType";
 import { produce } from "immer";
-
 import { VideoRoomApi } from "../../api/video-room-api";
-import { User, Room, MessageDetail } from "../../api/video-room-types";
-import { socket } from "../../App"
+import { MessageDetail, Room, User } from "../../api/video-room-types";
+import { socket } from "../../App";
+import { ActionType as NotifcationActionType } from "../notifications/actionType";
 import { ShowErrorNotification } from "../notifications/notifications";
+import { ActionType } from "./actionType";
+
 
 export enum Status {
     NotStarted="NOT_STARTED",
@@ -15,11 +15,11 @@ export enum Status {
 }
 
 export interface VideoRoomState {
-    roomId: number;
+    roomId: string;
     roomName: string;
     roomList: Room[];
     currentRoom: Room;
-    pastRoomId: number;
+    pastRoomId: string;
     user: User;
     users: User[];
     clientMessage: string;
@@ -56,7 +56,7 @@ interface AddUserToRoomAction {
 interface AddUserToRoomSuccessAction {
     type: ActionType.AddUserToRoomSuccess;
     room: Room;
-    roomId: number;
+    roomId: string;
 }
 
 interface AddUserToRoomFailAction {
@@ -83,7 +83,7 @@ interface CreateRoomAndAddUserToRoomAction {
 interface CreateRoomAndAddUserToRoomSuccessAction {
     type: ActionType.CreateRoomAndAddUserToRoomSuccess;
     room: Room;
-    roomId: number;
+    roomId: string;
 }
 
 interface CreateRoomAndAddUserToRoomFailAction {
@@ -97,7 +97,7 @@ interface CreateUserAndAddToRoomAction {
 interface CreateUserAndAddToRoomSuccessAction {
     type: ActionType.CreateUserAndAddToRoomSuccess;
     user: User;
-    roomId: number;
+    roomId: string;
 }
 
 interface CreateUserAndAddToRoomFailAction {
@@ -161,9 +161,9 @@ interface RemoveUserFromRoomAction {
 
 interface RemoveUserFromRoomSuccessAction {
     type: ActionType.RemoveUserFromRoomSuccess;
-    pastRoomId: number;
+    pastRoomId: string;
     messageHistory: MessageDetail[];
-    roomId: number;
+    roomId: string;
     users: User[];
 }
 
@@ -177,10 +177,10 @@ interface RemoveUserAfterBrowserCloseAction {
 
 interface RemoveUserAfterBrowserCloseSuccessAction {
     type: ActionType.RemoveUserAfterBrowserCloseSuccess;
-    pastRoomId: number;
+    pastRoomId: string;
     messageHistory: MessageDetail[];
     currentRoom: Room;
-    roomId: number;
+    roomId: string;
     users: User[];
 }
 
@@ -488,7 +488,7 @@ export const getRoomsAction = (api: VideoRoomApi): any => {
     };
 };
 
-export const addUserToRoomAction = (api: VideoRoomApi, roomId: number, userId: number, roomList: Room[]): any => {
+export const addUserToRoomAction = (api: VideoRoomApi, roomId: string, userId: number, roomList: Room[]): any => {
     return (dispatch): any => {
         dispatch({
             type: ActionType.AddUserToRoom,
@@ -553,7 +553,7 @@ export const createRoomAndAddUserToRoomAction = (api: VideoRoomApi, roomName: st
     };
 };
 
-export const getRoomUsers = (api: VideoRoomApi, roomId: number): any => {
+export const getRoomUsers = (api: VideoRoomApi, roomId: string): any => {
     return (dispatch): any => {
         api.getUsersInRoom(roomId).then(users => {
             socket.emit('getCurrentRoom', {
@@ -573,7 +573,7 @@ export const getRoomUsers = (api: VideoRoomApi, roomId: number): any => {
     };
 };
 
-export const createUserAndAddToRoom = (api: VideoRoomApi, roomId: number, userName: string): any => {
+export const createUserAndAddToRoom = (api: VideoRoomApi, roomId: string, userName: string): any => {
     return (dispatch): any => {
         dispatch({
             type: ActionType.CreateUserAndAddToRoom,
@@ -642,7 +642,7 @@ export const createUser = (api: VideoRoomApi, userName: string): any => {
     };
 };
 
-export const editUserName = (api: VideoRoomApi, userId: number, roomId: number, newUserName: string): any => {
+export const editUserName = (api: VideoRoomApi, userId: number, roomId: string, newUserName: string): any => {
     return (dispatch): any => {
         dispatch({
             type: ActionType.EditUserName,
@@ -699,7 +699,7 @@ export const removeUser = (api: VideoRoomApi, userId: number): any => {
     };
 };
 
-export const removeRoom = (api: VideoRoomApi, roomId: number): any => {
+export const removeRoom = (api: VideoRoomApi, roomId: string): any => {
     return (dispatch): any => {
         dispatch({
             type: ActionType.RemoveRoom,
@@ -727,7 +727,7 @@ export const removeRoom = (api: VideoRoomApi, roomId: number): any => {
     };
 };
 
-export const removeUserFromRoom = (api: VideoRoomApi, roomId: number, userId: number, users: User[]): any => {
+export const removeUserFromRoom = (api: VideoRoomApi, roomId: string, userId: number, users: User[]): any => {
     return (dispatch): any => {
         dispatch({
             type: ActionType.RemoveUserFromRoom,
@@ -786,7 +786,7 @@ export const sendMessageToServer = (message: string, msgTime: string): any => {
     }
 }
 
-export const closedBrowserUserList = (api: VideoRoomApi, roomId: number): any => {
+export const closedBrowserUserList = (api: VideoRoomApi, roomId: string): any => {
     return (dispatch): any => {
         dispatch({
             type: ActionType.RemoveUserAfterBrowserClose,

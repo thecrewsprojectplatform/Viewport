@@ -137,7 +137,7 @@ const mapDispatchToProps = dispatch => {
         ) => dispatch({type: ActionType.SendUrlToServer, api: api, currentRoom: currentRoom, url: url, userId: userId, userName: userName}),
         addVideo: (
             api: VideoRoomApi,
-            roomId: number,
+            roomId: string,
             video: Video
         ) => dispatch({type: ActionType.AddVideo, api:api, roomId: roomId, video: video})
     }

@@ -10,6 +10,7 @@ import { getPlaylistFromServer } from "../../store/video-room/playlist";
 import { loadVideo } from '../../store/video-room/video-player';
 import { createUserAndAddToRoom, getRoomsAction, getRoomUsers, removeRoom, removeUserFromRoom } from "../../store/video-room/video-room";
 import { ChatAppR } from "./chat-app/chat-app";
+import { ShareRoomModal } from "./share-room-modal";
 import { EditUserModal } from "./user-list/edit-user-modal";
 import { UserList } from "./user-list/user-list";
 import { VideoPlayerR } from "./video-player/video-player";
@@ -42,6 +43,7 @@ export const VideoRoomPage = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
     const history = useHistory();
     const [showEditUserModal, setShowEditUserModal] = useState(false);
+    const [showShareRoomModal, setShowShareRoomModal] = useState(false);
     const [leaveRoom, setLeaveRoom] = useState(false);
 
     useEffect(() => {
@@ -106,8 +108,8 @@ export const VideoRoomPage = (props: Prop) => {
         <div className="video-room">
             <VidRoomNavBar
                 title={!props.currentRoom ? "" : props.currentRoom.name}
-                buttonName={"Exit Room"}
-                buttonOnClick={exitRoomClick}
+                onShareClick={() => {setShowShareRoomModal(true)}}
+                onExitClick={exitRoomClick}
                 toggleChatOnClick={toggleChat}
                 toggleListOnClick={toggleUserList}
             />
@@ -119,6 +121,13 @@ export const VideoRoomPage = (props: Prop) => {
                             currentRoom={props.currentRoom}
                             currentUser={props.currentUser}
                             onClose={() => {setShowEditUserModal(false)}}
+                        />
+                    }
+                    {
+                        showShareRoomModal &&
+                        <ShareRoomModal
+                            roomId={props.currentRoom.id}
+                            onClose={() => {setShowShareRoomModal(false)}}
                         />
                     }
                     <UserList
@@ -152,7 +161,7 @@ const mapDispatchToProps = dispatch => {
     return {
         getPlaylist: (
             api: VideoRoomApi,
-            roomId: number,
+            roomId: string,
         ) => {getPlaylistFromServer(api, roomId, dispatch)}
     }
 }
