@@ -5,3 +5,4 @@ flask-restful-swagger
 flask-sqlalchemy
 flask-testing
 gunicorn
+uuid

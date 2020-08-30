@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Room, User, Video, PlaylistItem } from "./video-room-types";
+import { PlaylistItem, Room, User, Video } from "./video-room-types";
 
 export class VideoRoomApi {
     BASE_URL: string
@@ -20,13 +20,13 @@ export class VideoRoomApi {
         });
     }
 
-    async getRoom(roomId: number): Promise<any> {
+    async getRoom(roomId: string): Promise<any> {
         return axios.get(this.BASE_URL + "/rooms/" + roomId).then(response => {
             return response.data;
         })
     }
 
-    async removeRoom(roomId: number): Promise<void> {
+    async removeRoom(roomId: string): Promise<void> {
         return axios.delete(this.BASE_URL + "/rooms/" + roomId).then(response => {
             return response.data;
         });
@@ -44,7 +44,7 @@ export class VideoRoomApi {
         });
     }
 
-    async addUserToRoom(roomId: number, userId: number): Promise<void> {
+    async addUserToRoom(roomId: string, userId: number): Promise<void> {
         return axios.post(this.BASE_URL + "/rooms/" + roomId + "/users", {"user_id": userId}).then(response => {
             return response.data;
         });
@@ -56,13 +56,13 @@ export class VideoRoomApi {
         });
     } 
 
-    async removeUserFromRoom(roomId: number, userId: number): Promise<void> {
+    async removeUserFromRoom(roomId: string, userId: number): Promise<void> {
         return axios.delete(this.BASE_URL + "/rooms/" + roomId + "/users/" + userId).then(response => {
             return response.data;
         });
     }
 
-    async getUsersInRoom(roomId: number): Promise<User[]> {
+    async getUsersInRoom(roomId: string): Promise<User[]> {
         return axios.get(this.BASE_URL + "/rooms/" + roomId + "/users").then(response => {
             return response.data;
         });
@@ -89,7 +89,7 @@ export class VideoRoomApi {
         })
     }
 
-    async createPlaylist(roomId: number, videoId: number): Promise<number> {
+    async createPlaylist(roomId: string, videoId: number): Promise<number> {
         return axios.post(this.BASE_URL + "/rooms/" + roomId +  "/playlist", {
             "video_id": videoId
         }).then(response => {
@@ -97,25 +97,25 @@ export class VideoRoomApi {
         })
     }
 
-    async getPlaylist(roomId: number): Promise<PlaylistItem[]> {
+    async getPlaylist(roomId: string): Promise<PlaylistItem[]> {
         return axios.get(this.BASE_URL + "/rooms/" + roomId + "/playlist").then(response => {
             return response.data;
         })
     }
 
-    async removePlaylist(roomId: number, video_id: number): Promise<void> {
+    async removePlaylist(roomId: string, video_id: number): Promise<void> {
         return axios.delete(this.BASE_URL + "/rooms/" + roomId + "/playlist/" + video_id).then(response => {
             return response.data;
         })
     }
 
-    async getVideoState(roomId: number): Promise<string> {
+    async getVideoState(roomId: string): Promise<string> {
         return axios.get(this.BASE_URL + "/rooms/" + roomId + "/video_state").then(response => {
             return response.data;
         });
     }
 
-    async updateVideoState(roomId: number, videoState: string): Promise<void> {
+    async updateVideoState(roomId: string, videoState: string): Promise<void> {
         return axios.put(this.BASE_URL + "/rooms/" + roomId + "/video_state", {
             "video_state": videoState
         }).then(response => {
@@ -125,13 +125,13 @@ export class VideoRoomApi {
         })
     }
 
-    async getVideoTime(roomId: number): Promise<number> {
+    async getVideoTime(roomId: string): Promise<number> {
         return axios.get(this.BASE_URL + "/rooms/" + roomId + "/video_time").then(response => {
             return response.data;
         });
     }
 
-    async updateVideoTime(roomId: number, videoTime: number): Promise<void> {
+    async updateVideoTime(roomId: string, videoTime: number): Promise<void> {
         return axios.put(this.BASE_URL + "/rooms/" + roomId + "/video_time", {
             "video_time": videoTime
         }).then(response => {
@@ -141,13 +141,13 @@ export class VideoRoomApi {
         })
     }
 
-    async getVideoUrl(roomId: number): Promise<string> {
+    async getVideoUrl(roomId: string): Promise<string> {
         return axios.get(this.BASE_URL + "/rooms/" + roomId + "/video_url").then(response => {
             return response.data;
         });
     }
 
-    async updateVideoUrl(roomId: number, videoUrl: string): Promise<void> {
+    async updateVideoUrl(roomId: string, videoUrl: string): Promise<void> {
         return axios.put(this.BASE_URL + "/rooms/" + roomId + "/video_url", {
             "video_url": videoUrl
         }).then(response => {

@@ -5,6 +5,7 @@ from werkzeug.exceptions import BadRequest
 from typing import List
 from app import db
 from app.database.room import Room
+from app.database.common.guid import is_valid_uuid
 from app.endpoints.utils import create_400_error, create_404_error, create_500_error
 
 class RoomListApi(Resource):
@@ -87,7 +88,7 @@ class RoomApi(Resource):
                 "description": "ID of the room to get",
                 "required": True,
                 "allowMultiple": False,
-                "dataType": "int",
+                "dataType": "string",
                 "paramType": "path"
             },
         ],
@@ -112,6 +113,8 @@ class RoomApi(Resource):
         except:
             return create_500_error()
     def __get_room(self, room_id):
+        if not is_valid_uuid(room_id):
+            raise LookupError("Room not found")
         room = Room.query.get(room_id)
         if room is None:
             raise LookupError("Room not found")
@@ -125,7 +128,7 @@ class RoomApi(Resource):
                 "description": "ID of the room to update",
                 "required": True,
                 "allowMultiple": False,
-                "dataType": "int",
+                "dataType": "string",
                 "paramType": "path"
             },
             {
@@ -158,6 +161,8 @@ class RoomApi(Resource):
         except:
             return create_500_error()
     def __update_room(self, room_id, args):
+        if not is_valid_uuid(room_id):
+            raise LookupError("Room not found")
         room = Room.query.get(room_id)
         if room is None:
             raise LookupError("Room not found")
@@ -174,7 +179,7 @@ class RoomApi(Resource):
                 "description": "ID of the room to delete",
                 "required": True,
                 "allowMultiple": False,
-                "dataType": "int",
+                "dataType": "string",
                 "paramType": "path"
             },
         ],
@@ -200,6 +205,8 @@ class RoomApi(Resource):
         except:
             return create_500_error()
     def __delete_room(self, room_id):
+        if not is_valid_uuid(room_id):
+            raise LookupError("Room not found")
         room = Room.query.get(room_id)
         if room is None:
             raise LookupError("Room not found")

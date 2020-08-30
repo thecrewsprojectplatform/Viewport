@@ -3,11 +3,12 @@ from flask_restful_swagger import swagger
 from app import db
 from app.database.room import Room
 from app.database.user import User
+from app.database.common.guid import GUID
 
 @swagger.model
 class RoomUser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    room_id = db.Column(db.Integer, db.ForeignKey(Room.id), index=True, unique=False)
+    room_id = db.Column(GUID(), db.ForeignKey(Room.id), index=True, unique=False)
     # Each user can only be in one room at a time
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), unique=True)
     room_relation = db.relationship(Room, foreign_keys=room_id)

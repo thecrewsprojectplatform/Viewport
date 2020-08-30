@@ -31,7 +31,7 @@ export interface Player {
  * Represents the required properties of a Room.
  */
 export interface Room {
-    id: number;
+    id: string;
     name: string;
 }
 
@@ -51,6 +51,6 @@ export interface Video {
 
 export interface PlaylistItem {
     id: number;
-    room_id: number;
+    room_id: string;
     video_id: number;
 }

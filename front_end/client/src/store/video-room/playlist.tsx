@@ -16,14 +16,14 @@ const initialState: PlaylistState = {
 interface AddVideoAction {
     type: ActionType.AddVideo;
     api: VideoRoomApi;
-    roomId: number;
+    roomId: string;
     video: Video;
 }
 
 interface DeleteVideoAction {
     type: ActionType.DeleteVideo;
     api: VideoRoomApi;
-    roomId: number;
+    roomId: string;
     video: Video;
 }
 
@@ -40,7 +40,7 @@ interface DeleteFromPlaylistAction {
 interface GetPlaylistAction {
     type: ActionType.GetPlaylist;
     api: VideoRoomApi;
-    roomId: number;
+    roomId: string;
 }
 
 interface UpdatePlaylistAction {
@@ -121,7 +121,7 @@ export const deleteFromPlaylist = (video: Video): any => {
     }
 }
 
-const getAndSendVideo = (roomId: number, video: Video, option: string) => {
+const getAndSendVideo = (roomId: string, video: Video, option: string) => {
     socket.emit('sendVideoToServer', {
         currentRoomId:  roomId,
         video: video,
@@ -131,7 +131,7 @@ const getAndSendVideo = (roomId: number, video: Video, option: string) => {
 
 const addVideo = (
         api: VideoRoomApi,
-        roomId: number,
+        roomId: string,
         video: Video
 ) => {
     api.createVideo(video.userId, video.url).then((videoResponse: Video) => {
@@ -142,7 +142,7 @@ const addVideo = (
 
 const removeVideo = (
     api: VideoRoomApi,
-    roomId: number,
+    roomId: string,
     video: Video
 ) => {
     api.removePlaylist(roomId, video.id);
@@ -156,7 +156,7 @@ const removeVideo = (
  */
 export const getPlaylistFromServer = (
     api: VideoRoomApi,
-    roomId: number,
+    roomId: string,
     dispatch
 ) => {
     api.getPlaylist(roomId).then((videos: PlaylistItem[]) => {
