@@ -1,6 +1,6 @@
 .user-list {
     height: 100%;
-    width: 200px;
+    width: 20%;
     margin-left: 0px;
     margin-bottom: 3%;
     border-radius: 7px;
@@ -42,5 +42,11 @@
 .edit-user-modal {
     .edit-user-button {
         margin-top: 3vh;
+    }
+}
+
+@media only screen and (max-width: 1026px) {
+    .user-list{
+        display: none;
     }
 }
