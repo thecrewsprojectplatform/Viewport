@@ -3,6 +3,10 @@ This is the CSS file for styling the layout of the front end, separate from the
 styling for individual Material UI components.
 */
 
+.hidden {
+  display: none;
+}
+
 /* ---------- Color Scheme ---------- */
 
 .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
