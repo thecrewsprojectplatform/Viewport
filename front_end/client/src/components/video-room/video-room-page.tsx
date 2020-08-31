@@ -54,20 +54,12 @@ export const VideoRoomPage = (props: Prop) => {
 
     const toggleChat = () => {
         var toggleChatApp = document.getElementById("chat-app");
-        if (toggleChatApp.style.display === "none") {
-            toggleChatApp.style.display = "block";
-        } else {
-            toggleChatApp.style.display = "none";
-        }
+        toggleChatApp.classList.toggle("hidden");
     }
 
     const toggleUserList = () => {
         var toggleUserListApp = document.getElementById("user-list");
-        if (toggleUserListApp.style.display === "none") {
-            toggleUserListApp.style.display = "block";
-        } else {
-            toggleUserListApp.style.display = "none";
-        }
+        toggleUserListApp.classList.toggle("hidden");
     }
 
     const exitRoomClick = (): void => {
