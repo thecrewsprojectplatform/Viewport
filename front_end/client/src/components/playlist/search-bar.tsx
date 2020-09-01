@@ -106,7 +106,7 @@ export const SearchBar = (props: Prop) => {
                 onKeyDown={handleEnter}
                 fullWidth
                 InputProps={{
-                    className: "search-bar",
+                    className: "playlist-content",
                     endAdornment: (
                         <InputAdornment position="end">
                             <IconButton onClick={loadButton}>

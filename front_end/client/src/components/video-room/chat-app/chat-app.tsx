@@ -1,3 +1,5 @@
+import { Button } from "@material-ui/core";
+import { KeyboardTab } from "@material-ui/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { MessageDetail } from "../../../api/video-room-types";
@@ -15,6 +17,7 @@ export interface Prop {
     clientName: string;
     msgTime: string;
     messageHistory: MessageDetail[];
+    toggleChat: () => void;
 }
 
 export const ChatApp = (props: Prop) => {
@@ -38,6 +41,9 @@ export const ChatApp = (props: Prop) => {
     return(
         <div className="chat-app" id="chat-app">
             <div className="chat-app-header">
+                <Button onClick={props.toggleChat} className="close-chat">
+                    <KeyboardTab />
+                </Button>
                 CHAT
             </div >
             <div className="chat-app-content">
