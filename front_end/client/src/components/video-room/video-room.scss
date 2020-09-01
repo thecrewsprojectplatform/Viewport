@@ -1,5 +1,4 @@
 .video-room {
-    position:fixed;
     padding:0;
     margin:0;
 
@@ -7,23 +6,22 @@
     left:0;
 
     width: 100%;
-    height: 100%;
-    background-color: #303030;
+    height: 100vh;
+    background-color: #038291;
     /*background-image: linear-gradient(95deg, #7ed6df 0%, #000000 74%);*/
     /*background-image: linear-gradient(95deg, #7ed6df 0%, #000000 50%);*/
-    
+
     .video-room-content {
-        height: 80vh;
-        width: 100%;
+        height: calc(100vh - 70px);
         padding: 0;
         display: flex;
-        flex-flow: row wrap;
+        flex-direction: row;
     }
 
 }
 
 .video-nav-bar {
-    margin-bottom: 5vh;
+    height: 70px;
     display: flex;
 
     .menu-toggler {
@@ -34,6 +32,7 @@
     }
 
     .video-nav-bar-button {
+        font-family: 'Open Sans', sans-serif;
         background-color: #0C4152;
         &:hover {
             background-color: #1781A5;
@@ -44,8 +43,10 @@
     }
 
     .video-nav-bar-title {
+        font-family: 'Open Sans', sans-serif;
+        margin-left: 40px;
         flex: 1 0 auto;
-        text-align:center;
+        text-align: left;
         font-size: 26px;
         color: #FFF
     }

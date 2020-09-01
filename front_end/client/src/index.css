@@ -3,6 +3,10 @@ This is the CSS file for styling the layout of the front end, separate from the
 styling for individual Material UI components.
 */
 
+.hidden {
+  display: none;
+}
+
 /* ---------- Color Scheme ---------- */
 
 .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
@@ -81,4 +85,16 @@ styling for individual Material UI components.
 
 .MuiSlider-root {
   color: #FFFFFF;
+}
+
+.MuiTypography-root.MuiTypography-h6 {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.MuiTypography-root.MuiListItemText-primary.MuiTypography-body1.MuiTypography-displayBlock {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.MuiInputBase-input.MuiOutlinedInput-input.Mui-disabled.Mui-disabled {
+  color: rgba(0, 0, 0, 0.87);
 }

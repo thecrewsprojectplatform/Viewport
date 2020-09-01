@@ -1,6 +1,8 @@
-import { List } from '@material-ui/core';
+import { Button, List } from '@material-ui/core';
+import { KeyboardTab } from '@material-ui/icons';
 import React from 'react';
 import { User } from "../../../api/video-room-types";
+import "../toggle-display.scss";
 import { UserListItem } from './user-list-item';
 import "./user-list.scss";
 
@@ -11,6 +13,7 @@ export interface Prop {
     users: User[];
     currentUser: User;
     onEditClick: () => void;
+    toggleUserList: () => void;
 }
 
 /**
@@ -28,6 +31,9 @@ export const UserList = (props: Prop) => {
     return (
         <div className="user-list" id="user-list">
             <div className="user-list-header">
+                <Button onClick={props.toggleUserList} className="close-userlist">
+                    <KeyboardTab />
+                </Button>
                 USERS
             </div>
             <List className="user-list-content">

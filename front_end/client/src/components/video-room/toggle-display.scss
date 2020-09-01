@@ -1,0 +1,83 @@
+$position: absolute;
+$max-width: 30px;
+$max-height: 30px;
+$min-width: 30px;
+$min-height: 30px;
+$border-radius: 5px;
+$color:#fff;
+$background-color: #1781A5;
+
+
+.close-chat {
+    position: $position;
+    max-width: $max-width;
+    max-height: $max-height;
+    min-width: $min-width;
+    $min-height: $min-height;
+    border-radius: $border-radius;
+    color: $color;
+    margin-right: 89%;
+    transform: scale(70%);
+    &:hover {
+        background-color: $background-color;
+    }
+}
+
+.open-chat {
+    position: $position;
+    max-width: $max-width;
+    max-height: $max-height;
+    min-width: $min-width;
+    $min-height: $min-height;
+    border-radius: $border-radius;
+    color: $color;
+    right: 35px;
+    transform: scale(80%) rotate(180deg);
+    transform: scaleX(-1);
+    &:hover {
+        background-color: $background-color;
+    }
+}
+
+.close-userlist {
+    position: $position;
+    max-width: $max-width;
+    max-height: $max-height;
+    min-width: $min-width;
+    $min-height: $min-height;
+    border-radius: $border-radius;
+    color: $color;
+    margin-left: 6%;
+    transform: scale(70%) rotate(180deg);
+    transform: scaleX(-1);
+    &:hover {
+        background-color: $background-color;
+    }
+}
+
+.open-userlist {
+    position: $position;
+    max-width: $max-width;
+    max-height: $max-height;
+    min-width: $min-width;
+    $min-height: $min-height;
+    border-radius: $border-radius;
+    color: $color;
+    left: 35px;
+    transform: scale(80%);
+    &:hover {
+        background-color: $background-color;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .open-chat{
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 1026px) {
+    .open-userlist{
+        display: none;
+    }
+}
