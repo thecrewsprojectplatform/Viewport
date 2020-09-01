@@ -7,6 +7,7 @@
     flex-direction: column;
 
     .user-list-header {
+        font-family: 'Open Sans', sans-serif;
         height: 35px;
         color:#fff;
         background-color: #0C4152;
@@ -27,6 +28,7 @@
 
 .user {
     .user-name span {
+        font-family: 'Open Sans', sans-serif;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -35,6 +37,7 @@
 
 .edit-user-modal {
     .edit-user-button {
+        font-family: 'Open Sans', sans-serif;
         margin-top: 3vh;
     }
 }
