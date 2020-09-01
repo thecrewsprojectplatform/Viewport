@@ -1,4 +1,5 @@
-import { Container, CssBaseline } from "@material-ui/core";
+import { Button, Container, CssBaseline } from "@material-ui/core";
+import { KeyboardTab } from "@material-ui/icons";
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { connect } from "react-redux";
 import { match, useHistory } from "react-router-dom";
@@ -11,6 +12,7 @@ import { loadVideo } from '../../store/video-room/video-player';
 import { createUserAndAddToRoom, getRoomsAction, getRoomUsers, removeRoom, removeUserFromRoom } from "../../store/video-room/video-room";
 import { ChatAppR } from "./chat-app/chat-app";
 import { ShareRoomModal } from "./share-room-modal";
+import "./toggle-display.scss";
 import { EditUserModal } from "./user-list/edit-user-modal";
 import { UserList } from "./user-list/user-list";
 import { VideoPlayerR } from "./video-player/video-player";
@@ -45,6 +47,8 @@ export const VideoRoomPage = (props: Prop) => {
     const [showEditUserModal, setShowEditUserModal] = useState(false);
     const [showShareRoomModal, setShowShareRoomModal] = useState(false);
     const [leaveRoom, setLeaveRoom] = useState(false);
+    const [showChat, setShowChat] = useState(false);
+    const [showUser, setShowUser] = useState(false);
 
     useEffect(() => {
         if (leaveRoom) {
@@ -52,14 +56,24 @@ export const VideoRoomPage = (props: Prop) => {
         }
     }, [props.users]);
 
+    const toggleChatButton = () => {
+        setShowChat(!showChat);
+    }
+
+    const toggleUserButton = () => {
+        setShowUser(!showUser);
+    }
+
     const toggleChat = () => {
         var toggleChatApp = document.getElementById("chat-app");
         toggleChatApp.classList.toggle("hidden");
+        toggleChatButton();
     }
 
     const toggleUserList = () => {
         var toggleUserListApp = document.getElementById("user-list");
         toggleUserListApp.classList.toggle("hidden");
+        toggleUserButton();
     }
 
     const exitRoomClick = (): void => {
@@ -122,13 +136,25 @@ export const VideoRoomPage = (props: Prop) => {
                             onClose={() => {setShowShareRoomModal(false)}}
                         />
                     }
-                    <UserList
+                    {
+                        showUser &&
+                        <Button onClick={toggleUserList} className="toggle-display-open-user">
+                            <KeyboardTab />
+                        </Button>
+                    }
+                    <UserList toggleUserList={toggleUserList}
                         users={props.users}
                         currentUser={props.currentUser}
                         onEditClick={() => {setShowEditUserModal(true)}}
                     />
                     <VideoPlayerR />
-                    <ChatAppR />
+                    <ChatAppR toggleChat={toggleChat}/>
+                    {
+                        showChat &&
+                        <Button onClick={toggleChat} className="toggle-display-open">
+                            <KeyboardTab />
+                        </Button>
+                    }
             </Container>
         </div>
     )
