@@ -26,11 +26,15 @@ export const PlaylistButton = (props: Prop) => {
                 Playlist
             </Button>
             <Dialog onClose={handleClose} open={open} >
-                <DialogTitle>
-                    Playlist
-                </DialogTitle>
-                <SearchBarR />
-                <PlaylistR />
+                <div className="playlist-header">
+                    <DialogTitle >
+                        Playlist
+                    </DialogTitle>
+                </div>
+                <div className="playlist-content">
+                    <SearchBarR />
+                    <PlaylistR />
+                </div>
             </Dialog>
         </div>
     )
