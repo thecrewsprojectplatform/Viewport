@@ -138,7 +138,7 @@ export const VideoRoomPage = (props: Prop) => {
                     }
                     {
                         showUser &&
-                        <Button onClick={toggleUserList} className="toggle-display-open-user">
+                        <Button onClick={toggleUserList} className="open-userlist">
                             <KeyboardTab />
                         </Button>
                     }
@@ -151,7 +151,7 @@ export const VideoRoomPage = (props: Prop) => {
                     <ChatAppR toggleChat={toggleChat}/>
                     {
                         showChat &&
-                        <Button onClick={toggleChat} className="toggle-display-open">
+                        <Button onClick={toggleChat} className="open-chat">
                             <KeyboardTab />
                         </Button>
                     }

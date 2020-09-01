@@ -31,7 +31,7 @@ export const UserList = (props: Prop) => {
     return (
         <div className="user-list" id="user-list">
             <div className="user-list-header">
-                <Button onClick={props.toggleUserList} className="toggle-display-user">
+                <Button onClick={props.toggleUserList} className="close-userlist">
                     <KeyboardTab />
                 </Button>
                 USERS

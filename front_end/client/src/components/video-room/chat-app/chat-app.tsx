@@ -41,7 +41,7 @@ export const ChatApp = (props: Prop) => {
     return(
         <div className="chat-app" id="chat-app">
             <div className="chat-app-header">
-                <Button onClick={props.toggleChat} className="toggle-display">
+                <Button onClick={props.toggleChat} className="close-chat">
                     <KeyboardTab />
                 </Button>
                 CHAT

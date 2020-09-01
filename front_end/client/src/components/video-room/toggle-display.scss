@@ -1,65 +1,81 @@
-.toggle-display {
-    position: absolute;
-    max-width: 30px;
-    max-height: 30px;
-    min-width: 30px;
-    min-height: 30px;
+$position: absolute;
+$max-width: 30px;
+$max-height: 30px;
+$min-width: 30px;
+$min-height: 30px;
+$border-radius: 5px;
+$color:#fff;
+$background-color: #1781A5;
+
+
+.close-chat {
+    position: $position;
+    max-width: $max-width;
+    max-height: $max-height;
+    min-width: $min-width;
+    $min-height: $min-height;
+    border-radius: $border-radius;
+    color: $color;
     margin-right: 89%;
-    border-radius: 5px;
     transform: scale(70%);
-    color:#fff;
     &:hover {
-        background-color: #1781A5;
+        background-color: $background-color;
     }
 }
 
-.toggle-display-open {
-    position: absolute;
+.open-chat {
+    position: $position;
+    max-width: $max-width;
+    max-height: $max-height;
+    min-width: $min-width;
+    $min-height: $min-height;
+    border-radius: $border-radius;
+    color: $color;
     right: 35px;
-    max-width: 30px;
-    max-height: 30px;
-    min-width: 30px;
-    min-height: 30px;
-    border-radius: 5px;
     transform: scale(80%) rotate(180deg);
-    color: #fff;
     &:hover {
-        background-color: #0C4152;
+        background-color: $background-color;
     }
 }
 
-.toggle-display-user {
-    position: absolute;
-    max-width: 30px;
-    max-height: 30px;
-    min-width: 30px;
-    min-height: 30px;
+.close-userlist {
+    position: $position;
+    max-width: $max-width;
+    max-height: $max-height;
+    min-width: $min-width;
+    $min-height: $min-height;
+    border-radius: $border-radius;
+    color: $color;
     margin-left: 12%;
-    border-radius: 5px;
     transform: scale(70%) rotate(180deg);
-    color:#fff;
     &:hover {
-        background-color: #1781A5;
+        background-color: $background-color;
     }
 }
 
-.toggle-display-open-user {
-    position: absolute;
+.open-userlist {
+    position: $position;
+    max-width: $max-width;
+    max-height: $max-height;
+    min-width: $min-width;
+    $min-height: $min-height;
+    border-radius: $border-radius;
+    color: $color;
     left: 35px;
-    max-width: 30px;
-    max-height: 30px;
-    min-width: 30px;
-    min-height: 30px;
-    border-radius: 5px;
     transform: scale(80%);
-    color: #fff;
     &:hover {
-        background-color: #0C4152;
+        background-color: $background-color;
     }
 }
 
 @media only screen and (max-width: 900px) {
-    .toggle-display-open{
+    .open-chat{
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 1026px) {
+    .open-userlist{
         display: none;
     }
 }
