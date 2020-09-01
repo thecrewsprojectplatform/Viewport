@@ -1,5 +1,6 @@
 .playlist-button {
-    background-color: #1781A5;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #0C4152;
     &:hover {
         background-color: #1DA2CE;
     }
@@ -7,11 +8,13 @@
 }
 
 .playlist-header > * {
+    font-family: 'Open Sans', sans-serif;
     background-color: #0C4152 !important;
     text-align: center;
 }
 
 .playlist-content {
+    font-family: 'Open Sans', sans-serif;
     color: #FFF;
     background-color: #040505;
 }

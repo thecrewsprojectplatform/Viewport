@@ -94,3 +94,7 @@ styling for individual Material UI components.
 .MuiTypography-root.MuiListItemText-primary.MuiTypography-body1.MuiTypography-displayBlock {
   font-family: 'Open Sans', sans-serif;
 }
+
+.MuiInputBase-input.MuiOutlinedInput-input.Mui-disabled.Mui-disabled {
+  color: rgba(0, 0, 0, 0.87);
+}
