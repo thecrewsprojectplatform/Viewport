@@ -19,6 +19,7 @@
     overflow: hidden;
 
     .chat-app-header {
+        font-family: 'Open Sans', sans-serif;
         height: 35px;
         border-color:#fff;
         display: flex;
@@ -69,7 +70,8 @@
     animation: fadeIn 0.5s ease-in;
 
     .system-message {
-        font-family: Arvo;
+        /*font-family: Arvo;*/
+        font-family: 'Open Sans', sans-serif;
         font-size: 100%;
         font-style: normal;
         font-variant: normal;
@@ -88,7 +90,8 @@
     animation: fadeIn 0.5s ease-in;
 
     .chat-message {
-        font-family: Arvo;
+        /*font-family: Arvo;*/
+        font-family: 'Open Sans', sans-serif;
         font-size: 100%;
         font-style: normal;
         font-variant: normal;
