@@ -46,7 +46,7 @@ Check react-player for latest updates
 
 ## Project Code Base
 **Front-End:** ReactJS/Typescript<br>
-**Back-End:** Python
+**Back-End:** Python/Flask
 
 <br></br>
 
