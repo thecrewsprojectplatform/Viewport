@@ -8,15 +8,15 @@
 
     width: 100%;
     height: 100%;
-    background-color: #000000;
-    background-image: linear-gradient(190deg, #000000 10%, #7ed6df 140%);
+    background-color: #243335;
+    /*background-image: linear-gradient(180deg, #1d1c1c 10%, #478e96 180%);*/
     /*background-image: linear-gradient(95deg, #7ed6df 0%, #000000 50%);*/
-    /*background-image: linear-gradient(0.58turn, #000000, #7ed6df, #000000);*/
+    background-image: linear-gradient(0.58turn, #000000, #243335, #000000);
 }
 
 .room-list {
     display: "flex";
-    height: 70%;
+    height: 100%;
     align-items: center;
     justify-content: center;
 
