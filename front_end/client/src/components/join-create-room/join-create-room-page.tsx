@@ -1,14 +1,12 @@
 import React, { useContext, useEffect } from "react";
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
 import { Room, User } from "../../api/video-room-types";
 import { store } from "../../store";
 import { NotificationState } from "../../store/notifications/notifications";
-import { getRoomsAction, removeUser, Status } from "../../store/video-room/video-room";
+import { getRoomsAction, Status } from "../../store/video-room/video-room";
 import { BaseAlert } from "../common/base-alert";
-import NavBar from "../nav-bar";
 import "./create-room.scss";
 import { RoomListR } from "./room-list";
 
@@ -36,15 +34,6 @@ export interface Prop {
  */
 export const JoinCreateRoomPage = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
-    const history = useHistory();
-
-    const logoutClick = (): void => {
-        store.dispatch(removeUser(api, props.currentUser.id)).then(() => {
-            history.push("/");
-        }).catch(() => {
-
-        });
-    }
 
     useEffect(() => {
         store.dispatch(getRoomsAction(api))
@@ -52,10 +41,6 @@ export const JoinCreateRoomPage = (props: Prop) => {
 
     return (
         <div className="join-create-room">
-            <NavBar
-                buttonName="Logout"
-                buttonOnClick={logoutClick}
-            />
             <BaseAlert
                 displayNotification={props.notificationState.displayNotification}
                 notificationType={props.notificationState.notificationType}

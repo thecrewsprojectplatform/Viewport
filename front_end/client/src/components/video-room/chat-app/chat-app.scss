@@ -15,7 +15,7 @@
     display: flex;
     flex-direction: column;
     justify-content: start;
-    background-color: #040505;
+    background-color: #242427;
     overflow: hidden;
 
     .chat-app-header {
@@ -26,7 +26,7 @@
         align-items: center;
         justify-content: center;
         color:#fff;
-        background-color: #0C4152;
+        background-color: #015c66;
     }
 
     .chat-app-content {
@@ -36,7 +36,7 @@
         word-wrap: break-word;
         overflow-wrap: break-word;
         color:#fff;
-        background-color: #040505;
+        background-color: #242427;
         /*background-image: linear-gradient(0.75turn, #000000, #18252b, #000000);*/
         overflow-y: auto;
     }
@@ -54,7 +54,7 @@
         margin-top: auto;
         margin-bottom: auto;
         color:#fff;
-        background-color: #040505;
+        background-color: #242427;
     }
 }
 

@@ -27,7 +27,6 @@ export const BaseInput = (props: Prop) => {
                     fullWidth
                     label={props.label}
                     autoComplete="off"
-                    autoFocus
                     required
                     type="text"
                     onChange={(event) => props.setValue(event.target.value)}
