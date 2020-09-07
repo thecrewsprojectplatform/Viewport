@@ -119,7 +119,7 @@ export const VideoRoomPage = (props: Prop) => {
                 toggleChatOnClick={toggleChat}
                 toggleListOnClick={toggleUserList}
             />
-            <Container className="video-room-content" maxWidth='xl'>
+            <Container className="video-room-content" maxWidth={false}>
                 <CssBaseline />
                     {
                         showEditUserModal &&
