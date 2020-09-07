@@ -1,5 +1,5 @@
 import { Button, List } from '@material-ui/core';
-import { KeyboardTab } from '@material-ui/icons';
+import { Group, KeyboardTab } from '@material-ui/icons';
 import React from 'react';
 import { User } from "../../../api/video-room-types";
 import "../toggle-display.scss";
@@ -34,6 +34,9 @@ export const UserList = (props: Prop) => {
                 <Button onClick={props.toggleUserList} className="close-userlist">
                     <KeyboardTab />
                 </Button>
+                <div className="user-list-icon">
+                    <Group />
+                </div>
                 USERS
             </div>
             <List className="user-list-content">

@@ -6,9 +6,7 @@ import { ApiContext } from '..';
 import { VideoRoomApi } from '../../api/video-room-api';
 import { Room, User, Video } from '../../api/video-room-types';
 import { ActionType } from '../../store/video-room/actionType';
-
-
-
+import "./playlist.scss";
 
 interface Prop {
     deleteVideo: Function;
@@ -42,10 +40,14 @@ export const PlaylistItem = (props: Prop) => {
 
     return (
         <ListItem >
+            <div className="playlist-item">
             <ListItemText onClick={loadVideo} primary={props.video.url} />
-            <IconButton edge="end" onClick={deleteFromPlaylist}>
-                <Delete />
-            </IconButton>
+            </div>
+            <div className="playlist-item playlist-icon">
+                <IconButton edge="end" onClick={deleteFromPlaylist}>
+                    <Delete />
+                </IconButton>
+            </div>
         </ListItem>
     )
 }

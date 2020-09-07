@@ -1,5 +1,4 @@
-import { Grid, Slider } from '@material-ui/core';
-import { VolumeDown, VolumeUp } from '@material-ui/icons';
+import { Slider } from '@material-ui/core';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Player } from '../../../api/video-room-types';
@@ -25,26 +24,16 @@ export const VolumeController = (props: Prop) => {
     }
 
     return (
-        <Grid container spacing={2} style={{display: "flex", alignItems: 'center'}}>
-            <Grid item>
-                <VolumeDown className="video-player-buttons" fontSize={"small"}/>
-            </Grid>
-            <Grid item xs>
-                <Slider
-                    value={props.player.videoVolume}
-                    onChange={handleSeekChange}
-                    min={0.0}
-                    max={1.0}
-                    step={0.01}
-                    aria-labelledby="continous-slider"
-                    valueLabelDisplay="auto"
-                    valueLabelFormat={value => <div>{formatSliderLabel(value)} </div>}
-                />
-            </Grid>
-            <Grid item>
-                <VolumeUp className="video-player-buttons" fontSize={"small"}/>
-            </Grid>
-        </Grid>
+        <Slider className="volume-controller"
+            value={props.player.videoVolume}
+            onChange={handleSeekChange}
+            min={0.0}
+            max={1.0}
+            step={0.01}
+            aria-labelledby="continous-slider"
+            valueLabelDisplay="auto"
+            valueLabelFormat={value => <div>{formatSliderLabel(value)} </div>}
+        />
     )
 }
 

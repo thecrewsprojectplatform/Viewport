@@ -1,8 +1,8 @@
 .video-player {
-    max-width: 73%;
+    max-width: 75%;
     margin: 0 auto;
-    padding-left: 1%;
-    padding-right: 1%;
+    padding-left: 2%;
+    padding-right: 2%;
     flex-grow: 1;
     text-align: center;
 
@@ -20,7 +20,47 @@
             padding-right: 1%;
         }
     }
+}
 
+.video-player-controls {
+    display: flex;
+    align-items: center;
+    padding-right: 10px;
+
+    .play-button {
+        display: flex;
+        margin-left: 10px;
+        margin-right: 12px;
+        max-width: 30px;
+        max-height: 30px;
+        min-width: 30px;
+        min-height: 30px;
+    }
+
+    .video-controller {
+        display: flex;
+        margin-right: 50;
+    }
+
+    .volume-controller {
+        display: flex;
+        max-width: 50px;
+    }
+
+    .fullscreen {
+        display: flex;
+        max-width: 30px;
+        max-height: 30px;
+        min-width: 30px;
+        min-height: 30px;
+        color: #ffffff;
+        opacity: 0.7;
+        filter: alpha(opacity=40);
+        &:hover {
+            opacity: 1;
+            filter: alpha(opacity=100);
+        }
+    }
 }
 
 .search-bar-url {
@@ -34,7 +74,16 @@
 }
 
 .video-player-buttons {
-    color: #ffffff
+    display: flex;
+    margin-left: 10px;
+    margin-right: 10px;
+    color: #ffffff;
+    opacity: 0.7;
+    filter: alpha(opacity=40);
+    &:hover {
+        opacity: 1;
+        filter: alpha(opacity=100);
+    }
 }
 
 .MuiIconButton-label {

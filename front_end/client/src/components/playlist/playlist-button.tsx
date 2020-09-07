@@ -1,4 +1,5 @@
 import { Button, Dialog, DialogTitle } from '@material-ui/core';
+import { PlaylistAdd } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { PlaylistR } from './playlist';
@@ -22,10 +23,20 @@ export const PlaylistButton = (props: Prop) => {
 
     return (
         <div>
-            <Button className="playlist-button" onClick={handleClickOpen}>
-                Playlist
+            <Button 
+                title="Playlist"
+                className="video-nav-bar-button playlist-button"
+                color="inherit"
+                onClick={handleClickOpen}
+            >
+                <PlaylistAdd />
             </Button>
-            <Dialog onClose={handleClose} open={open} >
+            <Dialog 
+                onClose={handleClose}
+                open={open} 
+                fullWidth={true}
+                maxWidth={"sm"}
+            >
                 <div className="playlist-header">
                     <DialogTitle >
                         Playlist

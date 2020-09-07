@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from 'react'
-import { connect } from 'react-redux'
 import { Slider } from '@material-ui/core';
-import { Player, Room } from '../../../api/video-room-types';
-import { VideoRoomApi } from '../../../api/video-room-api';
-import { ActionType } from '../../../store/video-room/actionType';
+import React, { useContext, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { ApiContext } from '../..';
+import { VideoRoomApi } from '../../../api/video-room-api';
+import { Player, Room } from '../../../api/video-room-types';
+import { ActionType } from '../../../store/video-room/actionType';
+import "./video-player.scss";
 
 interface Prop {
     setSeeking: Function
@@ -58,17 +59,18 @@ export const VideoController = (props: Prop) => {
     }
 
     return (
-        <Slider
-            value={props.sliderVideoTime}
-            onChange={handleSeekChange}
-            onChangeCommitted={handleSeekMouseUp}
-            min={0.0}
-            max={1.0}
-            step={0.0000001}
-            aria-labelledby="continous-slider"
-            valueLabelDisplay="auto"
-            valueLabelFormat={value => <div>{formatSliderLabel(value)} </div>}
-        />
+            <Slider className="video controller"
+                value={props.sliderVideoTime}
+                onChange={handleSeekChange}
+                onChangeCommitted={handleSeekMouseUp}
+                min={0.0}
+                max={1.0}
+                step={0.0000001}
+                aria-labelledby="continous-slider"
+                valueLabelDisplay="auto"
+                valueLabelFormat={value => <div>{formatSliderLabel(value)} </div>}
+            />
+  
     )
 }
 

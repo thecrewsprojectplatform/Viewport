@@ -1,20 +1,29 @@
 .playlist-button {
-    font-family: 'Open Sans', sans-serif;
-    background-color: #0C4152;
-    &:hover {
-        background-color: #1DA2CE;
-    }
-    color: #FFF;
+    margin-top: inherit;
+    margin-top: 7px !important;
+    //padding-bottom: 20px;
 }
 
 .playlist-header > * {
     font-family: 'Open Sans', sans-serif;
-    background-color: #0C4152 !important;
+    background-color: #015c66 !important;
     text-align: center;
 }
 
 .playlist-content {
+    top: 5px;
     font-family: 'Open Sans', sans-serif;
     color: #FFF;
-    background-color: #040505;
+    background-color: #242427;
+
+    .playlist-item {
+        &:hover {
+            color: #1781A5;
+        }
+    }
+
+    .playlist-icon {
+        margin-left: auto;
+        margin-right: 0;
+    }
 }
