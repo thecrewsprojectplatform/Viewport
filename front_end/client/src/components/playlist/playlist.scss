@@ -15,4 +15,15 @@
     font-family: 'Open Sans', sans-serif;
     color: #FFF;
     background-color: #242427;
+
+    .playlist-item {
+        &:hover {
+            color: #1781A5;
+        }
+    }
+
+    .playlist-icon {
+        margin-left: auto;
+        margin-right: 0;
+    }
 }

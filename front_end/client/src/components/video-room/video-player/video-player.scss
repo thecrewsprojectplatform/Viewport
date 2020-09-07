@@ -20,7 +20,31 @@
             padding-right: 1%;
         }
     }
+}
 
+.video-player-controls {
+    display: flex;
+    align-items: center;
+
+    .play-button {
+        display: flex;
+        margin-left: 10px;
+        margin-right: 10px;
+        max-width: 30px;
+        max-height: 30px;
+        min-width: 30px;
+        min-height: 30px;
+    }
+
+    .video-controller {
+        display: flex;
+        margin-right: 50;
+    }
+
+    .volume-controller {
+        display: flex;
+        max-width: 50px;
+    }
 }
 
 .search-bar-url {
@@ -34,7 +58,10 @@
 }
 
 .video-player-buttons {
-    color: #ffffff
+    display: flex;
+    margin-left: 10px;
+    margin-right: 10px;
+    color: #ffffff;
 }
 
 .MuiIconButton-label {

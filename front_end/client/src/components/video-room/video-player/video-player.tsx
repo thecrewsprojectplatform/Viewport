@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core';
+import { VolumeDown, VolumeUp } from '@material-ui/icons';
 import React, { useContext, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { connect } from 'react-redux';
@@ -88,20 +88,17 @@ export const VideoPlayer = (props: Prop) => {
                         onPause={handleOnScreenPause}
                     />
                 </div>
-                <Grid container spacing={2}>
-                    <Grid item>
-                        <PlayButtonR play={handleOnScreenPlay} pause={handleOnScreenPause} />
-                    </Grid>
-                    <Grid item xs>
-                        <VideoControllerR
-                            sliderVideoTime={sliderVideoTime}
-                            updateVideoTime={sliderVideoTimeHandler}
-                            reactPlayer={reactPlayer}/>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <VolumeControllerR />
-                    </Grid>
-                </Grid>
+                <div className="video-player-controls">
+                    <PlayButtonR play={handleOnScreenPlay} pause={handleOnScreenPause} />
+                    <VideoControllerR
+                        sliderVideoTime={sliderVideoTime}
+                        updateVideoTime={sliderVideoTimeHandler}
+                        reactPlayer={reactPlayer}
+                    />
+                    <VolumeDown className="video-player-buttons" fontSize={"small"}/>
+                    <VolumeControllerR />
+                    <VolumeUp className="video-player-buttons" fontSize={"small"}/>
+                </div>
             </div>
         </div>
     );

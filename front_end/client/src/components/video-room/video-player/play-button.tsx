@@ -1,4 +1,4 @@
-import { IconButton } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { Pause, PlayArrowRounded } from '@material-ui/icons/';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -34,14 +34,12 @@ export const PlayButton = (props: Prop) => {
         }
     }
 
-    return (<div>
-        <IconButton
-            size={"small"}
-            onClick={handlePlayPause}>{checkVideoState() ? <Pause/> : <PlayArrowRounded color="action"/>}
-        </IconButton>
-
-    </div>
-
+    return (
+        <div>
+            <Button className="play-button video-player-buttons"
+                onClick={handlePlayPause}>{checkVideoState() ? <Pause/> : <PlayArrowRounded />}
+            </Button>
+        </div>
     );
 }
 
