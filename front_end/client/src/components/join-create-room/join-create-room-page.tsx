@@ -1,4 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import { Button } from "@material-ui/core";
+import { Help } from "@material-ui/icons";
+import React, { useContext, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { ApiContext } from "..";
 import { VideoRoomApi } from "../../api/video-room-api";
@@ -7,7 +9,8 @@ import { store } from "../../store";
 import { NotificationState } from "../../store/notifications/notifications";
 import { getRoomsAction, Status } from "../../store/video-room/video-room";
 import { BaseAlert } from "../common/base-alert";
-import "./create-room.scss";
+import "../common/help-icon.scss";
+import { HelpModal } from "../video-room/help-modal";
 import { RoomListR } from "./room-list";
 
 /**
@@ -34,6 +37,7 @@ export interface Prop {
  */
 export const JoinCreateRoomPage = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
+    const [showHelpModal, setShowHelpModal] = useState(false);
 
     useEffect(() => {
         store.dispatch(getRoomsAction(api))
@@ -41,12 +45,19 @@ export const JoinCreateRoomPage = (props: Prop) => {
 
     return (
         <div className="join-create-room">
+            {
+                showHelpModal &&
+                <HelpModal
+                    onClose={() => {setShowHelpModal(false)}}
+                />
+            }
             <BaseAlert
                 displayNotification={props.notificationState.displayNotification}
                 notificationType={props.notificationState.notificationType}
                 notificationHeader={props.notificationState.notificationHeader}
                 notificationBody={props.notificationState.notificationBody}
             />
+            <Button className="help-button" onClick={() => {setShowHelpModal(true)}}><Help /></Button>
             <RoomListR />
         </div>
     )

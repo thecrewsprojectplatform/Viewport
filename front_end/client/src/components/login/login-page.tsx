@@ -1,6 +1,7 @@
-import { CssBaseline } from "@material-ui/core";
+import { Button, CssBaseline } from "@material-ui/core";
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
+import { Help } from "@material-ui/icons";
 import React, { useContext, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -11,6 +12,8 @@ import { store } from "../../store";
 import { NotificationState } from "../../store/notifications/notifications";
 import { createUser, Status } from "../../store/video-room/video-room";
 import { BaseAlert } from "../common/base-alert";
+import "../common/help-icon.scss";
+import { HelpModal } from "../video-room/help-modal";
 import { LoginForm } from "./login-form";
 import "./login.scss";
 
@@ -38,6 +41,8 @@ export const LoginPage = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
     const history = useHistory();
 
+    const [showHelpModal, setShowHelpModal] = useState(false);
+
     const handleChange = (event): void => {
         setNewUserName(event.target.value);
     }
@@ -54,8 +59,15 @@ export const LoginPage = (props: Prop) => {
 
     return (
         <div className="login-background">
+            <Button className="help-button" onClick={() => {setShowHelpModal(true)}}><Help /></Button>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
+                {
+                    showHelpModal &&
+                    <HelpModal
+                        onClose={() => {setShowHelpModal(false)}}
+                    />
+                }
                 <BaseAlert
                     displayNotification={props.notificationState.displayNotification}
                     notificationType={props.notificationState.notificationType}
