@@ -53,7 +53,7 @@ export const VideoController = (props: Prop) => {
             const secondString = second < 10 ? "0" + second : second
             return minute + ":" + secondString
         } else {
-            console.log('player not found while formatting slider')
+            //console.log('player not found while formatting slider')
         }
     }
 

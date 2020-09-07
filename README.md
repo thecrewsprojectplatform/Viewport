@@ -15,9 +15,11 @@ We also have included the capability to join the server room via url link for ef
   * Video Loading
   * Video Scrolling
   * Play/Pause
+* Playlist
 * Live Chat Box
 * User List
 * Room Creation/Selection
+* Share Room
 
 ## Supported Media
 These are mostly dependent on [react-player](https://github.com/CookPete/react-player) at the moment
@@ -30,7 +32,7 @@ These are mostly dependent on [react-player](https://github.com/CookPete/react-p
 * Twitch
 * DailyMotion
 * Vidyard
-* Gogoanime (not dependent on react-player)
+* Gogoanime (through [custom api](https://github.com/ChrisMichaelPerezSantiago/gogoanime))
 
 Check react-player for latest updates
 

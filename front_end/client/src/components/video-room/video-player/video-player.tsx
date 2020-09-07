@@ -98,7 +98,7 @@ export const VideoPlayer = (props: Prop) => {
                             updateVideoTime={sliderVideoTimeHandler}
                             reactPlayer={reactPlayer}/>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={2}>
                         <VolumeControllerR />
                     </Grid>
                 </Grid>
