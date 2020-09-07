@@ -11,6 +11,7 @@ import { getPlaylistFromServer } from "../../store/video-room/playlist";
 import { loadVideo } from '../../store/video-room/video-player';
 import { createUserAndAddToRoom, getRoomsAction, getRoomUsers, removeRoom, removeUserFromRoom } from "../../store/video-room/video-room";
 import { ChatAppR } from "./chat-app/chat-app";
+import { HelpModal } from "./help-modal";
 import { ShareRoomModal } from "./share-room-modal";
 import "./toggle-display.scss";
 import { EditUserModal } from "./user-list/edit-user-modal";
@@ -45,6 +46,7 @@ export const VideoRoomPage = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
     const history = useHistory();
     const [showEditUserModal, setShowEditUserModal] = useState(false);
+    const [showHelpModal, setShowHelpModal] = useState(false);
     const [showShareRoomModal, setShowShareRoomModal] = useState(false);
     const [leaveRoom, setLeaveRoom] = useState(false);
     const [showChat, setShowChat] = useState(false);
@@ -114,6 +116,7 @@ export const VideoRoomPage = (props: Prop) => {
         <div className="video-room">
             <VidRoomNavBar
                 title={!props.currentRoom ? "" : props.currentRoom.name}
+                onHelpClick={() => {setShowHelpModal(true)}}
                 onShareClick={() => {setShowShareRoomModal(true)}}
                 onExitClick={exitRoomClick}
                 toggleChatOnClick={toggleChat}
@@ -127,6 +130,12 @@ export const VideoRoomPage = (props: Prop) => {
                             currentRoom={props.currentRoom}
                             currentUser={props.currentUser}
                             onClose={() => {setShowEditUserModal(false)}}
+                        />
+                    }
+                    {
+                        showHelpModal &&
+                        <HelpModal
+                            onClose={() => {setShowHelpModal(false)}}
                         />
                     }
                     {

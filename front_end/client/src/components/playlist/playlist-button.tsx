@@ -1,4 +1,5 @@
 import { Button, Dialog, DialogTitle } from '@material-ui/core';
+import { PlaylistAdd } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { PlaylistR } from './playlist';
@@ -23,7 +24,7 @@ export const PlaylistButton = (props: Prop) => {
     return (
         <div>
             <Button className="video-nav-bar-button playlist-button" color="inherit" onClick={handleClickOpen}>
-                Playlist
+                <PlaylistAdd />
             </Button>
             <Dialog 
                 onClose={handleClose}
