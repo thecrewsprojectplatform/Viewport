@@ -145,17 +145,18 @@ export const VideoRoomPage = (props: Prop) => {
                             onClose={() => {setShowShareRoomModal(false)}}
                         />
                     }
+
+                    <UserList toggleUserList={toggleUserList}
+                        users={props.users}
+                        currentUser={props.currentUser}
+                        onEditClick={() => {setShowEditUserModal(true)}}
+                    />
                     {
                         showUser &&
                         <Button onClick={toggleUserList} className="open-userlist">
                             <KeyboardTab />
                         </Button>
                     }
-                    <UserList toggleUserList={toggleUserList}
-                        users={props.users}
-                        currentUser={props.currentUser}
-                        onEditClick={() => {setShowEditUserModal(true)}}
-                    />
                     <VideoPlayerR />
                     <ChatAppR toggleChat={toggleChat}/>
                     {

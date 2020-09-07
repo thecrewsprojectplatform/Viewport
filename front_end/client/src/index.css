@@ -87,6 +87,10 @@ styling for individual Material UI components.
   color: #FFFFFF;
 }
 
+.PrivateValueLabel-label-5 {
+  color: #000000;
+}
+
 .MuiTypography-root.MuiTypography-h6 {
   font-family: 'Open Sans', sans-serif;
 }
