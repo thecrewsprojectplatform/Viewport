@@ -20,7 +20,7 @@ We also have included the capability to join the server room via url link for ef
 * Room Creation/Selection
 
 ## Supported Media
-These are dependent on [react-player](https://github.com/CookPete/react-player) at the moment
+These are mostly dependent on [react-player](https://github.com/CookPete/react-player) at the moment
 * Youtube
 * Facebook
 * SoundCloud tracks
@@ -30,8 +30,10 @@ These are dependent on [react-player](https://github.com/CookPete/react-player) 
 * Twitch
 * DailyMotion
 * Vidyard
+* Gogoanime (not dependent on react-player)
 
 Check react-player for latest updates
+
 
 
 <br></br>
