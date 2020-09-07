@@ -23,7 +23,12 @@ export const PlaylistButton = (props: Prop) => {
 
     return (
         <div>
-            <Button className="video-nav-bar-button playlist-button" color="inherit" onClick={handleClickOpen}>
+            <Button 
+                title="Playlist"
+                className="video-nav-bar-button playlist-button"
+                color="inherit"
+                onClick={handleClickOpen}
+            >
                 <PlaylistAdd />
             </Button>
             <Dialog 

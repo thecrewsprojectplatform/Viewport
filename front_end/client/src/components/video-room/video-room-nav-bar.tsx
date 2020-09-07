@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { Help } from "@material-ui/icons";
+import { ExitToApp, Help, Share } from "@material-ui/icons";
 import React from 'react';
 import { PlaylistButton } from '../playlist/playlist-button';
 import "./video-room.scss";
@@ -26,10 +26,31 @@ const VidRoomNavBar = (props: Prop) => {
                     <Typography variant="h6" className="video-nav-bar-title">
                         {props.title || "Viewport"}
                     </Typography>
-                    <Button className="video-nav-bar-button" color="inherit" onClick={props.onHelpClick}><Help /></Button>
+                    <Button
+                        title="About"
+                        className="video-nav-bar-button"
+                        color="inherit"
+                        onClick={props.onHelpClick}
+                    >
+                        <Help />
+                    </Button>
                     <PlaylistButton />
-                    <Button className="video-nav-bar-button" color="inherit" onClick={props.onShareClick}>Share Room</Button>
-                    <Button className="video-nav-bar-button" color="inherit" onClick={props.onExitClick}>Exit Room</Button>
+                    <Button
+                        title="Share Room"
+                        className="video-nav-bar-button"
+                        color="inherit"
+                        onClick={props.onShareClick}
+                    >
+                        <Share />
+                    </Button>
+                    <Button
+                        title="Exit Room"
+                        className="video-nav-bar-button"
+                        color="inherit"
+                        onClick={props.onExitClick}
+                    >
+                        <ExitToApp />
+                    </Button>
                 </Toolbar>
             </AppBar>
         </div>
