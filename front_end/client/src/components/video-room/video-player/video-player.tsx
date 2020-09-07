@@ -1,7 +1,10 @@
-import { VolumeDown, VolumeUp } from '@material-ui/icons';
+import { Button } from '@material-ui/core';
+import { Fullscreen, VolumeDown, VolumeUp } from '@material-ui/icons';
 import React, { useContext, useState } from 'react';
+import { findDOMNode } from 'react-dom';
 import ReactPlayer from 'react-player';
 import { connect } from 'react-redux';
+import screenfull, { Screenfull } from 'screenfull';
 import { ApiContext } from '../..';
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { Player, Room, User } from '../../../api/video-room-types';
@@ -10,7 +13,6 @@ import { PlayButtonR } from './play-button';
 import { VideoControllerR } from './video-controller';
 import "./video-player.scss";
 import { VolumeControllerR } from './volume-controller';
-
 
 interface Prop {
     sendVideoState: Function;
@@ -33,6 +35,7 @@ export const VideoPlayer = (props: Prop) => {
     
     const [reactPlayer, setReactPlayer] = useState(null)
     const [sliderVideoTime, setSliderVideoTime] = useState(0)
+    const fullscreen = (screenfull.isEnabled) ? screenfull as Screenfull : undefined;
 
     /**
      * Updates the api on what part the video is at; by default, updates every second
@@ -61,6 +64,10 @@ export const VideoPlayer = (props: Prop) => {
             props.sendVideoState(api, props.currentRoom, "PAUSED")
             props.sendVideoTime(api, props.currentRoom, room.video_time)
         })
+    }
+
+    const toggleFullscreen = () => {
+        fullscreen.request(findDOMNode(reactPlayer) as any);
     }
 
     return (
@@ -98,6 +105,7 @@ export const VideoPlayer = (props: Prop) => {
                     <VolumeDown className="video-player-buttons" fontSize={"small"}/>
                     <VolumeControllerR />
                     <VolumeUp className="video-player-buttons" fontSize={"small"}/>
+                    <Button className="fullscreen" onClick={toggleFullscreen} ><Fullscreen /></Button>
                 </div>
             </div>
         </div>
