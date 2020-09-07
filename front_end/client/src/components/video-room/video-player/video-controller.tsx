@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from 'react'
-import { connect } from 'react-redux'
 import { Slider } from '@material-ui/core';
-import { Player, Room } from '../../../api/video-room-types';
-import { VideoRoomApi } from '../../../api/video-room-api';
-import { ActionType } from '../../../store/video-room/actionType';
+import React, { useContext, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { ApiContext } from '../..';
+import { VideoRoomApi } from '../../../api/video-room-api';
+import { Player, Room } from '../../../api/video-room-types';
+import { ActionType } from '../../../store/video-room/actionType';
 
 interface Prop {
     setSeeking: Function
@@ -53,7 +53,7 @@ export const VideoController = (props: Prop) => {
             const secondString = second < 10 ? "0" + second : second
             return minute + ":" + secondString
         } else {
-            //console.log('player not found while formatting slider')
+            console.log('player not found while formatting slider')
         }
     }
 

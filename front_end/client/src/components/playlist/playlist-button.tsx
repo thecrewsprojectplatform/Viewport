@@ -22,10 +22,15 @@ export const PlaylistButton = (props: Prop) => {
 
     return (
         <div>
-            <Button className="playlist-button" onClick={handleClickOpen}>
+            <Button className="video-nav-bar-button playlist-button" color="inherit" onClick={handleClickOpen}>
                 Playlist
             </Button>
-            <Dialog onClose={handleClose} open={open} >
+            <Dialog 
+                onClose={handleClose}
+                open={open} 
+                fullWidth={true}
+                maxWidth={"sm"}
+            >
                 <div className="playlist-header">
                     <DialogTitle >
                         Playlist

@@ -30,14 +30,14 @@ export const VolumeController = (props: Prop) => {
                 <VolumeDown className="video-player-buttons" fontSize={"small"}/>
             </Grid>
             <Grid item xs>
-                <Slider
+                <Slider className="volume-control"
                     value={props.player.videoVolume}
                     onChange={handleSeekChange}
                     min={0.0}
                     max={1.0}
                     step={0.01}
                     aria-labelledby="continous-slider"
-                    valueLabelDisplay="auto"
+                    valueLabelDisplay="on"
                     valueLabelFormat={value => <div>{formatSliderLabel(value)} </div>}
                 />
             </Grid>

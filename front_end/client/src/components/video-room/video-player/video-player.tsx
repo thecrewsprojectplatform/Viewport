@@ -6,7 +6,6 @@ import { ApiContext } from '../..';
 import { VideoRoomApi } from '../../../api/video-room-api';
 import { Player, Room, User } from '../../../api/video-room-types';
 import { ActionType } from '../../../store/video-room/actionType';
-import { PlaylistButton } from '../../playlist/playlist-button';
 import { PlayButtonR } from './play-button';
 import { VideoControllerR } from './video-controller';
 import "./video-player.scss";
@@ -67,7 +66,6 @@ export const VideoPlayer = (props: Prop) => {
     return (
         <div className="video-player">
             <div>
-                <PlaylistButton />
                 <div className='player-wrapper'>
                     <ReactPlayer
                         ref={setReactPlayer}

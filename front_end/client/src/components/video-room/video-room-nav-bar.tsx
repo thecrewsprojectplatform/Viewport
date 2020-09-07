@@ -3,6 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
+import { PlaylistButton } from '../playlist/playlist-button';
 import "./video-room.scss";
 
 export interface Prop {
@@ -22,10 +23,9 @@ const VidRoomNavBar = (props: Prop) => {
                     <Typography variant="h6" className="video-nav-bar-title">
                         {props.title || "Viewport"}
                     </Typography>
-
+                    <PlaylistButton />
                     <Button className="video-nav-bar-button" color="inherit" onClick={props.onShareClick}>Share Room</Button>
                     <Button className="video-nav-bar-button" color="inherit" onClick={props.onExitClick}>Exit Room</Button>
-
                 </Toolbar>
             </AppBar>
         </div>
