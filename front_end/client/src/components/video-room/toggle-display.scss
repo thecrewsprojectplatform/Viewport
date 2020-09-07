@@ -16,7 +16,7 @@ $background-color: #1781A5;
     $min-height: $min-height;
     border-radius: $border-radius;
     color: $color;
-    margin-right: 89%;
+    left: 5px;
     transform: scale(70%);
     &:hover {
         background-color: $background-color;
@@ -47,8 +47,7 @@ $background-color: #1781A5;
     $min-height: $min-height;
     border-radius: $border-radius;
     color: $color;
-    margin-right: -6%;
-    margin-left: 6%;
+    right: 5px;
     transform: scale(70%);
     transform: scaleX(-1);
     &:hover {

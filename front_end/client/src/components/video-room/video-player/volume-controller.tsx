@@ -37,7 +37,7 @@ export const VolumeController = (props: Prop) => {
                     max={1.0}
                     step={0.01}
                     aria-labelledby="continous-slider"
-                    valueLabelDisplay="on"
+                    valueLabelDisplay="auto"
                     valueLabelFormat={value => <div>{formatSliderLabel(value)} </div>}
                 />
             </Grid>
