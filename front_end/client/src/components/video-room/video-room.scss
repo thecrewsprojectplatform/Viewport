@@ -39,8 +39,11 @@
         min-width: 40px;
         min-height: 40px;
         font-family: 'Open Sans', sans-serif;
+        opacity: 0.7;
+        filter: alpha(opacity=40);
         &:hover {
-            background-color: #1781A5;
+            opacity: 1;
+            filter: alpha(opacity=100);
         }
         margin-right: 10px;
         margin-top: 7px;
