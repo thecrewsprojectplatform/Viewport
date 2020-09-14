@@ -1,9 +1,14 @@
-import React from "react";
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { Collapse, IconButton } from '@material-ui/core';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Close } from '@material-ui/icons';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import React from "react";
 import { NotificationType } from "../../store/notifications/notifications";
+import "./help-icon.scss";
 
 export interface Prop {
+    onClose?: () => void;
+    showBaseModal: boolean
     displayNotification: boolean;
     notificationType: NotificationType;
     notificationHeader: string | JSX.Element;
@@ -22,15 +27,27 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const BaseAlert = (props: Prop) => {
-    //console.log("updated")
     const classes = useStyles();
     if (props.displayNotification === true) {
-        //console.log("displaying")
         return <div className={classes.root}>
-            <Alert severity={props.notificationType === NotificationType.Failure ? "error" : "success"}>
-                <AlertTitle>{props.notificationHeader}</AlertTitle>
-                {props.notificationBody}
+          <Collapse in={props.showBaseModal}>
+            <Alert 
+              severity={props.notificationType === NotificationType.Failure ? "error" : "success"}
+              action={ 
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={props.onClose}
+                >
+                  <Close className="alert-button"/>
+                </IconButton>
+              }
+            >
+              <AlertTitle>{props.notificationHeader}</AlertTitle>
+              {props.notificationBody}
             </Alert>
+          </Collapse>
         </div>
     } else {
         return null;
