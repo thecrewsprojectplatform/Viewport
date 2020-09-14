@@ -38,7 +38,7 @@ export interface Prop {
 export const JoinCreateRoomPage = (props: Prop) => {
     const api = useContext<VideoRoomApi>(ApiContext);
     const [showHelpModal, setShowHelpModal] = useState(false);
-    const [showBaseModal, setShowBaseModal] = useState(false);
+    const [showBaseModal, setShowBaseModal] = useState(true);
 
     useEffect(() => {
         store.dispatch(getRoomsAction(api))
@@ -54,7 +54,6 @@ export const JoinCreateRoomPage = (props: Prop) => {
             }
             <BaseAlert
                 onClose={() => {setShowBaseModal(false)}}
-                onOpen={() => {setShowBaseModal(true)}}
                 showBaseModal={showBaseModal}
                 displayNotification={props.notificationState.displayNotification}
                 notificationType={props.notificationState.notificationType}

@@ -71,7 +71,6 @@ export const LoginPage = (props: Prop) => {
                 }
                 <BaseAlert
                     onClose={() => {setShowBaseModal(false)}}
-                    onOpen={() => {setShowBaseModal(true)}}
                     showBaseModal={showBaseModal}
                     displayNotification={props.notificationState.displayNotification}
                     notificationType={props.notificationState.notificationType}
