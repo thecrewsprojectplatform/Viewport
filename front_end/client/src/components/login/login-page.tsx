@@ -42,6 +42,7 @@ export const LoginPage = (props: Prop) => {
     const history = useHistory();
 
     const [showHelpModal, setShowHelpModal] = useState(false);
+    const [showBaseModal, setShowBaseModal] = useState(true);
 
     const handleChange = (event): void => {
         setNewUserName(event.target.value);
@@ -69,6 +70,9 @@ export const LoginPage = (props: Prop) => {
                     />
                 }
                 <BaseAlert
+                    onClose={() => {setShowBaseModal(false)}}
+                    onOpen={() => {setShowBaseModal(true)}}
+                    showBaseModal={showBaseModal}
                     displayNotification={props.notificationState.displayNotification}
                     notificationType={props.notificationState.notificationType}
                     notificationHeader={props.notificationState.notificationHeader}
