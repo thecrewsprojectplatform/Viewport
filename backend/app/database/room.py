@@ -6,7 +6,7 @@ from app.database.common.guid import GUID
 
 @swagger.model
 class Room(db.Model):
-    id = db.Column(GUID(), primary_key=True, default=str(uuid.uuid4()))
+    id = db.Column(GUID(), primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String(64), index=True, unique=False)
     video_url = db.Column(db.String(64), index=False, unique=False, default="")
     video_time = db.Column(db.Float, index=False, unique=False, default=0)
